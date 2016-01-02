@@ -1,0 +1,83 @@
+\documentclass[a4paper,11pt]{article}
+\author{Jarrah Gosbell}
+\title{CYSEC Training Program}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{%
+	        \markright{\thesection\ #1}}
+\fancyhf{}  % delete current header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt} % space for the rule
+\fancypagestyle{plain}{%
+	   \fancyhead{} % get rid of headers on plain pages
+	      \renewcommand{\headrulewidth}{0pt} % and the line
+	  }
+\usepackage[pdftex]{hyperref}
+\begin{document}
+\maketitle
+\tableofcontents
+\section{Computer Operations}
+	\subsection{Hardware}
+	\subsection{Assembly And Binary}
+	%\subsection{Compilation}
+	\subsection{Computer Languages}
+\section{Network Operations}
+	\subsection{OSI Model}
+	\subsection{Network Architecture}
+	\subsection{Connecting To Networked Software}
+\section{Scoping and Mindset}
+	\subsection{Lock Picking}
+	\subsection{Research}
+\section{Web Penetration}
+	\subsection{XSS}
+	\subsection{SQL Inejection}
+	\subsection{File Uploads}
+\section{Network Penetration}
+	\subsection{nmap}
+	\subsection{Nessus}
+	\subsection{Metasploit}
+	\subsection{Pivoting}
+	\subsection{Maintaining a presence}
+\section{Forensics}
+	\subsection{File Carving}
+	\subsection{Steganography}
+	\subsection{Wireshark}
+	\subsection{Netflow}
+\section{Reverse Engineering}
+	\subsection{x86 Assembly}
+	\subsection{Radare2}
+	\subsection{Pwn Adventure}
+\section{Programming}
+	\subsection{Introduction to Python}
+	\subsection{Introduction to C}
+	\subsection{Introduction to Scripting}
+	\subsection{Programming Challenges}
+\section{Cryptography}
+	\subsection{Introduction to Cryptography}
+	\subsection{Utilizing Cryptography in Python}
+	\subsection{Poor Cryptography Implementations}
+\section{System Hardening}
+	\subsection{Linux Hardening}
+	\subsection{Windows Hardening}
+	\subsection{Browser Hardening}
+\section{Reporting}
+	\subsection{Report Writing}
+	\subsection{STIX Model}
+\section{Binary Exploitation}
+	\subsection{Overflows}
+	\subsection{String Format Errors}
+	\subsection{IDS, IPS and AV}
+\section{History}
+	\subsection{MIT Tech Model Railroad Club}
+	\subsection{Early Computing Equipment}
+\section{Wireless Attacks}
+	\subsection{Aircrack-ng}
+	\subsection{Bluetooth}
+	\subsection{Near Field Communications}
+	\subsection{Challenges}
+
+\end{document}
