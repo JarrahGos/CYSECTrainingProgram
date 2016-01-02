@@ -1,0 +1,6 @@
+# Package Files #
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
