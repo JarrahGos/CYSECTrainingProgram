@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,draft]{article}
+\documentclass[a4paper,11pt]{article}
 \author{Jarrah Gosbell}
 \title{CYSEC Training Program}
 \usepackage{fancyhdr}
@@ -235,7 +235,7 @@
 	Thus, for each recommendation below, decide how the computer needs to work for you and implement it to that level.\\ 
 	If the newly secured system does not work for you, simply roll it back until it does. 
 	When implementing this, remember that the biggest threat will always be the user of the system. 
-	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is volnerable. 
+	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
 	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
 	\subsection{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
 		\paragraph{Passwords} \footnote{https://wiki.archlinux.org/index.php/Security}
@@ -262,7 +262,7 @@
 			is the process of automatically cryptographically protecting a part or all of a storage device.
 			\footnote{https://wiki.archlinux.org/index.php/Disk\_encryption}
 			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
-			However, the system will still be volnerable to remote attacks, cold boot attacks and coercion (though this can be mitigated through plausible deniability)
+			However, the system will still be vulnerable to remote attacks, cold boot attacks and coercion (though this can be mitigated through plausible deniability)
 			The following is a description of the types of encryption and their effects on security"
 			\begin{description}
 				\item[Data Encryption] Encrypting nothing more than the data. 
@@ -272,8 +272,98 @@
 					This prevents the two downfalls of data encryption by ensuring that any tampering will cause a garbled output on the OS disk and that call caches are encrypted. 
 					However, this requires that the boot system be aware of the encryption and that a password is entered before boot. 
 			\end{description}
-			
+			In order to achieve this, there are two types of encryption which may be utilized:
+			\begin{description}
+				\item[Stacked Filesystem Encryption] A designated folder within the filesystem which encrypts files before they are written to the disk. 
+					This means that the files will be visible from the encrypted filesystem, but the names and data will be encrypted until unlocked. 
+					This is a simple means of Data Encryption. 
+				\item[Block Device Encryption] Operates below the filesystem, encrypting both the filesystem and the files contained within it. 
+					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
+			\end{description}
+		\paragraph{Mount options}
+			When setting up a secure environment, one should take care to give the least permission required to conduct a task. 
+			Thus, when mounting file systems, it is best to limit what can be done with the data on the system.
+			There are three restrictions which can be placed on a mounted filesystem:
+			\begin{description}
+				\item[nodev] Do not interpret character or block special devices on the filesystem
+				\item[nosuid] Do not allow set-user-identifier or set-group-identifier bits to take effect
+				\item[noexec] Do not allow execution of binaries or other files found in the filesystem. 
+			\end{description}
+			A basic guide for what common filesystems can be mounted with which options can be found in table \ref{tab:mountOptions}
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | l | l | l |}
+					\hline
+					$\textbf{Partition}$ & $\textbf{nodev}$ & $\textbf{nosuid}$ & $\textbf{noexec}$ \\ \hline
+					/var  &		yes &	yes &	yes \\ \hline
+					/home &		yes &	yes &	if you do not code or use wine \\ \hline
+					/dev/shm &	yes &	yes &	yes \\ \hline
+					/tmp &		yes &	yes &	breaks compiling packages \\ \hline
+					/boot &		yes &	yes &	yes \\ \hline
+				\end{tabular}
+				\caption{Common filesystem restrictions}
+				\label{tab:mountOptions}
+			\end{table}
+			\paragraph{File Permissions}
+				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
+				This means that if any user is compromised, most files on the system can be stolen. 
+				Furthermore, it means that the attacker can use the systems configuration files to determine likely privelage excilation or pivot points. 
+				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
+				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
+				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
+			\paragraph{users}
+				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
+				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
+				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{http://linux.die.net/man/8/pam\_tally} system.
+				This system will ensure that if a user attempts to access the system with an incorrect password, they will be locked out, either for a given time, or until unlocked by the root user. 
+				This avoids an oportunistic malicious user attempting to guess the password. \\
+				Another means of securing users is to limit the number of processes which can be spawned by an individual user. 
+				This will limit the effect of a user account being used to run a denial of service (DoS) attack on the system. 
+				Furthermore, it will disallow actions such as fork bombs from bringing the whole system down. 
+				This can usually be achieved by adding the following lines to ``/etc/security/limits.conf''
+				\begin{quote}
+					\** soft nproc 100 \\
+					\** hard nproc 200 \\
+				\end{quote}
 
+			\paragraph{Restricting use of root}
+				\begin{itemize}
+					\item The sudo command should be used rather than su due to the following reasons:
+						\begin{itemize}
+							\item It logs commands and the users which invoked them
+							\item Root password is held secure. 
+							\item Prevents accidental execution. 
+							\item Individual commands may be enabled for users or group through the sudoers file. 
+						\end{itemize}
+					\item sudoedit or sudo -e should be used rather than running an editor as root. 
+						To do this, add SUDO\_EDITOR=<editor> to your environmental variables.
+					\item Restrict root login both locally and via SSH. 
+				\end{itemize}
+			\paragraph{Mandatory Access Control}
+				MAC, as opposed to the Discretionary Access Control (DAC) used on most Linux systems is a rule set which designates which actions can be taken on which files and directories. 
+				This rule set is created by the root user and unlike DAC cannot be altered by the users of the system. 
+				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
+				Furthermore, on the desktop, due to the wide variety of tasks which are completed, a poorly setup MAC will either be far too permissive or far too restrictive. 
+				%TODO: Think about writing out the types here. Think about linking the implementations. 
+			\paragraph{Kernel Hardening}
+				The following are the common steps used to harden the Linux Kernel. 
+				\begin{description}
+					\item[Restricting access to kernel logs]
+						These logs contain information which may be useful to an attacker, such as the software currently running and sensitive memory addresses. 
+						To restrict access to these logs, add the line ``kernel.kptr\_restrict = 1'' to the file ``/etc/sysctl.d/50-kptr-restrict.conf''
+					\item[hidepid] 
+						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the /proc filesystem with the option ``hidepid=1''. 
+					\item[grsecurity]
+						grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity} is a kernel which has been patched with multiple security enhancements. 
+						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
+				\end{description}
+				\paragraph{Sandboxing with firejail}
+					Sandboxing is an important part of running a secure system. 
+					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
+					Firejail\footnote{https://firejail.wordpress.com/documentation-2/} gives an easy way to do this through it's commandline interface. 
+					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
+					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
+					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 	\subsection{Windows Hardening}
 	\subsection{Browser Hardening}
 		\newpage Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
