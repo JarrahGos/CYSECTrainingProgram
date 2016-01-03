@@ -79,21 +79,27 @@
 					There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
 					\begin{itemize}
 						\item General Registers: 
-							\subitem RAX is the Accumulator register for IO, arithmetic, interrupt calls, etc. 
-							\subitem RBX is the Base Register used as a base pointer for memory access. 
-							\subitem RCX is the Counter register, used for loop counters. 
-							\subitem RDX is the Data Register used for IO, arithmetic and interrupt calls. 
+							\begin{itemize}
+								\item RAX is the Accumulator register for IO, arithmetic, interrupt calls, etc. 
+								\item RBX is the Base Register used as a base pointer for memory access. 
+								\item RCX is the Counter register, used for loop counters. 
+								\item RDX is the Data Register used for IO, arithmetic and interrupt calls. 
+							\end{itemize}
 						\item Segment Registers: 
-							\subitem CS holds the current code segment. 
-							\subitem DS holds the data segment of the current program. 
-							\subitem ES, FS, GS are extra segment registers for far pointer addressing such as video memory. 
-							\subitem SS Holds the Stack segment of the current program. 
+							\begin{itemize}
+								\item CS holds the current code segment. 
+								\item DS holds the data segment of the current program. 
+								\item ES, FS, GS are extra segment registers for far pointer addressing such as video memory. 
+								\item SS Holds the Stack segment of the current program. 
+							\end{itemize}
 						\item Index and Pointer Registers: 
-							\subitem RSI Source index register for string and memory array copying
-							\subitem RDI Destination index register used for string and memory array copying
-							\subitem RBP holds the stack base pointer. 
-							\subitem RIP is the index pointer. Holds the offset of the next instruction. 
-							\subitem RSP is the stack pointer. Holds the current head of the stack. 
+							\begin{itemize}
+								\item RSI Source index register for string and memory array copying
+								\item RDI Destination index register used for string and memory array copying
+								\item RBP holds the stack base pointer. 
+								\item RIP is the index pointer. Holds the offset of the next instruction. 
+								\item RSP is the stack pointer. Holds the current head of the stack. 
+							\end{itemize}
 						\item CFLAGS holds the current state of the processor and the output or error of some instructions after execution. The use for each CFLAGS bit can be found in table \ref{tab:CFLAGSBits} 
 							\begin{table}[htb]
 								\centering
@@ -118,13 +124,13 @@
 									20  &   VIP  &   Virtual interrupt pending flag \\ \hline
 									21  &   ID   &   ID flag \\ \hline
 							\end{tabular}
-							\caption{CFLAGS bit uses}
-							\label{tab:CFLAGSBits}
-						\end{table}
+								\caption{CFLAGS bit uses}
+								\label{tab:CFLAGSBits}
+							\end{table}
 				\end{itemize}
 			\subparagraph{Protected Mode} 
 				is the mode of operation for the modern CPU. 
-				This stemed from security and multiprogramming issues found to occur in real mode. 
+				This stemmed from security and multiprogramming issues found to occur in real mode. 
 				In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
 				In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
 				This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
