@@ -227,10 +227,67 @@
 	\subsection{Linux Hardening}
 	\subsection{Windows Hardening}
 	\subsection{Browser Hardening}
-		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
+		\newpage Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
 		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
-		Once this is complete, we begin looking into plugins and 
+		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
+		\paragraph{\mu{}Block Origin}
+			is a tool which will block elements on every page which is loaded. 
+			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
+			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
+			While this tool will not give you security against more complex attacks, it will filter out the majority of opportunistic attacks through elements such as advertisements and frames to known bad websites. 
+			Once installed, run through the following check list: 
+			\begin{itemize}
+				\item select all three privacy options.
+				\item select the filters which are useful to you. 
+					Most of the filters down to regions are useful. However, many overlap. 
+			\end{itemize}
+		\paragraph{Disconnect}
+			is designed to make the Internet faster and more private by blocking tracking found on most websites. 
+			There is no setup for this plugin. Simply install it and allow it to do its thing. 
+			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
+		\paragraph{Flash Control}
+			blocks both flash and HTML 5 elements which could contain malicious code. 
+			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly volenerable pieces of web technology. 
+			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
+			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
+			You may also wish to add any sites that you know are good to the whitelist. 
+			However, I prefer to simply allow Flash Control to block all flash elements. 
+		\paragraph{NoScript}
+			is one of two script blocking plugins I recommend. 
+			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
+			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
+			However, it also means that the majority of websites will be broken until they are allowed to run scripts. 
+			I recommend running NoScript due to it's other features, such as:
+			\begin{itemize}
+				\item embedded element blocking (Java, flash, silverlight) 
+				\item XSS blocking
+				\item Application Boundaries Enforcer. 
+				\item Clear Click. 
+			\end{itemize}
+			These are features which should be turned on in the settings of NoScript. 
+		\paragraph{Privacy Badger}
+			is another set and forget advertisement and tracking blocker. 
+			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
+			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
+		\paragraph{\mu{}Matrix}
+			is the second script blocking tool I recommend. 
+			\mu{}Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
+			The following are the settings which I use, these will ensure that security is held at a high level:
+			\begin{itemize}
+				\item Delete blocked cookies
+				\item Delete local storage content set by blocked hostnames. 
+				\item Clear browser cache every 60 minutes. 
+				\item Spoof HTTP referrer. 
+				\item Strict HTTPS.
+				\item Block all hyperlink Auditing. 
+				\item Spoof User-Agent. 
+				\item All host files. 
+			\end{itemize}
+			Once this is setup, you will need to begin unblocking elements of websites by clicking on the \mu{}Matrix icon and selecting the top of the element to be unblocked. 
+			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
+
+
 \section{Reporting}
 	\subsection{Report Writing}
 	\subsection{STIX Model}
