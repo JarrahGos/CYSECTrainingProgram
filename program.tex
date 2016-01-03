@@ -231,7 +231,7 @@
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
 		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
 		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
-		\paragraph{\mu{}Block Origin}
+		\paragraph{$\mu{}$Block Origin}
 			is a tool which will block elements on every page which is loaded. 
 			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
 			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
@@ -260,7 +260,7 @@
 			However, it also means that the majority of websites will be broken until they are allowed to run scripts. 
 			I recommend running NoScript due to it's other features, such as:
 			\begin{itemize}
-				\item embedded element blocking (Java, flash, silverlight) 
+				\item embedded element blocking (Java, Flash, Silverlight) 
 				\item XSS blocking
 				\item Application Boundaries Enforcer. 
 				\item Clear Click. 
@@ -270,9 +270,9 @@
 			is another set and forget advertisement and tracking blocker. 
 			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
 			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
-		\paragraph{\mu{}Matrix}
+		\paragraph{$\mu{}$Matrix}
 			is the second script blocking tool I recommend. 
-			\mu{}Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
+			$\mu{}$Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
 			The following are the settings which I use, these will ensure that security is held at a high level:
 			\begin{itemize}
 				\item Delete blocked cookies
@@ -284,8 +284,49 @@
 				\item Spoof User-Agent. 
 				\item All host files. 
 			\end{itemize}
-			Once this is setup, you will need to begin unblocking elements of websites by clicking on the \mu{}Matrix icon and selecting the top of the element to be unblocked. 
+			Once this is setup, you will need to begin unblocking elements of websites by clicking on the $\mu{}$Matrix icon and selecting the top of the element to be unblocked. 
 			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
+		\paragraph{Sandboxing}
+			is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
+			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
+			Follow the steps outlined in the above section for your operating system to properly sandbox your browser. 
+		\paragraph{Browser Settings}
+			The following section will be focused on Firefox and it's derivatives. 
+			However, most of the settings will work for other browsers. 
+			\begin{itemize}
+				\item Settings under privacy:
+					\begin{itemize}
+						\item Request that sites not track you. 
+						\item Use Tracking Protection in Private Windows. 
+						\item Firefox will: Use custom settings for history. 
+						\item Always use private browsing mode. (This will break all history and cached files) 
+						\item Accept third-party cookies (Either from visited or never)
+					\end{itemize}
+				\item Settings under security:
+					\begin{itemize}
+						\item warn me when sites try to install add-ons
+						\item Block reported attack sites
+						\item Block reported web forgeries. 
+					\end{itemize}
+				\item Disable all sync. 
+				\item Settings under Advanced:
+					\begin{itemize}
+						\item Data choices: Disable all.
+						\item Update: Either Automatically or manual install. 
+					\end{itemize}
+			\end{itemize}
+			%TODO: Add about:config section. 
+		\paragraph{Search}
+			Google is one of the worst violators of user's privacy on the Internet. Second only to Facebook. 
+			However, there are other options for search.\\ 
+			If you would like to retain the results that Google gives, but remove the tracking, Start page is your option. 
+			Start page will act as a proxy between yourself and Google, allowing you to use the search features of Google as you normally would, but without the tracking. 
+			This is a significant improvement to the current tracking which follows you across the Internet. //
+			Another option is DuckDuckGo which was built from the ground up to ensure that the privacy of it's users is maintained. 
+			This search engine has no contact with Google, but it also comes with a set of new features which can become useful once learned. 
+			The issue with this search engine is that on occasion, the results will not be to the same standard. 
+			Occasionally, someone will tell you to Google something, stating that the result is on the first page, but it will not be a result on DuckDuckGo. 
+		\paragraph{Multiple Browsers}
 
 
 \section{Reporting}
