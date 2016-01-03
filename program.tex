@@ -25,35 +25,57 @@
 \newpage
 \section{Computer Operations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
-	At the base level, a computer is a structure of silicon, etched into the shape of a CPU die, then added into a bus with memory and IO. At the next level, the binary signals which are processed are taken into account, allowing the computer to act in a programmed way. 
+	At the base level, a computer is a structure of silicon, etched into the shape of a CPU die, then added into a bus with memory and IO.
+	At the next level, the binary signals which are processed are taken into account, allowing the computer to act in a programmed way. 
 	Finally, a computer is programmed in a language such as C or Python. This gives us the interfaces and systems which we interact with daily. 
 	\subsection{Hardware}
 		\subsubsection{CPU} 
-			The CPU is the microprocessor which forms the heart of the modern computer. While not the only microproccessor in a modern computer, they are the most major and the one which is commonly programmed for. This lesson will discuss the current design and implementation of CPUs, and the impact of this on the way that a computer works. 
+			The CPU is the microprocessor which forms the heart of the modern computer. 
+			While not the only microproccessor in a modern computer, they are the most major and the one which is commonly programmed for. 
+			This lesson will discuss the current design and implementation of CPUs, and the impact of this on the way that a computer works. 
 			This will be broken down into the fetch, decode, execute cycle, the physical units which make up the CPU and the connection which allows it to commuticate with the rest of the computer. 
 			\paragraph{Fetch, Decode, Execute Cycle}
-				The operation of a computer occurs through the repeated execution of a sequence of instructions. This cycle allows the computer to access the instructions stored in cache or RAM and determine how they should be enacted. This lesson will discuss the approach used on a classic RISC CPU similar to that of most modern phones. Due to this, it will discount cache and threading. 
+				The operation of a computer occurs through the repeated execution of a sequence of instructions.
+				This cycle allows the computer to access the instructions stored in cache or RAM and determine how they should be enacted. This lesson will discuss the approach used on a classic RISC CPU similar to that of most modern phones. 
+				Due to this, it will discount cache and threading. 
 				\subparagraph{Fetch}
-					This step requires the CPU to request the next instruction from it's source. This is possible as the CPU retains the address of the next instruction to complete in it's program counter. 
-					After each fetch, the CPU will increment the address in its program counter. However, this address may change due to the requirements of the instruction which was just fetched. 
-					If the instruction has to be fetched from RAM rather than cache, the CPU may stall while waiting. This will freeze execution until the fetch cycle has been completed. 
+					This step requires the CPU to request the next instruction from it's source. 
+					This is possible as the CPU retains the address of the next instruction to complete in it's program counter. 
+					After each fetch, the CPU will increment the address in its program counter. 
+					However, this address may change due to the requirements of the instruction which was just fetched. 
+					If the instruction has to be fetched from RAM rather than cache, the CPU may stall while waiting.
+					This will freeze execution until the fetch cycle has been completed. 
 				\subparagraph{Decode}
-					This step is performed on the Instruction Decoder, where the instruction which was fetched in the last step is converted into the signals which controll other parts of the CPU to enact the instruction. 
-					This decoding will occur based on the instruction set of the processor, which can be thought of as a look-up-table for valid instructions. This will intrepret the first section of the instrcution, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. The later fields are then sent as arguements to supplement the instruction. 
-					This process may take place on a hardwired circuit, or through the use of a microprogram which. In either case the system output will be the same. However, in the latter case, the microprogram will be rewritable, allowing for decoding to be altered after production. 
+					This step is performed on the Instruction Decoder, where the instruction which was fetched in the last step is converted into the signals which control other parts of the CPU to enact the instruction. 
+					This decoding will occur based on the instruction set of the processor, which can be thought of as a look-up-table for valid instructions. 
+					This will intrepret the first section of the instrcution, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
+					The later fields are then sent as arguements to supplement the instruction. 
+					This process may take place on a hardwired circuit, or through the use of a microprogram which, In either case the system output will be the same. 
+					However, in the latter case, the microprogram will be rewritable, allowing for decoding to be altered after production. 
 				\subparagraph{Execute}
-					This step causes the CPU to enact the requirements of the instruction, causing output to be written to a given register or memory location. This may occur over multiple clock pulses, with each designating a new section of the instruction. This can be seen through the action of the Arithmetic Logic Unit, which will perform its calculation to ensure that its output is stored in the register by the next clock pulse. 
+					This step causes the CPU to enact the requirements of the instruction, causing output to be written to a given register or memory location. 
+					This may occur over multiple clock pulses, with each designating a new section of the instruction. 
+					This can be seen through the action of the Arithmetic Logic Unit, which will perform its calculation to ensure that its output is stored in the register by the next clock pulse. 
 			\paragraph{CPU Structure}
-				The CPU is made up of multiple parts which allow it to conduct its role within the computer. Each of these parts perform only one task within the CPU, allowing others to process or store their output. The most important of these components will be explained here. 
+				The CPU is made up of multiple parts which allow it to conduct its role within the computer. 
+				Each of these parts perform only one task within the CPU, allowing others to process or store their output. 
+				The most important of these components will be explained here. 
 				\subparagraph{The Control Unit}
-					Contains the circuitry which intreprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. The control unit is also the communicator between the ALU and the Memory.
+					Contains the circuitry which intreprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. 
+					The control unit is also the communicator between the ALU and the Memory.
 				\subparagraph{The Arethmetic Logic Unit}
-					(ALU) is the processor for both integer and bitwise logic. The inputs for this circuit are the decoded signals from the Controll Unit, as well as the Operands (arguements) which were passed with the instruction. Once the calculation has taken place, the ALU will output to either the register or memory location designated by the instruction. 
+					(ALU) is the processor for both integer and bitwise logic. 
+					The inputs for this circuit are the decoded signals from the Control Unit, as well as the Operands (arguements) which were passed with the instruction. 
+					Once the calculation has taken place, the ALU will output to either the register or memory location designated by the instruction. 
 				\subparagraph{The Floating Point Unit}
-					(FPU) is the logic circuit used to calculate floating point (real) numbers. While these numbers can be computed using only the ALU, it is not optimized to calculate them. Thus to expediate the process an FPU was created. Thes units will calculate mathematics on real numbers to a given precision (specified by the IEEE). % Reference this
+					(FPU) is the logic circuit used to calculate floating point (real) numbers. 
+					While these numbers can be computed using only the ALU, it is not optimized to calculate them.
+					Thus to expediate the process an FPU was created. 
+					These units will calculate mathematics on real numbers to a given precision (specified by the IEEE). % Reference this
 					When a given precision is not supported, the ALU must run the calculation at a far slower pace. 
 				\subparagraph{The registers}
-					The CPU also contains its own extremely fast memory, known as regsters. These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction. 
+					The CPU also contains its own extremely fast memory, known as regsters. 
+					These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction. 
 					There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
 					\begin{itemize}
 						\item General Registers: 
@@ -71,9 +93,10 @@
 							\subitem RDI Destination index register used for string and memory array copying
 							\subitem RBP holds the stack base pointer. 
 							\subitem RIP is the index pointer. Holds the offset of the next instruction. 
-							\subitem RSP is the stack poiner. Holds the current head of the stack. 
+							\subitem RSP is the stack pointer. Holds the current head of the stack. 
 						\item CFLAGS holds the current state of the processor and the output or error of some instructions after execution. The use for each CFLAGS bit can be found in table \ref{tab:CFLAGSBits} 
 							\begin{table}[htb]
+								\centering
 								\begin{tabular}{| l | l | l |}
 									\hline
 									\textbf{Bit} &  \textbf{Label} &   \textbf{Desciption} \\\hline 
@@ -99,6 +122,49 @@
 							\label{tab:CFLAGSBits}
 						\end{table}
 				\end{itemize}
+			\subparagraph{Protected Mode} 
+				is the mode of operation for the modern CPU. 
+				This stemed from security and multiprogramming issues found to occur in real mode. 
+				In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
+				In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
+				This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
+				\subsubsection{RAM}
+					%TODO: Add in section on segments of memory and protected mode. 
+					The main memory of a computer, known as Random Access Memory (RAM) is the first storage device of the computer outside that of the processor. 
+					RAM is used because it is fast, however, this comes at the loss of price and volatility. 
+					When no electrical current is passing through RAM modules, the data held within will deteriorate. 
+					The speed at which this occurs forms the basis for cold boot attacks. %TODO: Ref this to forensics. 
+					For our purposes, memory should be thought of in terms of the segments and data structures which make it up. 
+					\paragraph{The .BSS section}
+						is the section of memory used for static and global variables. 
+						Generally the variables outlined in this section are not initialised until the program is running. 
+						A .BSS variable may be a memory location that you wish to store a string in later in the program. 
+					\paragraph{The .data section}
+						is the section for global variables which are to be initialised before the program starts. 
+						This is where you would put the data which is to be accessed by the program, rather than through inputs or environmental variables. 
+					\paragraph{The .code section}
+						This is the section which contains the code for the program. 
+						It cannot create new variables, but it can access those created in the .BSS and .data sections. 
+						This section is usually broken through the use of labels and navigated by jump statements. 
+						One should be careful to ensure that these statements do not become hard to follow. 
+					\paragraph{The Heap}
+						is the structure used to store larger memory items in a high level programming language. 
+						In an object oriented language, items stored on the heap are usually created through the use of the ``new'' command. 
+						In procedural languages, commands such as ``malloc'' are used to allocate memory to the heap. 
+						In both of these instances, the command will allocate the necessary memory and return a pointer to that address. 
+						Items stored on the heap start at lower memory locations and move to higher as more items are placed on the heap. 
+						This will become important as we move to binary exploitation. 
+					\paragraph{The Stack}
+						is the more widely used memory structure. 
+						Variables in any language as soon as they are named are stored on the stack frame of the current scope. 
+						Even items stored on the heap have a pointer on the stack. 
+						The program will create a new stack frame---a collection of instance variables---for each scope which it comes across. 
+						This is best seen in functions, where the frame for main() will sit on the stack, followed by the frame of the first function called, followed by the next. 
+						Each of these functions would have their own instance variables, all of which are stored within their frame. 
+						When the function returns, its frame is popped from the stack and the stack pointer is raised to the last frame. 
+						Unlike the heap, the stack starts at high memory locations and grows down towards the heap. 
+						This can be used for overflows into heap variables. 
+
 	\subsection{Assembly And Binary}
 	%\subsection{Compilation}
 	\subsection{Computer Languages}
