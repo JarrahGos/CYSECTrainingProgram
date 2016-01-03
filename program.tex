@@ -17,6 +17,7 @@
 	      \renewcommand{\headrulewidth}{0pt} % and the line
 	  }
 \usepackage[pdftex]{hyperref}
+\usepackage{microtype}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 \begin{document}
@@ -238,8 +239,8 @@
 	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
 	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
 	\subsection{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
-		\paragraph{Passwords} \footnote{https://wiki.archlinux.org/index.php/Security}
-			Your passwords are the key to having a secure system. 
+		\paragraph{Passwords} 
+			Your password\footnote{https://wiki.archlinux.org/index.php/Security} are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
 			Thus, passwords should be created and managed in a secure way:
 			\begin{itemize}
@@ -253,10 +254,10 @@
 				\item Longer than 12 characters. 
 			\end{itemize}
 		\paragraph{Password Hashing}
-			A Linux system stores it's passwords hashed in ``/etc/shadow''. 
+			Linux stores hashed passwords in ``/etc/shadow''. 
 			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
 			\begin{quote}
-				password	required	pam\_unix.so $\textbf{sha512}$ shadow nullok $\textbf{rounds=65536}$
+				password required pam\_unix.so $\textbf{sha512}$ shadow $\textbf{rounds=65536}$
 			\end{quote}
 		\paragraph{Disk Encryption}
 			is the process of automatically cryptographically protecting a part or all of a storage device.
@@ -277,7 +278,7 @@
 				\item[Stacked Filesystem Encryption] A designated folder within the filesystem which encrypts files before they are written to the disk. 
 					This means that the files will be visible from the encrypted filesystem, but the names and data will be encrypted until unlocked. 
 					This is a simple means of Data Encryption. 
-				\item[Block Device Encryption] Operates below the filesystem, encrypting both the filesystem and the files contained within it. 
+				\item[Block Device Encryption] Operates below the filesystem, encrypting the filesystem and the files contained within it. 
 					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
 			\end{description}
 		\paragraph{Mount options}
@@ -336,7 +337,7 @@
 							\item Individual commands may be enabled for users or group through the sudoers file. 
 						\end{itemize}
 					\item sudoedit or sudo -e should be used rather than running an editor as root. 
-						To do this, add SUDO\_EDITOR=<editor> to your environmental variables.
+						To do this, add SUDO\_EDITOR=editor to your environmental variables.
 					\item Restrict root login both locally and via SSH. 
 				\end{itemize}
 			\paragraph{Mandatory Access Control}
@@ -361,12 +362,12 @@
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{https://firejail.wordpress.com/documentation-2/} gives an easy way to do this through it's commandline interface. 
-					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
-					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
+					The command ``firejail program'' will execute ``program'' in a sandbox. 
+					For greater security, the command ``firejail --seccomp --private program'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
-				\paragraph{Firewall}
+				\paragraph{Firewall} %TODO: Add firewall section
 				\paragraph{Physical security}
-					Given enough time and resources, physical access should be thought of as root access. 
+					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
 					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgable or determined. 
 					\begin{itemize}
