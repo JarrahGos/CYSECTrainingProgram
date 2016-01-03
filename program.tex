@@ -230,7 +230,50 @@
 	\subsection{Utilizing Cryptography in Python}
 	\subsection{Poor Cryptography Implementations}
 \section{System Hardening}
+	Securing one's own operating system and the software within can be a daunting task. 
+	One must way up the needs of security against the usability of the system, or face months of instability or system management on a broken system. 
+	Thus, for each recommendation below, decide how the computer needs to work for you and implement it to that level.\\ 
+	If the newly secured system does not work for you, simply roll it back until it does. 
+	When implementing this, remember that the biggest threat will always be the user of the system. 
+	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is volnerable. 
+	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
 	\subsection{Linux Hardening}
+		\paragraph{Passwords} \footnote{https://wiki.archlinux.org/index.php/Security}
+			Your passwords are the key to having a secure system. 
+			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
+			Thus, passwords should be created and managed in a secure way:
+			\begin{itemize}
+				\item Not containing personal information.
+				\item Not dictionary words or common substutions (such as 1337Speak)
+				\item Not having all numbers or symbols at the start or end. 
+				\item Not a common short phrase. 
+				\item Using an uncommon or non-sensical phrase such as ``Correct horse battery staple''\footnote{https://xkcd.com/936/}
+				\item using multiple numbers, letters and symbols. 
+				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
+				\item Longer than 12 characters. 
+			\end{itemize}
+		\paragraph{Password Hashing}
+			A Linux system stores it's passwords hashed in ``/etc/shadow''. 
+			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
+			\begin{quote}
+				password	required	pam\_unix.so $\textbf{sha512}$ shadow nullok $\textbf{rounds=65536}$
+			\end{quote}
+		\paragraph{Disk Encryption}
+			is the process of automatically cryptographically protecting a part or all of a storage device.
+			\footnote{https://wiki.archlinux.org/index.php/Disk\_encryption}
+			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
+			However, the system will still be volnerable to remote attacks, cold boot attacks and coercion (though this can be mitigated through plausible deniability)
+			The following is a description of the types of encryption and their effects on security"
+			\begin{description}
+				\item[Data Encryption] Encrypting nothing more than the data. 
+					This is useful for privacy concerns and is the easiest to implement. 
+					However, date encryption will not protect from OS tampering such as installing keyloggers as well as cache attacks, taking advantage of data cached in locations such as ``/tmp''.
+				\item[System Encryption] Encrypting the whole OS and all user data. 
+					This prevents the two downfalls of data encryption by ensuring that any tampering will cause a garbled output on the OS disk and that call caches are encrypted. 
+					However, this requires that the boot system be aware of the encryption and that a password is entered before boot. 
+			\end{description}
+			
+
 	\subsection{Windows Hardening}
 	\subsection{Browser Hardening}
 		\newpage Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
