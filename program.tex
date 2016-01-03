@@ -364,6 +364,21 @@
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
+				\paragraph{Firewall}
+				\paragraph{Physical security}
+					Given enough time and resources, physical access should be thought of as root access. 
+					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
+					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgable or determined. 
+					\begin{itemize}
+						\item Implement a BIOS/UEFI password. 
+							Though these are not completly secure, they ensure that the opportunistic attacker will be unable to alter the boot devices of the computer, forcing them to use your secured OS. 
+							However, these can be worked around on most systems by wiping the CMOS. 
+						\item Bootloader security should be implemented by either disabling editing of boot devices or adding a password to the bootloader. 
+							This will stop the ``init=/bin/sh'' attack amongst others. 
+						\item Deny root login from the console. 
+							This would mean that the attacker would need both a username and password to access the system. 
+						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
+					\end{itemize}
 	\subsection{Windows Hardening}
 	\subsection{Browser Hardening}
 		\newpage Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
