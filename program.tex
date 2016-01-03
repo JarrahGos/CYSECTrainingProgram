@@ -75,7 +75,7 @@
 					When a given precision is not supported, the ALU must run the calculation at a far slower pace. 
 				\subparagraph{The registers}
 					The CPU also contains its own extremely fast memory, known as regsters. 
-					These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction. 
+					These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
 					There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
 					\begin{itemize}
 						\item General Registers: 
@@ -143,7 +143,7 @@
 						is the section for global variables which are to be initialised before the program starts. 
 						This is where you would put the data which is to be accessed by the program, rather than through inputs or environmental variables. 
 					\paragraph{The .code section}
-						This is the section which contains the code for the program. 
+						is the section which contains the code for the program. 
 						It cannot create new variables, but it can access those created in the .BSS and .data sections. 
 						This section is usually broken through the use of labels and navigated by jump statements. 
 						One should be careful to ensure that these statements do not become hard to follow. 
@@ -166,8 +166,27 @@
 						This can be used for overflows into heap variables. 
 
 	\subsection{Assembly And Binary}
-	%\subsection{Compilation}
-	\subsection{Computer Languages}
+		While we may find it easier to interact with computers using high level programming languages or even pre-written programs and graphics, an understanding of how a computer works at the low level is required to properly exploit its process. 
+		The first computer programs were written algorithmically, before being translated manually into binary or octal (base 8). 
+		The program had to be inputted manually, one instruction at a time. 
+		However, due to modern compilers, this has become unnecessary, since 1949 we have been able to automatically assemble programs into machine code. 
+		This meant that assembly languages became the norm, allowing people to write programs at a far greater speed.
+		These assembly programs, while directly mapped to the opcodes of binary computers were written in a form close to English and far more understandable than binary. 
+		We have now left this time behind through the use of compiled languages. 
+		However, an understanding of assembly is still necessary due to the difficulty of returning from binary to source code. 
+		\paragraph{Binary}
+			on a computer is everything. Every file, every program, every instruction is binary. 
+			However, this is meaningless without some means of translating the numbers into their useful form. 
+			This has led to instruction sets, file types, encodings and data types, each with their own means of translating the numbers found in binary into some meaningful representation. 
+			For example, the source of this document is written in UTF-8, a superset of the ASCII format which translates binary numbers into characters. 
+			Generally, this binary will be viewed either in the decoded form through a program such as a text editor (for UTF-8 or ASCII). 
+			However, in cases where the format is not obvious, a hex editor would be employed. 
+			These editors allow one to see the binary code in base 16 rather than base 2, reducing its length by a factor of 8. 
+			Furthermore, these editors will display a ASCII representation of any text found, allowing one to read strings out of the file. 
+			Another program, known as strings will automate the process of finding ASCII strings in binary. 
+			Though it is exceptionally widespread, one need not understand binary in order to utilise these tools. 
+		\paragraph{Assembly}
+			
 \section{Network Operations}
 	\subsection{OSI Model}
 	\subsection{Network Architecture}
@@ -196,6 +215,7 @@
 	\subsection{Pwn Adventure}
 \section{Programming}
 	\subsection{Introduction to Python}
+	\subsection{Compilation}
 	\subsection{Introduction to C}
 	\subsection{Introduction to Scripting}
 	\subsection{Programming Challenges}
@@ -207,6 +227,10 @@
 	\subsection{Linux Hardening}
 	\subsection{Windows Hardening}
 	\subsection{Browser Hardening}
+		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
+		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
+		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
+		Once this is complete, we begin looking into plugins and 
 \section{Reporting}
 	\subsection{Report Writing}
 	\subsection{STIX Model}
