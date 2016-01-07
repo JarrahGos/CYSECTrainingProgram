@@ -1,10 +1,10 @@
-\documentclass[a4paper,11pt,draft]{article}
+\documentclass[a4paper,11pt]{book}
 \author{Jarrah Gosbell}
 \title{CYSEC Training Program}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{%
-	        \markright{\thesection\ #1}}
+\renewcommand{\chaptermark}[1]{%
+	        \markright{\thechapter\ #1}}
 \fancyhf{}  % delete current header and footer
 \fancyhead[L,RO]{\bfseries\thepage}
 \fancyhead[LO]{\bfseries\rightmark}
@@ -24,57 +24,57 @@
 \maketitle
 \tableofcontents
 \newpage
-\section{Computer Operations}
+\chapter{Computer Operations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
 	At the base level, a computer is a structure of silicon, etched into the shape of a CPU die, then added into a bus with memory and IO.
 	At the next level, the binary signals which are processed are taken into account, allowing the computer to act in a programmed way. 
 	Finally, a computer is programmed in a language such as C or Python. This gives us the interfaces and systems which we interact with daily. 
-	\subsection{Hardware}
-		\subsubsection{CPU} 
+	\section{Hardware}
+		\subsection{CPU} 
 			The CPU is the microprocessor which forms the heart of the modern computer. 
 			While not the only microproccessor in a modern computer, they are the most major and the one which is commonly programmed for. 
 			This lesson will discuss the current design and implementation of CPUs, and the impact of this on the way that a computer works. 
 			This will be broken down into the fetch, decode, execute cycle, the physical units which make up the CPU and the connection which allows it to commuticate with the rest of the computer. 
-			\paragraph{Fetch, Decode, Execute Cycle}
+			\subsubsection{Fetch, Decode, Execute Cycle}
 				The operation of a computer occurs through the repeated execution of a sequence of instructions.
 				This cycle allows the computer to access the instructions stored in cache or RAM and determine how they should be enacted. This lesson will discuss the approach used on a classic RISC CPU similar to that of most modern phones. 
 				Due to this, it will discount cache and threading. 
-				\subparagraph{Fetch}
+				\paragraph{Fetch}
 					This step requires the CPU to request the next instruction from it's source. 
 					This is possible as the CPU retains the address of the next instruction to complete in it's program counter. 
 					After each fetch, the CPU will increment the address in its program counter. 
 					However, this address may change due to the requirements of the instruction which was just fetched. 
 					If the instruction has to be fetched from RAM rather than cache, the CPU may stall while waiting.
 					This will freeze execution until the fetch cycle has been completed. 
-				\subparagraph{Decode}
+				\paragraph{Decode}
 					This step is performed on the Instruction Decoder, where the instruction which was fetched in the last step is converted into the signals which control other parts of the CPU to enact the instruction. 
 					This decoding will occur based on the instruction set of the processor, which can be thought of as a look-up-table for valid instructions. 
-					This will intrepret the first section of the instrcution, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
+					This will intrepret the first chapter of the instrcution, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
 					The later fields are then sent as arguements to supplement the instruction. 
 					This process may take place on a hardwired circuit, or through the use of a microprogram which, In either case the system output will be the same. 
 					However, in the latter case, the microprogram will be rewritable, allowing for decoding to be altered after production. 
-				\subparagraph{Execute}
+				\paragraph{Execute}
 					This step causes the CPU to enact the requirements of the instruction, causing output to be written to a given register or memory location. 
-					This may occur over multiple clock pulses, with each designating a new section of the instruction. 
+					This may occur over multiple clock pulses, with each designating a new chapter of the instruction. 
 					This can be seen through the action of the Arithmetic Logic Unit, which will perform its calculation to ensure that its output is stored in the register by the next clock pulse. 
-			\paragraph{CPU Structure}
+			\subsubsection{CPU Structure}
 				The CPU is made up of multiple parts which allow it to conduct its role within the computer. 
 				Each of these parts perform only one task within the CPU, allowing others to process or store their output. 
 				The most important of these components will be explained here. 
-				\subparagraph{The Control Unit}
+				\paragraph{The Control Unit}
 					Contains the circuitry which intreprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. 
 					The control unit is also the communicator between the ALU and the Memory.
-				\subparagraph{The Arethmetic Logic Unit}
+				\paragraph{The Arethmetic Logic Unit}
 					(ALU) is the processor for both integer and bitwise logic. 
 					The inputs for this circuit are the decoded signals from the Control Unit, as well as the Operands (arguements) which were passed with the instruction. 
 					Once the calculation has taken place, the ALU will output to either the register or memory location designated by the instruction. 
-				\subparagraph{The Floating Point Unit}
+				\paragraph{The Floating Point Unit}
 					(FPU) is the logic circuit used to calculate floating point (real) numbers. 
 					While these numbers can be computed using only the ALU, it is not optimized to calculate them.
 					Thus to expediate the process an FPU was created. 
 					These units will calculate mathematics on real numbers to a given precision (specified by the IEEE). % Reference this
 					When a given precision is not supported, the ALU must run the calculation at a far slower pace. 
-				\subparagraph{The registers}
+				\paragraph{The registers}
 					The CPU also contains its own extremely fast memory, known as regsters. 
 					These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
 					There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
@@ -129,39 +129,39 @@
 								\label{tab:CFLAGSBits}
 							\end{table}
 				\end{itemize}
-			\subparagraph{Protected Mode} 
+			\paragraph{Protected Mode} 
 				is the mode of operation for the modern CPU. 
 				This stemmed from security and multiprogramming issues found to occur in real mode. 
 				In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
 				In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
 				This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
-				\subsubsection{RAM}
-					%TODO: Add in section on segments of memory and protected mode. 
+				\subsection{RAM}
+					%TODO: Add in chapter on segments of memory and protected mode. 
 					The main memory of a computer, known as Random Access Memory (RAM) is the first storage device of the computer outside that of the processor. 
 					RAM is used because it is fast, however, this comes at the loss of price and volatility. 
 					When no electrical current is passing through RAM modules, the data held within will deteriorate. 
 					The speed at which this occurs forms the basis for cold boot attacks. %TODO: Ref this to forensics. 
 					For our purposes, memory should be thought of in terms of the segments and data structures which make it up. 
-					\paragraph{The .BSS section}
-						is the section of memory used for static and global variables. 
-						Generally the variables outlined in this section are not initialised until the program is running. 
+					\subsubsection{The .BSS chapter}
+						is the chapter of memory used for static and global variables. 
+						Generally the variables outlined in this chapter are not initialised until the program is running. 
 						A .BSS variable may be a memory location that you wish to store a string in later in the program. 
-					\paragraph{The .data section}
-						is the section for global variables which are to be initialised before the program starts. 
+					\subsubsection{The .data chapter}
+						is the chapter for global variables which are to be initialised before the program starts. 
 						This is where you would put the data which is to be accessed by the program, rather than through inputs or environmental variables. 
-					\paragraph{The .code section}
-						is the section which contains the code for the program. 
-						It cannot create new variables, but it can access those created in the .BSS and .data sections. 
-						This section is usually broken through the use of labels and navigated by jump statements. 
+					\subsubsection{The .code chapter}
+						is the chapter which contains the code for the program. 
+						It cannot create new variables, but it can access those created in the .BSS and .data chapters. 
+						This chapter is usually broken through the use of labels and navigated by jump statements. 
 						One should be careful to ensure that these statements do not become hard to follow. 
-					\paragraph{The Heap}
+					\subsubsection{The Heap}
 						is the structure used to store larger memory items in a high level programming language. 
 						In an object oriented language, items stored on the heap are usually created through the use of the ``new'' command. 
 						In procedural languages, commands such as ``malloc'' are used to allocate memory to the heap. 
 						In both of these instances, the command will allocate the necessary memory and return a pointer to that address. 
 						Items stored on the heap start at lower memory locations and move to higher as more items are placed on the heap. 
 						This will become important as we move to binary exploitation. 
-					\paragraph{The Stack}
+					\subsubsection{The Stack}
 						is the more widely used memory structure. 
 						Variables in any language as soon as they are named are stored on the stack frame of the current scope. 
 						Even items stored on the heap have a pointer on the stack. 
@@ -172,7 +172,7 @@
 						Unlike the heap, the stack starts at high memory locations and grows down towards the heap. 
 						This can be used for overflows into heap variables. 
 
-	\subsection{Assembly And Binary}
+	\section{Assembly And Binary}
 		While we may find it easier to interact with computers using high level programming languages or even pre-written programs and graphics, an understanding of how a computer works at the low level is required to properly exploit its process. 
 		The first computer programs were written algorithmically, before being translated manually into binary or octal (base 8). 
 		The program had to be inputted manually, one instruction at a time. 
@@ -181,7 +181,7 @@
 		These assembly programs, while directly mapped to the opcodes of binary computers were written in a form close to English and far more understandable than binary. 
 		We have now left this time behind through the use of compiled languages. 
 		However, an understanding of assembly is still necessary due to the difficulty of returning from binary to source code. 
-		\paragraph{Binary}
+		\subsubsection{Binary}
 			on a computer is everything. Every file, every program, every instruction is binary. 
 			However, this is meaningless without some means of translating the numbers into their useful form. 
 			This has led to instruction sets, file types, encodings and data types, each with their own means of translating the numbers found in binary into some meaningful representation. 
@@ -192,54 +192,54 @@
 			Furthermore, these editors will display a ASCII representation of any text found, allowing one to read strings out of the file. 
 			Another program, known as strings will automate the process of finding ASCII strings in binary. 
 			Though it is exceptionally widespread, one need not understand binary in order to utilise these tools. 
-		\paragraph{Assembly}
+		\subsubsection{Assembly}
 			
-\section{Network Operations}
-	\subsection{OSI Model}
-	\subsection{Network Architecture}
-	\subsection{Connecting To Networked Software}
-\section{Scoping and Mindset}
-	\subsection{Lock Picking}
-	\subsection{Research}
-\section{Web Penetration}
-	\subsection{XSS}
-	\subsection{SQL Inejection}
-	\subsection{File Uploads}
-\section{Network Penetration}
-	\subsection{nmap}
-	\subsection{Nessus}
-	\subsection{Metasploit}
-	\subsection{Pivoting}
-	\subsection{Maintaining a presence}
-\section{Forensics}
-	\subsection{File Carving}
-	\subsection{Steganography}
-	\subsection{Wireshark}
-	\subsection{Netflow}
-\section{Reverse Engineering}
-	\subsection{x86 Assembly}
-	\subsection{Radare2}
-	\subsection{Pwn Adventure}
-\section{Programming}
-	\subsection{Introduction to Python}
-	\subsection{Compilation}
-	\subsection{Introduction to C}
-	\subsection{Introduction to Scripting}
-	\subsection{Programming Challenges}
-\section{Cryptography}
-	\subsection{Introduction to Cryptography}
-	\subsection{Utilizing Cryptography in Python}
-	\subsection{Poor Cryptography Implementations}
-\section{System Hardening}
+\chapter{Network Operations}
+	\section{OSI Model}
+	\section{Network Architecture}
+	\section{Connecting To Networked Software}
+\chapter{Scoping and Mindset}
+	\section{Lock Picking}
+	\section{Research}
+\chapter{Web Penetration}
+	\section{XSS}
+	\section{SQL Inejection}
+	\section{File Uploads}
+\chapter{Network Penetration}
+	\section{nmap}
+	\section{Nessus}
+	\section{Metasploit}
+	\section{Pivoting}
+	\section{Maintaining a presence}
+\chapter{Forensics}
+	\section{File Carving}
+	\section{Steganography}
+	\section{Wireshark}
+	\section{Netflow}
+\chapter{Reverse Engineering}
+	\section{x86 Assembly}
+	\section{Radare2}
+	\section{Pwn Adventure}
+\chapter{Programming}
+	\section{Introduction to Python}
+	\section{Compilation}
+	\section{Introduction to C}
+	\section{Introduction to Scripting}
+	\section{Programming Challenges}
+\chapter{Cryptography}
+	\section{Introduction to Cryptography}
+	\section{Utilizing Cryptography in Python}
+	\section{Poor Cryptography Implementations}
+\chapter{System Hardening}
 	Securing one's own operating system and the software within can be a daunting task. 
 	One must way up the needs of security against the usability of the system, or face months of instability or system management on a broken system. 
 	Thus, for each recommendation below, decide how the computer needs to work for you and implement it to that level.\\ 
 	If the newly secured system does not work for you, simply roll it back until it does. 
 	When implementing this, remember that the biggest threat will always be the user of the system. 
 	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
-	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
-	\subsection{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
-		\paragraph{Passwords} 
+	Each chapter within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
+	\section{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
+		\subsubsection{Passwords} 
 			Your password\footnote{https://wiki.archlinux.org/index.php/Security} are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
 			Thus, passwords should be created and managed in a secure way:
@@ -253,13 +253,13 @@
 				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
 				\item Longer than 12 characters. 
 			\end{itemize}
-		\paragraph{Password Hashing}
+		\subsubsection{Password Hashing}
 			Linux stores hashed passwords in ``/etc/shadow''. 
 			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
 			\begin{quote}
 				password required pam\_unix.so $\textbf{sha512}$ shadow $\textbf{rounds=65536}$
 			\end{quote}
-		\paragraph{Disk Encryption}
+		\subsubsection{Disk Encryption}
 			is the process of automatically cryptographically protecting a part or all of a storage device.
 			\footnote{https://wiki.archlinux.org/index.php/Disk\_encryption}
 			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
@@ -281,7 +281,7 @@
 				\item[Block Device Encryption] Operates below the filesystem, encrypting the filesystem and the files contained within it. 
 					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
 			\end{description}
-		\paragraph{Mount options}
+		\subsubsection{Mount options}
 			When setting up a secure environment, one should take care to give the least permission required to conduct a task. 
 			Thus, when mounting file systems, it is best to limit what can be done with the data on the system.
 			There are three restrictions which can be placed on a mounted filesystem:
@@ -305,14 +305,14 @@
 				\caption{Common filesystem restrictions}
 				\label{tab:mountOptions}
 			\end{table}
-			\paragraph{File Permissions}
+			\subsubsection{File Permissions}
 				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
 				This means that if any user is compromised, most files on the system can be stolen. 
 				Furthermore, it means that the attacker can use the systems configuration files to determine likely privelage excilation or pivot points. 
 				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
 				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
 				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
-			\paragraph{users}
+			\subsubsection{users}
 				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
 				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{http://linux.die.net/man/8/pam\_tally} system.
@@ -327,7 +327,7 @@
 					\** hard nproc 200 \\
 				\end{quote}
 
-			\paragraph{Restricting use of root}
+			\subsubsection{Restricting use of root}
 				\begin{itemize}
 					\item The sudo command should be used rather than su due to the following reasons:
 						\begin{itemize}
@@ -340,13 +340,13 @@
 						To do this, add SUDO\_EDITOR=editor to your environmental variables.
 					\item Restrict root login both locally and via SSH. 
 				\end{itemize}
-			\paragraph{Mandatory Access Control}
+			\subsubsection{Mandatory Access Control}
 				MAC, as opposed to the Discretionary Access Control (DAC) used on most Linux systems is a rule set which designates which actions can be taken on which files and directories. 
 				This rule set is created by the root user and unlike DAC cannot be altered by the users of the system. 
 				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
 				Furthermore, on the desktop, due to the wide variety of tasks which are completed, a poorly setup MAC will either be far too permissive or far too restrictive. 
 				%TODO: Think about writing out the types here. Think about linking the implementations. 
-			\paragraph{Kernel Hardening}
+			\subsubsection{Kernel Hardening}
 				The following are the common steps used to harden the Linux Kernel. 
 				\begin{description}
 					\item[Restricting access to kernel logs]
@@ -358,15 +358,15 @@
 						grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity} is a kernel which has been patched with multiple security enhancements. 
 						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
 				\end{description}
-				\paragraph{Sandboxing with firejail}
+				\subsubsection{Sandboxing with firejail}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{https://firejail.wordpress.com/documentation-2/} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail program'' will execute ``program'' in a sandbox. 
 					For greater security, the command ``firejail --seccomp --private program'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
-				\paragraph{Firewall} %TODO: Add firewall section
-				\paragraph{Physical security}
+				\subsubsection{Firewall} %TODO: Add firewall chapter
+				\subsubsection{Physical security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
 					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgable or determined. 
@@ -380,13 +380,13 @@
 							This would mean that the attacker would need both a username and password to access the system. 
 						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
 					\end{itemize}
-	\subsection{Windows Hardening}
-	\subsection{Browser Hardening}
+	\section{Windows Hardening}
+	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
 		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
 		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
-		\paragraph{$\mu{}$Block Origin}
+		\subsubsection{$\mu{}$Block Origin}
 			is a tool which will block elements on every page which is loaded. 
 			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
 			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
@@ -397,18 +397,18 @@
 				\item select the filters which are useful to you. 
 					Most of the filters down to regions are useful. However, many overlap. 
 			\end{itemize}
-		\paragraph{Disconnect}
+		\subsubsection{Disconnect}
 			is designed to make the Internet faster and more private by blocking tracking found on most websites. 
 			There is no setup for this plugin. Simply install it and allow it to do its thing. 
 			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
-		\paragraph{Flash Control}
+		\subsubsection{Flash Control}
 			blocks both flash and HTML 5 elements which could contain malicious code. 
 			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly volenerable pieces of web technology. 
 			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
 			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
 			You may also wish to add any sites that you know are good to the whitelist. 
 			However, I prefer to simply allow Flash Control to block all flash elements. 
-		\paragraph{NoScript}
+		\subsubsection{NoScript}
 			is one of two script blocking plugins I recommend. 
 			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
 			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
@@ -421,11 +421,11 @@
 				\item Clear Click. 
 			\end{itemize}
 			These are features which should be turned on in the settings of NoScript. 
-		\paragraph{Privacy Badger}
+		\subsubsection{Privacy Badger}
 			is another set and forget advertisement and tracking blocker. 
 			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
 			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
-		\paragraph{$\mu{}$Matrix}
+		\subsubsection{$\mu{}$Matrix}
 			is the second script blocking tool I recommend. 
 			$\mu{}$Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
 			The following are the settings which I use, these will ensure that security is held at a high level:
@@ -441,12 +441,12 @@
 			\end{itemize}
 			Once this is setup, you will need to begin unblocking elements of websites by clicking on the $\mu{}$Matrix icon and selecting the top of the element to be unblocked. 
 			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
-		\paragraph{Sandboxing}
+		\subsubsection{Sandboxing}
 			is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
 			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
-			Follow the steps outlined in the above section for your operating system to properly sandbox your browser. 
-		\paragraph{Browser Settings}
-			The following section will be focused on Firefox and it's derivatives. 
+			Follow the steps outlined in the above chapter for your operating system to properly sandbox your browser. 
+		\subsubsection{Browser Settings}
+			The following chapter will be focused on Firefox and it's derivatives. 
 			However, most of the settings will work for other browsers. 
 			\begin{itemize}
 				\item Settings under privacy:
@@ -470,8 +470,8 @@
 						\item Update: Either Automatically or manual install. 
 					\end{itemize}
 			\end{itemize}
-			%TODO: Add about:config section. 
-		\paragraph{Search}
+			%TODO: Add about:config chapter. 
+		\subsubsection{Search}
 			Google is one of the worst violators of user's privacy on the Internet. Second only to Facebook. 
 			However, there are other options for search. \par 
 			If you would like to retain the results that Google gives, but remove the tracking, Start page is your option. 
@@ -481,12 +481,12 @@
 			This search engine has no contact with Google, but it also comes with a set of new features which can become useful once learned. 
 			The issue with this search engine is that on occasion, the results will not be to the same standard. 
 			Occasionally, someone will tell you to Google something, stating that the result is on the first page, but it will not be a result on DuckDuckGo. 
-		\paragraph{Multiple Browsers}
+		\subsubsection{Multiple Browsers}
 			When setting up browsers for web access, one must decide what needs a secure connection and what can be let connect with the other pages used. 
 			This is due to the fact that no matter how good internal sandboxing gets, an attacker could find a way to pivot from one tab to another. 
 			This becomes far more difficult when attempting to pivot from one browser to another as the original browser will not know that the second is running. 
 			Thus when logging into sites that you deem require security, open a completly different browser and use that to log in. 
-		\paragraph{Password Management}
+		\subsubsection{Password Management}
 			For a long time, this was the domain of the web browser. 
 			This allowed the user to forget all of their passwords, having the browser autofil them when the site loaded.
 			However, the password managers on modern browsers were not built for security. 
@@ -503,21 +503,21 @@
 			Once the password manager is set up, use it to generate strong passwords for every website you access. 
 			This allows you to use a different password for every website, employing characters which one would not be able to remember. 
 
-\section{Reporting}
-	\subsection{Report Writing}
-	\subsection{STIX Model}
-\section{Binary Exploitation}
-	\subsection{Overflows}
-	\subsection{String Format Errors}
-	\subsection{IDS, IPS and AV}
-\section{History}
-	\subsection{MIT Tech Model Railroad Club}
-	\subsection{Early Computing Equipment}
-\section{Wireless Attacks}
-	\subsection{Aircrack-ng}
-	\subsection{Bluetooth}
-	\subsection{Near Field Communications}
-	\subsection{Challenges}
+\chapter{Reporting}
+	\section{Report Writing}
+	\section{STIX Model}
+\chapter{Binary Exploitation}
+	\section{Overflows}
+	\section{String Format Errors}
+	\section{IDS, IPS and AV}
+\chapter{History}
+	\section{MIT Tech Model Railroad Club}
+	\section{Early Computing Equipment}
+\chapter{Wireless Attacks}
+	\section{Aircrack-ng}
+	\section{Bluetooth}
+	\section{Near Field Communications}
+	\section{Challenges}
 \newpage
 \listoftables
 \end{document}
