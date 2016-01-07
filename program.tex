@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{book}
+\documentclass[a4paper,11pt]{report}
 \author{Jarrah Gosbell}
 \title{CYSEC Training Program}
 \usepackage{fancyhdr}
@@ -19,7 +19,7 @@
 \usepackage[pdftex]{hyperref}
 \usepackage{microtype}
 \setcounter{secnumdepth}{2}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \begin{document}
 \maketitle
 \tableofcontents
@@ -239,6 +239,7 @@
 	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
 	Each chapter within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
 	\section{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
+	\cite{FedoraSecGuide}
 		\subsubsection{Passwords} 
 			Your password\footnote{https://wiki.archlinux.org/index.php/Security} are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
@@ -519,5 +520,13 @@
 	\section{Near Field Communications}
 	\section{Challenges}
 \newpage
+\appendix
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Tables}
 \listoftables
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\bibliographystyle{plain}
+\bibliography{program}
 \end{document}
