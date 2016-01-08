@@ -20,7 +20,7 @@
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
 \begin{document}
 \maketitle
@@ -132,7 +132,7 @@
 							\end{table}
 				\end{itemize}
 			\paragraph{Protected Mode} 
-				is the mode of operation for the modern CPU. 
+				Protected Mode is the mode of operation for the modern CPU. 
 				This stemmed from security and multiprogramming issues found to occur in real mode. 
 				In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
 				In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
@@ -144,27 +144,27 @@
 					When no electrical current is passing through RAM modules, the data held within will deteriorate. 
 					The speed at which this occurs forms the basis for cold boot attacks. %TODO: Ref this to forensics. 
 					For our purposes, memory should be thought of in terms of the segments and data structures which make it up. 
-					\subsubsection{The .BSS chapter}
-						is the chapter of memory used for static and global variables. 
+					\subsubsection{The .BSS Section}
+						The BSS Section is the section of memory used for static and global variables. 
 						Generally the variables outlined in this chapter are not initialised until the program is running. 
 						A .BSS variable may be a memory location that you wish to store a string in later in the program. 
-					\subsubsection{The .data chapter}
-						is the chapter for global variables which are to be initialised before the program starts. 
+					\subsubsection{The .data Section}
+						The data Section is the section for global variables which are to be initialised before the program starts. 
 						This is where you would put the data which is to be accessed by the program, rather than through inputs or environmental variables. 
-					\subsubsection{The .code chapter}
-						is the chapter which contains the code for the program. 
+					\subsubsection{The .code Section}
+						The code Section is the section which contains the code for the program. 
 						It cannot create new variables, but it can access those created in the .BSS and .data chapters. 
 						This chapter is usually broken through the use of labels and navigated by jump statements. 
 						One should be careful to ensure that these statements do not become hard to follow. 
 					\subsubsection{The Heap}
-						is the structure used to store larger memory items in a high level programming language. 
+						The Heap is the data structure used to store larger memory items in a high level programming language. 
 						In an object oriented language, items stored on the heap are usually created through the use of the ``new'' command. 
 						In procedural languages, commands such as ``malloc'' are used to allocate memory to the heap. 
 						In both of these instances, the command will allocate the necessary memory and return a pointer to that address. 
 						Items stored on the heap start at lower memory locations and move to higher as more items are placed on the heap. 
 						This will become important as we move to binary exploitation. 
 					\subsubsection{The Stack}
-						is the more widely used memory structure. 
+						The Stack is the more widely used Data Structure. 
 						Variables in any language as soon as they are named are stored on the stack frame of the current scope. 
 						Even items stored on the heap have a pointer on the stack. 
 						The program will create a new stack frame---a collection of instance variables---for each scope which it comes across. 
@@ -184,7 +184,8 @@
 		We have now left this time behind through the use of compiled languages. 
 		However, an understanding of assembly is still necessary due to the difficulty of returning from binary to source code. 
 		\subsubsection{Binary}
-			on a computer is everything. Every file, every program, every instruction is binary. 
+			On a computer, binary is everything.
+			Every file, every program, every instruction is binary. 
 			However, this is meaningless without some means of translating the numbers into their useful form. 
 			This has led to instruction sets, file types, encodings and data types, each with their own means of translating the numbers found in binary into some meaningful representation. 
 			For example, the source of this document is written in UTF-8, a superset of the ASCII format which translates binary numbers into characters. 
@@ -379,8 +380,7 @@
 	When implementing this, remember that the biggest threat will always be the user of the system. 
 	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
 	Each chapter within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
-	\section{Linux Hardening} \footnote{https://docs.fedoraproject.org/en-US/Fedora/19/html/Security\_Guide/}
-	\cite{FedoraSecGuide}
+	\section{Linux Hardening}\cite{FedoraSecGuide}
 		\subsubsection{Passwords} 
 			Your password\footnote{https://wiki.archlinux.org/index.php/Security} are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
@@ -523,13 +523,14 @@
 						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
 					\end{itemize}
 	\section{Windows Hardening}
+		Can Windows even be hardened?
 	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
 		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
 		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
 		\subsubsection{$\mu{}$Block Origin}
-			is a tool which will block elements on every page which is loaded. 
+			$\mu$Block Origin is a tool which will block elements on every page which is loaded. 
 			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
 			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
 			While this tool will not give you security against more complex attacks, it will filter out the majority of opportunistic attacks through elements such as advertisements and frames to known bad websites. 
@@ -540,18 +541,18 @@
 					Most of the filters down to regions are useful. However, many overlap. 
 			\end{itemize}
 		\subsubsection{Disconnect}
-			is designed to make the Internet faster and more private by blocking tracking found on most websites. 
+			Disconnect is designed to make the Internet faster and more private by blocking tracking found on most websites. 
 			There is no setup for this plugin. Simply install it and allow it to do its thing. 
 			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
 		\subsubsection{Flash Control}
-			blocks both flash and HTML 5 elements which could contain malicious code. 
+			Flash Control blocks both flash and HTML 5 elements which could contain malicious code. 
 			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly volenerable pieces of web technology. 
 			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
 			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
 			You may also wish to add any sites that you know are good to the whitelist. 
 			However, I prefer to simply allow Flash Control to block all flash elements. 
 		\subsubsection{NoScript}
-			is one of two script blocking plugins I recommend. 
+			NoScript is one of two script blocking plugins I recommend. 
 			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
 			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
 			However, it also means that the majority of websites will be broken until they are allowed to run scripts. 
@@ -564,11 +565,11 @@
 			\end{itemize}
 			These are features which should be turned on in the settings of NoScript. 
 		\subsubsection{Privacy Badger}
-			is another set and forget advertisement and tracking blocker. 
+			Privacy Badger is another set and forget advertisement and tracking blocker. 
 			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
 			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
 		\subsubsection{$\mu{}$Matrix}
-			is the second script blocking tool I recommend. 
+			$\mu$Matrix is the second script blocking tool I recommend. 
 			$\mu{}$Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
 			The following are the settings which I use, these will ensure that security is held at a high level:
 			\begin{itemize}
@@ -584,7 +585,7 @@
 			Once this is setup, you will need to begin unblocking elements of websites by clicking on the $\mu{}$Matrix icon and selecting the top of the element to be unblocked. 
 			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
 		\subsubsection{Sandboxing}
-			is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
+			Sandboxing is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
 			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
 			Follow the steps outlined in the above chapter for your operating system to properly sandbox your browser. 
 		\subsubsection{Browser Settings}
