@@ -195,7 +195,39 @@
 		\subsubsection{Assembly}
 			
 \chapter{Network Operations}
+	By using a common language and being able to write it down, the human race has been able to move from hunter gather to large scale society. 
+	Language has allowed us to communicate the skills which our forebears learned to their children, eventually to us. 
+	In a similar manner, computers need a means of communicating. 
+	This is where networking and the OSI model for computer communications comes in, they allow computers to become more than just the machine in front of you. 
+	Networking has become commonplace---many people would find no use in a computer without it---and many of our most used programs depend entirely on it. 
+	However, to understand how to exploit networking, we need to understand how the communication takes place, how the network has been created and how to connect to the services running on other machines in ways they may not have been designed for. 
 	\section{OSI Model}
+		When computers are communicating, they need to be able to speak in the same language.\cite{HackingAOE} 
+		However, if a programmer needed to implement this every time they required network communication, we would never achieve communication between two systems.\footnote{https://xkcd.com/927/} 
+		Due to this, the OSI Model was created. 
+		The OSI model provides the standards for all levels from the application currently being used to the bare metal the data is sent over. 
+		These standards allow the relevant equipment to focus on the necessary parts of their implementation, while the other parts are taken care of, allowing for easier communication between unlinked programs. 
+		The layers of the OSI Model are as follows:
+		\begin{description}
+			\item[Physical Layer]
+				Deals with the physical connection between two machines through means such as CAT5 ethernet. 
+				This is the lowest layer, whose primary role is communicating raw bits, as well as starting maintaining and ending the transmission. 
+			\item[Link Layer]
+				Transfers data between the two points connected by the physical layer. 
+				This layer provides some high level functions which allow for error correction and flow control. 
+				It also provides a means of activating, maintaining and ending the link. 
+			\item[Transpart Layer]
+				Provides transparent transfer of data by allowing reliable communication and known protocols. 
+				This layer means that higher layers need not worry about reliability of connection. 
+			\item[Session Layer]
+				Responsible for establishing and maintaining connections between applications. 
+			\item[Presentation Layer]
+				Presents the data to the application which is is being communicated to in a format which is understandable to the application. 
+				This is the layer which allows for encryption and data compression. 
+			\item[Application Layer] 
+				Keeps track of the requirements of the application and allows it to utilize the data which it received. 
+		\end{description}
+
 	\section{Network Architecture}
 	\section{Connecting To Networked Software}
 \chapter{Scoping and Mindset}
