@@ -18,6 +18,8 @@
 	  }
 \usepackage[pdftex]{hyperref}
 \usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{1}
 \begin{document}
@@ -227,9 +229,13 @@
 			\item[Application Layer] 
 				Keeps track of the requirements of the application and allows it to utilize the data which it received. 
 		\end{description}
-
+		When data is transmitted through these layers, it is encapsulated in quanta known as packets. 
+		Each of these packets contains the metadata required for each of the layers of the network model. 
+		Starting from the application layer, each layer that the packet passes through will add a new header for it's data, which will not be read until the packet passes through that layer on the other end of it's journey. 
+		%TODO: Think about using a figure here to show this encapsulation. 
+		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
 	\section{Network Architecture}
-	\section{Connecting To Networked Software}
+	\section{Connecting to Networked Software}
 \chapter{Scoping and Mindset}
 	\section{Lock Picking}
 	\section{Research}
@@ -253,6 +259,109 @@
 	\section{Radare2}
 	\section{Pwn Adventure}
 \chapter{Programming}
+	\section{Introduction to the CLI}
+		The commandline is the tool for direct interaction with your computer. 
+		It is like the baby brother to programming yourself, though with scripting it can become just as complex. 
+		The commandline will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
+		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
+		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
+		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.  
+		What follows is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
+		\begin{description}
+			\item[pwd]
+				Where am I?
+				Whenever you are lost, this will show you where you are in the filesystem. 
+				It is similar to the URL bar in a browser or file manager. 
+			\item[hostname]
+				What machine am I on?
+				This will allow you to determine what machine your current session is running on. 
+				It can be useful when you think you have opened a shell to another computer but aren't sure. 
+			\item[mkdir]
+				Like selecting new folder, but four steps in one. 
+				Run it as ``mkdir <folder name>'' to create one folder or run it with the ``-p'' argument to create a whole branch of directories, separate each folder name with ``/''. 
+			\item[ls]
+				List the contents of a directory.
+				This will give you the contents of the directory you are in, or the one you have given as an argument. 
+				The following are useful flags for ls:
+				\begin{itemize}
+					\item -l long, gives you sizes, permissions change times and other information. 
+					\item -h gives you data in a human readable formate. 
+					\item -a all, gives you all files, including hidden files (also known as dotfiles)
+					\item -S sort size, gives you all files in the directory sorted by size. 
+				\end{itemize}
+			\item[cd]
+				Tell the computer where you want to go. 
+				cd will take you to the location within the filesystem that you give as an argument. 
+				Furthermore, it takes advantage of special characters within \**nix systems such as ``.'' and ``..'' which mean current and previous directory along the current branch of the filesystem. 
+			\item[rm]
+				I want this file gone. I want it burned. 
+				When using this command, you will lose the file, either understand the wildcards you are using, or get good at file recovery. 
+				Alone, this command will delete files, using the ``-r'' flag will allow it to recurse through directories. 
+				Furthermore, some systems have added the flag ``--no-preserve-root'', which will stop you deleting your entire system. However, the existence of this flag should not be trusted. 
+				For example, it does not exist on Mac OS X. 
+			\item[touch]
+				Create a file here, I don't care about type or content. 
+			\item[cp]
+				Copy and paste. Used as ``cp src dest''.
+			\item[mv]
+				Cut and paste. Used exactly the same as cp. 
+			\item[less]
+				Read a file which would cause your terminal to scroll. 
+				Use page up and down or the arrow keys to navigate. 
+				Use ``/'' to search.
+				Quit by pressing q.
+			\item[cat]
+				Stream a file to your STDOUT. 
+				This can be useful for small files, checking that a change occurred properly or piping a file into another command. 
+				It is little known, but this command stands for concatenate. 
+				Thus it can be used to merge a number of small files into a large one using ``cat file1 file2 file3 > bigFile''.
+			\item[Pipes]
+				The pipe, ``|'' is used to send the output of one command to another. 
+				This would be useful for example to edit a file by streaming it from cat into sed. 
+			\item[Output Redirecton]
+				This is useful to force a program to read or write to or from a file. 
+				It works in the following manner:
+				\begin{itemize}
+					\item ``> <outfile>'' Write output to a given file.
+					\item ``< <infile>'' Read the given file as input.
+					\item ``>> <outfile>'' Append the programs output to the given file. 
+						%TODO: Fix the rendering of the >>
+				\end{itemize}
+			\item[\** wildcard]
+				This is the most simple wildcard. 
+				It is used to match anything which follows the form given to it. 
+				For example the command ``cat /etc/\**.conf'' would print to STDOUT every ``.conf'' file in ``/etc''.
+			\item[locate]
+				Database search for the whole filesystem. 
+				If you need it, and it exists, locate knows where it is. 
+				However, you may need to run updatedb first. 
+				Use this command as ``locate <pattern to search for>''
+			\item[find]
+				When locate is not installed (such as with most Mac OS X installs) find will do the same job. 
+				However, find has to run through the filesystem each time the command is run, making it far slower for large searches. 
+				This command works the same as locate. 
+			\item[grep]
+				Search for a given pattern within a pipe or stream. 
+				This will also work for redirects and can be used on an individual file. 
+				Used as ``grep pattern'', and can use flags such as ``-i'' to ignore case. 
+			\item[man\footnote{\url{http://linux.die.net/man/}}]
+				When you're inevitibly told to RTFM, this is where you go. 
+				Used as ``man <command>'', this program will give you the manual entry for the given command, spelling out all of the flags and usages which you may want. 
+				An alternative to this is using ``<command> --help'' or ``<command> -h'' which may show a shortened version. 
+			\item[dd]
+				A low level copy of the given partition or disk. 
+				This command ignores filesystem and just writes the bits read from the input device to the output. 
+				It is used as ``dd if=<input file> of=<output file>''.
+				Be wary that if this command is entered wrong, you will loose data. 
+				It can also be combined with other commands, such as ``dd if=<in> | pv -s <size>G | dd of=<out>''.
+			\item[vim]
+				The editor war will likely never end, and each side will tell you to use their preferred. 
+				Vim is a powerful editor which I am using to write this. 
+				However, it can have a steep learning curve, and thus must have time dedicated to it's usage. 
+				Following the tutorial provided by the command ``vimtutor'' will give you the basics that you need to begin using vim properly. 
+				However, if you do not wish to learn a fully featured editor, the likes of ``nano'' and ``ed'' will serve you well. 
+		\end{description}
+		While there are many other commands\footnote{https://github.com/jlevy/the-art-of-command-line} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
 	\section{Introduction to Python}
 	\section{Compilation}
 	\section{Introduction to C}
@@ -323,7 +432,7 @@
 				\item[nosuid] Do not allow set-user-identifier or set-group-identifier bits to take effect
 				\item[noexec] Do not allow execution of binaries or other files found in the filesystem. 
 			\end{description}
-			A basic guide for what common filesystems can be mounted with which options can be found in table \ref{tab:mountOptions}
+			A basic guide for what common filesystems can be mounted with which options can be found in table \ref{tab:mountOptions}, use these within the file ``/etc/fstab''.
 			\begin{table}[htb]
 				\centering
 				\begin{tabular}{| l | l | l | l |}
@@ -370,7 +479,7 @@
 							\item Individual commands may be enabled for users or group through the sudoers file. 
 						\end{itemize}
 					\item sudoedit or sudo -e should be used rather than running an editor as root. 
-						To do this, add SUDO\_EDITOR=editor to your environmental variables.
+						To do this, add ``SUDO\_EDITOR=<editor>'' to your environmental variables.
 					\item Restrict root login both locally and via SSH. 
 				\end{itemize}
 			\subsubsection{Mandatory Access Control}
@@ -386,17 +495,17 @@
 						These logs contain information which may be useful to an attacker, such as the software currently running and sensitive memory addresses. 
 						To restrict access to these logs, add the line ``kernel.kptr\_restrict = 1'' to the file ``/etc/sysctl.d/50-kptr-restrict.conf''
 					\item[hidepid] 
-						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the /proc filesystem with the option ``hidepid=1''. 
-					\item[grsecurity]
-						grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity} is a kernel which has been patched with multiple security enhancements. 
+						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the ``/proc'' filesystem with the option ``hidepid=1''. 
+					\item[grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity}]
+						is a kernel which has been patched with multiple security enhancements. 
 						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
 				\end{description}
 				\subsubsection{Sandboxing with firejail}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{https://firejail.wordpress.com/documentation-2/} gives an easy way to do this through it's commandline interface. 
-					The command ``firejail program'' will execute ``program'' in a sandbox. 
-					For greater security, the command ``firejail --seccomp --private program'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
+					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
+					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 				\subsubsection{Firewall} %TODO: Add firewall chapter
 				\subsubsection{Physical security}
