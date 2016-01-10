@@ -20,6 +20,7 @@
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{fancyvrb} %Allow bold in verbatim text.
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -46,10 +47,10 @@
 \lstloadlanguages{C}
 %Sorting code floats. 
 \usepackage{float}
-\floatstyle{boxed}
-\newfloat{code}{htbp}{loc}[section]
+\floatstyle{plain}
+\newfloat{code}{htb}{loc}[section]
 \floatname{code}{Code Example}
-
+\interfootnotelinepenalty=10000
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
 \begin{document}
@@ -57,6 +58,7 @@
 \tableofcontents
 \newpage
 \chapter{Computer Operations}
+	\label{ch:ComputerOperations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
 	At the base level, a computer is a structure of silicon, etched into the shape of a CPU die, then added into a bus with memory and IO.
 	At the next level, the binary signals which are processed are taken into account, allowing the computer to act in a programmed way. 
@@ -115,7 +117,7 @@
 			\subsubsection{The Registers}
 				The CPU also contains its own extremely fast memory, known as regsters. 
 				These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
-				There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
+				There are specific uses for registers in the x86 CPU: \footnote{\url{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}}
 				\begin{itemize}
 					\item General Registers: 
 						\begin{itemize}
@@ -171,7 +173,7 @@
 				\end{itemize}
 				
 				To see this in action, write a simple program to print ``Hello World'' ten times in C (an example of such a program can be found in the programming section), %TODO: reference this
-				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{https://github.com/longld/peda} exension to GDB for it's visualization functions)				
+				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{\url{https://github.com/longld/peda}} exension to GDB for it's visualization functions)				
 				\begin{verbatim}
 					$gdb -q a.out
 					Reading symbols from a.out...
@@ -285,6 +287,7 @@
 		\subsubsection{Assembly}
 			
 \chapter{Network Operations}
+	\label{ch:NetworkOperations}
 	By using a common language and being able to write it down, the human race has been able to move from hunter gather to large scale society. 
 	Language has allowed us to communicate the skills which our forebears learned to their children, eventually to us. 
 	In a similar manner, computers need a means of communicating. 
@@ -293,7 +296,7 @@
 	However, to understand how to exploit networking, we need to understand how the communication takes place, how the network has been created and how to connect to the services running on other machines in ways they may not have been designed for. 
 	\section{OSI Model}
 		When computers are communicating, they need to be able to speak in the same language.\cite{HackingAOE} 
-		However, if a programmer needed to implement this every time they required network communication, we would never achieve communication between two systems.\footnote{https://xkcd.com/927/} 
+		However, if a programmer needed to implement this every time they required network communication, we would never achieve communication between two systems.\footnote{\url{https://xkcd.com/927/}} 
 		Due to this, the OSI Model was created. 
 		The OSI model provides the standards for all levels from the application currently being used to the bare metal the data is sent over. 
 		These standards allow the relevant equipment to focus on the necessary parts of their implementation, while the other parts are taken care of, allowing for easier communication between unlinked programs. 
@@ -325,28 +328,34 @@
 	\section{Network Architecture}
 	\section{Connecting to Networked Software}
 \chapter{Scoping and Mindset}
+	\label{ch:ScopingMindset}
 	\section{Lock Picking}
 	\section{Research}
 \chapter{Web Penetration}
+	\label{ch:WebPenetration}
 	\section{XSS}
 	\section{SQL Inejection}
 	\section{File Uploads}
 \chapter{Network Penetration}
+	\label{ch:NetworkPenatration}
 	\section{nmap}
 	\section{Nessus}
 	\section{Metasploit}
 	\section{Pivoting}
 	\section{Maintaining a presence}
 \chapter{Forensics}
+	\label{ch:Forensics}
 	\section{File Carving}
 	\section{Steganography}
 	\section{Wireshark}
 	\section{Netflow}
 \chapter{Reverse Engineering}
+	\label{ch:ReverseEngineering}
 	\section{x86 Assembly}
 	\section{Radare2}
 	\section{Pwn Adventure}
 \chapter{Programming}
+	\label{ch:Programming}
 	\section{Introduction to the CLI}
 		The commandline is the tool for direct interaction with your computer. 
 		It is like the baby brother to programming yourself, though with scripting it can become just as complex. 
@@ -449,7 +458,7 @@
 				Following the tutorial provided by the command ``vimtutor'' will give you the basics that you need to begin using vim properly. 
 				However, if you do not wish to learn a fully featured editor, the likes of ``nano'' and ``ed'' will serve you well. 
 		\end{description}
-		While there are many other commands\footnote{https://github.com/jlevy/the-art-of-command-line} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
+		While there are many other commands\footnote{\url{https://github.com/jlevy/the-art-of-command-line}} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
 
 	\section{Introduction to Scripting}
 	\section{Introduction to Python}
@@ -457,10 +466,12 @@
 	\section{Introduction to C}
 	\section{Programming Challenges}
 \chapter{Cryptography}
+	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
 \chapter{System Hardening}
+	\label{ch:SystemHardening}
 	Securing one's own operating system and the software within can be a daunting task. 
 	One must way up the needs of security against the usability of the system, or face months of instability or system management on a broken system. 
 	Thus, for each recommendation below, decide how the computer needs to work for you and implement it to that level.\\ 
@@ -470,7 +481,7 @@
 	Each chapter within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
 	\section{Linux Hardening}\cite{FedoraSecGuide}
 		\subsubsection{Passwords} 
-			Your password\footnote{https://wiki.archlinux.org/index.php/Security} are the key to having a secure system. 
+			Your password\footnote{\url{https://wiki.archlinux.org/index.php/Security}} are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
 			Thus, passwords should be created and managed in a secure way:
 			\begin{itemize}
@@ -478,7 +489,7 @@
 				\item Not dictionary words or common substutions (such as 1337Speak)
 				\item Not having all numbers or symbols at the start or end. 
 				\item Not a common short phrase. 
-				\item Using an uncommon or non-sensical phrase such as ``Correct horse battery staple''\footnote{https://xkcd.com/936/}
+				\item Using an uncommon or non-sensical phrase such as ``Correct horse battery staple''\footnote{\url{https://xkcd.com/936/}}
 				\item using multiple numbers, letters and symbols. 
 				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
 				\item Longer than 12 characters. 
@@ -491,7 +502,7 @@
 			\end{quote}
 		\subsubsection{Disk Encryption}
 			is the process of automatically cryptographically protecting a part or all of a storage device.
-			\footnote{https://wiki.archlinux.org/index.php/Disk\_encryption}
+			\footnote{\url{https://wiki.archlinux.org/index.php/Disk\_encryption}}
 			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
 			However, the system will still be vulnerable to remote attacks, cold boot attacks and coercion (though this can be mitigated through plausible deniability)
 			The following is a description of the types of encryption and their effects on security"
@@ -545,7 +556,7 @@
 			\subsubsection{Users}
 				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
-				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{http://linux.die.net/man/8/pam\_tally} system.
+				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{\url{http://linux.die.net/man/8/pam\_tally}} system.
 				This system will ensure that if a user attempts to access the system with an incorrect password, they will be locked out, either for a given time, or until unlocked by the root user. 
 				This avoids an oportunistic malicious user attempting to guess the password. \\
 				Another means of securing users is to limit the number of processes which can be spawned by an individual user. 
@@ -586,14 +597,14 @@
 						To restrict access to these logs, add the line ``kernel.kptr\_restrict = 1'' to the file ``/etc/sysctl.d/50-kptr-restrict.conf''
 					\item[Hidepid] 
 						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the ``/proc'' filesystem with the option ``hidepid=1''. 
-					\item[Grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity}]
+					\item[Grsecurity\footnote{\url{https://en.wikibooks.org/wiki/Grsecurity}}]
 						is a kernel which has been patched with multiple security enhancements. 
 						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
 				\end{description}
 				\subsubsection{Sandboxing with firejail}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
-					Firejail\footnote{https://firejail.wordpress.com/documentation-2/} gives an easy way to do this through it's commandline interface. 
+					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
@@ -613,7 +624,31 @@
 						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
 					\end{itemize}
 	\section{Windows Hardening}
-		Can Windows even be hardened?
+		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.
+		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
+		These software packages do things such as mitigate data execution or attempt to recognise malicious code. 
+		While these mitigations are a significant improvement from a default windows install, it is far more difficult to secure a home windows install than to secure a Mac OS X or Linux install. 
+		\subsection{Antivirus}
+			The first and easiest means of securing a Windows system is to install an antivirus software package. 
+			The most basic of these will run a signature check on every file within the filesystem, checking for known malware which has not been obfuscated. 
+			While this is a good first step, it is trivial for malicious programmers to write code which will not be picked up by these systems. 
+			Furthermore, they do not find new malware.
+			The modern method is to run a heuristic scan on these files, attempting to determine what they do. 
+			While this is still not reliable in finding malicious software, it is a significant improvement over signature only scanning. 
+			Currently, the most renouned antivirus which runs heuristic scans is malwarebytes.\footnote{\url{https://www.malwarebytes.org/}}
+
+		\subsection{Antiexploit}
+			An extension to antivirus is the antiexploit suite. 
+			This software proports to harden certan programs against attacks which are common to them. 
+			It is designed to mitigate common attack vectors such as the browser or PDF reader. 
+			This software works in much the same way as grsecurity and PAX on Linux, but targets individual programs, rather than the OS as a whole. 
+			Malwarebytes again makes a well known antiexploit software\footnote{\url{https://www.malwarebytes.org/antiexploit/}} for windows. 
+		\subsection{Data Execution Prevention}
+			As you will find in Chapter \ref{ch:BinaryExploitation}, 
+			one of the most common exploits is to alter a return address and execute code placed into the data of a program. 
+			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
+			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
+			This will enable the protectons for all software installed. 
 	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
@@ -737,9 +772,11 @@
 			This allows you to use a different password for every website, employing characters which one would not be able to remember. 
 
 \chapter{Reporting}
+	\label{ch:Reporting}
 	\section{Report Writing}
 	\section{STIX Model}
 \chapter{Binary Exploitation}
+	\label{ch:BinaryExploitation}
 		The execution of a program usually follows a specific set of instructions to the letter. 
 		However, mistakes in programming can allow these instructions to be altered or fail. 
 		When this occurs, usually the program will crash by some means, stopping execution completely. 
@@ -747,11 +784,12 @@
 		However, when the environment is carefully controlled, one can use these mistakes to take control of the program, 
 		allowing them to execute arbitrary code through the program.\cite{HackingAOE} 
 		This is the goal of this section, to craft the environment in such a way that the program can be used to do our bidding. 
+	\section{Shell Code}
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
 		While this increases the control given to the programmer and makes for far simpler compilers, it also means that a careless programmer may create vulnerable code. 
-		For example, in C, if a program has been told to put 10 bytes into a 2 byte buffer, it will, while in languages such as java, this will result in an exception. 
+		For example, in C, if a program has been told to put 10 bytes into a 2 byte buffer, it will, while in languages such as Java, this will result in an exception. 
 		It is this error in memory allocation which is known as the buffer overflow, and which this section will focus on. 
 
 		Programmatically, the most common buffer overflow is when a string or input is copied to another location. This can be seen in %TODO:Ref below table. 
@@ -760,24 +798,95 @@
 			\caption{Simple Buffer Overflow Example}
 			\label{code:OverflowSimple}
 		\end{code}
+			On reading the above code in \ref{code:OverflowSimple} you should notice the unbounded copy of anything given as the first argument into the second buffer. 
+			This means that if you pass more than 8 bytes to the program, it will copy them into second\footnote{This will not work on OS X or a well secured Linux system due to buffer bounds checking}, overwriting anything beyond the its allocated memory. 
+			For example:
+			\begin{verbatim}
+				$./a.out bufferingALongStringaaaaaaaaaaaa
+				[PREOVERFLOW] first at 0x7fff14ac09d0, containing first
+				[PREOVERFLOW] second at 0x7fff14ac09c0, containing second
+				[ACTION] copying 32 bytes into second
+				[POSTOVERFLOW] first now contains ringaaaaaaaaaaaa
+				[POSTOVERFLOW] second now contains 
+				bufferingALongStringaaaaaaaaaaaa
+				[POSTOVERFLOW] change is at 0x7fff14ac09dc 
+				containing 1633771873 or 0x0861616161
+			\end{verbatim}
+			Note that here we altered the content of first by writing to second. 
+			This is because each item on the stack is placed at a lower memory location than the item before it. 
+			Writing beyond an items bounds will overwrite variables stored in higher memory locations. 
+			This can further be seen through the variable change's hex output, which contains repeated 0x61, the hex value for a. 
+			The size and content of the argument will allow you to alter the variables first and change to any arbitrary value.
+			However, a longer overflow string may cause the program to crash. 
+			See code example \ref{code:OverflowChallenge} in the challenges section of this chapter for another vulnerable code example. 
+
+			Rather than just targeting the variables written into the code, we can also target normal program functions,
+			such as the return address of the current stack frame. 
+			As discussed in chapter \ref{ch:ComputerOperations}, 
+			each function call within a program adds a frame to the stack and each return call follows a pointer back to the instructions that the call was made from. 
+			As this pointer lies at the highest memory location in the current stack frame, it is vulnerable to be overwritten through the overflow exploit discussed above. 
+			To determine it's location, open GDB on code example \ref{code:OverflowChallenge} and run the command ``dissass main'', which will show you the assembly code of main. 
+		\begin{Verbatim}[commandchars=\\\{\}]
+Dump of assembler code for function main:
+0x0000000100000ed0 <+0>:	push   rbp
+0x0000000100000ed1 <+1>:	mov    rbp,rsp
+0x0000000100000ed4 <+4>:	sub    rsp,0x20
+0x0000000100000ed8 <+8>:	mov    DWORD PTR [rbp-0x4],0x0
+0x0000000100000edf <+15>:	mov    DWORD PTR [rbp-0x8],edi
+0x0000000100000ee2 <+18>:	mov    QWORD PTR [rbp-0x10],rsi
+0x0000000100000ee6 <+22>:	mov    rsi,QWORD PTR [rbp-0x10]
+\textbf{0x0000000100000eea <+26>:	mov    rdi,QWORD PTR [rsi+0x8]}
+\textbf{0x0000000100000eee <+30>:	call   0x100000e40 <checkAuth>}
+0x0000000100000ef3 <+35>:	cmp    eax,0x0
+0x0000000100000ef8 <+40>:	je     0x100000f14 <main+68>
+0x0000000100000efe <+46>:	lea    rdi,[rip+0x6f]        # 0x100000f74
+0x0000000100000f05 <+53>:	mov    al,0x0
+0x0000000100000f07 <+55>:	call   0x100000f3a
+0x0000000100000f0c <+60>:	mov    DWORD PTR [rbp-0x14],eax
+0x0000000100000f0f <+63>:	jmp    0x100000f25 <main+85>
+0x0000000100000f14 <+68>:	lea    rdi,[rip+0x68]        # 0x100000f83
+0x0000000100000f1b <+75>:	mov    al,0x0
+0x0000000100000f1d <+77>:	call   0x100000f3a
+0x0000000100000f22 <+82>:	mov    DWORD PTR [rbp-0x18],eax
+0x0000000100000f25 <+85>:	xor    eax,eax
+0x0000000100000f27 <+87>:	add    rsp,0x20
+0x0000000100000f2b <+91>:	pop    rbp
+0x0000000100000f2c <+92>:	ret
+		\end{Verbatim}
+		The two bold lines show the return address being calculated and the call to the checkAuth function. 
+		
 	\section{String Format Errors}
 	\section{IDS, IPS and AV}
+	\section{Challenges}
+		The overflow challenge found in code example \ref{code:OverflowChallenge} is another simple stack based overflow vulnerability. 
+		Try to set the password to 0xDEADBEEF to login.
+		This code should also be vulnerable to the introduction of shellcode to the return address of the stack frame. 
+		\begin{code}
+			\lstinputlisting{./OverflowChallenge.c}
+			\caption{Overflow Challenge}
+			\label{code:OverflowChallenge}
+		\end{code}
 \chapter{History}
+	\label{ch:History}
 	\section{MIT Tech Model Railroad Club}
 	\section{Early Computing Equipment}
 \chapter{Wireless Attacks}
+	\label{ch:WirelessAttacks}
 	\section{Aircrack-ng}
 	\section{Bluetooth}
 	\section{Near Field Communications}
 	\section{Challenges}
 \newpage
 \appendix
+	\label{ch:Appendix}
 	\listoftables
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Tables}
 	\listoffigures
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Figures}
+	 \renewcommand{\figurename}{Code Example}
+	     \listof{code}{List of Code Examples}
 	\bibliographystyle{plain}
 	\bibliography{program}
 \end{document}
