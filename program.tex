@@ -20,6 +20,36 @@
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{listings}
+\lstset { 									%
+	language={[ANSI]C}, 					%
+	otherkeywords={printf, strcpy, *, &},	%
+	numbers=left, 							%
+	numberfirstline=true,					%
+	showspaces=false, 						%
+	showtabs=false, 						%
+	showstringspaces=false, 				%
+	commentstyle=\color{mygreen}, 			%
+	tabsize=4, 								%
+	keywordstyle=\color{blue}, 				%
+	xleftmargin=2em,						%
+	extendedchars=true,     			    %
+	basicstyle=\small\sffamily,				%
+	columns=fullflexible,					%
+	breaklines=true,		            	%
+	stringstyle=\color{mymauve}}
+\lstloadlanguages{C}
+%Sorting code floats. 
+\usepackage{float}
+\floatstyle{boxed}
+\newfloat{code}{htbp}{loc}[section]
+\floatname{code}{Code Example}
+
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
 \begin{document}
@@ -76,67 +106,124 @@
 					Thus to expediate the process an FPU was created. 
 					These units will calculate mathematics on real numbers to a given precision (specified by the IEEE). % Reference this
 					When a given precision is not supported, the ALU must run the calculation at a far slower pace. 
-				\paragraph{The registers}
-					The CPU also contains its own extremely fast memory, known as regsters. 
-					These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
-					There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
-					\begin{itemize}
-						\item General Registers: 
-							\begin{itemize}
-								\item RAX is the Accumulator register for IO, arithmetic, interrupt calls, etc. 
-								\item RBX is the Base Register used as a base pointer for memory access. 
-								\item RCX is the Counter register, used for loop counters. 
-								\item RDX is the Data Register used for IO, arithmetic and interrupt calls. 
-							\end{itemize}
-						\item Segment Registers: 
-							\begin{itemize}
-								\item CS holds the current code segment. 
-								\item DS holds the data segment of the current program. 
-								\item ES, FS, GS are extra segment registers for far pointer addressing such as video memory. 
-								\item SS Holds the Stack segment of the current program. 
-							\end{itemize}
-						\item Index and Pointer Registers: 
-							\begin{itemize}
-								\item RSI Source index register for string and memory array copying
-								\item RDI Destination index register used for string and memory array copying
-								\item RBP holds the stack base pointer. 
-								\item RIP is the index pointer. Holds the offset of the next instruction. 
-								\item RSP is the stack pointer. Holds the current head of the stack. 
-							\end{itemize}
-						\item CFLAGS holds the current state of the processor and the output or error of some instructions after execution. The use for each CFLAGS bit can be found in table \ref{tab:CFLAGSBits} 
-							\begin{table}[htb]
-								\centering
-								\begin{tabular}{| l | l | l |}
-									\hline
-									\textbf{Bit} &  \textbf{Label} &   \textbf{Desciption} \\\hline 
-									0   &   CF &     Carry flag \\ \hline
-									2   &   PF   &   Parity flag \\ \hline
-									4   &   AF   &   Auxiliary carry flag \\ \hline
-									6   &   ZF   &   Zero flag \\ \hline
-									7   &   SF   &   Sign flag \\ \hline
-									8   &   TF   &   Trap flag \\ \hline
-									9   &   IF   &   Interrupt enable flag \\ \hline
-									10  &   DF   &   Direction flag \\ \hline
-									11  &   OF   &   Overflow flag \\ \hline
-									12-13 & IOPL &   I/O Priviledge level \\ \hline
-									14  &   NT   &   Nested task flag \\ \hline
-									16  &   RF   &   Resume flag \\ \hline
-									17  &   VM   &   Virtual 8086 mode flag \\ \hline
-									18  &   AC   &   Alignment check flag (486+) \\ \hline
-									19  &   VIF  &   Virutal interrupt flag \\ \hline
-									20  &   VIP  &   Virtual interrupt pending flag \\ \hline
-									21  &   ID   &   ID flag \\ \hline
-							\end{tabular}
-								\caption{CFLAGS bit uses}
-								\label{tab:CFLAGSBits}
-							\end{table}
+				\paragraph{Protected Mode} 
+					Protected Mode is the mode of operation for the modern CPU. 
+					This stemmed from security and multiprogramming issues found to occur in real mode. 
+					In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
+					In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
+					This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
+			\subsubsection{The Registers}
+				The CPU also contains its own extremely fast memory, known as regsters. 
+				These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
+				There are specific uses for registers in the x86 CPU: \footnote{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}
+				\begin{itemize}
+					\item General Registers: 
+						\begin{itemize}
+							\item RAX is the Accumulator register for IO, arithmetic, interrupt calls, etc. 
+							\item RBX is the Base Register used as a base pointer for memory access. 
+							\item RCX is the Counter register, used for loop counters. 
+							\item RDX is the Data Register used for IO, arithmetic and interrupt calls. 
+						\end{itemize}
+					\item Segment Registers: 
+						\begin{itemize}
+							\item CS holds the current code segment. 
+							\item DS holds the data segment of the current program. 
+							\item ES, FS, GS are extra segment registers for far pointer addressing such as video memory. 
+							\item SS Holds the Stack segment of the current program. 
+						\end{itemize}
+					\item Index and Pointer Registers: 
+						\begin{itemize}
+							\item RSI Source index register for string and memory array copying
+							\item RDI Destination index register used for string and memory array copying
+							\item RBP holds the stack base pointer. 
+							\item RIP is the index pointer. Holds the offset of the next instruction. 
+							\item RSP is the stack pointer. Holds the current head of the stack. 
+						\end{itemize}
+					\item CFLAGS holds the current state of the processor and the output or error of some instructions after execution. 
+						These are usually used by other CPU instructions, rather than directly accessed.
+						The use for each CFLAGS bit can be found in table \ref{tab:CFLAGSBits} 
+						\begin{table}[htb]
+							\centering
+							\begin{tabular}{| l | l | l |}
+								\hline
+								\textbf{Bit} &  \textbf{Label} &   \textbf{Desciption} \\\hline 
+								0   &   CF &     Carry flag \\ \hline
+								2   &   PF   &   Parity flag \\ \hline
+								4   &   AF   &   Auxiliary carry flag \\ \hline
+								6   &   ZF   &   Zero flag \\ \hline
+								7   &   SF   &   Sign flag \\ \hline
+								8   &   TF   &   Trap flag \\ \hline
+								9   &   IF   &   Interrupt enable flag \\ \hline
+								10  &   DF   &   Direction flag \\ \hline
+								11  &   OF   &   Overflow flag \\ \hline
+								12-13 & IOPL &   I/O Priviledge level \\ \hline
+								14  &   NT   &   Nested task flag \\ \hline
+								16  &   RF   &   Resume flag \\ \hline
+								17  &   VM   &   Virtual 8086 mode flag \\ \hline
+								18  &   AC   &   Alignment check flag (486+) \\ \hline
+								19  &   VIF  &   Virutal interrupt flag \\ \hline
+								20  &   VIP  &   Virtual interrupt pending flag \\ \hline
+								21  &   ID   &   ID flag \\ \hline
+						\end{tabular}
+						\caption{CFLAGS bit uses}
+						\label{tab:CFLAGSBits}
+					\end{table}
 				\end{itemize}
-			\paragraph{Protected Mode} 
-				Protected Mode is the mode of operation for the modern CPU. 
-				This stemmed from security and multiprogramming issues found to occur in real mode. 
-				In real mode, the current program can access all of the memory of the system, allowing it to overwrite that of other programs. 
-				In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
-				This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
+				
+				To see this in action, write a simple program to print ``Hello World'' ten times in C (an example of such a program can be found in the programming section), %TODO: reference this
+				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{https://github.com/longld/peda} exension to GDB for it's visualization functions)				
+				\begin{verbatim}
+					$gdb -q a.out
+					Reading symbols from a.out...
+					Reading symbols from 
+					~/src/a.out.dSYM/Contents/Resources/DWARF/a.out...done.
+					done.
+
+					gdb-peda$ break main
+					Breakpoint 1 at 0x100000eff: file a.c, line 5.
+
+					gdb-peda$ run
+					Starting program: /Users/Jarrah/src/a.out
+					Warning: not running or target is remote
+
+					Breakpoint 1, main () at a.c:5
+					5		int i = 0;
+
+					gdb-peda$ i r
+					rax            0x100000ef0	0x100000ef0
+					rbx            0x0	0x0
+					rcx            0x7fff5fbffc80	0x7fff5fbffc80
+					rdx            0x7fff5fbffbb8	0x7fff5fbffbb8
+					rsi            0x7fff5fbffba8	0x7fff5fbffba8
+					rdi            0x1	0x1
+					rbp            0x7fff5fbffb80	0x7fff5fbffb80
+					rsp            0x7fff5fbffb70	0x7fff5fbffb70
+					r8             0x0	0x0
+					r9             0x7fff785350c8	0x7fff785350c8
+					r10            0xffffffff	0xffffffff
+					r11            0xffffffff00000000	0xffffffff00000000
+					r12            0x0	0x0
+					r13            0x0	0x0
+					r14            0x0	0x0
+					r15            0x0	0x0
+					rip            0x100000eff	0x100000eff <main+15>
+					eflags         0x202	[ IF ]
+					cs             0x2b	0x2b
+					ss             <unavailable>
+					ds             <unavailable>
+					es             <unavailable>
+					fs             0x0	0x0
+					gs             0x0	0x0
+
+				\end{verbatim}
+				In the above, we set a break point in main() (``break main()'' or ``b main()''), right before our code was executed. 
+				This allows us to run the program, pausing it to view how the CPU is executing the code. 
+				The command ``info registers'' or ``i r'' was then used to show what the registers of the CPU held at the time.
+				This is how you will see registers in the future. 
+				Understanding this view will make the future Programming and Reverse Engineering sections far easier. %TODO: Hyperlink this. 
+
+
+
 				\subsection{RAM}
 					%TODO: Add in chapter on segments of memory and protected mode. 
 					The main memory of a computer, known as Random Access Memory (RAM) is the first storage device of the computer outside that of the processor. 
@@ -363,10 +450,11 @@
 				However, if you do not wish to learn a fully featured editor, the likes of ``nano'' and ``ed'' will serve you well. 
 		\end{description}
 		While there are many other commands\footnote{https://github.com/jlevy/the-art-of-command-line} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
+
+	\section{Introduction to Scripting}
 	\section{Introduction to Python}
 	\section{Compilation}
 	\section{Introduction to C}
-	\section{Introduction to Scripting}
 	\section{Programming Challenges}
 \chapter{Cryptography}
 	\section{Introduction to Cryptography}
@@ -454,7 +542,7 @@
 				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
 				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
 				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
-			\subsubsection{users}
+			\subsubsection{Users}
 				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
 				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{http://linux.die.net/man/8/pam\_tally} system.
@@ -465,8 +553,10 @@
 				Furthermore, it will disallow actions such as fork bombs from bringing the whole system down. 
 				This can usually be achieved by adding the following lines to ``/etc/security/limits.conf''
 				\begin{quote}
-					\** soft nproc 100 \\
-					\** hard nproc 200 \\
+					\begin{flushleft}
+						\** soft nproc 100 \\
+						\** hard nproc 200 \\
+					\end{flushleft}
 				\end{quote}
 
 			\subsubsection{Restricting use of root}
@@ -494,9 +584,9 @@
 					\item[Restricting access to kernel logs]
 						These logs contain information which may be useful to an attacker, such as the software currently running and sensitive memory addresses. 
 						To restrict access to these logs, add the line ``kernel.kptr\_restrict = 1'' to the file ``/etc/sysctl.d/50-kptr-restrict.conf''
-					\item[hidepid] 
+					\item[Hidepid] 
 						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the ``/proc'' filesystem with the option ``hidepid=1''. 
-					\item[grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity}]
+					\item[Grsecurity\footnote{https://en.wikibooks.org/wiki/Grsecurity}]
 						is a kernel which has been patched with multiple security enhancements. 
 						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
 				\end{description}
@@ -650,7 +740,26 @@
 	\section{Report Writing}
 	\section{STIX Model}
 \chapter{Binary Exploitation}
+		The execution of a program usually follows a specific set of instructions to the letter. 
+		However, mistakes in programming can allow these instructions to be altered or fail. 
+		When this occurs, usually the program will crash by some means, stopping execution completely. 
+		This is the desired outcome because it ends any vulnerability that the program might have. 
+		However, when the environment is carefully controlled, one can use these mistakes to take control of the program, 
+		allowing them to execute arbitrary code through the program.\cite{HackingAOE} 
+		This is the goal of this section, to craft the environment in such a way that the program can be used to do our bidding. 
 	\section{Overflows}
+		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
+		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
+		While this increases the control given to the programmer and makes for far simpler compilers, it also means that a careless programmer may create vulnerable code. 
+		For example, in C, if a program has been told to put 10 bytes into a 2 byte buffer, it will, while in languages such as java, this will result in an exception. 
+		It is this error in memory allocation which is known as the buffer overflow, and which this section will focus on. 
+
+		Programmatically, the most common buffer overflow is when a string or input is copied to another location. This can be seen in %TODO:Ref below table. 
+		\begin{code}
+			\lstinputlisting{./OverflowSimple.c}
+			\caption{Simple Buffer Overflow Example}
+			\label{code:OverflowSimple}
+		\end{code}
 	\section{String Format Errors}
 	\section{IDS, IPS and AV}
 \chapter{History}
@@ -663,12 +772,12 @@
 	\section{Challenges}
 \newpage
 \appendix
-\phantomsection
-\addcontentsline{toc}{chapter}{List of Tables}
-\listoftables
-\phantomsection
-\addcontentsline{toc}{chapter}{List of Figures}
-\listoffigures
-\bibliographystyle{plain}
-\bibliography{program}
+	\listoftables
+		\phantomsection
+		\addcontentsline{toc}{chapter}{List of Tables}
+	\listoffigures
+		\phantomsection
+		\addcontentsline{toc}{chapter}{List of Figures}
+	\bibliographystyle{plain}
+	\bibliography{program}
 \end{document}
