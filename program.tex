@@ -28,7 +28,7 @@
 
 \usepackage{listings}
 \lstset { 									%
-	language={[ANSI]C}, 					%
+%	language={[ANSI]C}, 					%
 	otherkeywords={printf, strcpy, *, &},	%
 	numbers=left, 							%
 	numberfirstline=true,					%
@@ -56,7 +56,6 @@
 \begin{document}
 \maketitle
 \tableofcontents
-\newpage
 \chapter{Computer Operations}
 	\label{ch:ComputerOperations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
@@ -362,7 +361,7 @@
 		The commandline will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
 		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
 		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
-		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.  
+		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\footnote{\url{http://cli.learncodethehardway.org/book/}}  
 		What follows is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
 		\begin{description}
 			\item[pwd]
@@ -478,10 +477,13 @@
 	If the newly secured system does not work for you, simply roll it back until it does. 
 	When implementing this, remember that the biggest threat will always be the user of the system. 
 	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
-	Each chapter within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
-	\section{Linux Hardening}\cite{FedoraSecGuide}
-		\subsubsection{Passwords} 
-			Your password\footnote{\url{https://wiki.archlinux.org/index.php/Security}} are the key to having a secure system. 
+	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
+	\section{Linux Hardening}
+		Due to the varied nature of Linux distributions, it is difficult to provide an exact guide to securing an arbitrary Linux install. 
+		However, this section will discuss the protections which will work on the general system.\footnote{\url{http://www.asd.gov.au/publications/protect/top\_4\_mitigations\_linux.htm}} 
+		For distribution specific guides, look to your distribution's guides\cite{FedoraSecGuide}or wiki.\footnote{\url{https://wiki.archlinux.org/index.php/Security}}
+		\subsection{Passwords} 
+			Your password are the key to having a secure system. 
 			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
 			Thus, passwords should be created and managed in a secure way:
 			\begin{itemize}
@@ -494,13 +496,13 @@
 				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
 				\item Longer than 12 characters. 
 			\end{itemize}
-		\subsubsection{Password Hashing}
+		\subsection{Password Hashing}
 			Linux stores hashed passwords in ``/etc/shadow''. 
 			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
 			\begin{quote}
 				password required pam\_unix.so $\textbf{sha512}$ shadow $\textbf{rounds=65536}$
 			\end{quote}
-		\subsubsection{Disk Encryption}
+		\subsection{Disk Encryption}
 			is the process of automatically cryptographically protecting a part or all of a storage device.
 			\footnote{\url{https://wiki.archlinux.org/index.php/Disk\_encryption}}
 			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
@@ -522,7 +524,7 @@
 				\item[Block Device Encryption] Operates below the filesystem, encrypting the filesystem and the files contained within it. 
 					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
 			\end{description}
-		\subsubsection{Mount options}
+		\subsection{Mount options}
 			When setting up a secure environment, one should take care to give the least permission required to conduct a task. 
 			Thus, when mounting file systems, it is best to limit what can be done with the data on the system.
 			There are three restrictions which can be placed on a mounted filesystem:
@@ -546,14 +548,14 @@
 				\caption{Common filesystem restrictions}
 				\label{tab:mountOptions}
 			\end{table}
-			\subsubsection{File Permissions}
+			\subsection{File Permissions}
 				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
 				This means that if any user is compromised, most files on the system can be stolen. 
 				Furthermore, it means that the attacker can use the systems configuration files to determine likely privelage excilation or pivot points. 
 				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
 				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
 				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
-			\subsubsection{Users}
+			\subsection{Users}
 				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
 				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{\url{http://linux.die.net/man/8/pam\_tally}} system.
@@ -569,8 +571,15 @@
 						\** hard nproc 200 \\
 					\end{flushleft}
 				\end{quote}
+				
+				In addition to this, services which are particularly vulnerable
+				---such as any Internet facing services---
+				should be run from an additional restricted user account. 
+				This will ensure that if these services are targeted, it is more difficult to excilate to a privelaged or root account. 
+				Furthermore, by implementing this alongside the other recommendations specified here, 
+				it becomes difficult for an attacker to take data, due to the fact that they cannot see most of the filesystem.
 
-			\subsubsection{Restricting use of root}
+			\subsection{Restricting use of root}
 				\begin{itemize}
 					\item The sudo command should be used rather than su due to the following reasons:
 						\begin{itemize}
@@ -583,13 +592,16 @@
 						To do this, add ``SUDO\_EDITOR=<editor>'' to your environmental variables.
 					\item Restrict root login both locally and via SSH. 
 				\end{itemize}
-			\subsubsection{Mandatory Access Control}
+			\subsection{Mandatory Access Control}
 				MAC, as opposed to the Discretionary Access Control (DAC) used on most Linux systems is a rule set which designates which actions can be taken on which files and directories. 
 				This rule set is created by the root user and unlike DAC cannot be altered by the users of the system. 
 				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
 				Furthermore, on the desktop, due to the wide variety of tasks which are completed, a poorly setup MAC will either be far too permissive or far too restrictive. 
 				%TODO: Think about writing out the types here. Think about linking the implementations. 
-			\subsubsection{Kernel Hardening}
+				MAC can also be utilised as a means of creating application white listing.
+				While difficult to create a strong policy, it is one of the best methods for running application white listing on Linux, 
+				due to the fact that there is no prebuilt white listing tool. 
+			\subsection{Kernel Hardening}
 				The following are the common steps used to harden the Linux Kernel. 
 				\begin{description}
 					\item[Restricting access to kernel logs]
@@ -601,15 +613,15 @@
 						is a kernel which has been patched with multiple security enhancements. 
 						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
 				\end{description}
-				\subsubsection{Sandboxing with firejail}
+				\subsection{Sandboxing with firejail}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
-				\subsubsection{Firewall} %TODO: Add firewall chapter
-				\subsubsection{Physical security}
+				\subsection{Firewall} %TODO: Add firewall chapter
+				\subsection{Physical security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
 					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgable or determined. 
@@ -624,10 +636,10 @@
 						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
 					\end{itemize}
 	\section{Windows Hardening}
-		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.
+		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
 		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
 		These software packages do things such as mitigate data execution or attempt to recognise malicious code. 
-		While these mitigations are a significant improvement from a default windows install, it is far more difficult to secure a home windows install than to secure a Mac OS X or Linux install. 
+		While these mitigations are a significant improvement from a default windows install, it is far more expensive to secure a home windows install than to secure a Mac OS X or Linux install. 
 		\subsection{Antivirus}
 			The first and easiest means of securing a Windows system is to install an antivirus software package. 
 			The most basic of these will run a signature check on every file within the filesystem, checking for known malware which has not been obfuscated. 
@@ -649,6 +661,23 @@
 			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
 			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
 			This will enable the protectons for all software installed. 
+		\subsection{Application Whitelisting}
+			AppLocker is the main means of providing application whitelisting in the windows environment. 
+			However, it is only available on Ultimate or Enterprise editions of windows. 
+			If you have either of these, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/dd759113.aspx}} on configuring it. 
+			It is recommended that the configuration allow only those listed applications,
+			ensuring that new or maliciously installed applications are not allowed to run. 
+		\subsection{Disk Encryption}
+			As above, Microsoft's bitlocker is available on the Ultimate and Enterprise versions of it's windows OS.
+			In order to use this, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/cc732774.aspx}}. 
+			If you do not have the required versions of windows, software such as VeraCrypt\footnote{\url{https://veracrypt.codeplex.com/}} will allow you to run full disk encryption. 
+			This software was forked from the discontinued TrueCrypt project. 
+			TrueCrypt passed its most recent audit, but a number of issues were raised.
+			VeraCrypt proports to have resolved these issues, but still uses the same code base. 
+			If you do not wish to utilise VeraCrypt or upgrade to a higher version of windows, the alternative is to employ file or partition encryption. 
+			This will encrypt only the data you have stored within the encrypted volume, rather than the OS itself. 
+			While still secure for your data, this will leave the system open to offline manipulation,
+			making it possible to install malware to read the data when it is next unlocked. 
 	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
@@ -775,6 +804,7 @@
 	\label{ch:Reporting}
 	\section{Report Writing}
 	\section{STIX Model}
+		\url{http://stixproject.github.io/}
 \chapter{Binary Exploitation}
 	\label{ch:BinaryExploitation}
 		The execution of a program usually follows a specific set of instructions to the letter. 
@@ -784,7 +814,58 @@
 		However, when the environment is carefully controlled, one can use these mistakes to take control of the program, 
 		allowing them to execute arbitrary code through the program.\cite{HackingAOE} 
 		This is the goal of this section, to craft the environment in such a way that the program can be used to do our bidding. 
-	\section{Shell Code}
+	\section{Shellcode}
+		Shellcode is the payload that is executed within an exploited program to cause it to act in the way we want.\cite{HackingAOE} 
+		This code is often written in Assembly and is written directly into memory to be run by an altered return pointer or some other means of altering execution flow. 
+		There are many examples of shellcode available online. 
+		These will do most of what you will need, however, knowing how to read and write shellcode will allow you to check that the code you are running will do what you require. 
+		Furthermore, if you want to run an exploit which will do a specific task (such as add an admin user), you will likely not find the shellcode you require. 
+		Once you understand the creation of shellcode, your exploits are limited only by your destructive insights. 
+
+		Shellcode is written for a specific computer architecture, mainly due to the fact that it is written in assembly.
+		A strong grasp of the assembly language syntax for your target computer as well as its configuration will help you to create a working shellcode. 
+		Thus, it is recommended that in the scoping and framing section of your attack, you find out as much about the system as you con. 
+		Furthermore, a strong grasp of the filesystem and configuration quirks of the target system will allow you to alter the configuration to meet your needs. 
+		For the programming concepts that you will need to understand before writing shellcode, read through the assembly section in chapter \ref{ch:ComputerOperations}
+		\subsection{Data in Shellcode}
+			Shellcode can be thought of as a virus, with the program that it is stealing execution from being the biological body. 
+			Due to this, shellcode is not a fully fledged program in itself. 
+			This means that the shellcode will have to be self contained within its instructions, attempts to use variables in other parts of memory will fail. 
+			This is known as position-independent code. 
+			Due to this, when one is writing shellcode, they must store any data within the instructions of the program. 
+			This, however, raises issues with establishing a pointer to the data, which must be calculated from the instruction pointer. 
+		
+			To solve this problem, we place the string data directly after a call instruction, causing it to push a pointer to the data onto the stack as the return address. 
+			Then, we can jump past the data by using a pop instruction to move its address into a register of our choosing. 
+			The following code snippet shows this process:
+			\begin{code}
+				\lstinputlisting[language={[x86masm]Assembler}]{./ShellcodeData.asm}
+				\caption{Getting a Data Pointer in Shellcode}
+				\label{code:ShellcodeData}
+			\end{code}
+
+			As an exercise, alter this code to print the data is pointed to by RCX. 
+			This will be used in the following section for showing a working buffer overflow. 
+
+		\subsection{Writing Shellcode into a Program}
+			Often shellcode will be written into a program through means such as environmental variables. 
+			However, doing this usually involves C functions such as strcpy, which terminates at the first null byte encountered. 
+			The shellcode shown in \ref{code:ShellcodeData} when assembled contains multiple null bytes, such as the string of them after the call instruction.
+			These must be removed before the shellcode can be inserted within another program. 
+			This call function contains null bytes due to the fact that it is only moving the instruction pointer a small distance. 
+			This means that the small number that is placed into the call instructions operands is padded by null bytes. 
+			To solve this, we can put the label (``get\_ptr'') above the call command. 
+			This will place the twos complement negative number for the jump after the call instruction, removing the null bytes. 
+			Further, to get this to work the command ``jmp short one'' must be added to the top and the label ``one'' must be added above ``call get\_ptr''.
+
+			Similarly, null bytes are often found in the operands of other instructions. 
+			These can be resolved by only using the needed segments of registers and nulling them out manually by xoring them from themselves. 
+			Registers such as RAX are 64 bits long, however, they are made up of EAX (the first 32 bits), AL and AH (The first and last 16 bits of EAX respectively).
+			By using these registers, the assembler can condense the code rather than padding it with null bytes. 
+
+			After this, the shellcode should be ready to use. 
+			Write it to an environmental variable using the command ``export SHC=\$(cat <assembled shellcode>)''
+			
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
@@ -794,7 +875,7 @@
 
 		Programmatically, the most common buffer overflow is when a string or input is copied to another location. This can be seen in %TODO:Ref below table. 
 		\begin{code}
-			\lstinputlisting{./OverflowSimple.c}
+			\lstinputlisting[language={[ANSI]C}]{./OverflowSimple.c}
 			\caption{Simple Buffer Overflow Example}
 			\label{code:OverflowSimple}
 		\end{code}
@@ -828,32 +909,33 @@
 			To determine it's location, open GDB on code example \ref{code:OverflowChallenge} and run the command ``dissass main'', which will show you the assembly code of main. 
 		\begin{Verbatim}[commandchars=\\\{\}]
 Dump of assembler code for function main:
-0x0000000100000ed0 <+0>:	push   rbp
-0x0000000100000ed1 <+1>:	mov    rbp,rsp
-0x0000000100000ed4 <+4>:	sub    rsp,0x20
-0x0000000100000ed8 <+8>:	mov    DWORD PTR [rbp-0x4],0x0
-0x0000000100000edf <+15>:	mov    DWORD PTR [rbp-0x8],edi
-0x0000000100000ee2 <+18>:	mov    QWORD PTR [rbp-0x10],rsi
-0x0000000100000ee6 <+22>:	mov    rsi,QWORD PTR [rbp-0x10]
-\textbf{0x0000000100000eea <+26>:	mov    rdi,QWORD PTR [rsi+0x8]}
-\textbf{0x0000000100000eee <+30>:	call   0x100000e40 <checkAuth>}
-0x0000000100000ef3 <+35>:	cmp    eax,0x0
-0x0000000100000ef8 <+40>:	je     0x100000f14 <main+68>
-0x0000000100000efe <+46>:	lea    rdi,[rip+0x6f]        # 0x100000f74
-0x0000000100000f05 <+53>:	mov    al,0x0
-0x0000000100000f07 <+55>:	call   0x100000f3a
-0x0000000100000f0c <+60>:	mov    DWORD PTR [rbp-0x14],eax
-0x0000000100000f0f <+63>:	jmp    0x100000f25 <main+85>
-0x0000000100000f14 <+68>:	lea    rdi,[rip+0x68]        # 0x100000f83
-0x0000000100000f1b <+75>:	mov    al,0x0
-0x0000000100000f1d <+77>:	call   0x100000f3a
-0x0000000100000f22 <+82>:	mov    DWORD PTR [rbp-0x18],eax
-0x0000000100000f25 <+85>:	xor    eax,eax
-0x0000000100000f27 <+87>:	add    rsp,0x20
-0x0000000100000f2b <+91>:	pop    rbp
+0x0000000100000ed0 <+0>: 	push	rbp
+0x0000000100000ed1 <+1>: 	mov	rbp,rsp
+0x0000000100000ed4 <+4>: 	sub	rsp,0x20
+0x0000000100000ed8 <+8>: 	mov	DWORD PTR [rbp-0x4],0x0
+0x0000000100000edf <+15>:	mov	DWORD PTR [rbp-0x8],edi
+0x0000000100000ee2 <+18>:	mov	QWORD PTR [rbp-0x10],rsi
+0x0000000100000ee6 <+22>:	mov	rsi,QWORD PTR [rbp-0x10]
+\textbf{0x0000000100000eea <+26>:	mov	rdi,QWORD PTR [rsi+0x8]}
+\textbf{0x0000000100000eee <+30>:	call	0x100000e40 <checkAuth>}
+0x0000000100000ef3 <+35>:	cmp	eax,0x0
+0x0000000100000ef8 <+40>:	je	0x100000f14 <main+68>
+0x0000000100000efe <+46>:	lea	rdi,[rip+0x6f]        
+0x0000000100000f05 <+53>:	mov	al,0x0
+0x0000000100000f07 <+55>:	call	0x100000f3a
+0x0000000100000f0c <+60>:	mov	DWORD PTR [rbp-0x14],eax
+0x0000000100000f0f <+63>:	jmp	0x100000f25 <main+85>
+0x0000000100000f14 <+68>:	lea	rdi,[rip+0x68]        
+0x0000000100000f1b <+75>:	mov	al,0x0
+0x0000000100000f1d <+77>:	call	0x100000f3a
+0x0000000100000f22 <+82>:	mov	DWORD PTR [rbp-0x18],eax
+0x0000000100000f25 <+85>:	xor	eax,eax
+0x0000000100000f27 <+87>:	add	rsp,0x20
+0x0000000100000f2b <+91>:	pop	rbp
 0x0000000100000f2c <+92>:	ret
 		\end{Verbatim}
-		The two bold lines show the return address being calculated and the call to the checkAuth function. 
+		The two bold lines show the return address being calculated and the call to the checkAuth function. %TODO: Add a test to use ShellcodeData.asm 
+
 		
 	\section{String Format Errors}
 	\section{IDS, IPS and AV}
@@ -862,7 +944,7 @@ Dump of assembler code for function main:
 		Try to set the password to 0xDEADBEEF to login.
 		This code should also be vulnerable to the introduction of shellcode to the return address of the stack frame. 
 		\begin{code}
-			\lstinputlisting{./OverflowChallenge.c}
+			\lstinputlisting[language={[ANSI]C}]{./OverflowChallenge.c}
 			\caption{Overflow Challenge}
 			\label{code:OverflowChallenge}
 		\end{code}
@@ -887,6 +969,8 @@ Dump of assembler code for function main:
 		\addcontentsline{toc}{chapter}{List of Figures}
 	 \renewcommand{\figurename}{Code Example}
 	     \listof{code}{List of Code Examples}
+		 \phantomsection
+		 \addcontentsline{toc}{chapter}{List of Code Examples}
 	\bibliographystyle{plain}
 	\bibliography{program}
 \end{document}
