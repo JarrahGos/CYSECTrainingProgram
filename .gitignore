@@ -25,3 +25,10 @@
 makefile
 *.pdf
 .DS_Store
+.gdb_history
+*.dSYM
+*.loc
+*.nav
+*.snm
+mon.sh
+

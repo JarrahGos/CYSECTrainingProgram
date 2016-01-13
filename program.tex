@@ -16,11 +16,12 @@
 	   \fancyhead{} % get rid of headers on plain pages
 	      \renewcommand{\headrulewidth}{0pt} % and the line
 	  }
-\usepackage[pdftex]{hyperref}
+\usepackage{hyperref}
 \usepackage{microtype}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{fancyvrb} %Allow bold in verbatim text.
+\usepackage[section]{placeins} %Deal with floats being in the wrong place. 
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -202,7 +203,7 @@
 					r8             0x0	0x0
 					r9             0x7fff785350c8	0x7fff785350c8
 					r10            0xffffffff	0xffffffff
-					r11            0xffffffff00000000	0xffffffff00000000
+					r11            0xffffffff0X00	0xffffffff00000000
 					r12            0x0	0x0
 					r13            0x0	0x0
 					r14            0x0	0x0
@@ -217,7 +218,7 @@
 					gs             0x0	0x0
 
 				\end{verbatim}
-				In the above, we set a break point in main() (``break main()'' or ``b main()''), right before our code was executed. 
+				In the above, we set a break point in main() (``break main'' or ``b main''), right before our code was executed. 
 				This allows us to run the program, pausing it to view how the CPU is executing the code. 
 				The command ``info registers'' or ``i r'' was then used to show what the registers of the CPU held at the time.
 				This is how you will see registers in the future. 
@@ -351,6 +352,7 @@
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
 	\section{x86 Assembly}
+		%TODO: Decide whether this goes here or in programming. 
 	\section{Radare2}
 	\section{Pwn Adventure}
 \chapter{Programming}
@@ -865,7 +867,42 @@
 
 			After this, the shellcode should be ready to use. 
 			Write it to an environmental variable using the command ``export SHC=\$(cat <assembled shellcode>)''
-			
+			%TODO: This is not finished
+		\subsection{Popping a Shell}
+			Now that most of the difficult concepts have been covered, we will spawn a useable shell using the program we have exploited. 
+			This is done through system call 11, ``execve()'' which when given the argument ``/bin/sh'' will pop a shell for you. 
+			See man 2 execve for further information on this command. 
+			Code example \ref{code:ShellcodePop} is an example of shellcode which uses this method to pop a shell. 
+			\begin{code}
+				\lstinputlisting[language={[x86masm]Assembler}]{./ShellcodePop.asm}
+				\caption{Shellcode to Pop a Shell}
+				\label{code:ShellcodePop}
+			\end{code}
+			The instructions used for formatting the addresses such that they can be used may be confusing at first. 
+			See figure \ref{fg:ShellPopMemory}. 
+			for a deptiction of memory at this time. 
+			\begin{figure}[htb]
+				\centering
+				\begin{tabular}{| l | c | c | c | c | c | c | c | c |}
+					\hline
+					RAX	& 0x00 	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\ \hline
+						& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\
+					\hline
+					\hline
+					[RBX] & 0x2F & 0x62 & 0x69 & 0x6E & 0x2F & 0x73 & 0x68 & 0x00 \\ \hline
+						  & addr & addr & addr & addr & addr & addr & addr & addr \\ \hline
+						  & 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\
+					\hline
+				\end{tabular}
+				\begin{tabular}{| l @{ -> } l |}
+					\hline
+					RCX & argv string array. [RBX+8] \\ \hline
+					RDX & envp pointer array. Null. [RBX + 16] \\
+					\hline
+				\end{tabular}
+				\caption[Depiction of memory after shellcode]{Depiction of Memory After Code Example shellcode pop} %TODO: fix reference
+				\label{fg:ShellPopMemory}
+			\end{figure}
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
@@ -909,30 +946,30 @@
 			To determine it's location, open GDB on code example \ref{code:OverflowChallenge} and run the command ``dissass main'', which will show you the assembly code of main. 
 		\begin{Verbatim}[commandchars=\\\{\}]
 Dump of assembler code for function main:
-0x0000000100000ed0 <+0>: 	push	rbp
-0x0000000100000ed1 <+1>: 	mov	rbp,rsp
-0x0000000100000ed4 <+4>: 	sub	rsp,0x20
-0x0000000100000ed8 <+8>: 	mov	DWORD PTR [rbp-0x4],0x0
-0x0000000100000edf <+15>:	mov	DWORD PTR [rbp-0x8],edi
-0x0000000100000ee2 <+18>:	mov	QWORD PTR [rbp-0x10],rsi
-0x0000000100000ee6 <+22>:	mov	rsi,QWORD PTR [rbp-0x10]
-\textbf{0x0000000100000eea <+26>:	mov	rdi,QWORD PTR [rsi+0x8]}
-\textbf{0x0000000100000eee <+30>:	call	0x100000e40 <checkAuth>}
-0x0000000100000ef3 <+35>:	cmp	eax,0x0
-0x0000000100000ef8 <+40>:	je	0x100000f14 <main+68>
-0x0000000100000efe <+46>:	lea	rdi,[rip+0x6f]        
-0x0000000100000f05 <+53>:	mov	al,0x0
-0x0000000100000f07 <+55>:	call	0x100000f3a
-0x0000000100000f0c <+60>:	mov	DWORD PTR [rbp-0x14],eax
-0x0000000100000f0f <+63>:	jmp	0x100000f25 <main+85>
-0x0000000100000f14 <+68>:	lea	rdi,[rip+0x68]        
-0x0000000100000f1b <+75>:	mov	al,0x0
-0x0000000100000f1d <+77>:	call	0x100000f3a
-0x0000000100000f22 <+82>:	mov	DWORD PTR [rbp-0x18],eax
-0x0000000100000f25 <+85>:	xor	eax,eax
-0x0000000100000f27 <+87>:	add	rsp,0x20
-0x0000000100000f2b <+91>:	pop	rbp
-0x0000000100000f2c <+92>:	ret
+0x0000000100000ed0 <+0>:  push rbp
+0x0000000100000ed1 <+1>:  mov rbp,rsp
+0x0000000100000ed4 <+4>:  sub  rsp,0x20
+0x0000000100000ed8 <+8>:  mov  DWORD PTR [rbp-0x4],0x0
+0x0000000100000edf <+15>: mov DWORD PTR [rbp-0x8],edi
+0x0000000100000ee2 <+18>: mov QWORD PTR [rbp-0x10],rsi
+0x0000000100000ee6 <+22>: mov rsi,QWORD PTR [rbp-0x10]
+\textbf{0x0000000100000eea <+26>: mov rdi,QWORD PTR [rsi+0x8]}
+\textbf{0x0000000100000eee <+30>: call 0x100000e40 <checkAuth>}
+0x0000000100000ef3 <+35>: cmp eax,0x0
+0x0000000100000ef8 <+40>: je 0x100000f14 <main+68>
+0x0000000100000efe <+46>: lea rdi,[rip+0x6f]        
+0x0000000100000f05 <+53>: mov al,0x0
+0x0000000100000f07 <+55>: call 0x100000f3a
+0x0000000100000f0c <+60>: mov DWORD PTR [rbp-0x14],eax
+0x0000000100000f0f <+63>: jmp 0x100000f25 <main+85>
+0x0000000100000f14 <+68>: lea rdi,[rip+0x68]        
+0x0000000100000f1b <+75>: mov al,0x0
+0x0000000100000f1d <+77>: call 0x100000f3a
+0x0000000100000f22 <+82>: mov DWORD PTR [rbp-0x18],eax
+0x0000000100000f25 <+85>: xor eax,eax
+0x0000000100000f27 <+87>: add rsp,0x20
+0x0000000100000f2b <+91>: pop rbp
+0x0000000100000f2c <+92>: ret
 		\end{Verbatim}
 		The two bold lines show the return address being calculated and the call to the checkAuth function. %TODO: Add a test to use ShellcodeData.asm 
 
