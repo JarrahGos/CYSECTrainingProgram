@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,11pt,draft]{report}
 \author{Jarrah Gosbell}
 \title{CYSEC Training Program}
 \usepackage{fancyhdr}
@@ -46,11 +46,13 @@
 	breaklines=true,		            	%
 	stringstyle=\color{mymauve}}
 \lstloadlanguages{C}
+\lstloadlanguages{Python}
 %Sorting code floats. 
 \usepackage{float}
 \floatstyle{plain}
 \newfloat{code}{htb}{loc}[section]
 \floatname{code}{Code Example}
+
 \interfootnotelinepenalty=10000
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
@@ -288,6 +290,7 @@
 			
 \chapter{Network Operations}
 	\label{ch:NetworkOperations}
+	%TODO: Check OSI model number
 	By using a common language and being able to write it down, the human race has been able to move from hunter gather to large scale society. 
 	Language has allowed us to communicate the skills which our forebears learned to their children, eventually to us. 
 	In a similar manner, computers need a means of communicating. 
@@ -354,6 +357,49 @@
 	\section{x86 Assembly}
 		%TODO: Decide whether this goes here or in programming. 
 	\section{Radare2}
+		Radare2 is a set of tools for working with binary files. 
+		This makes it useful as a means of reading and altering compiled programs and their data files from the commandline. 
+		While the Radare2 suite has a number of standalone programs within it, this section will cover only the main program. 
+		This program allows for the searching, altering and disassembly of binary programs in multiple modes, making it a great tool for challenges such as Pwn Adventure in the next section.
+		For a more detailed guide, read through the Radare2 book.\cite{Radare2}
+
+		\subsection{Getting Started}
+			The learning curve at the start of using Radare2 is quite steep. 
+			However, if you have any experience with other commandline tools such as Vim and GDB, many of the commands and shortcuts should come easily. 
+			Before going any further, it is worthwhile to note that you can get the help information for any command by appending a ``?'' to it. 
+
+			Navigation within Radare2 is done through the following commands:
+			\begin{description}
+				\item[Seek]
+					or ``s'' will move you to the address that you specify after the command. 
+					The address can either be an explicit memory location, or a mathematical statement based on the current location or a label within the binary. 
+					An example of this is ``s 0x00001c80''.
+				\item[is]
+					or information symbols will get you a list of the different symbols which are still in the binary. 
+					These can be functions, objects, strings or any other symbol that survives the compilation process. 
+					This is useful to find the functions which the program uses, and will become the main way of navigating in the Pwn Adventure Challenge. 
+				\item[Visual mode]
+					Like Vim, Radare2 has a visual mode which allows for direct reading and writing of assembly or hex. 
+					In this mode, you can move using the same key bindings as Vim, with ``i'' being used as replace and ``p'' being used to change visual mode. 
+					Furthermore, to get a cursor which can be used for these insert functions, use ``c''.
+					This mode allows for the editing of the disassembled binary without having to reassemble it. 
+				\item[Hex View]
+					In visual hex view, hold shift while moving to highlight a byte range. 
+					Tab will switch from the Hex pane to the ASCII pane. 
+				\item[\~{}]
+					This is the internal grep function. 
+					When it is placed after a command, anything after it will be used to filter the results. 
+					Furthermore, output can be filtered by column using the syntax ``[x]'' or by row using ``:x'' after the grep search.
+			\end{description}
+			Beyond this, you will want to start the program with the ``-w'' flag in order to write to the file. 
+			Finally, any CLI program---or syntax such as pipes and redirection---installed on your computer can be accessed through the Radare2 prompt. 
+			This is useful for actions such as greping through the output of ``is''. 
+
+			At this point you should have enough of an understanding of Radare2 to be able to use it. 
+			The next section contains spoilers to the challenges presented by Pwn Adventure 3. 
+			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
+			I recommend starting with the sprint speed. 
+
 	\section{Pwn Adventure}
 \chapter{Programming}
 	\label{ch:Programming}
@@ -363,7 +409,7 @@
 		The commandline will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
 		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
 		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
-		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\footnote{\url{http://cli.learncodethehardway.org/book/}}  
+		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\cite{CLICrashCourse}
 		What follows is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
 		\begin{description}
 			\item[pwd]
@@ -903,6 +949,13 @@
 				\caption[Depiction of memory after shellcode]{Depiction of Memory After Code Example shellcode pop} %TODO: fix reference
 				\label{fg:ShellPopMemory}
 			\end{figure}
+			Try writing your own version of the shellcode in code example \ref{code:ShellcodePop} and running it against the code in \ref{code:OverflowChallenge}. You should be able to get a shell. 
+
+			\subsection{Attacking Remote Targets}
+				The shellcode so far has been useful for attacking a local system only. It cannot communicate with an external computer in order to give that computer access. 
+				To have a shell that we can use remotely at the end of the attack, we need to have the shellcode bind a port and listen for our communication over that port. 
+				Thus, we will be using the ``socket''\footnote{\url{http://linux.die.net/man/2/socket}} system call to have the operating system do this for us. 
+				However, the use of these commands. %TODO: Finish this subsection 
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
@@ -1005,6 +1058,7 @@ Dump of assembler code for function main:
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Figures}
 	 \renewcommand{\figurename}{Code Example}
+	 	
 	     \listof{code}{List of Code Examples}
 		 \phantomsection
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
