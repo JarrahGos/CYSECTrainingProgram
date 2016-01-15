@@ -52,13 +52,24 @@
 \floatstyle{plain}
 \newfloat{code}{htb}{loc}[section]
 \floatname{code}{Code Example}
-
+\renewcommand{\abstractname}{Introduction}
 \interfootnotelinepenalty=10000
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
 \begin{document}
 \maketitle
 \tableofcontents
+\begin{abstract}
+	This document was written as a one year introductory course to the field of Cyber Security. 
+	Within it, is much of the Computer Science and technical information that one requires to start working in the field. 
+	However, this comes with a legal penalty. 
+	Much of what you see in this book is illegal to conduct on systems which you do not own or have not received explicit permission to attack. 
+	Thus, I request that you read through your local laws before attempting any of the exercises within the book. 
+	Furthermore, I recommend setting up a virtual machine which can be used to run these exercises in a controlled environment without an Internet connection. 
+	This simply reduces the risk of inputting the wrong command and accidentally attacking a target that you do not control. 
+	With this in mind, please continue through the pages of this book. 
+	I hope you get as mush from reading it as I did from writing it. 
+\end{abstract}
 \chapter{Computer Operations}
 	\label{ch:ComputerOperations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
@@ -68,9 +79,9 @@
 	\section{Hardware}
 		\subsection{CPU} 
 			The CPU is the microprocessor which forms the heart of the modern computer. 
-			While not the only microproccessor in a modern computer, they are the most major and the one which is commonly programmed for. 
+			While not the only microprocessor in a modern computer, they are the most major and the one which is commonly programmed for. 
 			This lesson will discuss the current design and implementation of CPUs, and the impact of this on the way that a computer works. 
-			This will be broken down into the fetch, decode, execute cycle, the physical units which make up the CPU and the connection which allows it to commuticate with the rest of the computer. 
+			This will be broken down into the fetch, decode, execute cycle, the physical units which make up the CPU and the connection which allows it to communicate with the rest of the computer. 
 			\subsubsection{Fetch, Decode, Execute Cycle}
 				The operation of a computer occurs through the repeated execution of a sequence of instructions.
 				This cycle allows the computer to access the instructions stored in cache or RAM and determine how they should be enacted. This lesson will discuss the approach used on a classic RISC CPU similar to that of most modern phones. 
@@ -85,8 +96,8 @@
 				\paragraph{Decode}
 					This step is performed on the Instruction Decoder, where the instruction which was fetched in the last step is converted into the signals which control other parts of the CPU to enact the instruction. 
 					This decoding will occur based on the instruction set of the processor, which can be thought of as a look-up-table for valid instructions. 
-					This will intrepret the first chapter of the instrcution, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
-					The later fields are then sent as arguements to supplement the instruction. 
+					This will interpret the first chapter of the instruction, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
+					The later fields are then sent as arguments to supplement the instruction. 
 					This process may take place on a hardwired circuit, or through the use of a microprogram which, In either case the system output will be the same. 
 					However, in the latter case, the microprogram will be rewritable, allowing for decoding to be altered after production. 
 				\paragraph{Execute}
@@ -98,11 +109,11 @@
 				Each of these parts perform only one task within the CPU, allowing others to process or store their output. 
 				The most important of these components will be explained here. 
 				\paragraph{The Control Unit}
-					Contains the circuitry which intreprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. 
+					Contains the circuitry which interprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. 
 					The control unit is also the communicator between the ALU and the Memory.
-				\paragraph{The Arethmetic Logic Unit}
+				\paragraph{The Arithmetic Logic Unit}
 					(ALU) is the processor for both integer and bitwise logic. 
-					The inputs for this circuit are the decoded signals from the Control Unit, as well as the Operands (arguements) which were passed with the instruction. 
+					The inputs for this circuit are the decoded signals from the Control Unit, as well as the Operands (arguments) which were passed with the instruction. 
 					Once the calculation has taken place, the ALU will output to either the register or memory location designated by the instruction. 
 				\paragraph{The Floating Point Unit}
 					(FPU) is the logic circuit used to calculate floating point (real) numbers. 
@@ -117,7 +128,7 @@
 					In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
 					This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
 			\subsubsection{The Registers}
-				The CPU also contains its own extremely fast memory, known as regsters. 
+				The CPU also contains its own extremely fast memory, known as registers. 
 				These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
 				There are specific uses for registers in the x86 CPU: \footnote{\url{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}}
 				\begin{itemize}
@@ -150,7 +161,7 @@
 							\centering
 							\begin{tabular}{| l | l | l |}
 								\hline
-								\textbf{Bit} &  \textbf{Label} &   \textbf{Desciption} \\\hline 
+								\textbf{Bit} &  \textbf{Label} &   \textbf{Description} \\\hline 
 								0   &   CF &     Carry flag \\ \hline
 								2   &   PF   &   Parity flag \\ \hline
 								4   &   AF   &   Auxiliary carry flag \\ \hline
@@ -160,12 +171,12 @@
 								9   &   IF   &   Interrupt enable flag \\ \hline
 								10  &   DF   &   Direction flag \\ \hline
 								11  &   OF   &   Overflow flag \\ \hline
-								12-13 & IOPL &   I/O Priviledge level \\ \hline
+								12-13 & IOPL &   I/O Privilage level \\ \hline
 								14  &   NT   &   Nested task flag \\ \hline
 								16  &   RF   &   Resume flag \\ \hline
 								17  &   VM   &   Virtual 8086 mode flag \\ \hline
 								18  &   AC   &   Alignment check flag (486+) \\ \hline
-								19  &   VIF  &   Virutal interrupt flag \\ \hline
+								19  &   VIF  &   Virtual interrupt flag \\ \hline
 								20  &   VIP  &   Virtual interrupt pending flag \\ \hline
 								21  &   ID   &   ID flag \\ \hline
 						\end{tabular}
@@ -175,7 +186,7 @@
 				\end{itemize}
 				
 				To see this in action, write a simple program to print ``Hello World'' ten times in C (an example of such a program can be found in the programming section), %TODO: reference this
-				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{\url{https://github.com/longld/peda}} exension to GDB for it's visualization functions)				
+				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{\url{https://github.com/longld/peda}} extension to GDB for it's visualization functions)				
 				\begin{verbatim}
 					$gdb -q a.out
 					Reading symbols from a.out...
@@ -335,11 +346,7 @@
 		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
 	\section{Network Architecture}
 	\section{Connecting to Networked Software}
-\chapter{Web Penetration}
-	\label{ch:WebPenetration}
-	\section{XSS}
-	\section{SQL Inejection}
-	\section{File Uploads}
+	
 \chapter{Network Penetration}
 	\label{ch:NetworkPenatration}
 	\section{nmap}
@@ -347,6 +354,11 @@
 	\section{Metasploit}
 	\section{Pivoting}
 	\section{Maintaining a presence}
+\chapter{Web Penetration}
+	\label{ch:WebPenetration}
+	\section{XSS}
+	\section{SQL Injection}
+	\section{File Uploads}
 \chapter{Forensics}
 	\label{ch:Forensics}
 	\section{File Carving}
@@ -490,7 +502,7 @@
 				This will also work for redirects and can be used on an individual file. 
 				Used as ``grep pattern'', and can use flags such as ``-i'' to ignore case. 
 			\item[man\footnote{\url{http://linux.die.net/man/}}]
-				When you're inevitibly told to RTFM, this is where you go. 
+				When you're inevitably told to RTFM, this is where you go. 
 				Used as ``man <command>'', this program will give you the manual entry for the given command, spelling out all of the flags and usages which you may want. 
 				An alternative to this is using ``<command> --help'' or ``<command> -h'' which may show a shortened version. 
 			\item[dd]
@@ -510,7 +522,6 @@
 
 	\section{Introduction to Scripting}
 	\section{Introduction to Python}
-	\section{Compilation}
 	\section{Introduction to C}
 	\section{Programming Challenges}
 \chapter{Cryptography}
@@ -537,10 +548,10 @@
 			Thus, passwords should be created and managed in a secure way:
 			\begin{itemize}
 				\item Not containing personal information.
-				\item Not dictionary words or common substutions (such as 1337Speak)
+				\item Not dictionary words or common substitutions (such as 1337Speak)
 				\item Not having all numbers or symbols at the start or end. 
 				\item Not a common short phrase. 
-				\item Using an uncommon or non-sensical phrase such as ``Correct horse battery staple''\footnote{\url{https://xkcd.com/936/}}
+				\item Using an uncommon or nonsensical phrase such as ``Correct horse battery staple''\footnote{\url{https://xkcd.com/936/}}
 				\item using multiple numbers, letters and symbols. 
 				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
 				\item Longer than 12 characters. 
@@ -600,7 +611,7 @@
 			\subsection{File Permissions}
 				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
 				This means that if any user is compromised, most files on the system can be stolen. 
-				Furthermore, it means that the attacker can use the systems configuration files to determine likely privelage excilation or pivot points. 
+				Furthermore, it means that the attacker can use the systems configuration files to determine likely privilege escalation or pivot points. 
 				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
 				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
 				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
@@ -609,7 +620,7 @@
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
 				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{\url{http://linux.die.net/man/8/pam\_tally}} system.
 				This system will ensure that if a user attempts to access the system with an incorrect password, they will be locked out, either for a given time, or until unlocked by the root user. 
-				This avoids an oportunistic malicious user attempting to guess the password. \\
+				This avoids an opportunistic malicious user attempting to guess the password. \\
 				Another means of securing users is to limit the number of processes which can be spawned by an individual user. 
 				This will limit the effect of a user account being used to run a denial of service (DoS) attack on the system. 
 				Furthermore, it will disallow actions such as fork bombs from bringing the whole system down. 
@@ -624,7 +635,7 @@
 				In addition to this, services which are particularly vulnerable
 				---such as any Internet facing services---
 				should be run from an additional restricted user account. 
-				This will ensure that if these services are targeted, it is more difficult to excilate to a privelaged or root account. 
+				This will ensure that if these services are targeted, it is more difficult to escalate to a privilege or root account. 
 				Furthermore, by implementing this alongside the other recommendations specified here, 
 				it becomes difficult for an attacker to take data, due to the fact that they cannot see most of the filesystem.
 
@@ -667,16 +678,16 @@
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
-					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all perminant changes. 
+					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 				\subsection{Firewall} %TODO: Add firewall chapter
 				\subsection{Physical security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
-					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgable or determined. 
+					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgeable or determined. 
 					\begin{itemize}
 						\item Implement a BIOS/UEFI password. 
-							Though these are not completly secure, they ensure that the opportunistic attacker will be unable to alter the boot devices of the computer, forcing them to use your secured OS. 
+							Though these are not completely secure, they ensure that the opportunistic attacker will be unable to alter the boot devices of the computer, forcing them to use your secured OS. 
 							However, these can be worked around on most systems by wiping the CMOS. 
 						\item Bootloader security should be implemented by either disabling editing of boot devices or adding a password to the bootloader. 
 							This will stop the ``init=/bin/sh'' attack amongst others. 
@@ -696,11 +707,11 @@
 			Furthermore, they do not find new malware.
 			The modern method is to run a heuristic scan on these files, attempting to determine what they do. 
 			While this is still not reliable in finding malicious software, it is a significant improvement over signature only scanning. 
-			Currently, the most renouned antivirus which runs heuristic scans is malwarebytes.\footnote{\url{https://www.malwarebytes.org/}}
+			Currently, the most renowned antivirus which runs heuristic scans is malwarebytes.\footnote{\url{https://www.malwarebytes.org/}}
 
 		\subsection{Antiexploit}
 			An extension to antivirus is the antiexploit suite. 
-			This software proports to harden certan programs against attacks which are common to them. 
+			This software purports to harden certain programs against attacks which are common to them. 
 			It is designed to mitigate common attack vectors such as the browser or PDF reader. 
 			This software works in much the same way as grsecurity and PAX on Linux, but targets individual programs, rather than the OS as a whole. 
 			Malwarebytes again makes a well known antiexploit software\footnote{\url{https://www.malwarebytes.org/antiexploit/}} for windows. 
@@ -709,7 +720,7 @@
 			one of the most common exploits is to alter a return address and execute code placed into the data of a program. 
 			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
 			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
-			This will enable the protectons for all software installed. 
+			This will enable the protection for all software installed. 
 		\subsection{Application Whitelisting}
 			AppLocker is the main means of providing application whitelisting in the windows environment. 
 			However, it is only available on Ultimate or Enterprise editions of windows. 
@@ -722,7 +733,7 @@
 			If you do not have the required versions of windows, software such as VeraCrypt\footnote{\url{https://veracrypt.codeplex.com/}} will allow you to run full disk encryption. 
 			This software was forked from the discontinued TrueCrypt project. 
 			TrueCrypt passed its most recent audit, but a number of issues were raised.
-			VeraCrypt proports to have resolved these issues, but still uses the same code base. 
+			VeraCrypt purports to have resolved these issues, but still uses the same code base. 
 			If you do not wish to utilise VeraCrypt or upgrade to a higher version of windows, the alternative is to employ file or partition encryption. 
 			This will encrypt only the data you have stored within the encrypted volume, rather than the OS itself. 
 			While still secure for your data, this will leave the system open to offline manipulation,
@@ -749,7 +760,7 @@
 			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
 		\subsection{Flash Control}
 			Flash Control blocks both flash and HTML 5 elements which could contain malicious code. 
-			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly volenerable pieces of web technology. 
+			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly vulnerable pieces of web technology. 
 			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
 			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
 			You may also wish to add any sites that you know are good to the whitelist. 
@@ -831,7 +842,7 @@
 			When setting up browsers for web access, one must decide what needs a secure connection and what can be let connect with the other pages used. 
 			This is due to the fact that no matter how good internal sandboxing gets, an attacker could find a way to pivot from one tab to another. 
 			This becomes far more difficult when attempting to pivot from one browser to another as the original browser will not know that the second is running. 
-			Thus when logging into sites that you deem require security, open a completly different browser and use that to log in. 
+			Thus when logging into sites that you deem require security, open a completely different browser and use that to log in. 
 		\subsection{Password Management}
 			For a long time, this was the domain of the web browser. 
 			This allowed the user to forget all of their passwords, having the browser autofil them when the site loaded.
@@ -922,7 +933,7 @@
 			\end{code}
 			The instructions used for formatting the addresses such that they can be used may be confusing at first. 
 			See figure \ref{fg:ShellPopMemory}. 
-			for a deptiction of memory at this time. 
+			for a depiction of memory at this time. 
 			\begin{figure}[htb]
 				\centering
 				\begin{tabular}{| l | c | c | c | c | c | c | c | c |}
@@ -982,7 +993,7 @@
 			Note that here we altered the content of first by writing to second. 
 			This is because each item on the stack is placed at a lower memory location than the item before it. 
 			Writing beyond an items bounds will overwrite variables stored in higher memory locations. 
-			This can further be seen through the variable change's hex output, which contains repeated 0x61, the hex value for a. 
+			This can further be seen through the variable changes' hex output, which contains repeated 0x61, the hex value for a. 
 			The size and content of the argument will allow you to alter the variables first and change to any arbitrary value.
 			However, a longer overflow string may cause the program to crash. 
 			See code example \ref{code:OverflowChallenge} in the challenges section of this chapter for another vulnerable code example. 
@@ -1069,7 +1080,7 @@ Dump of assembler code for function main:
 			Furthermore, in the following sections, you will see the device ``wlan0'', this is used as a generic WiFi device. 
 			Change it to the one reported by ``iwconfig'' on your system. 
 		\subsection{Sniffing a Network}
-			The first step to a wireless attack is to gather dat about the potential target. 
+			The first step to a wireless attack is to gather data about the potential target. 
 			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks. 
 			To set the hardware properly, we must shift the WiFi card into monitor mode:
 			\begin{quote}
@@ -1126,7 +1137,7 @@ Dump of assembler code for function main:
 				aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
 			\end{quote}
 			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
-			When the ARP packet is received, aireplay-ng will repeat it back at the AP continously, causing the traffic on the network to increase, thus collecting more IVs. 
+			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs. 
 			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
 			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again. 
 
@@ -1175,7 +1186,6 @@ Dump of assembler code for function main:
 			If you see a difference on the 0 line, it is likely due to the card not having a write enabled 0 block. 
 			Any other differences mean that the write was unsuccessful, and should be attempted again. 
 	\section{Challenges}
-
 \chapter{Reporting}
 	\label{ch:Reporting}
 	\section{Report Writing}
