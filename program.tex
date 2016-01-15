@@ -931,9 +931,9 @@
 						& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\
 					\hline
 					\hline
-					[RBX] & 0x2F & 0x62 & 0x69 & 0x6E & 0x2F & 0x73 & 0x68 & 0x00 \\ \hline
+					[RBX] 	& 0x2F & 0x62 & 0x69 & 0x6E & 0x2F & 0x73 & 0x68 & 0x00 \\ \hline
 						  & addr & addr & addr & addr & addr & addr & addr & addr \\ \hline
-						  & 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\
+						  & 0x00 & 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00	& 0x00 \\
 					\hline
 				\end{tabular}
 				\begin{tabular}{| l @{ -> } l |}
@@ -1048,7 +1048,66 @@ Dump of assembler code for function main:
 	And in the case of many of these technologies, it is usually cheaper to release old hardware, such as Mifare classic NFC cards, which have a known vulnerable random number generator backing their encryption. 
 	In these cases and many more, we can exploit these failures, allowing us to connect to and read from these networks and devices, using them for our purposes. 
 	\section{Aircrack-ng}
-	\url{http://aircrack-ng.org/doku.php?id=newbie\_guide}
+		Aircrack-ng\footnote{\url{http://aircrack-ng.org/doku.php?id=newbie\_guide}} is a suite of tools which can be used to attack WiFi networks. 
+		These tools allow you to place hardware in monitor modes and intercept the required packets in order to collect hashes and crack access codes. 
+		Each tool is used for a different goal, but many of them will need to be used for a complete attack. 
+		\subsection{WiFi Basics}
+			Before attacking a WiFi network, you will need to understand how they work. 
+			This understanding will make the next few sections make sense, rather than being learned by rote.
+
+			WiFi Beacons are a transmission sent out by an access point (AP) at a rate of 10 per second. 
+			These contain information about the network such as:
+			\begin{itemize}
+				\item The name of the network (ESSID)
+				\item If and what encryption is used, though this may not always be accurate. 
+				\item the supported data rates. 
+				\item the channel the network is broadcasting on. 
+			\end{itemize}
+			This information can be seen through commands such as ``iwlist'' or ``airodump-ng''.
+			Furthermore, in the output of these two programs, you will see a MAC address for the AP. 
+			This address will be how we will refer to the AP in future commands. 
+			Furthermore, in the following sections, you will see the device ``wlan0'', this is used as a generic WiFi device. 
+			Change it to the one reported by ``iwconfig'' on your system. 
+		\subsection{Sniffing a Network}
+			The first step to a wireless attack is to gather dat about the potential target. 
+			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks. 
+			To set the hardware properly, we must shift the WiFi card into monitor mode:
+			\begin{quote}
+				airmon-ng start wlan0
+			\end{quote}
+			At this point, you will want to run ``iwconfig'' to check how your device driver handles monitor mode, you may find a new device called ``wlan0mon'' which you should use in the next few commands. 
+			Within this output, you should also see that your device has been put into monitor mode. 
+			For the purposes of this section, I will continue to refer to the WiFi device as ``wlan0'' even in monitor mode. 
+
+			At this point we can start searching for and gathering information about nearby networks. 
+			\begin{quote}
+				airodump-ng wlan0
+			\end{quote}
+			This will show you an output of all details listed in the above section for each AP within range, with further information about its power and the number of intercepted beacons. 
+			Furthermore, you will see information about the clients which are connected to nearby APs in the lower block of the output. 
+			%TODO: Program output would be nice. 
+			When selecting a target network, you should ensure that it has a number of clients connected and has a high signal strength. 
+			For your first attack, it is best to attempt on a WEP encrypted network. 
+			Though rare, these networks are still seen, and are exceptionally easy to attack, making them a good first step. 
+
+			At this point, we move to targeting just the network that we are attempting to access. 
+			To do this, the ``airodump-ng'' command is used in a more refined manner to create a dump of initialization vectors (IV) which are transmitted between the network and its clients. 
+			\begin{quote}
+				airodump-ng -c <channel> --bssid <AP MAC> -w dump wlan0
+			\end{quote}
+			Substituting the ``<channel>'' and ``<AP MAC>'' for the relevant information. 
+			This will give you a dump of the IVs which were sent across the network, which can be used to crack the password of a WEP network. 
+			You will need to wait until between 40000 and 85000 IVs have been collected, which may take some time depending on the network traffic at the time. 
+			
+			Once this has been collected, the key can be cracked using ``aircrack-ng''.
+			\begin{quote}
+				aircrack-ng -b <AP MAC> dump-01.cap
+			\end{quote}
+			This will run an offline attack against the IVs collected in the .cap file.
+			This may take a long time, depending on the number and strength of the IVs that were collected.
+			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command. 
+
+	\section{WiFi Pineapple}
 	\section{Bluetooth}
 	\section{Near Field Communications}
 		NFC cards and tags are an exceptionally useful input device for many solutions. 
