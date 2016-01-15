@@ -287,7 +287,10 @@
 			Another program, known as strings will automate the process of finding ASCII strings in binary. 
 			Though it is exceptionally widespread, one need not understand binary in order to utilise these tools. 
 		\subsubsection{Assembly}
-			
+\chapter{Scoping and Mindset}
+	\label{ch:ScopingMindset}
+	\section{Lock Picking}
+	\section{Research}
 \chapter{Network Operations}
 	\label{ch:NetworkOperations}
 	By using a common language and being able to write it down, the human race has been able to move from hunter gather to large scale society. 
@@ -332,10 +335,6 @@
 		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
 	\section{Network Architecture}
 	\section{Connecting to Networked Software}
-\chapter{Scoping and Mindset}
-	\label{ch:ScopingMindset}
-	\section{Lock Picking}
-	\section{Research}
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
@@ -850,11 +849,6 @@
 			Once the password manager is set up, use it to generate strong passwords for every website you access. 
 			This allows you to use a different password for every website, employing characters which one would not be able to remember. 
 
-\chapter{Reporting}
-	\label{ch:Reporting}
-	\section{Report Writing}
-	\section{STIX Model}
-		\url{http://stixproject.github.io/}
 \chapter{Binary Exploitation}
 	\label{ch:BinaryExploitation}
 		The execution of a program usually follows a specific set of instructions to the letter. 
@@ -1040,10 +1034,6 @@ Dump of assembler code for function main:
 			\caption{Overflow Challenge}
 			\label{code:OverflowChallenge}
 		\end{code}
-\chapter{History}
-	\label{ch:History}
-	\section{MIT Tech Model Railroad Club}
-	\section{Early Computing Equipment}
 \chapter{Wireless Attacks}
 	\label{ch:WirelessAttacks}
 	Wireless networks are great. 
@@ -1080,8 +1070,32 @@ Dump of assembler code for function main:
 			If this is the case, look into using an installed version of Kali and getting a NFC reader based on the ACR112U chipset. 
 		\subsection{Editing Dumps}
 		\subsection{Writing cards}
+			Once you have edited the card dump, or in order to clone a card, you will want to write the dump to a card. 
+			This process is easy given the correct card or the original. 
+			However, without this, the UID of the card cannot be altered, making it easy to detect the fact that the card is a forgery. 
+			When looking for blank cards, check that block 0 is unlocked, as this is the UID block that is required to create a true copy. 
+
+			To write a card, use the following command:
+			\begin{quote}
+				nfc-mfclasic w B <dump.mfc> <dump.mfc> 
+			\end{quote}
+			If you have a to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID. 
+			At this point, you should have written the whole dump to the card, allowing you to use it in place of the original. 
+			However, if you would like to test this, create another dump of the new card and run both dumps through a tool such as ``vbindiff'' which will check for differences between the hex of the two dumps. 
+			If you see a difference on the 0 line, it is likely due to the card not having a write enabled 0 block. 
+			Any other differences mean that the write was unsuccessful, and should be attempted again. 
 	\section{Challenges}
+
+\chapter{Reporting}
+	\label{ch:Reporting}
+	\section{Report Writing}
+	\section{STIX Model}
+		\url{http://stixproject.github.io/}
 \newpage
+\chapter{History}
+	\label{ch:History}
+	\section{MIT Tech Model Railroad Club}
+	\section{Early Computing Equipment}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
