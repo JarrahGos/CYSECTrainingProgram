@@ -1079,7 +1079,7 @@ Dump of assembler code for function main:
 			Within this output, you should also see that your device has been put into monitor mode. 
 			For the purposes of this section, I will continue to refer to the WiFi device as ``wlan0'' even in monitor mode. 
 
-			At this point we can start searching for and gathering information about nearby networks. 
+			We can now start searching for and gathering information about nearby networks. 
 			\begin{quote}
 				airodump-ng wlan0
 			\end{quote}
@@ -1106,7 +1106,38 @@ Dump of assembler code for function main:
 			This will run an offline attack against the IVs collected in the .cap file.
 			This may take a long time, depending on the number and strength of the IVs that were collected.
 			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command. 
+		\subsection{Active Attacks}
+			Often and especially when attacking networks secured with WPA and WPA2, just collecting IVs and running an offline attack will be ineffective. 
+			Thus, we use our own hardware to inject frames which alter the network to allow us to gather more information. 
+			Such attacks still use the same end method of collecting IVs and cracking them with aircrack-ng, but in this case, the process will be far faster due to our manipulation. 
 
+			Packet injection does not work on most WiFi cards\footnote{\url{http://aircrack-ng.org/doku.php?id=compatibility\_drivers}}
+			however, when it does work, it allows for a far more powerful attacks. 
+			To ensure that injection is supported by your device, check whether authentication is successful with the following command:
+			\begin{quote}
+				aireplay-ng --fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
+			\end{quote}
+
+			At this point we can begin to speed up IV collection using ARP-request reinjection. 
+			This works by capturing ARP request packets (used to translate from an IP address to a MAC address) and resending them. 
+			However, this has been blocked as of WPA, making it useful only for WEP networks.
+			The simple method for this uses the following command:
+			\begin{quote}
+				aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
+			\end{quote}
+			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
+			When the ARP packet is received, aireplay-ng will repeat it back at the AP continously, causing the traffic on the network to increase, thus collecting more IVs. 
+			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
+			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again. 
+
+			The more aggressive way to run this attack is to force the client off the network, making it reauthenticate and refresh its ARP cache. 
+			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
+			To run this attack, run the following command while running an ARP replay and collecting IVs:
+			\begin{quote}
+				aireplay-ng --deauth 5 -a <AP MAC> -c <Client MAC> wlan0
+			\end{quote}
+			This makes ARP replay and IV collection far faster.
+			However, your attack also becomes far more obvious on the network, making it more likely that a attentive user or IDS will notice your attack. 
 	\section{WiFi Pineapple}
 	\section{Bluetooth}
 	\section{Near Field Communications}
