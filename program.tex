@@ -350,6 +350,111 @@
 \chapter{Network Penetration}
 	\label{ch:NetworkPenatration}
 	\section{nmap}
+		Port scanning is a simple way to determine what services are running on a computer. 
+		This can be done due to the fact that most programs run on a known port specified in their documentation. 
+		However, it also works by fingerprinting the response, which is usually specific to the program which is running on the port. 
+		This can be done through a number of means, such as attempting to open a full TCP connection to each port or only attempting a partial connection. 
+		It must be noted that while effective, the former is rarely used due to the ease of detection and large amount of network traffic generated. 
+		Nmap\cite{NmapBook} is the tool that we will utilise to conduct these scans. 
+		It has a number of options which allow us to control the scan to our exact specifications and commonly picks up most services.\cite{HackingAOE} 
+		\subsection{SYN Scanning}
+			The most common scan used is known as a SYN scan. 
+			This will send TCP SYN packets to the specified ports on the target computer, listening for the SYN/ACK response. 
+			If a SYN/ACK packet is received, the port is marked as open, the packet is examined for service fingerprinting and an RST packet is sent to stop the connection and prevent accidental DoS. 
+			Using nmap, the ``-sS'' flag is used to run a SYN scan. 
+			\begin{quote}
+				nmap -sS <Target IP>
+			\end{quote}
+			This will output all of the services which are found to be running on the remote system. 
+			A sample output of an nmap SYN scan can be seen below. 
+			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable. 
+			\begin{verbatim}
+				Starting Nmap 7.01 ( https://nmap.org ) at 2016-01-17 00:56 EST
+				Nmap scan report for 192.168.115.129
+				Host is up (0.000099s latency).
+				Not shown: 977 closed ports
+				PORT     STATE SERVICE
+				21/tcp   open  ftp
+				22/tcp   open  ssh
+				23/tcp   open  telnet
+				25/tcp   open  smtp
+				53/tcp   open  domain
+				80/tcp   open  http
+				111/tcp  open  rpcbind
+				139/tcp  open  netbios-ssn
+				445/tcp  open  microsoft-ds
+				512/tcp  open  exec
+				513/tcp  open  login
+				514/tcp  open  shell
+				1099/tcp open  rmiregistry
+				1524/tcp open  ingreslock
+				2049/tcp open  nfs
+				2121/tcp open  ccproxy-ftp
+				3306/tcp open  mysql
+				5432/tcp open  postgresql
+				5900/tcp open  vnc
+				6000/tcp open  X11
+				6667/tcp open  irc
+				8009/tcp open  ajp13
+				8180/tcp open  unknown
+				MAC Address: 00:0C:29:92:21:5E (VMware)
+	
+				Nmap done: 1 IP address (1 host up) scanned in 13.38 seconds
+			\end{verbatim}
+		\subsection{Other Scan Types}
+			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules. 
+			These systems will see a number of partial connections within a given time and will lock out the address that the connections came from, effectively halting your scan. 
+			To combat this, a number of other scan types have been created, each exploiting some part of the network standard. 
+			These newer scans work by sending a TCP packet which doesn't make sense to each port. 
+			When these packets are received by a service, they will be ignored. 
+			However, when the OS receives them on a closed port, it will often reply with a RST packet. 
+			This difference can be used to determine which ports are open. 
+			This will work on any system which follows the RFC793 standard. 
+			Most *nix systems following this, however, windows does not. 
+			\begin{description}
+				\item[FIN scan]
+					sends a FIN packet. 
+					Used by specifying ``-sF'' in nmap. 
+				\item[X-mas scan]
+					sends a packet with FIN, URG and PUSH flags on.
+					Used by specifying ``-sX'' in nmap. 
+				\item[null scan]
+					sends a packet with all flags off. 
+					Used by specifying ``-sN'' in nmap. 
+			\end{description}
+			These scans will generally give you exactly the same output as the SYN scan, except where RST replies are not sent or where SYN scans are blocked by a firewall. 
+			When you don't care about hiding and would like as much information as possible, all nmap scans can be integrated by using the ``-A'' option. 
+			This will turn on all scanners, taking significantly more time and producing significantly network noise, however, you will receive detailed information on the services and OS running on the target. 
+
+		\subsection{Other Means of Hiding}
+			By default, many of these scans can be both loud and obvious to the trained eye or IDS.\footnote{\url{https://nmap.org/bennieston-tutorial/}} 
+			Thus, nmap also comes with a set of flags which will enable you to attempt to hide the most obvious parts of the scan. 
+			These, when used well will allow you to run an scan which will not be noticed by most of the IDS which are on the market today. 
+
+			By default, nmap adjusts it's timings based on network speed and the response times of the target. 
+			However, you are able to adjust these timings in order to either avoid detection or have the scan complete as quickly as possible. 
+			These start with the ``-T0'' or paranoid scan, which will send packets at 5 minute intervals. 
+			This timing will likely not be picked up by an IDS, nor by after the fact analysis due to the fact that random Internet traffic usually presents this number of invalid packets. 
+			On the other end of the spectrum is the ``-T5''  or insane scan. 
+			This scan will map a network exceptionally fast, but will trip most IDS systems and will be obvious in logs. 
+			Furthermore, if you are on a slower network connection, it is possible that this scan will fail or drop data due to the high data rate required. 
+			Further adjustment to specific parts of timings can be made, but this is usually not necessary. 
+			See the nmap manual for more information on these. 
+
+			If you are attempting to hide that you are the attacker, the decoy option ``-D'' will allow you to specify a number of IP addresses from which it will seem the attack originates.
+			While this will not hide your own address, it will place it within a swath of other information, making it difficult to determine the original attacker. 
+			Furthermore, when looking at logs, the target will assume that they were being scanned by a large number of hosts, causing them to worry about the potential future attacks. 
+
+			For another level of stealth, ICMP pings can be turned off.
+			These will make the scan less likely to be picked up in as the machines being scanned will not have a ping going out to test whether they are up first. 
+			Furthermore, it will allow nmap to scan all hosts, rather than just those responding to ping. 
+			When using this flag, you can also specify flags such as ``-PT'' or ``-PS'' which will send a TCP or SYN ping respectively. 
+			There are a number of options for ping within nmap scans. See the ``-Px'' flags within the nmap manual. 
+
+			A final option for bypassing firewalls is to use the fragment or ``-f'' option. 
+			This will split every packet sent to the target into a number of small packets, which many firewalls will not attempt to reassemble before scanning them. 
+			While this means that you are more likely to get past the firewall, it also can crash some less stable software and hardware. 
+			Thus, this should be used with care, as crashing computer systems are exceptionally noisy. 
 	\section{Nessus}
 	\section{Metasploit}
 	\section{Pivoting}
