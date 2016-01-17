@@ -882,6 +882,8 @@
 		Thus, it is recommended that in the scoping and framing section of your attack, you find out as much about the system as you con. 
 		Furthermore, a strong grasp of the filesystem and configuration quirks of the target system will allow you to alter the configuration to meet your needs. 
 		For the programming concepts that you will need to understand before writing shellcode, read through the assembly section in chapter \ref{ch:ComputerOperations}
+		Note that much of the assembly that you will see in this section is not well written for efficiency but rather is written to assemble into the smallest shellcode possible. 
+		When writing assembly for other purposes, you should not use actions such as pushing something to the shell and popping it into a register without good reason. 
 		\subsection{Data in Shellcode}
 			Shellcode can be thought of as a virus, with the program that it is stealing execution from being the biological body. 
 			Due to this, shellcode is not a fully fledged program in itself. 
@@ -956,13 +958,44 @@
 				\caption[Depiction of memory after shellcode]{Depiction of Memory After Code Example shellcode pop} %TODO: fix reference
 				\label{fg:ShellPopMemory}
 			\end{figure}
+
 			Try writing your own version of the shellcode in code example \ref{code:ShellcodePop} and running it against the code in \ref{code:OverflowChallenge}. You should be able to get a shell. 
 
 			\subsection{Attacking Remote Targets}
 				The shellcode so far has been useful for attacking a local system only. It cannot communicate with an external computer in order to give that computer access. 
 				To have a shell that we can use remotely at the end of the attack, we need to have the shellcode bind a port and listen for our communication over that port. 
-				Thus, we will be using the ``socket''\footnote{\url{http://linux.die.net/man/2/socket}} system call to have the operating system do this for us. 
-				However, the use of these commands. %TODO: Finish this subsection 
+				Thus, we will be using the system calls ``socket''\footnote{\url{http://linux.die.net/man/2/socket}}, 
+				``bind''\footnote{\url{http://linux.die.net/man/2/bind}}, 
+				``listen''\footnote{\url{http://linux.die.net/man/2/listen}} and 
+				``accept''\footnote{\url{http://linux.die.net/man/2/accept}} to have the operating system do this for us. 
+				However, the use of these system calls requires the creation of a C struct within the shellcode that we write. 
+				The shellcode example \ref{code:ShellcodePort}\footnote{\url{https://www.exploit-db.com/exploits/39151/}} shows the creation of a socket connection to another computer. 
+				This can then be extended to allow communication through these sockets to a shell spawned by the shellcode in %TODO: ref next code. 
+				\begin{code}
+					\lstinputlisting[language={[x86masm]Assembler}]{./ShellcodePort.asm}
+					\caption{Shellcode to bind a shell to a port}
+					\label{code:ShellcodePort}
+				\end{code}
+				This shellcode on it's own will allow you to check that connection can be established, but will not allow any access to the remote computer. 
+				However, this functionality can be added by creating a number of file descriptors for the socket and binding them to the standard input, output and error of the shell. 
+				The shellcode in shellcode example \ref{code:ShellcodeSHPort}, when executed after \ref{code:ShellcodePort} will bind a shell to the socket described by the register ``r9''. 
+				\begin{code}
+					\lstinputlisting[language={[x86masm]Assembler}]{./ShellcodeSHPort.asm}
+					\caption{Shellcode to bind a shell to a socket}
+					\label{code:ShellcodeSHPort}
+				\end{code}
+				When these two examples of shellcode are combined and executed, they will create a socket on port 4444 and bind it with the IO of a shell. 
+				This will then be accessible to anyone connected to the socket created. 
+				When working with remote programs, this is the minimum shellcode required in order to be able to interact with the shell which is spawned. 
+				Without this, the program would drop a shell on the system but not be accessible to you. 
+				
+				The above shellcode, while useful for training, will not work in most situations where a firewall is used. 
+				This is due to the fact that most firewalls block incoming connections which were not proceeded by an outgoing connection to the same address. 
+				Thus, a better shellcode would attempt itself to connect to the attacker, rather than passively waiting. 
+				This will bypass most simple firewall protections. 
+				As a challenge, alter the shellcode in example \ref{code:ShellcodePort} to have it conduct a reverse connection. 
+				A solution to this can be found in shellcode example \ref{code:ShellcodeReversePort} in the challenges section below. 
+
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
@@ -1037,6 +1070,13 @@ Dump of assembler code for function main:
 	\section{String Format Errors}
 	\section{IDS, IPS and AV}
 	\section{Challenges}
+		The shellcode found in \ref{code:ShellcodeReversePort} is the solution to the problem given in Attacking Remote Targets. 
+		\begin{code}
+			\lstinputlisting[language={[x86masm]Assembler}]{./ShellcodeReversePort.asm}
+			\caption{Reverse socket connection shellcode challenge}
+			\label{code:ShellcodeReversePort}
+		\end{code}
+		\newpage
 		The overflow challenge found in code example \ref{code:OverflowChallenge} is another simple stack based overflow vulnerability. 
 		Try to set the password to 0xDEADBEEF to login.
 		This code should also be vulnerable to the introduction of shellcode to the return address of the stack frame. 
