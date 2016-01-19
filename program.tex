@@ -635,6 +635,8 @@
 	\section{Introduction to Cryptography}
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
+	\section{Hash Cracking}
+		
 \chapter{System Hardening}
 	\label{ch:SystemHardening}
 	Securing one's own operating system and the software within can be a daunting task. 
@@ -1464,6 +1466,33 @@ Dump of assembler code for function main:
 			\end{quote}
 			This makes ARP replay and IV collection far faster.
 			However, your attack also becomes far more obvious on the network, making it more likely that a attentive user or IDS will notice your attack. 
+			The method used in cracking WEP using IVs contains interesting mathematical and logical concepts. 
+			I recommend reading the Wireless section of Jon Erickson's ``Hacking, the Art of Exploitation''\cite{HackingAOE} for more information.
+			
+		\subsection{WPA and WPA2}
+			The above sections have discussed the old technology used for attempting to secure wireless networks. 
+			Modern networks will usually use WPA2, which when coupled with a strong pre-shared key is far more difficult to attack. 
+			This is due to the fact that data such as IVs cannot be used to make the attack faster, with the only transmission of useful data being the initial handshake between client and AP. 
+			Due to this, a brute force or dictionary attack are the most common attacks on WPA2 networks. 
+
+			The first step of this attack is to capture the connection handshake between a client and AP. 
+			This can be done first by setting your card into monitor mode, then by setting airodump-ng to collect traffic. 
+			Both of these commands are the same as the WEP attack above. 
+			At this point you are waiting for a new client to connect to the AP, however, rather than waiting, you can use the deauth aireplay command above to have this happen quicker. 
+
+			When you have successfully collected a handshake, you will be able to start a dictionary attack on it. 
+			The most simple method of this is to use the following command:
+			\begin{quote}
+				aircrack-ng -w <password list> -b <AP MAC> <capture file>
+			\end{quote}
+			If a valid handshake is found, you will be informed that aircrack-ng is attempting to crack it. 
+
+			The dictionary is the most important part of this attack. 
+			Without it, the attack would take a prohibitive amount of time. 
+			However, programs such as ``John the Ripper'' can be used to generate a far better dictionary than the one given by aircrack-ng and even the ``rockyou'' wordlist given by kali. 
+			Furthermore, if you are willing to store large amounts of data and use a custom program, rainbow tables could speed this process significantly for common passwords. 
+			If neither of the above work, the final option is to use a program such as ``hashcat'', which will allow you to undertake GPU accelerated cracking on multiple machines in order to find the password. 
+			See the Hash Cracking section of chapter \ref{ch:Cryptography} for more detailed information about this. 
 	\section{WiFi Pineapple}
 	\section{Bluetooth}
 	\section{Near Field Communications}
