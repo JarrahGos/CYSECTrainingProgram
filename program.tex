@@ -754,6 +754,38 @@
 			However, if you set your cracking program up properly, it will still likely beat this setup when it is brute forcing hashes. 
 		\subsection{Salting}
 	\section{Challenges}
+		\subsection{Hash Challenges}
+			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
+			The wordlist for this challenge can be found by using the following command on kali linux:
+			\begin{quote}
+				head -n 20 /usr/share/wordlists/rockyou.txt
+			\end{quote}
+			The password, hashed in MD5 and SHA256 can be found below. 
+			\begin{verbatim}
+				MD5: 
+				4aa6dea37dec500f58bb241404471981
+				SMA256: 
+				6ff13e15281e9953d2c85c86e3727ea1cf3862f44d5cf18961811d63eebce2da 
+			\end{verbatim}
+			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom wordlist and using Hashcat's hybird mode. 
+			%Solution: "N1c0l3;7"
+
+			The second challenge is based on an ATM keypad. 
+			Through an image captured when the hash was pulled, it was determined that the only keys pressed were ``2, 4, 9 and 0''. 
+			The password was also determined to be exactly 16 characters long. 
+			Create a custom mask for Hashcat and solve this sha256 hash. 
+			\begin{verbatim}
+				27e4c844657fee60da199ccb1b60c0f4072370633b1a6e831141dbf9ab4e6b01
+			\end{verbatim}
+			%solution: "2490092442902942"
+
+			The third challenge is based on using multiple dictionary words. 
+			This is a common method used to create passwords. 
+			I recommending using Hashcat in combinator mode to solve this SHA256 hash. 
+			All the words necessary to solve this can be found in the rockyou wordlist. 
+			\begin{verbatim}
+				2fb26990a2b7d9ba876668c0ed6c9e9006313286ae02e7224e18939833fb9096
+			\end{verbatim}
 \chapter{System Hardening}
 	\label{ch:SystemHardening}
 	Securing one's own operating system and the software within can be a daunting task. 
