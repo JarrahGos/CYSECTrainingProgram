@@ -610,7 +610,7 @@
 			\item[man\footnote{\url{http://linux.die.net/man/}}]
 				When you're inevitably told to RTFM, this is where you go. 
 				Used as ``man <command>'', this program will give you the manual entry for the given command, spelling out all of the flags and usages which you may want. 
-				An alternative to this is using ``<command> --help'' or ``<command> -h'' which may show a shortened version. 
+				An alternative to this is using ``<command> \verb+--+help'' or ``<command> -h'' which may show a shortened version. 
 			\item[dd]
 				A low level copy of the given partition or disk. 
 				This command ignores filesystem and just writes the bits read from the input device to the output. 
@@ -636,7 +636,124 @@
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
 	\section{Hash Cracking}
-		
+		Hashes are used in many situations to store passwords. 
+		This is done because the hashing algorithm is a one way action, meaning that there is no easy way to calculate the password from the hash. 
+		Due to this, the means of authentication on most programs is done by hashing the entered password and comparing it to a stored hash. 
+		If the two match, it is likely---though not guaranteed due to collisions---that the password is the same. 
+		While this may sound like it makes attacking these targets hard, it is far from being unsolvable. 
+		Tools such as ``John the Ripper'' and ``Hashcat'' can be used to compute hundreds of thousands of hashes per second, which can then be compared with the given hash. 
+		This makes hash cracking a matter of time and dictionary crafting. 
+		\subsection{John the Ripper}
+			While there are many tutorials\footnote{\url{http://openwall.info/wiki/john/tutorials}} on the usage of John the Ripper(John) which go into specific detail, this section will explain the basic usage of the tool. 
+			Before starting, check that the version of John which you have installed is correctly compiled for your system, you may want to enable options such as gpu cracking, which needs to be done at compile time. 
+			What follows is a list of common commands for use with John:
+			\begin{description}
+				\item[-single]
+					The simplest means of attacking a hash. 
+					This mode uses only a basic wordlist and very few rules. 
+					Thus it is not recommended for anything but the most basic attacks. 
+				\item[-wordfile:]
+					Uses the wordlist specified directly after the colon. 
+				\item[-rules:]
+					Specifies the mutation rules for the given wordlist. 
+					These can be used to create a dictionary with substitutions, such as 1337 speak. 
+				\item[-incremental:]
+					This, along with options such as ``alpha'', ``digits'' or ``lanman'' will give you a brute force of letters, numbers or both with some special characters respectively. 
+				\item[-external:]
+					Allows the use of pre-configured modes, which can be powerful if used or modified correctly. 
+					%TODO: add more to this and rules. 
+				\item[-restore:]
+					Will start a crack part way through based on a restore file created by a previous session. 
+				\item[-sesion:]
+					Used to name the restore file that will be created when the session is broken. 
+				\item[-status:]
+					Shows how far into the crack a previous session was stopped. 
+				\item[-show]
+					Shows how many passwords within a file have been cracked and how many remain. 
+				\item[-format:]
+					Specify the hash format (such as SHA512) which the hash to crack was created with. 
+			\end{description}
+			
+		\subsection{Hashcat}
+			Hashcat was started due to the fact that at the time, tools such as John the Ripper did not make proper use of multithreading. 
+			This has been expanded to include GPGPU processing using tools such as openCL and CUDA, and has made hashcat one of the fastest hash cracking tools currently available. 
+			Both Hashcat and the newer oclHashcat use the same input files and command syntax. 
+			However, oclHashcat will conduct the crack on the GPU installed on the system, rather than the slower CPU. 
+
+			Hashcat uses a number of modes to allow it to crack hashes. 
+			Each of these modes has a number of specific properties which make it better at a given type of attack. 
+
+			\subsubsection{Mask Attack}
+				This attack, while similar to a brute force attack, uses a mask to reduce the possible character set of the attacks.\footnote{\url{http://hashcat.net/wiki/doku.php?id=mask_attack}} 
+				Rather than run through every possible permutation of the character space for every character in the password, the mask attack requires that the user input some details of the characters within the password. 
+				
+				When using this mode, for each position within the password, we need to create a mask using either the character sets outlined in table \ref{tab:HashcatMaskCharSets} or a custom character set defined before starting. 
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{| l | l |}
+						\hline
+						?l & abcdefghijklmnopqrstuvwxyz \\ \hline
+						?u & ABCDEFGHIJKLMNOPQRSTUVWXYZ \\ \hline
+						?d & 0123456789 \\ \hline
+						%?s & \verb¤«space»!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~}¤ \\ \hline
+						?s & Special Characters \\ \hline %TODO: Have this print the characters. 
+						?a & ?l?u?d?s \\ \hline
+						?b & 0x00 - 0xff \\ \hline
+					\end{tabular}
+					\caption{Hashcat Mask Mode Built in Character Sets}
+					\label{tab:HashcatMaskCharSets}
+				\end{table}
+				Attacks in this mode are limited by the length of the mask given. 
+				This means that if you give a mask with 8 character spaces, but have a password which is 6 characters long, you will be unable to crack it. 
+				Due to this, the ``\verb+--+increment'' flag was created. 
+				Furthermore, a list of standard character sets for multiple languages can be found in ``/usr/share/hashcat/charsets/''.
+
+				Another means of creating this attack mode is to use a Hashcat Mask File. 
+				These files contain a number of masks and the custom character sets which are used within them, in order to run attacks which are regularly repeated. 
+				To use one of these files, run Hash cat with the arguments ``-a 3 <hash file> <mask file>''.
+
+			\subsubsection{Dictionary Attack}
+				In this attack, a dictionary or word list is created to be utilised within the attack. 
+				This dictionary can either be one that you found on the system or one that was created specifically for the job. 
+				Due to the limitations of this attack, it is recommended that it is either used with a specifically generated dictionary, which can be done by a program such as John the Ripper or
+				a can be manually written through the use of a python script. 
+				This type of attack may be the first that you use, as it will likely be the quickest attack. 
+			\subsubsection{Combinator Attack}
+				In this attack, each word of a dictionary is appended to each word in a second dictionary. 
+				This will catch many passwords which use two simple words, as long as the dictionary is well written. 
+				However, if the dictionaries that you are using have already been enumerated in such a way, it will likely not produce useful results. 
+				Furthermore, this attack will not run the words from each dictionary separately. 
+				To use this attack, run the top command for GPU or the bottom command for CPU. 
+				\begin{quote}
+					oclHashcat64 -m 0 -a 1 <hash file> <dict1> <dict2>
+					
+					hashcat-cli64 -m 0 -a 1 <hash file> <dict 1 and 2>
+				\end{quote}
+			\subsubsection{Hybird Attack}
+				This attack uses the concepts of both the combinator and mask attacks. 
+				This means that you can specify a dictionary and have hashcat add the mask that you give to either the start or end of the word. 
+				Using this means, you can easily run through passwords such as name and birth year combinations. 
+				To conduct this attack, use the command:
+				\begin{quote}
+					oclhashcat -a 7 <mask> <dict>
+					\\or\\
+					octhashcat -a 7 <dict> <mask>
+				\end{quote}
+				
+		\subsection{Rainbow Tables}
+		\subsection{Online Methods}
+			With the rise of cloud computing and cheap server rental, many people have begun using tools such as Amazon Web Services to run crack servers. 
+			This is done by deploying the tools shown above into a server which has been rented with multiple GPUs. 
+			This server can then be optimised such that the cracking will properly utilise the GPUs of the machine as well as only calculating hashes that have a possibility of being correct. 
+			Thus, as above, if you know that the hash will be within a given dictionary, or that it does not contain special characters, use these functions. 
+
+			While this will work, and usually faster than using one's own computer, it is not as fast as a dedicated cracking cluster. 
+			These clusters work by having a number of machines, each with the necessary hardware and software installed working together on the one hash. 
+			Programs such as Hashcat can be used to control up to 125 GPUs across the cluster in order to crack the hashes you provide. 
+			This method, while expensive and difficult to set up, is currently the fastest means of cracking a hash. 
+			However, if you set your cracking program up properly, it will still likely beat this setup when it is brute forcing hashes. 
+		\subsection{Salting}
+	\section{Challenges}
 \chapter{System Hardening}
 	\label{ch:SystemHardening}
 	Securing one's own operating system and the software within can be a daunting task. 
@@ -786,7 +903,7 @@
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
-					For greater security, the command ``firejail --seccomp --private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
+					For greater security, the command ``firejail \verb+--+seccomp \verb+--+private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 				\subsection{Firewall} %TODO: Add firewall chapter
 				\subsection{Physical security}
@@ -912,7 +1029,7 @@
 				Furthermore, this program hooks into dnscrypt to encrypt your DNS traffic. 
 				To install and configure both of these programs, run the following Homebrew script and commands:
 				\begin{quote}
-					brew install dnsmasq --with-dnssec \\
+					brew install dnsmasq \verb+--+with-dnssec \\
 					mkdir -p /usr/local/etc \\
 					cp /usr/local/opt/dnsmasq/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf \\ %TODO: This gets hyphenated. 
 				\end{quote}
@@ -935,7 +1052,7 @@
 				\end{quote}
 				Then add the following line to ``/Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist'':
 				\begin{quote}
-					<string>--local-address=127.0.0.1:5355</string>
+					<string>\verb+--+local-address=127.0.0.1:5355</string>
 				\end{quote}
 				Below the line:
 				\begin{quote}
@@ -943,7 +1060,7 @@
 				\end{quote}
 				Then change the resolvers list string in the same file so that it doesn't break on update:
 				\begin{quote}
-					<string>--resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+					<string>\verb+--+resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
 				\end{quote}
 				Finally, the program can be started with:
 				\begin{quote}
@@ -968,7 +1085,7 @@
 				This version can be installed and linked using the following commands:
 				\begin{quote}
 					brew install openssl \\
-					brew link openssl --force
+					brew link openssl \verb+--+force
 				\end{quote}
 				Similar issues appear in many of the OS X command line utilities. 
 				You should search them out online. 
@@ -1421,7 +1538,7 @@ Dump of assembler code for function main:
 			At this point, we move to targeting just the network that we are attempting to access. 
 			To do this, the ``airodump-ng'' command is used in a more refined manner to create a dump of initialization vectors (IV) which are transmitted between the network and its clients. 
 			\begin{quote}
-				airodump-ng -c <channel> --bssid <AP MAC> -w dump wlan0
+				airodump-ng -c <channel> \verb+--+bssid <AP MAC> -w dump wlan0
 			\end{quote}
 			Substituting the ``<channel>'' and ``<AP MAC>'' for the relevant information. 
 			This will give you a dump of the IVs which were sent across the network, which can be used to crack the password of a WEP network. 
@@ -1443,7 +1560,7 @@ Dump of assembler code for function main:
 			however, when it does work, it allows for a far more powerful attacks. 
 			To ensure that injection is supported by your device, check whether authentication is successful with the following command:
 			\begin{quote}
-				aireplay-ng --fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
+				aireplay-ng \verb+--+fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
 			\end{quote}
 
 			At this point we can begin to speed up IV collection using ARP-request reinjection. 
@@ -1451,7 +1568,7 @@ Dump of assembler code for function main:
 			However, this has been blocked as of WPA, making it useful only for WEP networks.
 			The simple method for this uses the following command:
 			\begin{quote}
-				aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
+				aireplay-ng \verb+--+arpreplay -b <AP MAC> -h <Client MAC> wlan0
 			\end{quote}
 			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
 			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs. 
@@ -1462,7 +1579,7 @@ Dump of assembler code for function main:
 			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
 			To run this attack, run the following command while running an ARP replay and collecting IVs:
 			\begin{quote}
-				aireplay-ng --deauth 5 -a <AP MAC> -c <Client MAC> wlan0
+				aireplay-ng \verb+--+deauth 5 -a <AP MAC> -c <Client MAC> wlan0
 			\end{quote}
 			This makes ARP replay and IV collection far faster.
 			However, your attack also becomes far more obvious on the network, making it more likely that a attentive user or IDS will notice your attack. 
