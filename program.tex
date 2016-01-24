@@ -16,7 +16,6 @@
 	   \fancyhead{} % get rid of headers on plain pages
 	      \renewcommand{\headrulewidth}{0pt} % and the line
 	  }
-\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{microtype}
 \usepackage{menukeys}
@@ -31,6 +30,8 @@
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
 \usepackage{listings}
+\AtBeginDocument{\renewcommand{\thelstlisting}{\thesubsubsection.\arabic{lstlisting}}}
+\def\l@lstlisting#1#2{\@dottedtocline{1}{3em}{3.5em}{#1}{#2}}
 \lstset { 									%
 %	language={[ANSI]C}, 					%
 	otherkeywords={printf, strcpy, *, &},	%
@@ -53,12 +54,25 @@
 %Sorting code floats. 
 \usepackage{float}
 \floatstyle{plain}
-\newfloat{code}{htb}{loc}[section]
+\newfloat{code}{htb}{loc}[chapter]
 \floatname{code}{Code Example}
 \renewcommand{\abstractname}{Introduction}
 \interfootnotelinepenalty=10000
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
+\makeatletter
+\usepackage{parskip}
+\renewcommand*{\listof}[2]{%
+	\@ifundefined{ext@#1}{\float@error{#1}}{%
+		\expandafter\let\csname l@#1\endcsname \l@figure  % <- use layout of figure
+		\@namedef{l@#1}{\@dottedtocline{1}{1.5em}{2.5em}}%
+		\float@listhead{#2}%
+		\begingroup
+			\setlength\parskip{0pt plus 1pt}%               % <- or drop this line completely
+			\@starttoc{\@nameuse{ext@#1}}%
+		\endgroup}}
+\makeatother
+\usepackage{hyperref}
 \begin{document}
 \maketitle
 \tableofcontents
@@ -728,6 +742,7 @@
 
 	\section{Introduction to Powershell}
 	\section{Introduction to Scripting}
+	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
 		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
 		This language however, is one that you should now be used to. 
 		Its commands are exactly the same as the commands that you use on the normal command line in its interactive mode. 
@@ -1911,6 +1926,7 @@ Dump of assembler code for function main:
 	\section{Early Computing Equipment}
 \appendix
 	\label{ch:Appendix}
+
 	\listoftables
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Tables}
@@ -1918,7 +1934,6 @@ Dump of assembler code for function main:
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Figures}
 	 \renewcommand{\figurename}{Code Example}
-	 	
 	     \listof{code}{List of Code Examples}
 		 \phantomsection
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
