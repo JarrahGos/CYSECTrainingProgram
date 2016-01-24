@@ -728,6 +728,60 @@
 
 	\section{Introduction to Powershell}
 	\section{Introduction to Scripting}
+		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
+		This language however, is one that you should now be used to. 
+		Its commands are exactly the same as the commands that you use on the normal command line in its interactive mode. 
+		However, in the non-interactive mode that we will be using in this section, there are a number of new quirks and language features which do not make sense in interactive mode. 
+		This section will discuss these differences, as well as the control structures and variables which are required to create a working script. 
+		\subsection{Setting up your script}
+			Unlike the command line, you will need to do some set up before you can use your script. 
+			This is because you are now creating a file which the system needs to be told how to read and what it is allowed to do with it. 
+			The first of these is the interpreter instruction, also known as the shebang or crunchbang. 
+			This line, designated by the symbol ``\#!'' followed by the location of your shell executable tells the prompt what to use to read the file with. 
+			Without this, the prompt will read the file as a generic text file, having been told no action to take. 
+
+			Next, you will need to set the permissions to executable using the command ``\verb|chmod +x <File.sh>|''
+			This will write the permissions of the file allowing the OS to run it as a program using the interpreter given at the crunchbang. 
+			Finally, you can execute the program by running ``\verb+.\<File.sh>+''. 
+		\subsection{Variables}
+			Variables in bash scripting act the same way as those in most other programming languages, however, internally they act slightly differently. 
+			These are known as bash parameters, and they come in three different types: Positional, Special and Shell Variables. 
+			Shell variables are the most common, and act almost exactly the same as those of most other programming languages, while the others are slightly different and have their own uses. 
+
+			Shell variables are much like the variables of python. 
+			They do not have a specific type and can be named and assigned at any time using the ``='' operator with no spaces.
+			However, when referencing them, the \$ prefix should be used to tell bash that you are referring to the variable rather than the name of a program.
+			This \$ symbol is the designator for expansion. 
+			This means that the result of whatever is after it is placed into the script at that point. 
+			This can also be used for getting the output of another program, such as ``gdb \$(which bash)'' which will run the GNU debugger on the result of ``which bash''. 
+			In addition to this, when you need to ensure that the words are split in the correct place, you can use \{ and \} around the variable name with \$ at the front. 
+
+			Also like in other programming languages, there are environmental variables which are set outside the shell and can be accessed for system information. 
+			Generally, unless you require a specific feature of environmental variables or are getting system information, shell variables should be used. 
+			Environmental variables are passed on by the parent process, but alterations are one way, only the new children will get a new environmental variable. 
+			This makes them useful for creating variables which the processes you are starting will require, but cannot be passed on as arguments. 
+			Most of the time, these variables will be mentioned in the man pages of the program you are calling. 
+			This should be your reference when creating new environmental variables. 
+
+			The final type of variable is the positional parameter, which acts in a similar way to the argument variable of most programming languages. 
+			These parameters are referenced in the same way as shell variables, but are pre-named using integer values counting from one. 
+			Thus, if you wish to use the first parameter that your script was called with, the variable \$1 will contain it. 
+			Also similarly to most programming languages, there is a zeroth argument, which will contain the command used to start the current process. 
+			It is also worth noting that these parameters are read only. 
+
+
+		\subsection{Control Structures}
+			Like any programming language, bash scripts allow the use of control structures. 
+			These structures allow for executing code based on the environment it finds itself in. 
+			Examples of basic bash script control structures can be found below:
+			\begin{description}
+				\item[if]
+					The if statement executes its block of code only if the conditional given between its ``\verb+[[]]+'' enclosure resolves to true. 
+					These enclosures must be surrounded by spaces.
+					The if statement's block should be started with the command ``then'' and ended with the command ``fi''. 
+				\item[else]
+					When within an if statements block, an else statement will only be executed if the if statement resolves to false. 
+			\end{description}
 	\section{Introduction to Python}
 	\section{Introduction to C}
 	\section{Programming Challenges}
