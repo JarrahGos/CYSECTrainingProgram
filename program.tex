@@ -20,6 +20,7 @@
 \usepackage{graphicx}
 \usepackage{microtype}
 \usepackage{menukeys}
+\usepackage{attachfile}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{fancyvrb} %Allow bold in verbatim text.
@@ -514,6 +515,57 @@
 \chapter{Forensics}
 	\label{ch:Forensics}
 	\section{File Carving}
+		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's metadata as would normally be done using a file manager. 
+		This is done because it is possible to hide a file within another---placing it after the EOF line of the first file---or delete a file from disk without overwriting it, avoiding it being accessible by normal means. 
+
+		\subsection{Manual File Carving}
+			Because file carving uses the data available within the file itself, it can be done manually. 
+			This method can pick up more obscure files or by using more advanced techniques, files that wouldn't be picked up due to corrupted headers or footers. 
+			However, the most simple way to manually file carve is to know the common headers and footers and search for them. 
+			Table \ref{tab:FileCarvingHeaders} contains a list of common headers and footers.\footnote{\url{http://www.garykessler.net/library/file\_sigs.html}} 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | l | l |}
+					\hline
+					\textbf{File Type} & \textbf{Header} & \textbf{Footer} \\ \hline
+					mp4	& 00 00 00 14 66 74 79 70	& 69 73 6F 6D \\ \hline
+					XLS	& 09 08 10 00 00 06 05 00	& none \\ \hline
+					webm& 1A 45 DF A3				& none \\ \hline
+					MKV & 1A 45 DF A3 93 42 82 88	& 6D 61 74 72 6F 73 6B 61 \\ \hline
+					GZ	& 1F 8B 08					& none \\ \hline
+					VMDK& 23 20 44 69 73 6B 20 44	& 65 73 63 72 69 70 74 6F \\ \hline
+					PDF & 25 50 44 46				& Numerous \\ \hline
+					ISO	& 43 44 30 30 31			& none \\ \hline
+					GIF & 47 49 46 38 37 61			& none \\ \hline
+					TIFF& 49 49 2A 00				& none \\ \hline
+					MP3	& 49 44 33					& none \\ \hline
+					ZIP & 50 4B 03 04				& none \\ \hline
+					Office XML & 50 4B 03 04 14 00 06 00 & none \\ \hline
+					JPG & FF D8 FF E0 xx xx 4A 46	& 49 46 00 \\ \hline
+				\end{tabular}
+				\caption{Common File Headers and Footers}
+				\label{tab:FileCarvingHeaders}
+			\end{table}
+			Using these headers and footers, you should be able to search through the files in \notextattachfile[print=false]{./CarvingImages.zip}{this zip archive} %TODO: Fix this attachment. 
+			%Current implementation would have them file carving the zip out. 
+			and find the images embedded within the files (with the exception of steg, which will be discussed in the next section).
+			Note that some of these files may have more than one image embedded within them. 
+
+		\subsection{Using File Carving tools}
+			The same images can be carved almost immediately using a tool such as foremost. 
+			This tool will automatically read through the file looking for file specific headers, footers and data structures,\footnote{\url{http://linux.die.net/man/1/foremost}}
+			enabling it to find most of the files we could using the above technique, and possibly a few more. 
+			We will use this tool pointed directly at a file, but it is able to scan a directory or even unformatted disks. 
+			After running the program, you will see an output file containing folders for every type of file that foremost can find, as well as a HTML file with data on what was found. 
+
+			A simple example of using this program would be attempting to pull all .jpg images out of a filesystem image:
+			\begin{quote}
+				foremost -t jpg -i image.dd
+			\end{quote}
+			This same syntax can be used on any file type, while ommitting the ``-t'' argument will result in all file types being recognised. 
+			For most of the files you come across, the default options will work, allowing you to just call foremost with the name of the file to scan. 
+
+
 	\section{Steganography}
 	\section{Wireshark}
 	\section{Netflow}
