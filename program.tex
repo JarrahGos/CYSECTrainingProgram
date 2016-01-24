@@ -517,7 +517,9 @@
 	\section{File Carving}
 		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's metadata as would normally be done using a file manager. 
 		This is done because it is possible to hide a file within another---placing it after the EOF line of the first file---or delete a file from disk without overwriting it, avoiding it being accessible by normal means. 
-
+		Before attempting any of these actions on a drive, it is recommended that you attach the drive (preferably with a write blocker) and take a full image of it first. 
+		This will avoid deleted files and hidden partitions being overwritten. 
+		% more challenges http://forensicswiki.org/wiki/File_Carving
 		\subsection{Manual File Carving}
 			Because file carving uses the data available within the file itself, it can be done manually. 
 			This method can pick up more obscure files or by using more advanced techniques, files that wouldn't be picked up due to corrupted headers or footers. 
@@ -1643,8 +1645,21 @@ Dump of assembler code for function main:
 		We can achieve this due to the fact that a proper call to printf (or any other function) pushes each of the arguments for the call to the stack in reverse order. 
 		The format function will the iterate through these arguments, but rather than counting the number that came in, it will simply count the number of format codes it finds. 
 		This means that the function will continue to read from memory, even when no arguments were pushed for it. 
-
-
+		
+		\subsection{The Vulnerability}
+			The string format vulnerability occurs when the printf function is misused with user input strings. 
+			Printf should be called using the syntax ``printf("\verb+%s+", string)'', which will not parse the variable ``string'' for format codes. 
+			However, occasionally a programmer will call it as ``printf(string)'', at which point printf will parse for and execute all string format codes found within the variable ``string''. 
+			When these are picked up, the printf function will look to the next item down the stack, inserting that as it's format parameter. 
+			An example of this vulnerability can be seen in code example \ref{code:StringFormatVuln}.
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./StringFormatVuln.c}
+				\caption{Example of the String Format Vulnerability in Code}
+				\label{code:StringFormatVuln}
+			\end{code}
+			Using this example, attempt to have it write parts of the stack. 
+			Try to find items such as return locations and environmental variables. 
+			They will be useful later on. 
 	\section{IDS, IPS and AV}
 	\section{Challenges}
 		The shellcode found in \ref{code:ShellcodeReversePort} is the solution to the reverse TCP connection problem given in Attacking Remote Targets. 
