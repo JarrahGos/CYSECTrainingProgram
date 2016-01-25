@@ -17,6 +17,7 @@
 	      \renewcommand{\headrulewidth}{0pt} % and the line
 	  }
 \usepackage{graphicx}
+\usepackage{setspace}
 \usepackage{microtype}
 \usepackage{menukeys}
 \usepackage{attachfile}
@@ -785,18 +786,167 @@
 			It is also worth noting that these parameters are read only. 
 
 
-		\subsection{Control Structures}
-			Like any programming language, bash scripts allow the use of control structures. 
+		\subsection{Conditionals}
+			Like any programming language, bash scripts allow the use of conditional structures. 
 			These structures allow for executing code based on the environment it finds itself in. 
-			Examples of basic bash script control structures can be found below:
+			In bash, there are a number of these conditionals which we can use. 
+
+			Exit code checking is one of the most basic conditional checks in bash. 
+			This uses the ``||'' operator after a command. 
+			If the command were to return a non-zero exit code, the statement after the ``||'' operator would be run. 
+			Due to this, it can be thought of in a similar way to the logical ``||'' operator in most programming languages. 
+			This is mainly useful for writing error or exception checking messages. 
+
+			The inverse operation in bash is the ``\&\&'' operator. 
+			This will cause bash to move on to executing the next command only if the first exits with code 0. 
+			This is useful if you are running a command which relies on something set up by the previous one. 
+
+			When using the above two conditionals, we may occasionally desire the exit code to be negated. 
+			Such as searching for files which do not contain a word with grep, which does not have a ``not containing'' option. 
+			In this case, the ``!'' operator will tell bash to negate the exit code, causing ``\&\&'' to work if the program fails and ``||'' to work if the program succeeds. 
+			While this may be confusing to think about, it becomes far easier to read when well implemented. 
+
+			A further note when using these conditionals is that bash will carry the exit code of one program through to the end of the string of conditionals. 
+			This means that if you have three commands separated by ``\&\&'' conditionals and a ``||'' conditional at the end, any of thee three commands failing will trigger the final command. 
+			This can be controlled by using the grouping braces ``\{'' and ``\}''. 
+			These will ensure that bash will count the group as a whole against the exit status, but the exit status of items outside the group will not effect the status within. 
+			You will also need to end the statement before closing the final brace. 
+			Do this with a semicolon or a new line. 
+
+		\subsection{Conditional Blocks}
+			The if statement in bash works in much the same way as the ``\&\&'' conditional in that it will run it's block if the command that was given to it succeeds.\footnote{\url{http://mywiki.wooledge.org/BashGuide/Patterns}} 
+			The syntax for the if command is as follows:
+			\begin{lstlisting}[language={bash},numbers={none}]
+if <Conditional commands>; then 
+	<if block commands> 
+else 
+	<else block commands> 
+fi
+			\end{lstlisting}
+			While the if conditional commands can be anything, bash has a specific ``test'' command which can be used for conditionals. 
+			This command is run either by calling ``test'' or by opening a ``['' bracket. 
+			Within this, you can run any conditional statement that you would be able to run in a normal programning language. 
+			Signs such as ``='', ``-ne'', ``-gt'' and ``-lt'', as well as combinations of them can be used to create the conditional. 
+			In addition to this, there is the ``[['' command, which is a more powerful version of ``[''.
+			This command allows for a number of new features, outlined in the folowing list:
 			\begin{description}
-				\item[if]
-					The if statement executes its block of code only if the conditional given between its ``\verb+[[]]+'' enclosure resolves to true. 
-					These enclosures must be surrounded by spaces.
-					The if statement's block should be started with the command ``then'' and ended with the command ``fi''. 
-				\item[else]
-					When within an if statements block, an else statement will only be executed if the if statement resolves to false. 
+				\item[Pattern Matching]
+					Using wild cards, one can match a given pattern, such as ``*.pdf''. 
+					This can be used when you don't know the exact name of the file that you are searching for. 
+				\item[elif]
+					Else if, allows you to have more than two options for what to do. 
+					This is given with a conditional after it, allowing for another specified option before getting to the catch all else statement. 
+				\item[-e <file>]
+					True if <file> exists.
+				\item[-f <file>]
+					True if <file> is a regular file. 
+				\item[-d <file>]
+					True if <file> is a directory. 
+				\item[-h <file>]
+					True if <file> is a symlink.
+				\item[-p <pipe>]
+					True if <pipe> exists.
+				\item[-r <file>]
+					True if <file> is readible by the current user. 
+				\item[-s <file>]
+					True if <file> exists and is not empty. 
+				\item[-t <FD>] 
+					True if <FD> is open on a terminal. 
+				\item[-w <file>]
+					True if <file> is writable by the current user. 
+				\item[-x <file]
+					True if <file> is executable by the current user. 
+				\item[-O <file>]
+					True if <file> is effectively owned by the current user. 
+				\item[<file> -nt <other file>]
+					True if <file> is newer than <other file>.
+				\item[<file> -ot <other file]
+					True if <file> is older than <other file>.
+				\item[-z <string>]
+					True if <string> is empty. 
+				\item[-n <string>]
+					True if <string> is not exmpty. 
+				\item[-a]
+					Logical and used between other expressions.
+				\item[-o]
+					Logical or used between other expressions. 
+				\item[!]
+					Negates the expression it is given before. 
+				\item[-eq]
+					True if both sides are equal. 
+				\item[-ne]
+					True if both are not equal. 
+				\item[-lt]
+					True if first is less than the second. 
+				\item[-gt]
+					True if first is greter than the second. 
+				\item[-le]
+					True if first is less than or equal to the second. 
+				\item[-ge]
+					True if first is greater than or equal to the second. 
+				\item[<String> ~= <REGEX>]
+					True if <string> is matched by <REGEX>
 			\end{description}
+
+			Another option for these is to use the case command. 
+			This is used to check a variable against a number of options in a similar manner to the switch construct of most programming languages. 
+			It can be used with wildcards, allowing you to check for similar items. 
+			The syntax of this command can be found below:
+			\begin{lstlisting}[language=bash,numbers=none]
+case <variable> in
+	<option 1>) <command> ;;
+	<option 2) <command> ;;
+	*) <else command> ;;
+esac
+			\end{lstlisting}
+		\subsection{Loops}
+			There are a number of loops which can be used within bash. 
+			These range from simple while and for loops, to until  and for each loops. 
+			Each of these loops has a code block which starts with the keyword ``do'' and ends with ``done''. 
+			The specific syntax and quirks of each of these will be explained in this section. 
+
+			The while loop will continue until its condition is met. 
+			This is much the same as while loops in normal programmming languages, allowing you to repeat the code until the change you are searching for has occured. 
+			The syntax for these loops is:
+			\begin{lstlisting}[language=bash,numbers=none]
+while <conditional> do
+	<Commands to be looped>
+done
+			\end{lstlisting}
+			A varient of this type of loop is the until loop. 
+			This variant will simply reverse the conditional check on the while loop. 
+			The syntax for the until look is:
+			\begin{lstlisting}[language=bash,numbers=none]
+until <conditional> do
+	<commands to be looped>
+done
+			\end{lstlisting}
+
+			The for loop works much the same as those in a normal programming language. 
+			At the start, it will execute the first block of its arguments and check the conditional in its second. 
+			After this, it will execute the code within its bounds before running the third block and checking the conditional again. 
+			The syntax for the for loop is:
+			\begin{lstlisting}[language=bash,numbers=none]
+for (( <Setup>; <condition>; <change> )) do
+	<Commands to be looped>
+done
+			\end{lstlisting}
+
+			The for each loop works in a similar manner to that of python. 
+			This loop creates a variable which can be used within its bounds and is filled with the output from its second block. 
+			The syntax for this loop can be seen below. 
+			\begin{lstlisting}[language=bash,numbers=none]
+for <variable> in <command> do
+	<commands to be looped>
+done
+			\end{lstlisting}
+			This loop often catches people out due to bash spliting the words within the output of <command>, making them meaningless. 
+			This can be resolved by telling bash that you are working with a list of files or the like. 
+			Rather than putting a command such as ls in the <command> section, it is better to use a pattern matching command such as ``*.mp3''. 
+			This will tell bash that you are working with files and stop it splitting all spaces in the file name into individual words. 
+
+			With all of these loops, the command continue will skip to the next iteration of the loop and the break command will end the loops iteration without the conditional having to be set to false. 
+
 	\section{Introduction to Python}
 	\section{Introduction to C}
 	\section{Programming Challenges}
@@ -1933,8 +2083,10 @@ Dump of assembler code for function main:
 	\listoffigures
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Figures}
+	{\setstretch{2}
 	 \renewcommand{\figurename}{Code Example}
 	     \listof{code}{List of Code Examples}
+	 }
 		 \phantomsection
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
 	\bibliographystyle{plain}
