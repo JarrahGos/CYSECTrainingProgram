@@ -947,6 +947,41 @@ done
 
 			With all of these loops, the command continue will skip to the next iteration of the loop and the break command will end the loops iteration without the conditional having to be set to false. 
 
+		\subsection{Arrays}
+			Arrays are another part of bash. 
+			These are similary in concept, but different int syntax to the arrays of most programming languages. 
+			They should be used any time that a list of somethnig is produced, rather than placing the list in a string and attempting to delimit each item. 
+			The syntax for creating an array is as follows, each line designating another method of creation. 
+			\begin{lstlisting}[language=bash,numbers=none]
+<name>=(<first> <second>) #create an array containing <first> and <second>
+<name>=([0]=<first> [23]=<second> [n]=<nth>) #create an array, placing items in specific positions. 
+<name>=(*.png) # create an array contianing the filenames of every .png file in the current directory. 
+			\end{lstlisting}
+
+			Arrays are used in much the same manner, with a few instances of syntatic sugar to make them easier. 
+			To iterate through an array, the following for loop will extract each element and run a command using it. 
+			\begin{lstlisting}[language=bash,numbers=none]
+for <var> in "${<array>[@]}"; do
+	<command using <var>>
+done
+			\end{lstlisting} 
+			This will iterate through the array, item by item and run <command> using <var> as an arguement. 
+			The quates around ``\$<array>[@]'' ensure that bash doesn't attempt to wordsplit the items within the array before they are placed in <var>.
+			This expansion can be implemented anywhere that having multiple of the arrays items would work, such as within a cp command to copy all the items within the array into another folder. 
+
+			Another method of accessing an array is using a singular index. 
+			This, like those of most programming languages is a zero based method of getting one item out of the array. 
+			To use this method, use the same syntax used to access the array within the for loop, replacing the ``@'' with either an integer or an integer variable. 
+			In a similar manner, the \** symbol can be used as the index to concatenate every element in the array into one string. 
+
+			More recent versions of bash also have a dictionary like array tipe called associative arrays. 
+			These allow you to map one string to another, and are created and accesed in the following manner. 
+			\begin{lstlisting}[language=bash,numbers=none]
+declare -A <name>
+<name>=( [<map>]=<value> )
+<command> ${<name>[<map>]}
+			\end{lstlisting}
+
 	\section{Introduction to Python}
 	\section{Introduction to C}
 	\section{Programming Challenges}
