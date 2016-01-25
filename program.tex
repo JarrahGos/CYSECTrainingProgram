@@ -702,8 +702,7 @@
 				\begin{itemize}
 					\item ``> <outfile>'' Write output to a given file.
 					\item ``< <infile>'' Read the given file as input.
-					\item ``>> <outfile>'' Append the programs output to the given file. 
-						%TODO: Fix the rendering of the >>
+					\item ``>{}> <outfile>'' Append the programs output to the given file. 
 				\end{itemize}
 			\item[\** wildcard]
 				This is the most simple wildcard. 
@@ -978,10 +977,52 @@ done
 			These allow you to map one string to another, and are created and accesed in the following manner. 
 			\begin{lstlisting}[language=bash,numbers=none]
 declare -A <name>
-<name>=( [<map>]=<value> )
+	<name>=( [<map>]=<value> )
 <command> ${<name>[<map>]}
 			\end{lstlisting}
 
+		\subsection{Input and Output}
+			There are a number of different places in which IO can occur within a bash script. 
+			These range from the normal, such as command line arguments and files, to the unusual, such as environmental variables and pipes. 
+			This section will enable you to understand how mast types of bash IO work and implement them in your scripts. 
+
+			The most simple means of allowing input to your script is by using command line arguments. 
+			This can be done by using the positional parameters which are shown in the variables section above. 
+			Using these, each argument given will be placed into its respective parameter, starting from 0 being the command used to call the script. 
+			These can be called like any variable within your script: ``\$n''.
+			In addition to this, you can call the array of all positional variables using ``"\$@"''. 
+			This will expand all arguments which were given to the script. 
+			A final method, known as ``shift'', will push the arguments forward, popping the contents of ``\$1'' off the stack and moving ``\$2'' up into its place. 
+			This is useful within loops, as you can use ``\$1'' as a variable representing all arguments one at a time. 
+
+			Another means of input to your script is the environmental variables which it inherits from the invoking bash environment. 
+			These will contain useful items such as the binary paths of the system and the language that the user wants to use. 
+			An example of this, is checking whether the computer is being used with an X display manager and whether the user has set their preferred terminal.  
+			This can be done with the following code:
+			\begin{lstlisting}[language=bash,numbers=none]
+if [[ $DISPLAY ]]; then
+	if [[ $TERM_PROGRAM ]]
+		<Command to run in preferred terminal>
+	else
+		<Command to run in xterm>
+	fi
+else
+	<Command to run in CLI>
+fi
+			\end{lstlisting}
+			Finally, environmental variables can be used as output to any programs that you invoke within your script. 
+			This can be done by using the export command, with the same syntax as assigning a variable after it. 
+			
+			Once the script has been invoked, IO can be done by the same means as most CLI programs. 
+			Reading from STDIN is done by using the command read -p, which takes a string to display and the name of a variable to place the input into. 
+			This will work in exactly the same manner as python's raw input, writing the line to the CLI and storing every input before the new line in the variable you give it. 
+			Output can be done using a number of commands. 
+			However, the two most common are echo for simple output and printf for formatted strings. 
+			Both of these commands are simple, with echo simply outputting a string to STDOUT and printf working exactly the same as in C. 
+			In both of these cases, if you want to change the input the ``<'' operator will allow you to. 
+			For changing output, use either the ``>'', ``>{}>'' or ``>\&n'' operators, where n is a file descriptor (0: STDIN, 1: STDOUT, 2: STDERROR).
+
+		
 	\section{Introduction to Python}
 	\section{Introduction to C}
 	\section{Programming Challenges}
@@ -2111,7 +2152,6 @@ Dump of assembler code for function main:
 	\section{Early Computing Equipment}
 \appendix
 	\label{ch:Appendix}
-
 	\listoftables
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Tables}
