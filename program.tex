@@ -1021,8 +1021,42 @@ fi
 			Both of these commands are simple, with echo simply outputting a string to STDOUT and printf working exactly the same as in C. 
 			In both of these cases, if you want to change the input the ``<'' operator will allow you to. 
 			For changing output, use either the ``>'', ``>{}>'' or ``>\&n'' operators, where n is a file descriptor (0: STDIN, 1: STDOUT, 2: STDERROR).
+		\subsection{Compound Commands}
+			These are commands or syntax elements which allow you to alter the scope or operation of the script you are writing. 
+			Each of these work slightly differently, but when used together and properly, they allow for a properly written program using scope and functions. 
 
+			Subshells similar to creating a child process, but with slightly more inherited. 
+			They are commonly created through the use of syntax such as pipes, but can be manually called using parenthesis. 
+			This allows us to create a part of the script which will not effect other parts. 
+			Commands within a subshell can fail and will only exit the current subshell. 
+			Furthermore, commands which change the current environment of the shell such as ``cd'' will not retain their changes outside the subshell. 
+
+			A similar notion with respect to redirection and flow exists in command grouping. 
+			This is done using the braces ``\{'' and ``\}'' around the commands that you wish to group, and will cause all redirection at the end of the braces to apply to everything within them. 
+			While these may seem like a subshell, the commands within this grouping are executed within the same shell as the commands around them. 
+			Thus, changes are retained when exiting the group. 
+
+			Functions within a bash script can be thought of as mini scripts. 
+			These execute in the same shell, but can be given arguments and be called whenever needed from within the script. 
+			Parameters within the function can be called in the same means as parameters to the whole script, however, these are not the same parameters as the script originally received. 
+			The main use for a function is to pull a commonly repeated block of code out, causing it to be written only once and simply called from each location it is required from. 
+			Functions also limit the scope of the script within them. 
+			Variables created within them will not be accessible outside the function. 
+			Functions are defined and called in the following manner:
+			\begin{lstlisting}[language=bash,numbers=none]
+<Function Name>() {
+	<commands>
+}
+<Function Name> <Parameters>
+			\end{lstlisting}
 		
+			Aliases are the final compound command. 
+			These allow you to create or change a name for either an altered command or a string of commands. 
+			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the asias' command. 
+			An example of creating an alias for ls to ensure it outputs in colour is shown below. 
+			\begin{lstlisting}[language=bash,numbers=none]
+alias ls="ls --color=auto"
+			\end{lstlisting}
 	\section{Introduction to Python}
 	\section{Introduction to C}
 	\section{Programming Challenges}
