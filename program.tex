@@ -519,7 +519,122 @@
 			While this means that you are more likely to get past the firewall, it also can crash some less stable software and hardware. 
 			Thus, this should be used with care, as crashing computer systems are exceptionally noisy. 
 	\section{Nessus}
+	%http://www.securitylearn.net/tag/nessus-tutorial/
+		Nessus is an exceptionally powerful vulnerability scanner. 
+		It works by first conducting a port scan on the target computer, than attempting to fingerprint all open ports. 
+		This allows Nessus to provide a detailed output of the likely vulnerabilities that exist on the system as well as the CVEs that relate to them. 
+		It is this knowledge base and the detail that can be found within it that has made Nessus as popular as it currently is. 
+		
+		\subsection{Installing and Running Nessus}
+			Download the \href{http://www.tenable.com/products/nessus-vulnerability-scanner}{Nessus installer}
+			from Tenable and run it. 
+			At this point you can start Nessus. On Kali, this is done by running the command ``/etc/init.d/nessusd start''. 
+			Then in your browser, open the web page ``https:localhost:8834''. 
+			This will give you the start page for Nessus. 
+			Following the steps outlined on the screen will get you to a usable Nessus install. 
+
+		\subsection{Running a Scan}
+			Nessus comes with a number of prebuilt scan types which work for different types of systems. 
+			These are described below:
+			\begin{description}
+				\item[External Network Scan] This scan is written for externally facing hosts. 
+					It will scan all ports on the host, as well as having a number of plugins configured for scanning for items such as XSS. 
+				\item[Internal Network Scan]
+					Configured for large internal networks, this scan will scan all standard ports expecting workstation, server and embedded machines. 
+				\item[Web Application Tests]
+					This scan is designed to detect common vulnerabilities in Web Applications. 
+					It will spider the site and discover both the content and the links within the application. 
+					Once this spider is complete, Nessus will attempt to determine the vulnerabilities which exist within the pages found. 
+				\item[PCI DSS Audit]
+					This scan is built to determine whether a system is vulnerable to a security risk which is explicitly stated within the Payment Card Industry Data Security Standards. 
+					While it does not guarantee not to find false reports, it will pick up a number of the basic vulnerabilities which must be fixed before a PCI DSS Audit. 
+			\end{description}
+			At this point, you can select the new scan button and select the scan which will work best for your goals. 
+			You will be directed to the new scan page, which will allow you to detail the targets which you are pointing the scan at. 
+			The common subneting notations work within this box, allowing you to specify a range of IP addresses. 
+
+			Once you have selected your target, you can customize the scan using the other tabs down the left of the page. 
+			This will allow you to alter default settings such as the ports which will be scanned and the verbosity of the report which will be generated. 
+		\subsection{The Report}
+			Once the scan has completed, you will be able to see the results under the completed scans tab. 
+			This page will give you a breakdown based on the severity of the possible vulnerability of what could be targeted on the scanned machine. 
+			Selecting an individual vulnerability will give detail about both the method used to scan it, and possible methods used to exploit it. 
+			Some vulnerabilities will also come with links to the CVE that was given to it's report and a set of possible mitigations. 
+
+			It is worth noting that the existence of a vulnerability report here does not mean that the vulnerability exists on the target system. 
+			Rather it is only an indication that something that fingerprints similarly to the expected vulnerability exists. 
+			Thus, a vulnerability found within this report cannot be regarded as an actual entry point, further testing and an actual penetration is required. 
 	\section{Metasploit}
+		Metasploit is a framework for creating and launching attacks on other machines. 
+		It was initially created due to the lack of modularisation in attacks in the early 2000's. 
+		It has since allowed for those crafting attacks to focus on exploiting the software, allowing a multitude of payload and connection options to be incorporated into the exploit. 
+		Due to this, Metasploit was created with a step by step usage. 
+		This will be explained in the following section. 
+
+		Before following any of these steps, you will have to have used Nmap and Nessus to gather a list of possible vulnerabilities. 
+		Using these, you can determine which exploit modules may be useful. 
+		However, without it, you will simply be producing noise on the target network. 
+		Thus, before even touching Metasploit, you must know the target system well and have a plan of what you will attempt to exploit on it. 
+
+		\subsection{MSFconsole}
+			MSFconsole is the tool that you will interact with when using Metasploit. 
+			This is the commandline which you can interactively craft your attack. 
+			However, it will also allow you to manage a number of attacks and target machines. 
+
+			MSFconsole has a number of commands which can be used. 
+			The following is a list of the most useful commands:
+			\begin{description}
+				\item[cd] Change working directory. 
+					Exactly the same as the Unix command. 
+				\item[connect] Communicate with a host. 
+					This is similar to using netcat. 
+				\item[edit] Edit the current module with the current \$EDITOR. 
+				\item[exit] End the MSFconsole session. 
+				\item[get] Get the value of a variable within this context. 
+				\item[grep] Search the output of another command. 
+					Exactly the same as the Unix command. 
+				\item[help] Shows the explanations for most commands. 
+				\item[info] Shows information about one or more modules. 
+				\item[irb] Allows in place ruby scripting. 
+				\item[jobs] Shows and allows management of running jobs.
+				\item[kill] Kills a running job.
+				\item[load] Load a given plugin. 
+					Arguments are passed as ``key=value''. 
+				\item[makerc] Save the commands you have entered thus far into a script. 
+				\item[resource] Runs the commands saved in a file. 
+					This file is usually created with the above ``makerc'' command. 
+				\item[route] Route traffic through a session. 
+				\item[save] Saves the active datastore. 
+					This should allow you to return to the current session later. 
+				\item[search] Search for a module with the given name or description. 
+				\item[sessions] Show the current session listing and an information page on them. 
+				\item[set] Sets a variable for the current exploit or payload. 
+				\item[setg] Sets a global variable. 
+				\item[show] Show modules of a given type or all. 
+					A common usage is ``show options'' when setting up an attack. 
+				\item[spool] Like a redirect in bash, but writes output to both a file and the screen. 
+				\item[unset] Deletes the contents of a variable. 
+				\item[use] Selects a module to use by name. 
+			\end{description}
+			\subsection{Exploits}
+				Exploits are chosen based on the output of the Nmap and Nessus. 
+				You should choose the exploit which suits the vulnerability which you found within these scans. 
+				Not doing so will cause a large amount of excess network traffic and likely get you found. 
+
+				The commands above will allow you to search the list of exploits, and use them. 
+				However, it should be noted that the exploit that you choose will give you a number of new options. 
+				The commands below will give you more information or tell you whether the exploit is likely to work. 
+				\begin{description}
+					\item[check]
+						Determine Whether a target is vulnerable. 
+					\item[exploit] Launch the attack. 
+					\item[show targets] Shows the targets which will be vulnerable to this attack.
+					\item[show payloads] Shows the payloads which are compatible with this exploit. 
+					\item[show options] Shows the options which must be set to execute this exploit. 
+					\item[show advanced] Shows the advanced options for the exploit. 
+						These will likely not be useful unless you have very specific requirements. 
+					\item[show evasion] Shows options used to attempt to avoid detection.
+				\end{description}
 	\section{Pivoting}
 	\section{Maintaining a presence}
 \chapter{Web Penetration}
@@ -741,6 +856,16 @@
 		While there are many other commands\footnote{\url{https://github.com/jlevy/the-art-of-command-line}} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
 
 	\section{Introduction to Powershell}
+		%ktiploit.com
+		% https://github.com/mattifestation?tab=repositories
+		% http://colesec.inventedtheinternet.com/hacking-with-powershell-powersploit-and-invoke-shellcode/
+		Powershell is the scripting and command line environment of Windows. 
+		It allows a similar level of access to that of Bash on Unix and Linux. 
+		However, the conceptual level of powershell of significantly different. 
+		Powershell is based on the .Net object system, which gives it a completely different manner of interacting with IO of the programs. 
+		Rather than output being given as a string, which can be directed around to different programs, the output is a powershell object which can be interpreted by the command that it is given to. 
+		This gives a number of new ways to interact with the IO of the programs that you are using. 
+		The issues which you will find in the Bash scripting section below are far less problematic due to this change. 
 	\section{Introduction to Scripting}
 	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
 		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
