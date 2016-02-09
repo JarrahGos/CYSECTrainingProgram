@@ -730,8 +730,39 @@
 						This, along with ``webcam\_list'' will take a photo using the webcam attached to the computer. 
 				\end{description}
 				It is worth noting that Meterpreter can be extended by writing a python script and executing or importing it using ``python\_execute'' or ``python\_import'' respectively. 
+			% For Basic Metasploit this is as far as we go. 
+			% We could get far further into exploit development and other advanced topics, but it is beyond the scope of this. 
 	\section{Pivoting}
+		Pivoting is the act of using a machine that you have gained access to as a means to penetrate further into the network. 
+		This allows an attacker to avoid having to bypass the external firewall again while also giving access to internal DNS amongst other local networks. 
+		Thus, pivoting is a fundamental aspect of penetration testing, allowing for a vastly higher level of access than would be available without it. 
+		This section assumes that you have successfully broken into the target machine and have a Meterpreter session running on it. 
+	
+		In order to pivot, we will use the Meterpreter command ``portfwd''.
+		This command sets up a TCP forwarding rule on the machine, allowing you to interact with the local network as if you were working from the machine itself. 
+		The options for ``portfwd'' can be found in table \ref{tab:portfwdFlags}.
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{| l | l |}
+				\hline
+				-L & The listening host. Omitted unless listening on a specific adaptor.\\ \hline 
+				-l & The local port to listen on. Connections here will be forwarded. \\ \hline
+				-p & TCP port to forward connections to. \\ \hline
+				-r & The IP address the connection is relayed to. \\ \hline
+				Add & Create a forwarding rule. \\ \hline
+				Delete & Remove a forwarding rule. \\ \hline
+				List & List all forwarding ports. \\ \hline
+				Flush & Delete all rules. \\ \hline
+			\end{tabular}
+			\caption{Portfwd Flags}
+			\label{tab:portfwdFlags}
+		\end{table}
+		This should be done after scanning the internal network and choosing a target. 
+		This is due to the fact that you will have to know the port and how you will attack it well before setting up the forwarding rule. 
+		By utilising this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
+		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
 	\section{Maintaining a presence}
+		
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
