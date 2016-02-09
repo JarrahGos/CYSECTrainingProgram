@@ -635,6 +635,101 @@
 						These will likely not be useful unless you have very specific requirements. 
 					\item[show evasion] Shows options used to attempt to avoid detection.
 				\end{description}
+			\subsection{Payloads}
+				The payload is the code which is sent to be executed on the remote machine. 
+				It is designed to get you a foothold, or perform a specific task on the machine.
+				This code is usually quite small so as to aid transmission to the target. 
+				This is usually either shellcode, or the program that you have sent for the shellcode to execute. 
+
+				Payloads come in a number of types:
+				\begin{description}
+					\item[Inline]
+						This is a single payload containing both the exploit and the shellcode for a task. 
+						These are more stable, but far larger than other types of payload due to the fact that they must contain everything in the initial payload. 
+					\item[Staged]
+						This is a multiphase payload which works with a stager which receives the rest of the payload as it is needed. 
+						This allows for smaller initial exploits, but requires a constant connection between the attacker and target. 
+						This means that while it is easier to fit into an exploit, it can be far less reliable. 
+					\item[Meterpreter]
+						This is a meta-interpreter which allows for high level interaction with the OS. 
+						It resides completely in memory, and has a number of scripts and plugins which can be used to better attack the target. 
+					\item[PassiveX]
+						This is useful for circumventing restrictive outbound firewalls. 
+						It is based on ActiveX, creating a hidden IE instance and communicating over HTTP. 
+					\item[NoNX]
+						These are payloads designed to prevent NX bit implementations from stopping the payload. 
+						For example, this would work to prevent DEP from stopping a payload on Windows. 
+					\item[IPv6]
+						These are payloads which may fit into another category but are designed to work over IPv6. 
+					\item[Reflective DLL Injection]
+						This is a technique where a staged payload is injected into the compromised host in memory. 
+						It is designed to be difficult to detect by ensuring that it doesn't touch the filesystem.\footnote{\url{http://blog.harmonysecurity.com/2008/10/new-paper-reflective-dll-injection.html}}
+				\end{description}
+				
+				When using a payload, it may be necessary to manipulate it for the target system. 
+				This can be done in Metasploit with the ``generate'' command. 
+				This command will create a hex encoded string which contains the shellcode ready to be input into an exploit. 
+				However, this string will likely either contain bad characters or not be the correct encoding. 
+				Thus, the generate command comes with a number of flags which allow you to set these values. 
+				For example, the ``-b'' flag will tell the command to attempt to remove all characters which come after it. 
+				Another example of this is the ``-e'' flag, which alongside the ``show encoders'' command will allow you to set the encoder which will be used to write the payload. 
+				Finally, the ``-f'' flag can be used to give a file to write the payload to. 
+		
+			\subsection{Databases}
+				Metasploit is also backed with a Postgresql database. 
+				This database stores the information that you derive from your scans and attacks, allowing you to pull it back up in a timely manner. 
+				Furthermore, the database is split into workspaces, which can be managed with the ``workspace'' command. 
+				This allows one to create a store of information about a target or targets which persists over sessions. 
+
+				When interacting with the database, specific commands must be used. 
+				Rather than using the normal tools such as nmap, one should use the database patched ``db\_'' versions instead. 
+				These will run in the same manner, but will also store their output in the database for future reference. 
+				If the scan was done previously, or outside of the MSFconsole, one can import the XML file generated using ``db\_import''. 
+
+				At this point, the ``hosts'' command will give an output of the hosts and their OS and network fingerprint. 
+				It can further be used with it's flags in order to pull more information out of the database. 
+				Similarly, the ``services'' command will allow you to pull available services out of the database. 
+				Finally, collected hashes and other similar information con be retrieved using the ``loot'' command. 
+	
+			\subsection{Meterpreter}
+				Meterpreter provides an environment which gives you powerful access to the target computer. 
+				It will give you access to both the host itself, but also network and file transfers, allowing you to retrieve data from the computer and plant other exploits. 
+				While most normal Unix commands work, what follows is a list of Metrepreter specific commands:
+				\begin{description}
+					\item[background]
+						Return to the MSFconsole. 
+						You can get back to Meterpreter using the sessions command. 
+					\item[clearev]
+						Clear the Application, System and Security logs of a windows system. 
+					\item[download] 
+						Takes a file from the remote machine to the attackers. 
+						Note: Use double slashes when working with windows paths. 
+					\item[edit] 
+						Open the Vim editor on the given file. 
+					\item[execute]
+						Runs the given command on the target machine. 
+					\item[getuid]
+						Get the user ID and name that the Meterpreter session is running as. 
+					\item[hashdump]
+						Write the contents of the SAM database to screen. 
+					\item[idletime]
+						Prints the time that the user of the target machine has been idle. 
+					\item[lpwd and lcd]
+						These commands will print or change the attacking machines directory. 
+					\item[migrade]
+						Move to another process on the victim machine. 
+					\item[resource]
+						Execute a script written for Meterpreter found in the given file. 
+					\item[search]
+						Find a specific file on the target machine. 
+					\item[shell]
+						Run a native shell on the target machine. 
+					\item[upload]
+						The exact reverse of the download command. 
+					\item[webcam\_snap]
+						This, along with ``webcam\_list'' will take a photo using the webcam attached to the computer. 
+				\end{description}
+				It is worth noting that Meterpreter can be extended by writing a python script and executing or importing it using ``python\_execute'' or ``python\_import'' respectively. 
 	\section{Pivoting}
 	\section{Maintaining a presence}
 \chapter{Web Penetration}
