@@ -565,7 +565,7 @@
 			Rather it is only an indication that something that fingerprints similarly to the expected vulnerability exists. 
 			Thus, a vulnerability found within this report cannot be regarded as an actual entry point, further testing and an actual penetration is required. 
 	\section{Metasploit}
-		Metasploit is a framework for creating and launching attacks on other machines. 
+		Metasploit is a framework for creating and launching attacks on other machines.\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/}} 
 		It was initially created due to the lack of modularisation in attacks in the early 2000's. 
 		It has since allowed for those crafting attacks to focus on exploiting the software, allowing a multitude of payload and connection options to be incorporated into the exploit. 
 		Due to this, Metasploit was created with a step by step usage. 
@@ -575,7 +575,7 @@
 		Using these, you can determine which exploit modules may be useful. 
 		However, without it, you will simply be producing noise on the target network. 
 		Thus, before even touching Metasploit, you must know the target system well and have a plan of what you will attempt to exploit on it. 
-
+		
 		\subsection{MSFconsole}
 			MSFconsole is the tool that you will interact with when using Metasploit. 
 			This is the commandline which you can interactively craft your attack. 
@@ -762,7 +762,45 @@
 		By utilising this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
 		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
 	\section{Maintaining a presence}
-		
+		After successfully compromising a target, it is usually good measure to ensure that your access is permanent. 
+		This section will show you how to retain access across reboots as well as creating monitoring tools which will automatically report back to you. 
+		These methods take two styles, smash and grab or low and slow. 
+		The former of these will be far more obvious, but will give you the information you require quickly. 
+		The latter will give you long term access, allowing you to use the machine as a staging ground for other attacks. 
+
+		\subsection{Keyloggers}
+			This section assumes that you have already gained access to a Windows PC. 
+			However, it will work in a similar manner for other OS's. 
+			
+			The first step is to migrate into a system process. 
+			This is done first by using the ``ps'' command to show the running processes, 
+			then by choosing one and running ``migrate <PID>''. 
+			This will ensure that the process that we are inhabiting will not easily be reset, killing our connection. 
+
+			At this point we can start the keylogger.
+			This is done using the command ``keyscan\_start'', 
+			which will start saving the typed keys to memory, ready to be dumped to the attacking computer. 
+			These keys can be saved written to screen using the command ``keyscan\_dump''. 
+			Furthermore, if you would like to capture login information, migration to the login manager will ensure that the keylogger is running at that point too. 
+			In windows this can be done by migrating to the ``winlogon.exe'' process. 
+		\subsection{Meterpreter Backdoor}
+			Rather than just logging the keys pressed on a system, we can also retain our Meterpreter session between process resets, but not boots, keeping the hard drive clean.  
+			This is done using the ``metsvc'' backdoor, which installs a Meterpreter shell on the system. 
+			However, this basic setup has one major security flaw: \emph{it requires no authentication.}
+			The only two means of solving this is altering the source code or setting up port filtering on the target. 
+
+			As above, the first step is to migrate into a system process that can be trusted to be stable. 
+			After this, the service can be installed and started using the command ``run metsvc''. 
+
+			To connect to this service, we run a specific exploit in Metasploit designed to correctly connect. 
+			One could simply use netcat, however, this would result in poor terminal management. 
+			The exploit ``exploit/multi/handler'' alongside the payload ``windows/metsvc\_bind\_tcp'' is used to connect, creating a new Meterpreter session within Metasploit if the options are correctly set. 
+			
+		\subsection{Persistence.rb}
+			This is a ruby script which will start on boot or login (``-X'' or ``-U'' flags respectively) and bring up a Meterpreter session. 
+			When given the correct information, such as attacking IP (``-r'') and attackers port (``-p''), it will attempt to connect to the attacking computer repeatedly. 
+			While this is useful, it does require access to the hard drive. 
+			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
