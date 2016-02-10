@@ -1023,13 +1023,42 @@
 		%ktiploit.com
 		% https://github.com/mattifestation?tab=repositories
 		% http://colesec.inventedtheinternet.com/hacking-with-powershell-powersploit-and-invoke-shellcode/
-		Powershell is the scripting and command line environment of Windows. 
+		Powershell is the scripting and command line environment of Windows.\cite{EffectivePS} 
 		It allows a similar level of access to that of Bash on Unix and Linux. 
 		However, the conceptual level of powershell of significantly different. 
 		Powershell is based on the .Net object system, which gives it a completely different manner of interacting with IO of the programs. 
 		Rather than output being given as a string, which can be directed around to different programs, the output is a powershell object which can be interpreted by the command that it is given to. 
 		This gives a number of new ways to interact with the IO of the programs that you are using. 
 		The issues which you will find in the Bash scripting section below are far less problematic due to this change. 
+		It is recommended that prior to starting this guide you run the command ``update-help''. 
+		This will give you access to the manual pages for all commands, which are not installed by default. 
+		\subsection{Four Basic Commands}
+			These commands are the ones that will get you out of problems. 
+			Together, they work in a similar way to the Unix ``-h'' option and ``man'' command. 
+			These commands have a large amount of expandability through their arguments, and should be used on each other to gather more information. 
+
+			The cmdlet ``get-command'' is used to gather information about all commands, cmdlets and scripts which are available on the current system. 
+			In it's basic form it will simply output a list of all of these items, with little further information.
+			Furthermore, when using this command with the exact name of a module which has not yet been imported, get-command will automatically import the module for you, allowing you to use it immediately. 
+			It is also worth noting that all information available to get-command is found within the source code of the command you are searching for. 
+			No external resources are used.
+			When using this to search for commands, you can also use the ``-CommandType'' parameter to specify the type of command that you wish to find. 
+			Further information can be found by using the commands explained in the below paragraph. 
+			However, for the most part, it can be though of as similar to the Unix ``which'' command with a significant amount of extra functionally. 
+
+			While basic information about cmdlets and other powershell programs is useful, one will regularly desire manual access for these commands. 
+			The cmdlet ``get-help'' will facilitate this. 
+			It its most basic form, get-help will output its own help file, giving you detail on how to use it. 
+			However, there are a number of other options such as using it with a wildcard argument which will output a basic synopsis of all commands or giving it a command as an argument which will output the help (similar to a man page) for that command. 
+			Furthermore, there are flags which are useful for getting more information about the options for a command. 
+			Using the flag ``-Detailed'' will give you an explanation of every flag for the given command.
+
+			A further command which will allow you to better understand and interact with the powershell object system is the ``get-member'' command. 
+			This command is used for gathering information on the objects which will be passed from one command to another through systems such as pipes. 
+			For example, when you pipe the output of get-command on a specific cmdlet from above into get-member you will see both the object type and the methods which can be called on it. 
+			This should be used to determine what further information and actions can be done using both that objects methods, and the classes static methods. 
+
+
 	\section{Introduction to Scripting}
 	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
 		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
