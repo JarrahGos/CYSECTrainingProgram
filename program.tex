@@ -1058,7 +1058,46 @@
 			For example, when you pipe the output of get-command on a specific cmdlet from above into get-member you will see both the object type and the methods which can be called on it. 
 			This should be used to determine what further information and actions can be done using both that objects methods, and the classes static methods. 
 
+			Finally, we must understand the filesystem and drive access. 
+			This can be done through the use of the command ``get-psdrive'', which will show the drives attached to the system that are available to powershell. 
+			These drives are of different types, such as Filesystems and registries which can be manipulated using the cmdlets found by running ``get-command *-Item*''. 
 
+			Using these commands, you should be able to find your way around the system, albeit slowly until you learn the commands which you will be using. 
+			These commands will be explained in the next section. 
+
+		\subsection{Differences and similarities to Bash}
+			This section will discuss the differences and similarities that need to be understood when moving from Bash to PowerShell. 
+			These are in part due to basing PowerShell on earlier shell implementations, but are also largely influenced by the C\# and .NET object system which PowerShell is based on. 
+
+			The first of these is pipes and redirection. 
+			These are much the same as in bash, where the ``>'' operator will redirect output to a file or another file descriptor. 
+			However, one must understand that this will direct the object which was output to that file, rather than the direct text which would have been printed. 
+			This is due to the underlying .NET object system which PowerShell is based on. 
+			This can be seen by capturing the output of a cmdlet in a variable (``\$<var> = <cmdlet>) and calling ``.GetType().Fullname'' on this variable.
+			For bash, or any other text based shell, this would not work as you are working on a text variable. 
+			However, in powershell, this will be an object of a specific type, possibly even a string object. 
+			If you would like to capture the text, piping the result into the cmdlet ``out-string'' will render it as it would be on screen and store a ``System.String'' object. 
+
+			It is also worth noting that functions within PowerShell have a number of quirks which must be accounted for for those coming from a programming background. 
+			The first of these is the notion that cmdlets and strings that you use within the function may also add to the return of the function. 
+			When the return function is called, all output which would normally be written to STDOUT is returned, each being given the next available place in the output array. 
+			To avoid this with strings, use the command ``Write-Host''. 
+			Alternatively, redirect output to either \$null or [void]. 
+			Note also that the return keyword is just used to end the function at a given point. 
+			It is not necessary to have the output returned. 
+
+			Null will also cause some issues when using powershell. 
+			This is due to the interaction between powershell cmdlets and .NET functions. 
+			The former, being built for CLI scripting will gracefully ignore null. 
+			The latter, however, will often crash on null references, causing the script as a whole to grind to a halt. 
+			Thus, when using powershell, you must be wary of both what may be null, and what may be called on a null. 
+			
+		\subsection{Conclusion}
+			While powershell may look similar to many other shells, it works on a very different paradigm. 
+			When working with powershell, one needs to understand the underlying .NET object system and it's impact. 
+			While it may be possible to treat Powershell as a normal text based shell, doing so will create a far less efficient and far harder to understand script. 
+			Thus, it is recommended that you use the four cmdlets outlined above alongside the information in the last section to determine how best to interact with the objects you are given. 
+			This is a far more powerful and efficient way to interact with PowerShell. 
 	\section{Introduction to Scripting}
 	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
 		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
@@ -1537,7 +1576,7 @@ alias ls="ls --color=auto"
 			\begin{verbatim}
 				MD5: 
 				4aa6dea37dec500f58bb241404471981
-				SMA256: 
+				SHA256: 
 				6ff13e15281e9953d2c85c86e3727ea1cf3862f44d5cf18961811d63eebce2da 
 			\end{verbatim}
 			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom wordlist and using Hashcat's hybird mode. 
@@ -2292,7 +2331,6 @@ Dump of assembler code for function main:
 		We can achieve this due to the fact that a proper call to printf (or any other function) pushes each of the arguments for the call to the stack in reverse order. 
 		The format function will the iterate through these arguments, but rather than counting the number that came in, it will simply count the number of format codes it finds. 
 		This means that the function will continue to read from memory, even when no arguments were pushed for it. 
-		
 		\subsection{The Vulnerability}
 			The string format vulnerability occurs when the printf function is misused with user input strings. 
 			Printf should be called using the syntax ``printf("\verb+%s+", string)'', which will not parse the variable ``string'' for format codes. 
@@ -2307,6 +2345,23 @@ Dump of assembler code for function main:
 			Using this example, attempt to have it write parts of the stack. 
 			Try to find items such as return locations and environmental variables. 
 			They will be useful later on. 
+
+		\subsection{Writing to Memory Addresses}
+			We have been able to read to memory addresses lower on the stack than our print call quite easily. 
+			The only thing necessary for this was using \%x statements. 
+			However, writing to an arbitrary memory address is more difficult. 
+
+			Printf conveniently provides a method of direct parameter access that can be used to write to a specific location. 
+			This is done by specifying ``\%y\$n'' where y is an integer used to specify the number of steps to go down the stack before writing. 
+			This will still write the number of bytes which have been printed, giving you an easy way to write arbitrary values to parts of the stack. 
+			
+			When attempting to write memory addresses into variables or the return pointer on the stack frame, it is best to use two short writes. 
+			This can be done using the ``h'' modifier within the ``\%n'' parameter, which will tell it to write only a short (16 bit) value. 
+			This means that full 32 bit and 64 bit memory addresses can be written to arbitrary locations within the applications memory, allowing you to control the flow of the program. 
+
+			Using this vulnerability, one can overwrite any memory location within the program. 
+			Using thin knowledge, find other memory locations which may be worth overwriting. 
+			They can lead to some interesting consequences. 
 	\section{IDS, IPS and AV}
 	\section{Challenges}
 		The shellcode found in \ref{code:ShellcodeReversePort} is the solution to the reverse TCP connection problem given in Attacking Remote Targets. 
