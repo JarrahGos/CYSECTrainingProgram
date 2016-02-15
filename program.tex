@@ -405,7 +405,12 @@
 		Starting from the application layer, each layer that the packet passes through will add a new header for it's data, which will not be read until the packet passes through that layer on the other end of it's journey. 
 		%TODO: Think about using a figure here to show this encapsulation. 
 		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
-	\section{Network Architecture}
+		Network architecture is the physical layout of the computers connected using the aforementioned OSI model. 
+		This is done through means of routers, switches and hubs connecting computers. 
+		Each of these components are known as nodes within the network. 
+		Nodes are any item along the way that will receive and either terminate or retransmit data. 
+
+		
 	\section{Connecting to Networked Software}
 	
 \chapter{Network Penetration}
@@ -864,6 +869,13 @@
 
 	\section{Steganography}
 	\section{Wireshark}
+		Wireshark is a packet sniffing and inspection suite which is used to intercept and view traffic which is being transmitted along your network.\cite{WSUG} 
+		It is used in a number of fields, such as network interception, Bluetooth and WiFi attacks and attack recognition. 
+		This works in such a way that no packets are transmitted by Wireshark, making it invisible to those down the line of transmission. 
+		This section will be working from Wireshark 2.0.2, which may not be installed on your system. 
+		While some of the actions will be quite similar, you may want to download a more recent version from \url{wireshark.org} or github.
+
+
 	\section{Netflow}
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
