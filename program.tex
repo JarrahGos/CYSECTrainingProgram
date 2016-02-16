@@ -875,7 +875,36 @@
 		This section will be working from Wireshark 2.0.2, which may not be installed on your system. 
 		While some of the actions will be quite similar, you may want to download a more recent version from \url{wireshark.org} or github.
 
-
+		\subsection{The Wireshark UI}
+			When you first open Wireshark, you will be given the option to choose a network adapter to listen on. 
+			This can be any of the devices that are attached to the computer that Wireshark supports. 
+			Usually it is limited by OS support rather than Wireshark limits. 
+			Once a network adapter is selected, you will be taken to the packet analysis screen, which can be seen in figure \ref{fig:WiresharkAnalysis}.
+			\begin{figure}[htb]
+				\centering
+					\includegraphics[scale=0.35]{./WiresharkAnalysis.png}
+					\caption{This is what Wireshark will look like when you are running a capture.}
+					\label{fig:WiresharkAnalysis}
+			\end{figure}
+			In this, there are four main areas to focus on:
+			\begin{description}
+				\item[Filter Toolbar] This toolbar is used to find the packet or type of packet that you are looking for. 
+					It has it's own syntax which allows it to filter the packets which have been captured by items such as
+					Protocol, type, source address or destination address. 
+					This is one of the more powerful parts of Wireshark. 
+				\item[Packet List] This is where you will spend much of your time. 
+					The packet list is used to find the packet that you are searching for, and is found in the middle of the screen. 
+					It is colour coded in a manner which can be found within the colour settings on the toolbar. 
+					Between the detail found here, the colour coding and the filter toolbar, you should be able to find all packets that you require. 
+				\item[Packet Details]
+					This is directly below the packet list and contains the full metadata of the packet. 
+					It is the location where you will find most of the interesting data which is encoded with the packets, but not a part of their data payload. 
+				\item[Packet Bytes]
+					This is a direct hexadecimal representation of the bytes which were sent as the packet. 
+					It shows hex on one side and ASCII on the other, allowing for any plain text to be discovered. 
+					Bytes which do not map to an ASCII code will be displayed as a full stop. 
+			\end{description}
+			
 	\section{Netflow}
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
@@ -1494,9 +1523,9 @@ alias ls="ls --color=auto"
 						?l & abcdefghijklmnopqrstuvwxyz \\ \hline
 						?u & ABCDEFGHIJKLMNOPQRSTUVWXYZ \\ \hline
 						?d & 0123456789 \\ \hline
-						%?s & \verb¤«space»!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~}¤ \\ \hline
-						?s & Special Characters \\ \hline %TODO: Have this print the characters. 
-						?a & ?l?u?d?s \\ \hline
+						?s & <space>!"\#\$\%\&\verb!'()*+,-./:;<=>?@[\]\^_`{|}~}! \\ \hline
+						%?s & Special Characters \\ \hline %TODO: Have this print the characters. 
+						?a & \verb+?l?u?d?s+ \\ \hline
 						?b & 0x00 - 0xff \\ \hline
 					\end{tabular}
 					\caption{Hashcat Mask Mode Built in Character Sets}
