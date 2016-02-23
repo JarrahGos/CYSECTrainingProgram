@@ -806,6 +806,69 @@
 			When given the correct information, such as attacking IP (``-r'') and attackers port (``-p''), it will attempt to connect to the attacking computer repeatedly. 
 			While this is useful, it does require access to the hard drive. 
 			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
+	\section{Challenges}
+		\subsection{Unsecured FTP to Shell}
+			This section is an initial walk through for getting access to a system with an unsecured FTP server. 
+			This will use a number of tools which are covered in other sections, but is designed as an introduction. 
+			Thus, if you have not used these tools before, do not worry, they will be explained later. 
+
+			To do this, the first step is to determine what the computer you are targeting is running. 
+			This is done using the tool ``nmap'' as below:
+			\begin{quote}
+				nmap -Sv <Target> -p-
+			\end{quote}
+			This will give us a list of the services which are running on the server, as well as their names and ports. 
+			We will be looking at the FTP server, as it is currently allowing plain text authentication:
+			\begin{quote}
+				21/tcp    open  ftp         vsftpd 2.3.4
+			\end{quote}
+			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the username and password. 
+			This is how we will begin to gain access to the system. 
+
+			Open the program Wireshark and start a listener on eth1. 
+			This is the NIC that is connected to the remote server and that someone may be interacting with it on. 
+			Usually this would be done through means such as a \href{https://lanturtle.com/}{LAN Turtle}, 
+			However, for the purposes of this demonstration, we will simply be using a local network interface. 
+
+			When the listener is setup, look for a set of TCP and FTP packets to the target from your machine. 
+			These will likely be the FTP authentication, so right click and select ``Follow TCP Stream'' to view the messages that were sent. 
+			At this point you should have the username and password. 
+			If you do not, find another set of TCP and FTP messages and try again. 
+			For more information on using Wireshark, see it's section in Chapter \ref{ch:Forensics}.
+
+			Once you have the username and password, we need to prepare the files that we will be using to get a shell. 
+			The first of these is a short python script that will send everything that it is sent to /bin/bash.
+			This can be sent as is and can be found in Code example \ref{code:PythonShell}.
+			\begin{code}
+				\lstinputlisting[language={python}]{./PythonShell.py}
+				\caption{Python script to link a socket to a shell}
+				\label{code:PythonShell}
+			\end{code}
+			You will then need to add the following line to their .bashrc:
+			\begin{quote}
+				/home/msfadmin/PythonShell.py \&
+			\end{quote}
+
+			Using FTP with the username and password that you found, run the following commands:
+			\begin{verse}
+				put PythonShell.py \\
+				chmod 777 PythonShell.py \\
+				get .bashrc \\
+			\end{verse}
+			Exit FTP at this point and edit the required line into the .bashrc then run the following FTP command:
+			\begin{quote}
+				put .bashrc
+			\end{quote}
+			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005. 
+
+			At this point, we can get shell access to the computer using the following command:
+			\begin{quote}
+				ncat <target IP> 5005
+			\end{quote}
+			While you will not see it, this will give you access to a shell, but no prompt. 
+			Try any shell command that you know, most will work. 
+			
+			At this point, navigate to the file at ``/etc/flag'' and tell me the flag that you find. 
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
@@ -1791,6 +1854,26 @@ alias ls="ls --color=auto"
 					For greater security, the command ``firejail \verb+--+seccomp \verb+--+private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 				\subsection{Firewall} %TODO: Add firewall chapter
+					A firewall is a system designed to prevent unauthorized access to a system by only allowing a specific set of packets to be transmitted through to the network.\footnote{\url{https://wiki.archlinux.org/index.php/Firewalls}}
+					While they can be in either hardware or software, this section will focus on the software implementation, as this is the implementation which can be setup on all Linux systems. 
+
+					On Linux, the most common tool used for creating a firewall is ``iptables''.\footnote{\url{linux.die.net/man/8/iptables}}
+					This tool is used to inspect, forward, redirect or drop IPv4 packets, based on a set of rules written by its user. 
+					It is built into the Linux kernel, along with a set of basic rules, which will not be sufficient for any level of security. 
+					These rules consist of a predate---the potential matches for the rule---and an action which will be enacted when the predicate is true. 
+					These rules are then read in a chain, which allows iptables to select the correct action based on the rules it was given.\footnote{\url{https://www.frozentux.net/iptables-tutorial/images/tables\_traverse.jpg}}
+					Within this, there are a number of tables.
+					These tables are split into a number of chains, which when linked together will give the order in which the rules are looked at. 
+					For the purpose of creating a firewall, only the filter table will be referred to within this section. 
+					
+					\subsubsection{Simple Firewall}
+						This section is a basic guide on the creation of a simple firewall.\footnote{\url{https://wiki.archlinux.org/index.php/Simple\_stateful\_firewall}}
+						It is not a full security implementation, but rather an exercise in creating the iptables rules which are required. 
+
+
+
+
+
 				\subsection{Physical security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
