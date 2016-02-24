@@ -1879,7 +1879,7 @@ alias ls="ls --color=auto"
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the command ``firejail \verb+--+seccomp \verb+--+private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
 					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
-				\subsection{Firewall} %TODO: Add firewall chapter
+				\subsection{Firewall} 
 					A firewall is a system designed to prevent unauthorized access to a system by only allowing a specific set of packets to be transmitted through to the network.\footnote{\url{https://wiki.archlinux.org/index.php/Firewalls}}
 					While they can be in either hardware or software, this section will focus on the software implementation, as this is the implementation which can be setup on all Linux systems. 
 
@@ -1895,11 +1895,70 @@ alias ls="ls --color=auto"
 					\subsubsection{Simple Firewall}
 						This section is a basic guide on the creation of a simple firewall.\footnote{\url{https://wiki.archlinux.org/index.php/Simple\_stateful\_firewall}}
 						It is not a full security implementation, but rather an exercise in creating the iptables rules which are required. 
+						Note that this, when done on a remote machine will lock you out. 
+						Please either conduct these steps locally or have another means of getting into the system. 
+						Also before starting, please ensure that there are no iptables rules on your system. 
+						These can be removed by running the command:
+						\begin{quote}
+							iptables-restore < /etc/iptables/empty.rules
+						\end{quote}
 
+						The first step in this is to set up the necessary chains with the commands:
+						\begin{quote}
+							iptables -N TCP \\
+							iptables -N UDP \\ 
+						\end{quote}
+						Then we should set the FORWARD chain which is usually used in routers and NAT to DROP with:
+						\begin{quote}
+							iptables -P FORWARD DROP
+						\end{quote}
+						For the next part, we will be telling the firewall to allow all outgoing connections. 
+						This is generally a bad idea, but setting up the correct firewall settings is beyond the scope of this. 
+						\begin{quote}
+							iptables -P OUTPUT ACCEPT
+						\end{quote}
+						We will now start setting up the incoming rules. 
+						The default rules for this is do drop the packets, meaning that they will not be accepted and no response will be sent. 
+						However, we will then add other rules on top of this to ensure that communication is not lost. 
+						The following rule will allow ICMP messages which have are related to an existing connection to be passed through the firewall. 
+						\begin{quote}
+							iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+						\end{quote}
+						The second rule will allow all connections on the loopback address, which is designed to allow software on one machine to communicate. 
+						\begin{quote}
+							iptables -A INPUT -i lo -j ACCEPT
+						\end{quote}
+						This next rule will drop all packets which are not valid. 
+						This means that something about the packets does not make sense, such as a corrupted header or an incorrect checksum. 
+						These packets will be dropped with no response as they are often used in network scanning. 
+						\begin{quote}
+							iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+						\end{quote}
 
+						To allow packets coming through this chain to be attached to our new TCP and UDP chains, use the following commands:
+						\begin{quote}
+							iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP \\
+							iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP \\
+						\end{quote}
+						These next commands will drop all failed UDP and TCP connections. 
+						This is done for security, as a common network mapping technique uses the fact that by protocol, failed TCP packets should reply with an RST packet and failed UDP should reply with an ICMP port unreachable. 
+						The following commands will stop both of these behaviours. 
+						\begin{quote}
+							iptables -A INPUT -p udp -j DROP
+							iptables -A INPUT -p tcp -j DROP
+						\end{quote}
+						Finally, we will drop all other protocols in case anything else was attempted. 
+						\begin{quote}
+							iptables -A INPUT -j DROP
+						\end{quote}
+						You may also want to open up a number of application specific ports such as port 22 for SSH. 
+						This can be done using the following command:
+						\begin{quote}
+							iptables -A <Protocol> -p <Protocol> --dport <port> -j ACCEPT
+						\end{quote}
+						Finally, this whole setup can be saved using the command ``iptables-save''. 
 
-
-
+		
 				\subsection{Physical security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
