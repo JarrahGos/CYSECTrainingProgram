@@ -412,7 +412,34 @@
 
 		
 	\section{Connecting to Networked Software}
-	
+		There are a number of pieces of networked software available. 
+		These are often designed to be accessed in a specific manner, however, these can also often be accessed though other tools. 
+		Often, you will have one end of a program, usually the server running on another machine. 
+		This means that you will have to connect to the in a manner which they were not designed for, 
+		reverse engineering the protocol until you have something that works. 
+
+		\subsection{Netcat}
+			The first method of doing this is using the tool Netcat or ``ncat''. 
+			This tool will connect you to a port, sending any line that you type and printing anything received. 
+			This will allow you to connect directly to any networked program with an open port.
+			This means that you can determine how the program works, reverse engineering it in order to write your own client for it or access the data it contains. 
+
+			To use this, run the command ``ncat <target> <port>''. 
+			This will give you a basic socket connection as previously described to whatever program is working on the given port of the remote machine. 
+			You can use ncat for other means, such as creating a shell on another computer. 
+			However, this is outside the scope of this section. 
+			Further information can be found on the \href{https://nmap.org/book/ncat-man.html}{Ncat Reference Guide}
+
+		\subsection{Programming an Interface}
+			This is the means of taking a server application that you have reverse engineered and implementing a client for it. 
+			This will give you a useable interface which will automatically interact with the server. 
+			Using this will allow you to automate functions such as handshakes and challenge-response sequences. 
+
+			Using the python code learned in Chapter \ref{ch:Progarmming}, 
+			you should be able to write a simple socket script which will respond for you or give you a useful prompt when working with networked software. 
+
+			To test this, set up the \href{https://github.com/CySCA/CySCA2014/blob/master/misc-server/programming/prog01/server.py}{jumbled word server} from \href{https://cyberchallenge.com.au/}{CYSCA 2014} and attempt to write a python script which will run through the challenge response sequence for this server. 
+
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
 	Network penetration is a multiphase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
@@ -2633,7 +2660,34 @@ Dump of assembler code for function main:
 			Furthermore, if you are willing to store large amounts of data and use a custom program, rainbow tables could speed this process significantly for common passwords. 
 			If neither of the above work, the final option is to use a program such as ``hashcat'', which will allow you to undertake GPU accelerated cracking on multiple machines in order to find the password. 
 			See the Hash Cracking section of chapter \ref{ch:Cryptography} for more detailed information about this. 
-	\section{WiFi Pineapple}
+	\section{Other WiFi Attacks}
+		Outside of attempting to crack passwords, there are a number of other means for gaining access to a system through WiFi. 
+		This can be done in a number of ways, such as spoofing a network or breaking a RADIUS server. 
+		\subsection{Spoofing a WiFi Network}
+			This is the act of creating a network with the same name as the one you are targeting and waiting for people to join it. 
+			This works because of the fact that most devices store past networks and actively attempt to connect to the strongest signal. 
+			Due to this, a device will often connect to an open network with no notice to the user, allowing you to intercept all traffic. 
+
+			The main example of this currently is the WiFi Pineapple. 
+			This device waits for incoming requests for networks and responds with the requested name. 
+			Each time a device beacons out attempting to connect, it will broadcast the names of all the networks it knows. 
+			The WiFi Pineapple will then respond saying that it is one of the known networks, having the device connect to it. 
+			Once connected, the WiFi Pineapple will connect the target through to the Internet, making the connection seem seamless. 
+			However, the owner of the Pineapple will be able to read all traffic which is being sent through the device. 
+
+			While this is not a common attack, it is difficult to protect against. 
+			There are a number of open access points purporting to offer ``Free WiFi'', however, none can be trusted. 
+			This is because they are all on hardware which is not known and could be intercepting traffic. 
+			Furthermore, if you do connect to these, someone with a WiFi Pineapple or similar device could intercept your connection and intentionally steal your data. 
+
+			Due to these issues, there are only two ways to combat this attack:
+			\begin{itemize}
+				\item Do not connect to open WiFi Access Points
+				\item Turn WiFi off when not in use. 
+			\end{itemize}
+
+			This attack only works due to the WiFi authentication protocol not requiring that the AP authenticate with the user. 
+			Thus, any AP can purport to be any other, and the user and their device will be none the wiser. 
 	\section{Bluetooth}
 	\section{Near Field Communications}
 		NFC cards and tags are an exceptionally useful input device for many solutions. 
