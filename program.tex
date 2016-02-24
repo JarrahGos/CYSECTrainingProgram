@@ -1877,8 +1877,12 @@ alias ls="ls --color=auto"
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
-					For greater security, the command ``firejail \verb+--+seccomp \verb+--+private <program>'' will block ``program'' from writing anything to disk, effectively blocking all permanent changes. 
-					While this latter case does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
+					For greater security, the following command will block the program from writing to disk, effectively blocking all permanent changes
+					\begin{quote}
+						firejail \verb+--+seccomp \verb+--+private <program>
+					\end{quote}
+					While this does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
+					However, it also means that nothing can be saved from within the program, making it far harder to use. 
 				\subsection{Firewall} 
 					A firewall is a system designed to prevent unauthorized access to a system by only allowing a specific set of packets to be transmitted through to the network.\footnote{\url{https://wiki.archlinux.org/index.php/Firewalls}}
 					While they can be in either hardware or software, this section will focus on the software implementation, as this is the implementation which can be setup on all Linux systems. 
@@ -2789,10 +2793,6 @@ Dump of assembler code for function main:
 	\section{STIX Model}
 		\url{http://stixproject.github.io/}
 \newpage
-\chapter{History}
-	\label{ch:History}
-	\section{MIT Tech Model Railroad Club}
-	\section{Early Computing Equipment}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
