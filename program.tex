@@ -835,6 +835,7 @@
 			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
 	\section{Challenges}
 		\subsection{Unsecured FTP to Shell}
+		% Expect tutorial for setting this up. http://web.archive.org/web/20041010121409/http://www.raycosoft.com/rayco/support/expect_tutor.html
 			This section is an initial walk through for getting access to a system with an unsecured FTP server. 
 			This will use a number of tools which are covered in other sections, but is designed as an introduction. 
 			Thus, if you have not used these tools before, do not worry, they will be explained later. 
@@ -863,23 +864,14 @@
 			If you do not, find another set of TCP and FTP messages and try again. 
 			For more information on using Wireshark, see it's section in Chapter \ref{ch:Forensics}.
 
-			Once you have the username and password, we need to prepare the files that we will be using to get a shell. 
-			The first of these is a short python script that will send everything that it is sent to /bin/bash.
-			This can be sent as is and can be found in Code example \ref{code:PythonShell}.
-			\begin{code}
-				\lstinputlisting[language={python}]{./PythonShell.py}
-				\caption{Python script to link a socket to a shell}
-				\label{code:PythonShell}
-			\end{code}
-			You will then need to add the following line to their .bashrc:
+			Now that we can alter files on their system, add the following line to their .bashrc.
+			This will open a listener on port 5005 which can be interacted with from any computer on the network. 
 			\begin{quote}
-				/home/msfadmin/PythonShell.py \&
+				nc -l -k -p 5005 -e /bin/bash
 			\end{quote}
 
 			Using FTP with the username and password that you found, run the following commands:
 			\begin{verse}
-				put PythonShell.py \\
-				chmod 777 PythonShell.py \\
 				get .bashrc \\
 			\end{verse}
 			Exit FTP at this point and edit the required line into the .bashrc then run the following FTP command:
