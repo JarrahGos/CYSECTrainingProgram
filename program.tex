@@ -316,6 +316,34 @@
 			Another program, known as strings will automate the process of finding ASCII strings in binary. 
 			Though it is exceptionally widespread, one need not understand binary in order to utilise these tools. 
 		\subsubsection{Assembly}
+			While everything may compile down to become binary, assembly is the code that will become binary to be executed on the computer. 
+			This language is specific to the CPU that it is running on, meaning that there is no portability, but the scope for optimization is huge. 
+			Assembly is mapped directly to the hardware layout of both the memory and the CPU, it interacts directly with the registers and creates the memory layout that was described above. 
+			Thus, when you are writing assembly, you will have to take into account where the variables are stored and what actions are being conducted in that area. 
+			Calling the kernel may just wipe out all of your registers, destroying the data that you just created. 
+
+			This makes assembly exceptionally powerful, but also exceptionally error prone. 
+			It is common for one who often writes in higher level languages to simply forget about a part of assembly that is handled by higher level languages. 
+			Thus, when writing or altering assembly, one needs to have an understanding of the follow on effects of the actions. 
+
+			The most major of these is that kernel calls or function calls will overwrite most registers. 
+			This can be solved by using stack frames, pushing the registers to memory then making the call. 
+			After the call you can retrieve all registers from memory, returning the CPU to it's prior state. 
+
+			Another thing to take into account is that one instruction may alter the way that following instructions will run. 
+			This is most evident in ``cmp'' and ``jmp'' group of instructions, which check the relevant CFLAGS bits to determine whether to follow the jump. 
+
+			With this in mind, it becomes evident that writing assembly is not the most efficient way to write code. 
+			Furthermore, when it is understood that even the best assembly programmers will not be able to optimize their code as well as a modern compiler will, it becomes evident that writing software in assembly is redundant. 
+			Thus, in the modern day, assembly is used for three things:
+			\begin{enumerate}
+				\item Reverse Engineering.
+				\item Specific embedded and driver applications.
+				\item Learning low level Computer Science. 
+			\end{enumerate}
+			
+			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
+			
 \chapter{Scoping and Mindset}
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
