@@ -85,8 +85,16 @@
 	Thus, I request that you read through your local laws before attempting any of the exercises within the book. 
 	Furthermore, I recommend setting up a virtual machine which can be used to run these exercises in a controlled environment without an Internet connection. 
 	This simply reduces the risk of inputting the wrong command and accidentally attacking a target that you do not control. 
+
+	This document will discuss both the utilization and creation of tools used to attack other systems. 
+	As much as possible, it will attempt to develop an understanding of how these tools work and what they do. 
+	However, it must be noted that this cannot be guaranteed. 
+	Some of the tools which this document will discuss have been crafted into a single click hack, much like a gun. 
+	One should remember that without understanding what these tools do, they are not in control. 
+	In the same way as a gun in the hands of the untrained, these tools can be dangerous, and should be used with caution. 
+
 	With this in mind, please continue through the pages of this book. 
-	I hope you get as mush from reading it as I did from writing it. 
+	I hope you get as much from reading it as I did from writing it. 
 \end{abstract}
 \chapter{Computer Operations}
 	\label{ch:ComputerOperations}
@@ -463,7 +471,7 @@
 			This will give you a useable interface which will automatically interact with the server. 
 			Using this will allow you to automate functions such as handshakes and challenge-response sequences. 
 
-			Using the python code learned in Chapter \ref{ch:Progarmming}, 
+			Using the python code learned in Chapter \ref{ch:Programming}, 
 			you should be able to write a simple socket script which will respond for you or give you a useful prompt when working with networked software. 
 
 			To test this, set up the \href{https://github.com/CySCA/CySCA2014/blob/master/misc-server/programming/prog01/server.py}{jumbled word server} from \href{https://cyberchallenge.com.au/}{CYSCA 2014} and attempt to write a python script which will run through the challenge response sequence for this server. 
@@ -1890,7 +1898,10 @@ alias ls="ls --color=auto"
 						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the ``/proc'' filesystem with the option ``hidepid=1''. 
 					\item[Grsecurity\footnote{\url{https://en.wikibooks.org/wiki/Grsecurity}}]
 						is a kernel which has been patched with multiple security enhancements. 
-						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PAX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
+						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PaX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
+					\item[PaX] PaX is a Kernel patch which implements a number of security countermeasures. 
+						It will lock down which parts of memory contain code and which contain data, ensuring that the latter cannot be executed by the CPU. 
+						Furthermore, it will randomize the memory layout of the computer, making it far more difficult to determine what part of memory is being operated on and thus far harder to exploit a program successfully. 
 				\end{description}
 				\subsection{Sandboxing with firejail}
 					Sandboxing is an important part of running a secure system. 
@@ -2596,6 +2607,102 @@ Dump of assembler code for function main:
 			Using thin knowledge, find other memory locations which may be worth overwriting. 
 			They can lead to some interesting consequences. 
 	\section{IDS, IPS and AV}
+		These are systems designed to stop you getting into a system or to alert the user and enact a script when an intrusion is detected. 
+		While they do make attacks more difficult, none has yet been designed that is perfect. 
+		There are a number of methods for avoiding these systems, some of which will be explained here. 
+
+		\subsection{Invisibility}
+			When you are attacking a target, you will often be unexpected. 
+			This means that you may be able to get into the system without being noticed. 
+			Rather than opening with the loudest scan and most powerful attack even though you don't know whether it will get you into the system,
+			simply take the time required to run another scan and do a little more research. 
+			The extra time will give you the opportunity to enter the system undetected. 
+			When you have root access to a system and haven't been detected entering, you are the most powerful and dangerous user of the system. 
+
+		\subsection{Exploiting Without Breaking}
+			Another means of becoming invisible is to ensure that the program that you use to exploit does not break immediately when you exploit it. 
+			Ensuring that the program doesn't stop will make your attack far less obvious, but is far harder than just running an exploit. 
+			This can be done initially by setting up a return address within the shellcode to return execution to the main program. 
+			However, while this may work, it will also likely cause the program to crash due to the damage that was done in writing and executing the shellcode in the first place. 
+			
+			Thus, if you can get a local copy of the program running to test it on, you should run the program through a debugger, checking for the memory that you have likely overwritten and repairing it. 
+			This is usually done by adding a breakpoint instruction within your Shellcode (such as the ``int3'' instruction) and then running it on the target program within GDB. 
+			When viewing this, the damage that you have done should be obvious, and thus can be repaired within your shellcode. 
+
+			Further to this, you will also have to ensure that the process that you are targeting doesn't have a distinct pause while your shellcode is running. 
+			This means that your shellcode should fork into another thread or process as soon as possible. 
+			This can be done using the fork system call then having the parent clean up and return to the main process. 
+			In order to do this, one must remember that the fork system call will return 0 in the child process, but the new PID in the parent. 
+			This can be used to make the parent (non-zero return) conduct the clean up while the child continues to process your shellcode goals. 
+			\begin{code}
+				\lstinputlisting[language={[x86masm]Assembler}]{./forkShellcode.asm}
+				\caption{Shellcode that forks such that the original thread can continue. }
+				\label{code:ShellcodeData}
+			\end{code}
+
+		\subsection{Firewalls}
+			This is another aspect that must be thought about. 
+			Even a simple firewall will often block a number of suspicious ports, such as 31337 which has historically been used for malicious purposes. 
+			However, a more complex firewall will have rules stating that a normally inbound serving service such as a webserver should not be able to create an outgoing connection. 
+			Thus, you will have to determine what is going on with the firewall on the system you are targeting and work around its rules. 
+
+			One way to do this is to reuse sockets within the program. 
+			This has the added bonus of not logging anything extra as no new socket is created. 
+			However, it also means that the firewall has already allowed the connection to be created, meaning that the shell will not be caught within its rules. 
+			Remembering that when we exploit a program, out exploited version will still have total access to the memory of the original, even if we have forked it to create a new process. 
+			Thus, we can take the file descriptor which was used to communicate and bind it to our shell. 
+			This is done by debugging the target program and finding the address of the socket that we would like to use, then loading that address and using it in our bind calls. 
+
+		\subsection{Payload Smuggling}
+			Many IDS or IPS systems will scan the contents of the packets that are being sent over the network. 
+			This will stop most of the shellcode that we have been creating in this chapter, as the goal of the code is quite obvious. 
+			However, this can be stopped using a method known as payload smuggling, which will obfuscate the payload to the point that the casual reader or fast acting IDS would not notice it. 
+
+			The easiest way to do this is to encode parts of the shellcode. 
+			The most obvious of these is strings such as ``/bin/bash'', which will be picked up by even the most basic IDS. 
+			However, after running these through a XOR function, we have simple binary data which will not be picked up by the IDS. 
+			So long as we retain the key this data can be returned to it's original form and used within the program. 
+
+			A further attempt at this within a highly secure environment is to use this XOR function on the whole shellcode, leaving only a decoder and loader in memory. 
+			While this is far more complex, it means that no statically scanning IDS will be able to detect your shellcode unless you are using a known key. 
+
+			Further to this, the NOP sleds that are commonly used within shellcode are quite obvious to an IDS as they are rarely if ever used in the normal world. 
+			However, table \ref{tab:NOPAlternative} shows a list of instructions, their hex values and their ASCII interpretations that can be used instead. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | c | l |}
+					\hline
+					\textbf{Instruction} & \textbf{Hex} & \textbf{ASCII} \\ \hline
+					inc eax	& 0x40 & @ \\ \hline
+					inc ebx & 0x43 & C \\ \hline
+					inc ecx & 0x41 & A \\ \hline
+					inc edx & 0x42 & B \\ \hline
+					dec eax & 0x48 & H \\ \hline
+					dec ebx & 0x4B & K \\ \hline
+					dec ecx & 0x49 & I \\ \hline
+					dec edx & 0x4A & J \\ \hline
+				\end{tabular}
+				\caption{NOP Sled alternatives}
+				\label{tab:NOPAlternatives}
+			\end{table}
+			As the registers need to be zeroed out before use anyway, it is fine to use these instructions rather than creating a NOP sled as they will be executed before the shellcode starts processing.  
+
+		\subsection{Other Mitigations}
+			These are further mitigations that require further study. 
+			Each of them has a weakness, but these weakness are beyond the scope of this document. 
+			Where the weakness is well known, its name will be given alongside that of the mitigation. 
+
+			Stack Hardening is the walling off of the stack from executable memory. 
+			This means that any inserted shellcode stored within stack based memory will not be executable as the OS will know that it was never supposed to be run. 
+			This is implemented in Linux through the Grsecurity and PaX patch sets, which when set up properly will completely block stack execution. 
+			However, this can be overcome using the ``return to libc'' method.
+
+			Randomized stack space is another mitigation that makes exploits harder. 
+			This mitigation disrupts the convenient stack layout that we have used to our advantage within this chapter, randomizing it such that one cannot know where a variable will occur. 
+			Since Linux version 2.6.12 this has been enabled by default, making the execution of shellcode which has been written onto the stack a matter of luck. 
+			This can be overcome, but requires that you brute force the return address before being able to write shellcode which will work with it. 
+
+
 	\section{Challenges}
 		The shellcode found in \ref{code:ShellcodeReversePort} is the solution to the reverse TCP connection problem given in Attacking Remote Targets. 
 		\begin{code}
