@@ -125,7 +125,7 @@
 					This will interpret the first chapter of the instruction, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
 					The later fields are then sent as arguments to supplement the instruction. 
 					This process may take place on a hardwired circuit, or through the use of a microprogram which, In either case the system output will be the same. 
-					However, in the latter case, the microprogram will be rewritable, allowing for decoding to be altered after production. 
+					However, in the latter case, the microprogram will be re-writable, allowing for decoding to be altered after production. 
 				\paragraph{Execute}
 					This step causes the CPU to enact the requirements of the instruction, causing output to be written to a given register or memory location. 
 					This may occur over multiple clock pulses, with each designating a new chapter of the instruction. 
@@ -144,7 +144,7 @@
 				\paragraph{The Floating Point Unit}
 					(FPU) is the logic circuit used to calculate floating point (real) numbers. 
 					While these numbers can be computed using only the ALU, it is not optimized to calculate them.
-					Thus to expediate the process an FPU was created. 
+					Thus to expedite the process an FPU was created. 
 					These units will calculate mathematics on real numbers to a given precision (specified by the IEEE). % Reference this
 					When a given precision is not supported, the ALU must run the calculation at a far slower pace. 
 				\paragraph{Protected Mode} 
@@ -274,7 +274,7 @@
 					For our purposes, memory should be thought of in terms of the segments and data structures which make it up. 
 					\subsubsection{The .BSS Section}
 						The BSS Section is the section of memory used for static and global variables. 
-						Generally the variables outlined in this chapter are not initialised until the program is running. 
+						Generally the variables outlined in this chapter are not initialized until the program is running. 
 						A .BSS variable may be a memory location that you wish to store a string in later in the program. 
 					\subsubsection{The .data Section}
 						The data Section is the section for global variables which are to be initialised before the program starts. 
@@ -322,7 +322,7 @@
 			These editors allow one to see the binary code in base 16 rather than base 2, reducing its length by a factor of 8. 
 			Furthermore, these editors will display a ASCII representation of any text found, allowing one to read strings out of the file. 
 			Another program, known as strings will automate the process of finding ASCII strings in binary. 
-			Though it is exceptionally widespread, one need not understand binary in order to utilise these tools. 
+			Though it is exceptionally widespread, one need not understand binary in order to utilize these tools. 
 		\subsubsection{Assembly}
 			While everything may compile down to become binary, assembly is the code that will become binary to be executed on the computer. 
 			This language is specific to the CPU that it is running on, meaning that there is no portability, but the scope for optimization is huge. 
@@ -352,7 +352,7 @@
 			
 			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
 			
-\chapter{Scoping and Mindset}
+\chapter{Scoping and Mind set}
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
 		One must understand the difference between attempting to beat down a stone wall with a battering ram and simply finding the key. 
@@ -388,7 +388,7 @@
 			Once this has occurred, a pick should be used to test each of the pins, determining how many there are and which ones have become bound to the sheer point. 
 
 			The idea here is to place a small amount of pressure on the pins which bind to the sheer point in order of their binding. 
-			This should leave the upper pin lodged above the plug, with the lower pin dropped into the keyway. 
+			This should leave the upper pin lodged above the plug, with the lower pin dropped into the key way. 
 			Continue with this until either you have bound all pins and the lock is open, or you cannot determine whether pins have set or not. 
 			If the latter, reset the pins by releasing pressure on the tension wrench. 
 		\subsection{Raking}
@@ -416,7 +416,7 @@
 		The layers of the OSI Model are as follows:
 		\begin{description}
 			\item[Physical Layer]
-				Deals with the physical connection between two machines through means such as CAT5 ethernet. 
+				Deals with the physical connection between two machines through means such as CAT5 Ethernet. 
 				This is the lowest layer, whose primary role is communicating raw bits, as well as starting maintaining and ending the transmission. 
 			\item[Link Layer]
 				Transfers data between the two points connected by the physical layer. 
@@ -437,7 +437,7 @@
 				Keeps track of the requirements of the application and allows it to utilize the data which it received. 
 		\end{description}
 		When data is transmitted through these layers, it is encapsulated in quanta known as packets. 
-		Each of these packets contains the metadata required for each of the layers of the network model. 
+		Each of these packets contains the meta-data required for each of the layers of the network model. 
 		Starting from the application layer, each layer that the packet passes through will add a new header for it's data, which will not be read until the packet passes through that layer on the other end of it's journey. 
 		%TODO: Think about using a figure here to show this encapsulation. 
 		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
@@ -468,7 +468,7 @@
 
 		\subsection{Programming an Interface}
 			This is the means of taking a server application that you have reverse engineered and implementing a client for it. 
-			This will give you a useable interface which will automatically interact with the server. 
+			This will give you a usable interface which will automatically interact with the server. 
 			Using this will allow you to automate functions such as handshakes and challenge-response sequences. 
 
 			Using the python code learned in Chapter \ref{ch:Programming}, 
@@ -478,7 +478,7 @@
 
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
-	Network penetration is a multiphase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
+	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
 	This chapter will show a step by step progression through this, explaining how an attacker would find their target on a network, exploit it and move on to another target without losing control of the first machine. 
 	\section{Nmap}
 		Port scanning is a simple way to determine what services are running on a computer. 
@@ -486,7 +486,7 @@
 		However, it also works by fingerprinting the response, which is usually specific to the program which is running on the port. 
 		This can be done through a number of means, such as attempting to open a full TCP connection to each port or only attempting a partial connection. 
 		It must be noted that while effective, the former is rarely used due to the ease of detection and large amount of network traffic generated. 
-		Nmap\cite{NmapBook} is the tool that we will utilise to conduct these scans. 
+		Nmap\cite{NmapBook} is the tool that we will utilize to conduct these scans. 
 		It has a number of options which allow us to control the scan to our exact specifications and commonly picks up most services.\cite{HackingAOE} 
 		\subsection{SYN Scanning}
 			The most common scan used is known as a SYN scan. 
@@ -602,7 +602,7 @@
 			Following the steps outlined on the screen will get you to a usable Nessus install. 
 
 		\subsection{Running a Scan}
-			Nessus comes with a number of prebuilt scan types which work for different types of systems. 
+			Nessus comes with a number of pre-built scan types which work for different types of systems. 
 			These are described below:
 			\begin{description}
 				\item[External Network Scan] This scan is written for externally facing hosts. 
@@ -646,7 +646,7 @@
 		
 		\subsection{MSFconsole}
 			MSFconsole is the tool that you will interact with when using Metasploit. 
-			This is the commandline which you can interactively craft your attack. 
+			This is the command line which you can interactively craft your attack. 
 			However, it will also allow you to manage a number of attacks and target machines. 
 
 			MSFconsole has a number of commands which can be used. 
@@ -715,14 +715,14 @@
 						This is a single payload containing both the exploit and the shellcode for a task. 
 						These are more stable, but far larger than other types of payload due to the fact that they must contain everything in the initial payload. 
 					\item[Staged]
-						This is a multiphase payload which works with a stager which receives the rest of the payload as it is needed. 
+						This is a multi phase payload which works with a stager which receives the rest of the payload as it is needed. 
 						This allows for smaller initial exploits, but requires a constant connection between the attacker and target. 
 						This means that while it is easier to fit into an exploit, it can be far less reliable. 
 					\item[Meterpreter]
 						This is a meta-interpreter which allows for high level interaction with the OS. 
 						It resides completely in memory, and has a number of scripts and plugins which can be used to better attack the target. 
 					\item[PassiveX]
-						This is useful for circumventing restrictive outbound firewalls. 
+						This is useful for circumventing restrictive out bound firewalls. 
 						It is based on ActiveX, creating a hidden IE instance and communicating over HTTP. 
 					\item[NoNX]
 						These are payloads designed to prevent NX bit implementations from stopping the payload. 
@@ -827,7 +827,7 @@
 		\end{table}
 		This should be done after scanning the internal network and choosing a target. 
 		This is due to the fact that you will have to know the port and how you will attack it well before setting up the forwarding rule. 
-		By utilising this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
+		By utilizing this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
 		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
 	\section{Maintaining a presence}
 		After successfully compromising a target, it is usually good measure to ensure that your access is permanent. 
@@ -836,7 +836,7 @@
 		The former of these will be far more obvious, but will give you the information you require quickly. 
 		The latter will give you long term access, allowing you to use the machine as a staging ground for other attacks. 
 
-		\subsection{Keyloggers}
+		\subsection{Key loggers}
 			This section assumes that you have already gained access to a Windows PC. 
 			However, it will work in a similar manner for other OS's. 
 			
@@ -845,15 +845,15 @@
 			then by choosing one and running ``migrate <PID>''. 
 			This will ensure that the process that we are inhabiting will not easily be reset, killing our connection. 
 
-			At this point we can start the keylogger.
+			At this point we can start the key logger.
 			This is done using the command ``keyscan\_start'', 
 			which will start saving the typed keys to memory, ready to be dumped to the attacking computer. 
 			These keys can be saved written to screen using the command ``keyscan\_dump''. 
-			Furthermore, if you would like to capture login information, migration to the login manager will ensure that the keylogger is running at that point too. 
+			Furthermore, if you would like to capture login information, migration to the login manager will ensure that the key logger is running at that point too. 
 			In windows this can be done by migrating to the ``winlogon.exe'' process. 
-		\subsection{Meterpreter Backdoor}
+		\subsection{Meterpreter Back door}
 			Rather than just logging the keys pressed on a system, we can also retain our Meterpreter session between process resets, but not boots, keeping the hard drive clean.  
-			This is done using the ``metsvc'' backdoor, which installs a Meterpreter shell on the system. 
+			This is done using the ``metsvc'' back door, which installs a Meterpreter shell on the system. 
 			However, this basic setup has one major security flaw: \emph{it requires no authentication.}
 			The only two means of solving this is altering the source code or setting up port filtering on the target. 
 
@@ -886,7 +886,7 @@
 			\begin{quote}
 				21/tcp    open  ftp         vsftpd 2.3.4
 			\end{quote}
-			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the username and password. 
+			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the user name and password. 
 			This is how we will begin to gain access to the system. 
 
 			Open the program Wireshark and start a listener on eth1. 
@@ -896,7 +896,7 @@
 
 			When the listener is setup, look for a set of TCP and FTP packets to the target from your machine. 
 			These will likely be the FTP authentication, so right click and select ``Follow TCP Stream'' to view the messages that were sent. 
-			At this point you should have the username and password. 
+			At this point you should have the user name and password. 
 			If you do not, find another set of TCP and FTP messages and try again. 
 			For more information on using Wireshark, see it's section in Chapter \ref{ch:Forensics}.
 
@@ -906,7 +906,7 @@
 				nc -l -k -p 5005 -e /bin/bash
 			\end{quote}
 
-			Using FTP with the username and password that you found, run the following commands:
+			Using FTP with the user name and password that you found, run the following commands:
 			\begin{verse}
 				get .bashrc \\
 			\end{verse}
@@ -932,7 +932,7 @@
 \chapter{Forensics}
 	\label{ch:Forensics}
 	\section{File Carving}
-		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's metadata as would normally be done using a file manager. 
+		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's meta data as would normally be done using a file manager. 
 		This is done because it is possible to hide a file within another---placing it after the EOF line of the first file---or delete a file from disk without overwriting it, avoiding it being accessible by normal means. 
 		Before attempting any of these actions on a drive, it is recommended that you attach the drive (preferably with a write blocker) and take a full image of it first. 
 		This will avoid deleted files and hidden partitions being overwritten. 
@@ -981,7 +981,7 @@
 			\begin{quote}
 				foremost -t jpg -i image.dd
 			\end{quote}
-			This same syntax can be used on any file type, while ommitting the ``-t'' argument will result in all file types being recognised. 
+			This same syntax can be used on any file type, while omitting the ``-t'' argument will result in all file types being recognized. 
 			For most of the files you come across, the default options will work, allowing you to just call foremost with the name of the file to scan. 
 
 
@@ -1029,14 +1029,14 @@
 		%TODO: Decide whether this goes here or in programming. 
 	\section{Radare2}
 		Radare2 is a set of tools for working with binary files. 
-		This makes it useful as a means of reading and altering compiled programs and their data files from the commandline. 
-		While the Radare2 suite has a number of standalone programs within it, this section will cover only the main program. 
+		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
+		While the Radare2 suite has a number of stand alone programs within it, this section will cover only the main program. 
 		This program allows for the searching, altering and disassembly of binary programs in multiple modes, making it a great tool for challenges such as Pwn Adventure in the next section.
 		For a more detailed guide, read through the Radare2 book.\cite{Radare2}
 
 		\subsection{Getting Started}
 			The learning curve at the start of using Radare2 is quite steep. 
-			However, if you have any experience with other commandline tools such as Vim and GDB, many of the commands and shortcuts should come easily. 
+			However, if you have any experience with other command line tools such as Vim and GDB, many of the commands and shortcuts should come easily. 
 			Before going any further, it is worthwhile to note that you can get the help information for any command by appending a ``?'' to it. 
 
 			Navigation within Radare2 is done through the following commands:
@@ -1075,9 +1075,9 @@
 \chapter{Programming}
 	\label{ch:Programming}
 	\section{Introduction to the CLI}
-		The commandline is the tool for direct interaction with your computer. 
+		The command line is the tool for direct interaction with your computer. 
 		It is like the baby brother to programming yourself, though with scripting it can become just as complex. 
-		The commandline will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
+		The command line will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
 		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
 		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
 		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\cite{CLICrashCourse}
@@ -1321,7 +1321,7 @@
 			While this may be confusing to think about, it becomes far easier to read when well implemented. 
 
 			A further note when using these conditionals is that bash will carry the exit code of one program through to the end of the string of conditionals. 
-			This means that if you have three commands separated by ``\&\&'' conditionals and a ``||'' conditional at the end, any of thee three commands failing will trigger the final command. 
+			This means that if you have three commands separated by ``\&\&'' conditionals and a ``||'' conditional at the end, any of the three commands failing will trigger the final command. 
 			This can be controlled by using the grouping braces ``\{'' and ``\}''. 
 			These will ensure that bash will count the group as a whole against the exit status, but the exit status of items outside the group will not effect the status within. 
 			You will also need to end the statement before closing the final brace. 
@@ -1339,10 +1339,10 @@ fi
 			\end{lstlisting}
 			While the if conditional commands can be anything, bash has a specific ``test'' command which can be used for conditionals. 
 			This command is run either by calling ``test'' or by opening a ``['' bracket. 
-			Within this, you can run any conditional statement that you would be able to run in a normal programning language. 
+			Within this, you can run any conditional statement that you would be able to run in a normal programming language. 
 			Signs such as ``='', ``-ne'', ``-gt'' and ``-lt'', as well as combinations of them can be used to create the conditional. 
 			In addition to this, there is the ``[['' command, which is a more powerful version of ``[''.
-			This command allows for a number of new features, outlined in the folowing list:
+			This command allows for a number of new features, outlined in the following list:
 			\begin{description}
 				\item[Pattern Matching]
 					Using wild cards, one can match a given pattern, such as ``*.pdf''. 
@@ -1361,7 +1361,7 @@ fi
 				\item[-p <pipe>]
 					True if <pipe> exists.
 				\item[-r <file>]
-					True if <file> is readible by the current user. 
+					True if <file> is readable by the current user. 
 				\item[-s <file>]
 					True if <file> exists and is not empty. 
 				\item[-t <FD>] 
@@ -1379,7 +1379,7 @@ fi
 				\item[-z <string>]
 					True if <string> is empty. 
 				\item[-n <string>]
-					True if <string> is not exmpty. 
+					True if <string> is not empty. 
 				\item[-a]
 					Logical and used between other expressions.
 				\item[-o]
@@ -1393,7 +1393,7 @@ fi
 				\item[-lt]
 					True if first is less than the second. 
 				\item[-gt]
-					True if first is greter than the second. 
+					True if first is grater than the second. 
 				\item[-le]
 					True if first is less than or equal to the second. 
 				\item[-ge]
@@ -1420,14 +1420,14 @@ esac
 			The specific syntax and quirks of each of these will be explained in this section. 
 
 			The while loop will continue until its condition is met. 
-			This is much the same as while loops in normal programmming languages, allowing you to repeat the code until the change you are searching for has occured. 
+			This is much the same as while loops in normal programming languages, allowing you to repeat the code until the change you are searching for has occurred. 
 			The syntax for these loops is:
 			\begin{lstlisting}[language=bash,numbers=none]
 while <conditional> do
 	<Commands to be looped>
 done
 			\end{lstlisting}
-			A varient of this type of loop is the until loop. 
+			A variant of this type of loop is the until loop. 
 			This variant will simply reverse the conditional check on the while loop. 
 			The syntax for the until look is:
 			\begin{lstlisting}[language=bash,numbers=none]
@@ -1454,7 +1454,7 @@ for <variable> in <command> do
 	<commands to be looped>
 done
 			\end{lstlisting}
-			This loop often catches people out due to bash spliting the words within the output of <command>, making them meaningless. 
+			This loop often catches people out due to bash splitting the words within the output of <command>, making them meaningless. 
 			This can be resolved by telling bash that you are working with a list of files or the like. 
 			Rather than putting a command such as ls in the <command> section, it is better to use a pattern matching command such as ``*.mp3''. 
 			This will tell bash that you are working with files and stop it splitting all spaces in the file name into individual words. 
@@ -1463,16 +1463,16 @@ done
 
 		\subsection{Arrays}
 			Arrays are another part of bash. 
-			These are similary in concept, but different int syntax to the arrays of most programming languages. 
-			They should be used any time that a list of somethnig is produced, rather than placing the list in a string and attempting to delimit each item. 
+			These are similar in concept, but different int syntax to the arrays of most programming languages. 
+			They should be used any time that a list of something is produced, rather than placing the list in a string and attempting to delimit each item. 
 			The syntax for creating an array is as follows, each line designating another method of creation. 
 			\begin{lstlisting}[language=bash,numbers=none]
 <name>=(<first> <second>) #create an array containing <first> and <second>
 <name>=([0]=<first> [23]=<second> [n]=<nth>) #create an array, placing items in specific positions. 
-<name>=(*.png) # create an array contianing the filenames of every .png file in the current directory. 
+<name>=(*.png) # create an array containing the filenames of every .png file in the current directory. 
 			\end{lstlisting}
 
-			Arrays are used in much the same manner, with a few instances of syntatic sugar to make them easier. 
+			Arrays are used in much the same manner, with a few instances of syntactic sugar to make them easier. 
 			To iterate through an array, the following for loop will extract each element and run a command using it. 
 			\begin{lstlisting}[language=bash,numbers=none]
 for <var> in "${<array>[@]}"; do
@@ -1567,7 +1567,7 @@ fi
 		
 			Aliases are the final compound command. 
 			These allow you to create or change a name for either an altered command or a string of commands. 
-			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the asias' command. 
+			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the alias' command. 
 			An example of creating an alias for ls to ensure it outputs in colour is shown below. 
 			\begin{lstlisting}[language=bash,numbers=none]
 alias ls="ls --color=auto"
@@ -1586,21 +1586,21 @@ alias ls="ls --color=auto"
 		Due to this, the means of authentication on most programs is done by hashing the entered password and comparing it to a stored hash. 
 		If the two match, it is likely---though not guaranteed due to collisions---that the password is the same. 
 		While this may sound like it makes attacking these targets hard, it is far from being unsolvable. 
-		Tools such as ``John the Ripper'' and ``Hashcat'' can be used to compute hundreds of thousands of hashes per second, which can then be compared with the given hash. 
+		Tools such as ``John the Riper'' and ``Hashcat'' can be used to compute hundreds of thousands of hashes per second, which can then be compared with the given hash. 
 		This makes hash cracking a matter of time and dictionary crafting. 
-		\subsection{John the Ripper}
-			While there are many tutorials\footnote{\url{http://openwall.info/wiki/john/tutorials}} on the usage of John the Ripper(John) which go into specific detail, this section will explain the basic usage of the tool. 
+		\subsection{John the Riper}
+			While there are many tutorials\footnote{\url{http://openwall.info/wiki/john/tutorials}} on the usage of John the Riper(John) which go into specific detail, this section will explain the basic usage of the tool. 
 			Before starting, check that the version of John which you have installed is correctly compiled for your system, you may want to enable options such as gpu cracking, which needs to be done at compile time. 
 			What follows is a list of common commands for use with John:
 			\begin{description}
 				\item[-single]
 					The simplest means of attacking a hash. 
-					This mode uses only a basic wordlist and very few rules. 
+					This mode uses only a basic word-list and very few rules. 
 					Thus it is not recommended for anything but the most basic attacks. 
 				\item[-wordfile:]
-					Uses the wordlist specified directly after the colon. 
+					Uses the word-list specified directly after the colon. 
 				\item[-rules:]
-					Specifies the mutation rules for the given wordlist. 
+					Specifies the mutation rules for the given word-list. 
 					These can be used to create a dictionary with substitutions, such as 1337 speak. 
 				\item[-incremental:]
 					This, along with options such as ``alpha'', ``digits'' or ``lanman'' will give you a brute force of letters, numbers or both with some special characters respectively. 
@@ -1620,7 +1620,7 @@ alias ls="ls --color=auto"
 			\end{description}
 			
 		\subsection{Hashcat}
-			Hashcat was started due to the fact that at the time, tools such as John the Ripper did not make proper use of multithreading. 
+			Hashcat was started due to the fact that at the time, tools such as John the Riper did not make proper use of multi-threading. 
 			This has been expanded to include GPGPU processing using tools such as openCL and CUDA, and has made hashcat one of the fastest hash cracking tools currently available. 
 			Both Hashcat and the newer oclHashcat use the same input files and command syntax. 
 			However, oclHashcat will conduct the crack on the GPU installed on the system, rather than the slower CPU. 
@@ -1658,9 +1658,9 @@ alias ls="ls --color=auto"
 				To use one of these files, run Hash cat with the arguments ``-a 3 <hash file> <mask file>''.
 
 			\subsubsection{Dictionary Attack}
-				In this attack, a dictionary or word list is created to be utilised within the attack. 
+				In this attack, a dictionary or word list is created to be utilized within the attack. 
 				This dictionary can either be one that you found on the system or one that was created specifically for the job. 
-				Due to the limitations of this attack, it is recommended that it is either used with a specifically generated dictionary, which can be done by a program such as John the Ripper or
+				Due to the limitations of this attack, it is recommended that it is either used with a specifically generated dictionary, which can be done by a program such as John the Riper or
 				a can be manually written through the use of a python script. 
 				This type of attack may be the first that you use, as it will likely be the quickest attack. 
 			\subsubsection{Combinator Attack}
@@ -1674,7 +1674,7 @@ alias ls="ls --color=auto"
 					
 					hashcat-cli64 -m 0 -a 1 <hash file> <dict 1 and 2>
 				\end{quote}
-			\subsubsection{Hybird Attack}
+			\subsubsection{Hybrid Attack}
 				This attack uses the concepts of both the combinator and mask attacks. 
 				This means that you can specify a dictionary and have hashcat add the mask that you give to either the start or end of the word. 
 				Using this means, you can easily run through passwords such as name and birth year combinations. 
@@ -1682,7 +1682,7 @@ alias ls="ls --color=auto"
 				\begin{quote}
 					oclhashcat -a 7 <mask> <dict>
 					\\or\\
-					octhashcat -a 7 <dict> <mask>
+					oclhashcat -a 7 <dict> <mask>
 				\end{quote}
 				
 		\subsection{Rainbow Tables}
@@ -1708,7 +1708,7 @@ alias ls="ls --color=auto"
 		\subsection{Online Methods}
 			With the rise of cloud computing and cheap server rental, many people have begun using tools such as Amazon Web Services to run crack servers. 
 			This is done by deploying the tools shown above into a server which has been rented with multiple GPUs. 
-			This server can then be optimised such that the cracking will properly utilise the GPUs of the machine as well as only calculating hashes that have a possibility of being correct. 
+			This server can then be optimized such that the cracking will properly utilize the GPUs of the machine as well as only calculating hashes that have a possibility of being correct. 
 			Thus, as above, if you know that the hash will be within a given dictionary, or that it does not contain special characters, use these functions. 
 
 			While this will work, and usually faster than using one's own computer, it is not as fast as a dedicated cracking cluster. 
@@ -1726,7 +1726,7 @@ alias ls="ls --color=auto"
 	\section{Challenges}
 		\subsection{Hash Challenges}
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
-			The wordlist for this challenge can be found by using the following command on kali linux:
+			The word-list for this challenge can be found by using the following command on kali linux:
 			\begin{quote}
 				head -n 20 /usr/share/wordlists/rockyou.txt
 			\end{quote}
@@ -1737,7 +1737,7 @@ alias ls="ls --color=auto"
 				SHA256: 
 				6ff13e15281e9953d2c85c86e3727ea1cf3862f44d5cf18961811d63eebce2da 
 			\end{verbatim}
-			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom wordlist and using Hashcat's hybird mode. 
+			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom word list and using Hashcat's hybird mode. 
 			%Solution: "N1c0l3;7"
 
 			The second challenge is based on an ATM keypad. 
@@ -1752,7 +1752,7 @@ alias ls="ls --color=auto"
 			The third challenge is based on using multiple dictionary words. 
 			This is a common method used to create passwords. 
 			I recommending using Hashcat in combinator mode to solve this SHA256 hash. 
-			All the words necessary to solve this can be found in the rockyou wordlist. 
+			All the words necessary to solve this can be found in the rockyou word-list. 
 			\begin{verbatim}
 				2fb26990a2b7d9ba876668c0ed6c9e9006313286ae02e7224e18939833fb9096
 			\end{verbatim}
@@ -1798,7 +1798,7 @@ alias ls="ls --color=auto"
 			\begin{description}
 				\item[Data Encryption] Encrypting nothing more than the data. 
 					This is useful for privacy concerns and is the easiest to implement. 
-					However, date encryption will not protect from OS tampering such as installing keyloggers as well as cache attacks, taking advantage of data cached in locations such as ``/tmp''.
+					However, date encryption will not protect from OS tampering such as installing key loggers as well as cache attacks, taking advantage of data cached in locations such as ``/tmp''.
 				\item[System Encryption] Encrypting the whole OS and all user data. 
 					This prevents the two downfalls of data encryption by ensuring that any tampering will cause a garbled output on the OS disk and that call caches are encrypted. 
 					However, this requires that the boot system be aware of the encryption and that a password is entered before boot. 
@@ -1885,9 +1885,9 @@ alias ls="ls --color=auto"
 				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
 				Furthermore, on the desktop, due to the wide variety of tasks which are completed, a poorly setup MAC will either be far too permissive or far too restrictive. 
 				%TODO: Think about writing out the types here. Think about linking the implementations. 
-				MAC can also be utilised as a means of creating application white listing.
+				MAC can also be utilized as a means of creating application white listing.
 				While difficult to create a strong policy, it is one of the best methods for running application white listing on Linux, 
-				due to the fact that there is no prebuilt white listing tool. 
+				due to the fact that there is no pre-built white listing tool. 
 			\subsection{Kernel Hardening}
 				The following are the common steps used to harden the Linux Kernel. 
 				\begin{description}
@@ -1977,7 +1977,7 @@ alias ls="ls --color=auto"
 						\end{quote}
 						These next commands will drop all failed UDP and TCP connections. 
 						This is done for security, as a common network mapping technique uses the fact that by protocol, failed TCP packets should reply with an RST packet and failed UDP should reply with an ICMP port unreachable. 
-						The following commands will stop both of these behaviours. 
+						The following commands will stop both of these behaviors. 
 						\begin{quote}
 							iptables -A INPUT -p udp -j DROP
 							iptables -A INPUT -p tcp -j DROP
@@ -2002,10 +2002,10 @@ alias ls="ls --color=auto"
 						\item Implement a BIOS/UEFI password. 
 							Though these are not completely secure, they ensure that the opportunistic attacker will be unable to alter the boot devices of the computer, forcing them to use your secured OS. 
 							However, these can be worked around on most systems by wiping the CMOS. 
-						\item Bootloader security should be implemented by either disabling editing of boot devices or adding a password to the bootloader. 
+						\item Boot loader security should be implemented by either disabling editing of boot devices or adding a password to the boot loader. 
 							This will stop the ``init=/bin/sh'' attack amongst others. 
 						\item Deny root login from the console. 
-							This would mean that the attacker would need both a username and password to access the system. 
+							This would mean that the attacker would need both a user name and password to access the system. 
 						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
 					\end{itemize}
 	\section{OS X Hardening}
@@ -2024,7 +2024,7 @@ alias ls="ls --color=auto"
 			This will then ask you to set a password, which will be used to encrypt your files.\footnote{\url{https://eprint.iacr.org/2012/374.pdf}} 
 			Furthermore, it will generate a recovery key, which you should store in a secure place, as it is your only means of recovering data if you lose your password. 
 			FileVault will offer to store this key with Apple, if you do this, you are removing any security you achieve by encrypting in the first place, so decline this offer. 
-			At this point, you should alter some of the default key storage behaviours of OS X such as erasing the key from memory on sleep an enforcing hibernation. 
+			At this point, you should alter some of the default key storage behaviors of OS X such as erasing the key from memory on sleep an enforcing hibernation. 
 			This will mean that you do not have to manually turn off the computer for the encryption to be secure---the system need only be hibernating. 
 			To do this, use the following commands:
 			\begin{quote}
@@ -2065,13 +2065,13 @@ alias ls="ls --color=auto"
 				sudo defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool false
 			\end{quote}
 
-			At this point, you may wish to overcome the inability of the standard firewall for monitoring and outbound connections. 
+			At this point, you may wish to overcome the inability of the standard firewall for monitoring and out bound connections. 
 			This can be done through either third party firewalls or the kernel firewall, ``pfctl''. 
 			While I recommend the latter as it is built in, I recommend that you do more reading before enabling it. 
 
 			\subsection{Services}
 				OS X comes with a number of services which most people will not use. 
-				Furthermore, many of these services phone home to apple or another organisation, either for monitoring or content purposes. 
+				Furthermore, many of these services phone home to apple or another organization, either for monitoring or content purposes. 
 				Use the following commands to gather information\footnote{\url{http://cirrusj.github.io/Yosemite-Stop-Launch/}} about the services currently running on your system:
 				\begin{description}
 					\item[launchctl list]
@@ -2103,7 +2103,7 @@ alias ls="ls --color=auto"
 				You may also need to disable this in Safari Preferences under ``Search''. 
 				This will stop Spotlight from phoning home on every search. 
 			\subsection{Homebrew}
-				Many of the userland tools installed with OS X or the xcode package are vastly out of date BSD versions. 
+				Many of the user land tools installed with OS X or the xcode package are vastly out of date BSD versions. 
 				This can be resolved through the use of the Homebrew package manager. 
 				This package manager uses TLS to pull down install scripts from it's git hub repository on Github.com, meaning that it is mostly secure so long as you trust the repository. 
 				Nonetheless, it is recommended that you read through these scripts before running them, otherwise it is no different to running any arbitrary code on your system. 
@@ -2180,7 +2180,7 @@ alias ls="ls --color=auto"
 	\section{Windows Hardening}
 		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
 		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
-		These software packages do things such as mitigate data execution or attempt to recognise malicious code. 
+		These software packages do things such as mitigate data execution or attempt to recognize malicious code. 
 		While these mitigations are a significant improvement from a default windows install, it is far more expensive to secure a home windows install than to secure a Mac OS X or Linux install. 
 		\subsection{Antivirus}
 			The first and easiest means of securing a Windows system is to install an antivirus software package. 
@@ -2203,8 +2203,8 @@ alias ls="ls --color=auto"
 			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
 			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
 			This will enable the protection for all software installed. 
-		\subsection{Application Whitelisting}
-			AppLocker is the main means of providing application whitelisting in the windows environment. 
+		\subsection{Application White listing}
+			AppLocker is the main means of providing application white listing in the windows environment. 
 			However, it is only available on Ultimate or Enterprise editions of windows. 
 			If you have either of these, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/dd759113.aspx}} on configuring it. 
 			It is recommended that the configuration allow only those listed applications,
@@ -2216,7 +2216,7 @@ alias ls="ls --color=auto"
 			This software was forked from the discontinued TrueCrypt project. 
 			TrueCrypt passed its most recent audit, but a number of issues were raised.
 			VeraCrypt purports to have resolved these issues, but still uses the same code base. 
-			If you do not wish to utilise VeraCrypt or upgrade to a higher version of windows, the alternative is to employ file or partition encryption. 
+			If you do not wish to utilize VeraCrypt or upgrade to a higher version of windows, the alternative is to employ file or partition encryption. 
 			This will encrypt only the data you have stored within the encrypted volume, rather than the OS itself. 
 			While still secure for your data, this will leave the system open to offline manipulation,
 			making it possible to install malware to read the data when it is next unlocked. 
@@ -2242,7 +2242,7 @@ alias ls="ls --color=auto"
 			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
 		\subsection{Flash Control}
 			Flash Control blocks both flash and HTML 5 elements which could contain malicious code. 
-			The plugin is mainly useful for the flash blocking behaviour, as flash is one of the most broken and commonly vulnerable pieces of web technology. 
+			The plugin is mainly useful for the flash blocking behavior, as flash is one of the most broken and commonly vulnerable pieces of web technology. 
 			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
 			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
 			You may also wish to add any sites that you know are good to the whitelist. 
@@ -2329,7 +2329,7 @@ alias ls="ls --color=auto"
 			For a long time, this was the domain of the web browser. 
 			This allowed the user to forget all of their passwords, having the browser autofil them when the site loaded.
 			However, the password managers on modern browsers were not built for security. 
-			Thus, the standalone password manager was created. 
+			Thus, the stand alone password manager was created. 
 			These allow the user to create a database of passwords and their sites, whilst encrypting the data. 
 			When looking for a password manager, look for the following features:
 			\begin{itemize}
@@ -2637,7 +2637,7 @@ Dump of assembler code for function main:
 			\begin{code}
 				\lstinputlisting[language={[x86masm]Assembler}]{./forkShellcode.asm}
 				\caption{Shellcode that forks such that the original thread can continue. }
-				\label{code:ShellcodeData}
+				\label{code:ForkShellCode}
 			\end{code}
 
 		\subsection{Firewalls}
@@ -2667,7 +2667,7 @@ Dump of assembler code for function main:
 			While this is far more complex, it means that no statically scanning IDS will be able to detect your shellcode unless you are using a known key. 
 
 			Further to this, the NOP sleds that are commonly used within shellcode are quite obvious to an IDS as they are rarely if ever used in the normal world. 
-			However, table \ref{tab:NOPAlternative} shows a list of instructions, their hex values and their ASCII interpretations that can be used instead. 
+			However, table \ref{tab:NOPAlternatives} shows a list of instructions, their hex values and their ASCII interpretations that can be used instead. 
 			\begin{table}[htb]
 				\centering
 				\begin{tabular}{| l | c | l |}
@@ -2722,7 +2722,7 @@ Dump of assembler code for function main:
 \chapter{Wireless Attacks}
 	\label{ch:WirelessAttacks}
 	Wireless networks are great. 
-	They allow us to connect to networks without having to carry around huge ethernet cables everywhere we go. 
+	They allow us to connect to networks without having to carry around huge Ethernet cables everywhere we go. 
 	They allow mobile phones, smart watches and laptops with only one port. 
 	However, all of these wireless protocols have one thing in common, they all broadcast data over a spectrum readable by anyone. 
 	This means that unlike wired networks---where a cable or device must be altered to read the transmission---wireless networks can be intercepted by anyone within range. 
@@ -2815,7 +2815,7 @@ Dump of assembler code for function main:
 			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
 			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again. 
 
-			The more aggressive way to run this attack is to force the client off the network, making it reauthenticate and refresh its ARP cache. 
+			The more aggressive way to run this attack is to force the client off the network, making it re-authenticate and refresh its ARP cache. 
 			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
 			To run this attack, run the following command while running an ARP replay and collecting IVs:
 			\begin{quote}
@@ -2846,7 +2846,7 @@ Dump of assembler code for function main:
 
 			The dictionary is the most important part of this attack. 
 			Without it, the attack would take a prohibitive amount of time. 
-			However, programs such as ``John the Ripper'' can be used to generate a far better dictionary than the one given by aircrack-ng and even the ``rockyou'' wordlist given by kali. 
+			However, programs such as ``John the Riper'' can be used to generate a far better dictionary than the one given by aircrack-ng and even the ``rockyou'' word-list given by kali. 
 			Furthermore, if you are willing to store large amounts of data and use a custom program, rainbow tables could speed this process significantly for common passwords. 
 			If neither of the above work, the final option is to use a program such as ``hashcat'', which will allow you to undertake GPU accelerated cracking on multiple machines in order to find the password. 
 			See the Hash Cracking section of chapter \ref{ch:Cryptography} for more detailed information about this. 
