@@ -79,7 +79,7 @@
 \tableofcontents
 \begin{abstract}
 	This document was written as a one year introductory course to the field of Cyber Security. 
-	Within it, is much of the Computer Science and technical information that one requires to start working in the field. 
+	Within it, is much of the Computer Science and technical information that one requires to start learning in the field. 
 	However, this comes with a legal penalty. 
 	Much of what you see in this book is illegal to conduct on systems which you do not own or have not received explicit permission to attack. 
 	Thus, I request that you read through your local laws before attempting any of the exercises within the book. 
@@ -1574,6 +1574,201 @@ alias ls="ls --color=auto"
 			\end{lstlisting}
 	\section{Introduction to Python}
 	\section{Introduction to C}
+		To many people, C is a scary language that causes Segmentation Faults and allows numerous mistakes. 
+		However, C is not the cause of this. Simply the tool that allows programmers to make these mistakes. 
+		Thus, understanding and correctly using C is about knowing how the computer itself works and ensuring that you work within that. 
+		C will allow you to go past memory bounds. 
+		C will allow you to write code that will crash on every call. 
+		It C, it is your job to ensure that this doesn't happen. 
+		This is all because C is little more than one step above assembly. 
+		It refuses to hide what is actually going on with the computer. 
+
+		\subsection{Setup}
+			To use this section you will have to set your computer up to write and compile code. 
+			I suggest that you find and learn a proper text editor such as VIM (which is explained in the above section on the CLI).
+			This will allow you to write C, but also compile and run it from within your editor. 
+			However, I recommend that you do not use an IDE when first learning. 
+			This will create poor habits such as relying on code completion and highlighting rather than understanding and paying attention to your writing. 
+
+			Furthermore, you will have to install make and GCC or the relevant compiler for your OS. 
+			I will leave these details to you, as each system has a slightly different implementation of these tools. 
+
+		\subsection{Your First C Program}
+			Code example \ref{code:FirstProgramC} is an example of a ``Hello World'' program in C. 
+			This is the most basic form of C programming, as it only uses the main function and one standard library. 
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./first.c}
+				\caption{A Simple Hello World Program in C}
+				\label{code:FirstProgramC}
+			\end{code}
+			This program will now be explained line by line. 
+			\begin{enumerate}
+				\item Preprocessor declaration to include the standard IO library in the file. 
+				\item Blank line for formatting. 
+				\item Main function declaration. 
+					This creates the entry point for the program as well as creating the argument counter and argument value variables. 
+					These will be explained later. 
+				\item Opening brace to set the bounds of the main function. 
+				\item Printf statement, calling the C STDIO library printf function to print to the console. 
+				\item Return statement, telling the program to exit the main function with a value of 0. 
+					The meaning of this will be explained later. 
+				\item Closing brace for the main function. 
+			\end{enumerate}
+		\subsection{Compiling}
+			C requires that it is compiled before use. 
+			Thus, one must learn both the language and the complier that is used for it. 
+			Furthermore, in C, a tool known as make is used to run numerous or complex compiler functions. 
+			Code example \ref{code:Makefile} contains a basic setup for compiling moderate sized C programs. 
+			It will have to be altered for the specific program structure, but it will be a good starting point. 
+
+			\begin{code}
+				\lstinputlisting[language={[gnu]make}]{./make}
+				\caption{A Basic Makefile}
+				\label{code:Makefile}
+			\end{code}
+			Go through the settings within this. 
+			It is far more complex than the simple make files that you will need for this section. 
+			However, it gives you an insight into what is required for creating a Makefile for a large project.
+			\FloatBarrier
+		\subsection{Printing}
+			There are a number of ways to print to the commandline within C. 
+			However, the most common one is to use the ``printf'' function from STDIO. 
+			This function takes a string and a variable number of arguments to substitute into the string. 
+			This allows for inserting variables into the string to be output to the user. 
+			Sadly, this can be abused, allowing the user to insert their own commands into the strings as seen in \ref{ch:BinaryExploitation}
+
+			A list of the format strings can be found in \ref{tab:StringFormatCodes}
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{| l | l |}
+						\hline
+						\verb+%d+ & Int \\ \hline
+						\verb+%f+ & Floating point number. \\ \hline
+						\verb+%X+ & Hex. \\ \hline
+						\verb+%o+ & Octal. \\ \hline
+						\verb+%s+ & Null terminated string. \\ \hline
+						\verb+%c+ & Character \\ \hline
+						\verb+%p+ & Void Pointer \\ \hline
+						\verb+%n+ & Write number of chars printed to int pointer. \\ \hline
+						\verb+%d+ & Int \\ \hline
+					\end{tabular}
+					\caption{Types of Format String Codes}
+					\label{tab:StringFormatCodes}
+				\end{table}
+			For more information on this, see \href{http://linux.die.net/man/3/printf}{man 3 printf.}
+		\subsection{Memory Testing with Valgrind}
+			Unlike Python or Java, C does not have the same memory constraints or bounds checking. 
+			Thus, a program known as Valgrind has been created in order to check programs for memory leaks and the like. 
+			It works by running the program within itself, checking for memory allocation and deallocations and ensuring that all memory is correctly handled. 
+
+			This is not the be all and end all of writing memory leak free C code, but it is a good start. 
+		\subsection{Variables and Types}
+			While Python has types, you as the programmer don't get to use them. 
+			C on the other hand, likes to give everything to the programmer, and thus requires you to choose the type that you would like for each variable. 
+			Thus, you will have to understand the differences between the different types and where they are best used. 
+			Table \ref{tab:CVariableTypes} contains a list of the most common variable types. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | p{8cm} |}
+					\hline
+					\textbf{Type} & \textbf{Explanation} \\ \hline 
+					char & A single byte used to store an ASCII character \\ \hline \hline
+					short & An integer at least 16 bits in size. \\ \hline
+					int & An integer at least 16 bits in size. \\ \hline
+					long & An integer of at least 32 bits in size. \\ \hline
+					long long & An integer of at least 64 bits in size. \\ \hline \hline
+					float & A precision floating point (decimal) number. \\ \hline
+					double & A double precision floating point number. \\ \hline
+					long double & An extended precision floating point number. 
+					May be the same as a double if the extended precision is not supported. \\ \hline 
+				\end{tabular}
+				\caption{C Variable Types}
+				\label{tab:CVariableTypes}
+			\end{table}
+			There also exist other types, such as pointers, structs and unions. 
+			However, these are more advanced and will be covered at a later point. 
+
+			It is also worth noting that these variables can be used in math and other similar operations. 
+			The symbols are much the same as in normal mathematics with the following differences:
+			\begin{description}
+				\item[Equals] is done through the ``=='' operator.
+				\item[Assignment] is done through the ``='' operator.
+				\item[Multiplication] is done using the ``\*'' operator.
+				\item[Division] is done using the ``/'' operator. 
+			\end{description}
+
+		\subsection{Arrays}
+			Arrays in C are barer than those of other languages. 
+			For example, unlike in Java, they do not come with a precalculated length variable.
+			Furthermore, if they are being used as a string, they need to be null terminated so that compiler knows where the array ends. 
+			A list of basic array syntax can be found in code example \ref{code:CArrays}.
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./arrays.c}
+				\caption{A List of Different Array Syntax}
+				\label{code:CArrays}
+			\end{code}
+			It is also worth noting that C can have multi-dimensional arrays. 
+			This is done by creating an array of pointers using the syntax ``int *arr[]'' for an integer array. 
+			For another example of this, see the ``*argv[]'' variable in the arguments of every C programs main function. 
+			This creates an array of strings (or char arrays) which hold the arguments given to the program on execution. 
+
+			To find the size of an array, the contents within it must be counted until a null byte is found. 
+			However, you will not be required to do this manually. 
+			C comes with a function known as ``sizeof'' which will do this for you when called on an array. 
+		\subsection{Loops}
+			Just like in Python, C has a number of loops built into it. 
+			These loops will work exactly the same as the basic python versions, but will have a slightly different syntax. 
+			
+			The ``while'' loop is the most basic loop within C. 
+			It is used to check a condition and continue looping while that condition is true. 
+			An example of the syntax of a while loop can be seen in code example \ref{code:CLoops}
+
+			The more complex ``for'' loop is the most common loop in programming. 
+			It is used to iterate through a known set, such as an array. 
+			This loop is far more like the basic for loop in Python, rather than the for each that has recently come into usage. 
+			An example of the syntax of the for loop can be found in code example \ref{code:CLoops}
+			
+			Both of these loops require that the expression given to them can be interpreted with boolean logic. 
+			In C, this means that it will either give an obvious true or false answer, or it will equate to an integer (zero being false, non-zero being true).
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CLoops.c}
+				\caption{Examples of Basic C Loops}
+				\label{code:CLoops}
+			\end{code}
+		\subsection{Conditional Statements}
+			In a similar way to loops, the if statement in C is quite similar to that of python. 
+			It has a condition, a code block and can have else if and else statements under it. 
+			However, the difference comes into the syntax. 
+			If statements in C have their conditionals bound in parenthesis and their blocks bound in braces. 
+			An example of this can be found in code example \ref{code:Cif}.
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./if.c}
+				\caption{Example of the C if statement}
+				\label{code:Cif}
+			\end{code}
+
+			Another conditional within C is the switch statement. 
+			This statement provides a means of writing actions based on a large number of options. 
+			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
+			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
+			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
+			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}
+
+			Another conditional within C is the switch statement. 
+			This statement provides a means of writing actions based on a large number of options. 
+			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
+			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
+			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
+			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}.
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CSwitch.c}
+				\caption{Example of the C Switch Statement}
+				\label{code:CSwitch}
+			\end{code}
+			% Currently up to ex13
 	\section{Programming Challenges}
 \chapter{Cryptography}
 	\label{ch:Cryptography}
@@ -2552,23 +2747,6 @@ Dump of assembler code for function main:
 	\section{String Format Errors}
 		Much like buffer overflows, string format errors can be used to write to memory and eventually redirect the control flow of the program. 
 		This vulnerability uses the standard string format codes, seen in table \ref{tab:StringFormatCodes}, which can be inserted into vulnerable inputs. 
-		\begin{table}[htb]
-			\centering
-			\begin{tabular}{| l | l |}
-				\hline
-				\verb+%d+ & Int \\ \hline
-				\verb+%f+ & Floating point number. \\ \hline
-				\verb+%X+ & Hex. \\ \hline
-				\verb+%o+ & Octal. \\ \hline
-				\verb+%s+ & Null terminated string. \\ \hline
-				\verb+%c+ & Character \\ \hline
-				\verb+%p+ & Void Pointer \\ \hline
-				\verb+%n+ & Write number of chars printed to int pointer. \\ \hline
-				\verb+%d+ & Int \\ \hline
-			\end{tabular}
-			\caption{Types of Format String Codes}
-			\label{tab:StringFormatCodes}
-		\end{table}
 		While these formats are useful in programming and not naturally malicious, many, such as the \verb+%n+ and \verb+%x+ codes are exceptionally useful in writing to and mapping memory respectively. 
 		Using these, we can write any arbitrary value or memory location into most parts of the stack.
 		
