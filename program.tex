@@ -1768,7 +1768,89 @@ alias ls="ls --color=auto"
 				\caption{Example of the C Switch Statement}
 				\label{code:CSwitch}
 			\end{code}
-			% Currently up to ex13
+		\subsection{Functions}
+			Functions are a way of repeating the same block of code---possibly with different variables---throughout your code. 
+			They allow you do write an algorithm for doing something specific once, then use the same one everywhere. 
+			This means that with proper naming, your code will be shorter and easier to read, while also having more chance of being bug free as you haven't written multiple different ways to do the same thing. 
+
+			Functions in C are similar to those of most other languages. 
+			However, when compared to languages like python, there are some minor differences, as seen in code example \ref{code:CFunction}.
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CFunction.c}
+				\caption{Example of a C Function}
+				\label{code:CFunction}
+			\end{code}
+			This is a function which will calculate the Fibonacci number sequence to the number of iterations given as an argument on the first line. 
+			It then creates three variables (lines 2-4), initializing the first two (and thus completing the first iteration) while leaving the latter without a value. 
+			We then create a for loop, which will have the function repeat the steps of the Fibonacci algorithm until it has reached the correct number of iterations. 
+			Finally, on line 9, we tell the program to return processing to the function that called it, giving the value stored at fib. 
+			It is worth noting that as we declared this function as an integer, it cannot return another variable type. 
+			If we were to attempt to return a double, or an array of integers, it would not compile. 
+			However, if you compile with no warnings on, some compilers will allow you to return a char, as in C a char is simply a small int that has a specific way of printing to screen. 
+			Thus, you must be careful how you write C to ensure the behaviour is what you expected. 
+
+		\subsection{Pointers}
+			Pointers are the downfall of many programmers. 
+			When used poorly, or when poorly understood, they can be the bane of your existence. 
+			However, pointers are brilliant. 
+			They allow you do do many things that cannot be done as easily in other languages. 
+			They give you direct access to memory in a way that object types and other implementations do not. 
+			Once you have started using pointers properly, you will be begging to have them back if you switch to a language like Java, which doesn't have them. 
+
+			To understand pointers, it is best to understand how C thinks about memory. 
+			To C, the computers memory is simply a huge array of bytes. 
+			However, rather than requiring the programmer to remember the locations of their bytes, C allows you to use variables and types. 
+			This means that each variable you write has a location that is used to retrieve it, and that location can be used to do different things. 
+			For example, if you create an array ``arr'', you could then index it as ``arr[n]'', which will give you then nth value of arr. 
+			However, you could also create a pointer to arr (``int *arr\_ptr = \&arr''). 
+			This pointer it itself is an integer, you can do math on it to calculate different addresses. 
+			However, when used, it can either be used as a reference or a value. 
+			Calling ``arr\_ptr++'' then ``printf("\%d", *arr\_ptr)'' will print the second value stored in arr. 
+
+			Basically, what is being said here is that while an array index (``arr[n]'') is a temporary memory reference, a pointer such as ``arr\_ptr'' is its permanent version. 
+			An example of using a pointer can be found in code example \ref{code:CPTR}. 
+			This example will use a pointer to create the Fibonacci sequence in memory, returning the pointer to the start of the sequence. 
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CPointers.c}
+				\caption{Example of a C Pointers}
+				\label{code:CPTR}
+			\end{code}
+
+			While pointers are exceptionally useful, there should not usually be used over arrays. 
+			Pointers are great for things that arrays aren't, or for when you need raw access to a block of memory. 
+			However, you are more likely to get pointers wrong, and the mistakes that you make will be far less obvious. 
+			The difference between a dereferenced pointer and a reference can be far too subtle to grasp when working with what should be an array. 
+
+			Thus, there are four things that a pointer would be the best choice for:
+			\begin{enumerate}
+				\item Ask the OS for a chunk of memory to work with. 
+				\item Passing large blocks of memory to functions with a pointer rather than passing the whole thing. 
+				\item Taking the address of a function to use it in a call later. 
+				\item Complex scanning of chunks of memory such as parsing a file. 
+			\end{enumerate}
+			You may hear that pointers are faster than arrays. 
+			This is a layover from older compilers. 
+			In the modern world, this is not true, they are largely the same. 
+			However, you may find another reason to use a pointer over an array. 
+			If you think you are right, give it a go, the worst think you'll loose is time. 
+
+			Found in table \ref{tab:PointerLexicon} is an explanation of the different terms of using pointers. 
+			
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | p{8cm} |}
+					\hline
+					\textbf{Code term} & \textbf{Explanation} \\ \hline 
+					type *ptr & Create a pointer of name ptr. \\ \hline
+					*ptr & The value of whatever ptr is pointing at. \\ \hline
+					*(ptr + i) & The value of whatever ptr is pointed at plus i. \\ \hline
+					\%thing & The address of thing. \\ \hline
+					type *ptr = \&thing & Create a pointer of type named ptr pointing at the address of thing. \\ \hline
+					ptr++ & Increment where ptr points. \\ \hline
+				\end{tabular}
+				\caption{Pointer Lexicon}
+				\label{tab:PointerLexicon}
+			\end{table}
 	\section{Programming Challenges}
 \chapter{Cryptography}
 	\label{ch:Cryptography}
