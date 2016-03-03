@@ -35,7 +35,7 @@
 \def\l@lstlisting#1#2{\@dottedtocline{1}{3em}{3.5em}{#1}{#2}}
 \lstset { 									%
 %	language={[ANSI]C}, 					%
-	otherkeywords={printf, strcpy, *, &},	%
+	otherkeywords={printf, strcpy, *, &, malloc},	%
 	numbers=left, 							%
 	numberfirstline=true,					%
 	showspaces=false, 						%
@@ -1851,6 +1851,46 @@ alias ls="ls --color=auto"
 				\caption{Pointer Lexicon}
 				\label{tab:PointerLexicon}
 			\end{table}
+		\subsection{Structs}
+			Unlike Python or other Object Oriented languages, C does not have a concept of a class or object. 
+			However, it still does have a means of grouping variables together. 
+			These are known as structs, which are memory structures created within raw memory.
+
+			Structs are defined as a group of variables. 
+			These variables can be of any type, including pointers and arrays. 
+			However, when you initialize these variables, you use a new syntax of ``<Struct Name>-><Variable Name> = <value>''. 
+			This ``->'' syntax is used for referring to structs through a pointer to them. 
+			If you are dealing with the struct variable itself, replace it with ``.''. 
+			An example of this syntax can be found in code example \ref{code:CStructs}	
+			To make life easier, you can use the ``typedef'' command to make a new variable type out of the struct. 
+			Once this is done, you can call the struct as the type that you defined, rather than as ``struct <name>''. 
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CStructs.c}
+				\caption{Example of a C Struct}
+				\label{code:CStructs}
+			\end{code}
+		\subsection{Heap and Stack Memory}
+			You will remember from the \hyperref[ch:ComputerOperations]{Computer Operations Chapter} that memory is divided into the heap and stack memory. 
+			In C, these different memory types are allocated and utilized quite differently. 
+			The stack is the normal variable definitions that you have been using for most of this section. 
+			However, in the struct section, you saw the command ``malloc''. 
+			This command will allocate memory on the heap of the size given for it and return a pointer to the start of the allocated memory. 
+			
+			Heap memory is slightly more complex than general stack memory. 
+			C will sort your stack memory for you, removing it as the functions are called and returned. 
+			However, memory on the heap will remain forever, even if you lose your pointer to it. 
+			That is, unless you explicitly free it using the ``free'' command. 
+			This is the reason that C, in the hands of poor programmers will have significant memory leak issues. 
+			This is also the reason for the existence of programs such as Valgrind, which will find these leaks for you rather than requiring you to find them manually. 
+			
+			However, you cannot cheat an place all memory on the stack. 
+			This is due to the relatively small size of the stack and its growth patterns. 
+			Placing too much, lie a large array or struct will cause the stack to overflow. 
+			Furthermore, if you have a pointer to a variable on the stack and return the pointer at the end of the function that created the variable, 
+			you will have a segmentation fault due tot he fact that the memory location the pointer is pointing at will not be allocated to the programs stack. 
+			It will have been ``poped'' off and destroyed. 
+
 	\section{Programming Challenges}
 \chapter{Cryptography}
 	\label{ch:Cryptography}
