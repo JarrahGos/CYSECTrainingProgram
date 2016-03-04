@@ -30,6 +30,5 @@ makefile
 *.loc
 *.nav
 *.snm
-*.sh
 *.fls
 *latexmk
