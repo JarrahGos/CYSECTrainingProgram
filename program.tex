@@ -1891,6 +1891,17 @@ alias ls="ls --color=auto"
 			you will have a segmentation fault due tot he fact that the memory location the pointer is pointing at will not be allocated to the programs stack. 
 			It will have been ``poped'' off and destroyed. 
 
+		\subsection{Pointers to Functions}
+			As with all other things in C, functions exist at a memory location which can be pointed to. 
+			This can be used to pass a function to another function, such as when you need to choose a comparator for a sorting function. 
+			The code used to do this can be quite difficult to understand and remember. 
+			Due to this, I recommend creating a typedef which will be used to use the pointer as an argument to another function. 
+			An example of this being done can be found in code example \ref{code:CFunctionPTR}	
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CFunctionPTR.c}
+				\caption{Example of a C Function Pointers}
+				\label{code:CFunctionPTR}
+			\end{code}
 	\section{Programming Challenges}
 \chapter{Cryptography}
 	\label{ch:Cryptography}
