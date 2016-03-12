@@ -1903,6 +1903,29 @@ alias ls="ls --color=auto"
 				\label{code:CFunctionPTR}
 			\end{code}
 	\section{Programming Challenges}
+		\subsection{Linux Challenges}
+			\subsubsection{Introduction to Linux}
+				Login to your computer and bring up the Kali-VECC VM in VMware Workstation. 
+				This is the VM that we will be working with for all Linux and attack classes.    
+				The steps required to succeed in this challenge are as follows:
+				\begin{enumerate}
+					\item SSH into the remote box as admin.
+					\item Become root using su, password root:toor.
+					\item Create user acidBurn.
+					\item Become the user acidBurn.
+					\item Upload /usr/share/wordlists/rockyou.txt to remote acidBurn home.
+					\item create file flag.out in acidBurn home. 
+					\item change the hostname of the machine to Gibson. 
+					\item Execute \href{flagGen.sh}{code:flagGen}.
+					\item Retrieve the flag stored in flag.out. 
+				\end{enumerate}
+
+			\begin{code}
+				\lstinputlisting[language={Bash}]{./flagGen.sh}
+				\caption{A basic flag generator which will give you a flag if a number of system requirements are setup}
+				\label{code:flagGen}
+			\end{code}
+			\subsubsection{Hard Course: Installing Arch Linux}
 \chapter{Cryptography}
 	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
