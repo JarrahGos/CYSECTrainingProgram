@@ -964,7 +964,8 @@
 			Similarly, like all good Linux tools, BeEF comes with both a CLI and GUI version. 
 			We will be working with the GUI, as it does most of what we need to do. 
 			However, the CLI version is significantly more powerful and adaptable. 
-
+			
+			The Default username and password for BeEF is beef:beef.
 			\subsubsection{Hooking}
 				Before you can do anything with BeEF, you will have to hook a browser. 
 				To do this, you will first have to find a vulnerable page such as the guest book on DVWA. 
@@ -1003,7 +1004,36 @@ src=http://192.168.31.21:3000/demos/basic.html></iframe>
 
 				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
 				This shell will give you persistence options as well as the ability to control the whole system. 
+			\subsection{Evading Anti-XSS}
+
 	\section{SQL Injection}
+		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
+		This allows you to have direct access to the database, giving you the ability to ensure it logs you in or to gather information about other accounts within it. 
+		SQLi is a pertinent issue as the majority of websites use some form of SQL backing, which can be exploited to gather user data. 
+		Furthermore, most sites that store credit card information also store these in the same database as the user data. 
+		Without proper protection and standards compliance, it would be quite easy to gather this data for malicious purposes. 
+
+		SQLi takes two main forms, normal and blind. 
+		Both of these take a similar approach in code, but blind SQLi requires you to use other means to ensure that the code is being executed. 
+		\subsubsection{Attack Types}
+			There are a number of different types of SQLi attacks. 
+			The simpler ones are described below:
+			\begin{description}
+				\item[OR 1=1] will ensure that the outcome of the SQL code will always be true. 
+					When the code is run, the database will return all possible entries, rather than just the one that was expected. 
+					This can be used to map the user accounts or other details stored within a database. 
+				\item[; <statement>] This will end the current statement, which will likely end in an error then run <statement>.
+					This means that you have arbitrary SQL execution on the database, allowing you to run any code. 
+					Thus, you could print the whole database, or delete it. 
+					This is a limitless approach. 
+					You may want to end the new statement with ``;--'' which ends your statement and comments out any remaining code. 
+				\item[UNION] This allows you to give a whole new select command to the database to be returned with your own. 
+					Thus, you could use this to get a print out of the whole database within a filed that would only give you user names. 
+
+			\end{description}
+		\subsubsection{Attack Examples}
+		\subsubsection{SQLmap}
+		% http://www.sqlinjection.net/sqlmap/tutorial/
 	\section{File Uploads}
 \chapter{Forensics}
 	\label{ch:Forensics}
@@ -1076,7 +1106,7 @@ src=http://192.168.31.21:3000/demos/basic.html></iframe>
 			Once a network adapter is selected, you will be taken to the packet analysis screen, which can be seen in figure \ref{fig:WiresharkAnalysis}.
 			\begin{figure}[htb]
 				\centering
-					\includegraphics[scale=0.35]{./WiresharkAnalysis.png}
+					\includegraphics[scale=0.33]{./WiresharkAnalysis.png}
 					\caption{This is what Wireshark will look like when you are running a capture.}
 					\label{fig:WiresharkAnalysis}
 			\end{figure}
