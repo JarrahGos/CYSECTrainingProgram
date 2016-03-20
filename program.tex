@@ -1032,9 +1032,72 @@ src=http://192.168.31.21:3000/demos/basic.html></iframe>
 
 			\end{description}
 		\subsubsection{Attack Examples}
+			
 		\subsubsection{SQLmap}
-		% http://www.sqlinjection.net/sqlmap/tutorial/
+			This tutorial assumes that you have already found a possibly vulnerable site or server which has either a database which has easy access or is receiving data through HTTP GET or POST commands. 
+			You may not know that it is vulnerable, but the URL or other information about it makes you want to test it. 
+			SQLmap will automate this process for you. 
+
+			SQLmap will allow you to use the following techniques:
+			\begin{description}
+				\item[Boolean-Based Blind] This is where there is a difference between the page when the SQL is found to be true or false. 
+					SQLmap will search the headers automatically, or the page for a regex string which will tell it it was successful. 
+					With this, eventually SQLmap should be able to determine the output of the command. 
+				\item[Time-Based Blind] SQLmap run a query which would put the database on hold for a given number of seconds. 
+					By counting the time between running and returning, SQLmap can determine whether the command was run. 
+					Further, using this the output can eventually be determined. 
+				\item[Error-Based] This will force a specific error message to be presented. 
+					This can be used to map what type of database is being run. 
+					It will also report the output of the SQL statement, giving you insight into the data held within the database. 
+				\item[Union Query Based] This will append a ``UNION ALL SELECT'' command to the current statement. 
+					This causes the database to output everything requested in your select statement, allowing you to see all requested data. 
+				\item[Stacked Queries] This mode will attempt to end the current command and append another to it using the ``;'' to end the current statement. 
+					Like UNION, this can be used to map out all data stored within the database. 
+					However, it can be used to run statements other than ``SELECT''. 
+					It can further lead to filesystem manipulation and command execution. 
+			\end{description}
+			\paragraph{Direct Connection to a Database}
+				This option (``-d'') will connect directly do a database which is running on the server. 
+				This gives you significantly more power than connecting through an injectable web site, but it can only be done after you have found the credentials through other means. 
+				SQLmap will accept a connection string in either of the following forms:
+				\begin{verbatim}
+DBMS://<USER>:<PASSWORD>@<DB IP>:<DB PORT>/<DATABASE NAME>
+or
+DBMS://<DATABASE FILE PATH>
+				\end{verbatim}
+				For example, the following command will output the DBMS banner, all databases and all DBMS users as well as fingerprinting the database. 
+				\begin{quote}
+					sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
+				\end{quote}
+
+			\paragraph{Web Based Attack}
+				This is the more common attack, as it will work through a vulnerable form or request on a website. 
+				For this case, you have to specify the URL as well as what you want from it. 
+				An example of a command for this attack is as follows:
+				\begin{quote}
+					sqlmap.py -u "http://www.target.com/vuln.php?id=1" -f --banner --dbs --users
+				\end{quote}
+
+				The syntax for this attack is much simpler, requiring only that you provide the URL and what you would like. 
+				However, it can be extended upon by using the ``-l'' flag along with a burp suite log to attempt injection on all requests proxied through burp. 
+
+			\paragraph{Other Attack types}
+				These are less common, but useful means of attacking or scanning multiple sites. 
+				\begin{description}
+					\item[Sitemaps] Using the ``-m <URL>'' flag, you can have SQLmap scan a whole website. 
+						This will report possible vulnerabilities based on that map. 
+					\item[Textual Scan] Using the ``-m <FILE>'' flag will have SQLmap scan every URL within the file for the given data requests. 
+					\item[HTTP Request] The ``-r <FILE>'' flag will load a raw HTTP request from the file and attempt to target it. 
+						This means that you do not have to specify POSTs or cookies. 
+					\item[Configuration] The ``-c <FILE> flag will load the configuration found within the file. 
+						An example of this can be seen in ``sqlmap.conf''. 
+					\item[Command Line Access] the ``--os-cmd'' or ``--os-shell'' commands will have SQLmap upload a library and gain shell access to the system. 
+					\item[Meterpreter] the ``--os-pwn'' flag will attempt to upload and run the Metasploit shellcode. 
+						This will return a Meterpreter shell which will give you access to many high level OS functions as well as the Meterpreter framework. 
+				\end{description}
+				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
 	\section{File Uploads}
+
 \chapter{Forensics}
 	\label{ch:Forensics}
 	\section{File Carving}
