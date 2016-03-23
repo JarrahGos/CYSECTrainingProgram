@@ -1,0 +1,200 @@
+\documentclass[a4paper,11pt]{report}
+\author{Jarrah Gosbell}
+\title{CYSEC Challenges Overview}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+	        \markright{\thechapter\ #1}}
+\fancyhf{}  % delete current header and footer
+\fancyhead[L,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{2pt} % space for the rule
+\fancypagestyle{plain}{%
+	   \fancyhead{} % get rid of headers on plain pages
+	      \renewcommand{\headrulewidth}{0pt} % and the line
+	  }
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{menukeys}
+\usepackage{attachfile}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{fancyvrb} %Allow bold in verbatim text.
+\usepackage[section]{placeins} %Deal with floats being in the wrong place. 
+\usepackage{color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{listings}
+\AtBeginDocument{\renewcommand{\thelstlisting}{\thesubsubsection.\arabic{lstlisting}}}
+\def\l@lstlisting#1#2{\@dottedtocline{1}{3em}{3.5em}{#1}{#2}}
+\lstset { 									%
+%	language={[ANSI]C}, 					%
+	otherkeywords={printf, strcpy, *, &, malloc},	%
+	numbers=left, 							%
+	numberfirstline=true,					%
+	showspaces=false, 						%
+	showtabs=false, 						%
+	showstringspaces=false, 				%
+	commentstyle=\color{mygreen}, 			%
+	tabsize=4, 								%
+	keywordstyle=\color{blue}, 				%
+	xleftmargin=2em,						%
+	extendedchars=true,     			    %
+	basicstyle=\small\sffamily,				%
+	columns=fullflexible,					%
+	breaklines=true,		            	%
+	stringstyle=\color{mymauve}}
+\lstloadlanguages{C}
+\lstloadlanguages{Python}
+%Sorting code floats. 
+\usepackage{float}
+\floatstyle{plain}
+\newfloat{code}{htb}{loc}[chapter]
+\floatname{code}{Code Example}
+\renewcommand{\abstractname}{Introduction}
+\interfootnotelinepenalty=10000
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+\makeatletter
+\usepackage{parskip}
+\renewcommand*{\listof}[2]{%
+	\@ifundefined{ext@#1}{\float@error{#1}}{%
+		\expandafter\let\csname l@#1\endcsname \l@figure  % <- use layout of figure
+		\@namedef{l@#1}{\@dottedtocline{1}{1.5em}{2.5em}}%
+		\float@listhead{#2}%
+		\begingroup
+			\setlength\parskip{0pt plus 1pt}%               % <- or drop this line completely
+			\@starttoc{\@nameuse{ext@#1}}%
+		\endgroup}}
+\makeatother
+\usepackage{hyperref}
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{CySCA}
+	\section{Overview of challenge}
+		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
+		and sponsored by multiple IT, communication and finance companies. 
+		The challenge has the goal of ``finding the next generation of Australian Cyber Security talent''.
+		This makes this challenge a good starting point for compiling the requirements for a Cyber Security training program. 
+	\section{Main Areas of Focus}
+		\subsection{Corporate Network Penetration Test}
+			This is a step by step Penetration Test of a corporate network. 
+			It requires the member to start a DNS enumeration to work out the external systems on the network. 
+			The member will then move through a number of systems, 
+			until they gain full access to the remote domain and it's DNS server. 
+
+			The official description of this section is as follows:
+			\begin{quote}
+				The Chief Visionary Officer would like you to assess the security of the ECWI corporate network and explain the vulnerabilites located to non-technical staff. This will allow ECWI staff to provide sound advice to enterprises. Players should set their DNS server to 192.168.5.53
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item DNS enumeration or zone transfer. 
+				\item Command Injection
+				\item HTTP Directory Traversal. 
+				\item Man-in-the-Middle HTTP attack
+				\item C\# Reverse Engineering
+				\item Hash Cracking
+			\end{itemize}
+		\subsection{Web Application Penetration Test}
+			This is a penetration test of an Intranet site which is used for most of the communications of the business. 
+			This site is also connected to the IT administrative equipment. 
+			Succeeding in this challenge starts with a basic understanding of javascript, moving to session hijacking and other more complex web attacks. 
+			
+			The official description of this section is as follows:
+			\begin{quote}
+				The initiative believe their intranet web site is secure due to them using all of the wellness advice that they provide to enterprises. However they are big believers in 'trust but verify' and would like you to verify that the website is secure. You can find the website at http://www.ecwi.cysca
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Javascript and information obfuscation. 
+				\item Session hijacking.
+				\item URL Injection
+				\item Cryptography
+					%TODO: There may be more. 
+			\end{itemize}
+		\subsection{Detect and Defend}
+		\subsection{Forensics}
+			This section involves both file and network forensics, as well as gathering information on previous attacks. 
+			This section starts with a PCAP of an attack in which the country of origin was hidden and moves to Memory analysis to determine the means of the attack. 
+			
+			The official description of this section is as follows:
+			\begin{quote}
+				Following on from a security report, the initiative would like you to use your forensics skills to get to the bottom of any wrongdoing (either internal or external) on their network. Using the following files, find out what is happening and who is behind it. 
+			\end{quote}
+
+			\begin{itemize}
+				\item PCAP forensics
+				\item DOXXING
+				\item CVEs and CVE to attack matching
+				\item Attack traffic Forensics
+				\item Disk/memory Analysis
+				\item Attack persistence
+			\end{itemize}
+		\subsection{Hash Cracking and Cryptography}
+			This section required that the member break a number of hashes and determine weakness in home build cryptography solutions. 
+			An understanding of John the Ripper or Hashcat would be a good starting point for this section. 
+			However, a stronger understanding of cryptography is necessary in order to break the later challenges. 
+			
+			The official description of this section is as follows:
+			\begin{quote}
+				The initiative provide wellness advice to enterprises and this includes information on choosing a good password. They would like you to see how resistant each of these passwords are to password recovery. The initiative do not have anyone skilled in Cryptography. They would like you to assess some of their secure crypto systems and solve a crypto problem discovered as part of a security response.
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Hashcat or John the Ripper
+				\item Network Forensics
+				\item Binary operations. 
+				\item Hashing theory and cryptographic flaws.
+				\item Programming.
+			\end{itemize}
+
+		\subsection{Programming}
+			This section is designed to test the members programming skill by giving them logic challenges which are not a part of normal programming. 
+			It starts with word unscrambling, ending in mathematical calculation. 
+			
+			The official description of this section is as follows:
+			\begin{quote}
+				The initiative staff would like to show them how to 'code'. They have a number of samples that they would like to see you solve in code to help them learn.
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Programming (Python)
+				\item Networking
+				\item Logic
+				\item Trivia and general knowledge. 
+				\item Mathematics. 
+				\item QR Codes
+			\end{itemize}
+
+
+
+
+\appendix
+	\label{ch:Appendix}
+	\listoftables
+		\phantomsection
+		\addcontentsline{toc}{chapter}{List of Tables}
+	\listoffigures
+		\phantomsection
+		\addcontentsline{toc}{chapter}{List of Figures}
+	{\setstretch{2}
+	 \renewcommand{\figurename}{Code Example}
+	     \listof{code}{List of Code Examples}
+	 }
+		 \phantomsection
+		 \addcontentsline{toc}{chapter}{List of Code Examples}
+	\bibliographystyle{plain}
+	\bibliography{program}
+\end{document}
