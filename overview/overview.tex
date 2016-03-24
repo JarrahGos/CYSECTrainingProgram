@@ -59,8 +59,8 @@
 \floatname{code}{Code Example}
 \renewcommand{\abstractname}{Introduction}
 \interfootnotelinepenalty=10000
-\setcounter{secnumdepth}{1}
-\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
 \makeatletter
 \usepackage{parskip}
 \renewcommand*{\listof}[2]{%
@@ -178,9 +178,121 @@
 				\item QR Codes
 			\end{itemize}
 
+		\subsection{Reverse Engineering}
+			This section was designed to test the members reverse engineering and programming skills. 
+			It starts with a semi-blind attack, with some source given, but not the rest of the program. 
+			It then ends with a C programming and comparison challenge. 
+			
+			The official description of this section is as follows:
+			\begin{quote}
+				There are no reverse engineers in the initiative, however they have a number of systems with incomplete documentation and one backdoored version of their software. They would like you to determine the functionality to allow them to continue to use these services.
+			\end{quote}
 
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Programming
+				\item Accessing networked programs. 
+				\item Blind Reverse Engineering. 
+				\item Logic and code testing. 
+				\item HTTP. 
+			\end{itemize}
 
+		\subsection{Python Exploitation}
+			In a similar way to C, Python has a number of flaws which can be exploited in poorly written code. 
+			Some of these flaws are well known and obvious, but others are significantly harder to see. 
+			This section starts with running a command without python builtins, ending with deobfuscating code and writing python shellcode. 
 
+			The official description of this section is as follows:
+			\begin{quote}
+The initiative's customers use Python heavily, they have created a number of secure python systems for use by enterprises. Please verify that the cloud wellness is suitable on these systems.
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Python coding.
+				\item Python builtins. 
+				\item Pickled input. 
+				\item obfuscation and deobfuscation. 
+				\item Python shellcode. 
+			\end{itemize}
+
+		\subsection{Hack the Box}
+			This section requires the member to break into a webserver. 
+			This server is running a number of services which make it vulnerable to attacks. 
+			This attacks starts with a basic Heartbleed credential steal, ending with privilege escalation. 
+
+			The official description of this section is as follows:
+			\begin{quote}
+				The initiative would like you to assess this machine on their network. They are concerned that it may have a number of high profile vulnerabilities.
+			\end{quote}
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Metasploit basics. 
+				\item Nmap.
+				\item Heartbleed.
+				\item SSH.
+				\item RSA key cracking. 
+				\item Privilage escalation. 
+				\item NFS
+				\item SETUID. 
+				\item Linux Privileges. 
+			\end{itemize}
+	\section{Breakdown of Requirements}
+	 	The following is a breakdown of how many times a particular area was used in the challenge. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{| l | l | l |}
+				\hline
+				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\textbf{Programming} & \textbf{7} & \textbf{1} \\ \hline
+				\quad JavaScript & 1 & \\ \hline 
+				\quad Obfuscation & 1 & \\ \hline
+				\quad Python & 3 & \\ \hline 
+				\qquad Shellcode & 1 & \\ \hline 
+				\qquad Builtins & 1 & \\ \hline 
+				\qquad Pickled input & 1 & \\ \hline 
+				\quad Sockets & 2 & \\ \hline 
+				\textbf{General Knowledge} & \textbf{6} & \textbf{0.5}\\ \hline 
+				\quad CVE and CVE attack Matching & 1 & \\ \hline 
+				\quad Binary Operations & 1 & \\ \hline 
+				\quad Logic & 1 & \\ \hline 
+				\quad Trivia, General knowledge & 1 & \\ \hline 
+				\quad Mathematics & 1 & \\ \hline 
+				\quad QR Codes & 1 & \\ \hline 
+				\textbf{Forensics} & \textbf{4} & \textbf{0.7}\\ \hline
+				\quad PCAP & 1 & \\ \hline
+				\quad Network Forensics & 1 & \\ \hline 
+				\quad DOXXING & 1 & \\ \hline 
+				\quad Attack Traffic & 1 & \\ \hline 
+				\quad Disk and Memory Analysis & 1 & \\ \hline 
+				\textbf{Network Exploitation} & \textbf{4} & \textbf{0.8} \\ \hline 
+				\quad Attack Persistence & 1 & \\ \hline 
+				\quad Metasploit & 1 & \\ \hline 
+				\quad Nmap & 1 & \\ \hline 
+				\quad Heartbleed & 1 & \\ \hline
+				\textbf{Reverse Engineering} & \textbf{3} & \textbf{0.6}\\ \hline 
+				\quad C\# Reverse Engineering & 1 & \\ \hline
+				\quad Blind Reverse Engineering & 1 & \\ \hline 
+				\quad Code Testing & 1 & \\ \hline 
+				\textbf{Cryptography} & \textbf{3} & \textbf{0.8} \\ \hline 
+				\quad Hash Cracking & 2 & \\ \hline
+				\quad Cryptographic Flaws & 1 & \\ \hline 
+				\textbf{Web Penetration} & \textbf{3} & \textbf{1} \\ \hline
+				\quad HTTP Directory Traversal & 1 & \\ \hline
+				\quad HTTP MITM & 1 & \\ \hline
+				\quad Session Hijacking & 1 & \\ \hline
+				\quad URL Injection & 1 & \\ \hline
+				\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
+				\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
+				\quad HTTP & 1 & \\ \hline 
+				\textbf{Linux CLI} & \textbf{1} &\textbf{0.6} \\ \hline
+				\quad Command Injection & 1 & \\ \hline 
+			\end{tabular}
+			\caption{Breakdown of Challenge Topics}
+			\label{tab:CySEC Breakdown}
+		\end{table}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
