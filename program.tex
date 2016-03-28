@@ -540,6 +540,70 @@
 			Due to this, a caching system has been developed to allow many steps of this process to be skipped. 
 			This process would likely remove at least the first two steps, but may also remove the third and fourth for more common sites, or sites that the user has accessed recently. 
 			Furthermore, a local cache may contain the exact IP address for the site if it has been accessed within the TTL value. 
+
+			When accessing a remote cache, the DNS query may look somewhat like that seen below:
+			%TODO: Why is the following not indenting as shown in the source
+			\begin{verbatim}
+Flags: 0x0120 Standard query
+	0... .... .... .... = Response: Message is a query
+	.000 0... .... .... = Opcode: Standard query (0)
+	.... ..0. .... .... = Truncated: Message is not truncated
+	.... ...1 .... .... = Recursion desired: Do query recursively
+	.... .... .0.. .... = Z: reserved (0)
+	.... .... ..1. .... = AD bit: Set
+	.... .... ...0 .... = Non-authenticated data: Unacceptable
+	Questions: 1
+	Answer RRs: 0
+	Authority RRs: 0
+	Additional RRs: 1
+Queries	
+	xkcd.com: type A, class IN
+	Name: xkcd.com
+	[Name Length: 8]
+	[Label Count: 2]
+	Type: A (Host Address) (1)
+	Class: IN (0x0001)
+			\end{verbatim}
+			The corresponding response may look as follows:
+			\begin{verbatim}
+Flags: 0x8180 Standard query response, No error
+	1... .... .... .... = Response: Message is a response
+	.000 0... .... .... = Opcode: Standard query (0)
+	.... .0.. .... .... = Authoritative: Server is not an authority for domain
+	.... ..0. .... .... = Truncated: Message is not truncated
+	.... ...1 .... .... = Recursion desired: Do query recursively
+	.... .... 1... .... = Recursion available: Server can do recursive queries
+	.... .... .0.. .... = Z: reserved (0)
+	.... .... ..0. .... = Answer authenticated: Answer/authority portion was not authenticated by the server
+	.... .... ...0 .... = Non-authenticated data: Unacceptable
+	.... .... .... 0000 = Reply code: No error (0)	
+	Questions: 1
+	Answer RRs: 4
+	Authority RRs: 0
+	Additional RRs: 1
+Queries
+	xkcd.com: type A, class IN
+	Name: xkcd.com
+	[Name Length: 8]
+	[Label Count: 2]
+	Type: A (Host Address) (1)
+	Class: IN (0x0001)
+Answers
+	xkcd.com: type A, class IN, addr 23.235.37.67
+		Name: xkcd.com
+		Type: A (Host Address) (1)
+		Class: IN (0x0001)
+		Time to live: 5
+		Data length: 4
+		Address: 23.235.37.67
+	xkcd.com: type A, class IN, addr 104.156.81.67
+		Name: xkcd.com
+		Type: A (Host Address) (1)
+		Class: IN (0x0001)	
+		Time to live: 5
+		Data length: 4
+		Address: 104.156.81.67
+			\end{verbatim}
 			
 			This caching process has been implemented into the DNS structure though the use of Time To Live (TTL) values. 
 			This allows the server administrator to set the duration for which a cache can store the address to domain mapping of their server. 
@@ -553,7 +617,8 @@
 			DNSSEC works through authenticating the packets using digital signing to ensure that the packet came from the server that it was reported to come from. 
 			However, this process does not provide any encryption, meaning that DNS packets are readable by anyone sitting between the communicating computers on the network. 
 
-	\section{HTTP}
+	\section{Hyper Text Transfer Protocol}
+		HTTP 
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
 	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
@@ -947,6 +1012,7 @@
 			When given the correct information, such as attacking IP (``-r'') and attackers port (``-p''), it will attempt to connect to the attacking computer repeatedly. 
 			While this is useful, it does require access to the hard drive. 
 			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
+	\section{DNS Attacks}
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
