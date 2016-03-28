@@ -477,7 +477,82 @@
 
 			To test this, set up the \href{https://github.com/CySCA/CySCA2014/blob/master/misc-server/programming/prog01/server.py}{jumbled word server} from \href{https://cyberchallenge.com.au/}{CYSCA 2014} and attempt to write a python script which will run through the challenge response sequence for this server. 
 
-	\section{DNS}
+	\section{Domain Name System}
+		The Domain Name System (DNS) is the method that is used to translate between domain names such as ``example.org'' to IP addresses such as ``93.184.216.34'' (IPv4) or ``2606:2800:220:1:248:1893:25c8:1946'' (IPv6).
+		Without this system, the Internet would be significantly more difficult to navigate, with the dynamic allocation of IP addresses making it impossible to find the same website after reallocation. 
+		DNS on the client side makes it possible to access sites by name, removing the need to remember the address and account for its possible changes. 
+		However, on the server side, it can be used for numerous activities such as load balancing and regional direction. 
+
+		\subsection{Structure of the Domain Name System}
+			DNS is broken down into a number of parts, each of which have authority over a given area. 
+			This structure can be thought of as a tree, with each branch delegated responsibility for it's given area. 
+			An example of such a tree structure can be found in figure \ref{fig:DNSTree}.
+
+			\begin{figure}[htb]
+				\centering
+					\includegraphics[scale=0.27]{./DNSTree.png}
+					\caption{A depiction of DNS for an Internet like network}
+					\label{fig:DNSTree}
+			\end{figure}
+
+			Within each zone, as indicated by the dashed lines, the top most node is authoritative over the records within that zone. 
+			This means that that particular server is the one that is able to reply with the IP address of the name you are looking for, if said name resides within the zone. 
+		\subsection{Resolving a Name}
+			The process to resolve a name involves a number of steps and a number of servers. 
+			Later, we will see that many of these steps can be removed, but it is useful to understand the full system. 
+			The servers that will be used are as follows:
+			\begin{enumerate}
+				\setcounter{enumi}{-1}
+				\item Root server (``.'')
+				\item TLD server (``.com'')
+				\item Authoritative server (``example.com'')
+			\end{enumerate}
+			The following domain levels will be used in this example:
+			\begin{center}
+				\begin{tabular}{| c | c | c | c |}
+					\hline
+					\textbf{Subdomain} & \textbf{Domain} & \textbf{Top Level Domain} & \textbf{Root Domain} \\ \hline
+					www & example & com & . \\ \hline
+				\end{tabular}
+			\end{center}
+			The following steps will then be taken to resolve the domain name ``www.example.com'':
+			\begin{enumerate}
+				\item The Resolver will query a preconfigured root server with ``www.example.com''. 
+				\item The Root server will reply with the domain name of the ``.com'' TLD Server.
+				\item The Resolver will query the TLD server with ``www.example.com''.
+				\item The TLD server will reply with the domain name of the ``example.com'' DNS server. 
+				\item The Resolver will query the example.com DNS server with ``www.example.com''. 
+				\item The example.com server will reply with the IP address of ``www.example.com'' and that it is the authoritative server for this domain. 
+			\end{enumerate}
+			It is however, not necessary to go through all of these steps. 
+			If we were asking for the address of ``x.y.z.example.com'', the example.com server could respond with the address for this domain if it were configured to be the authoritative DNS server for each of those subdomains. 
+			Graphically, such a process would look similar to that shown in figure \ref{fig:DNSRecursor}.
+
+			\begin{figure}[htb]
+				\centering
+					\includegraphics[scale=0.27]{./DNSRecursor.png}
+					\caption{A depiction a of recursive DNS lookup}
+					\label{fig:DNSRecursor}
+			\end{figure}
+
+			Conducting this process for every domain required by the user would result in the root servers and more common TLD servers being overwhelmed by traffic. 
+			Furthermore, the resolve times for such a system would be prohibitively long. 
+			Due to this, a caching system has been developed to allow many steps of this process to be skipped. 
+			This process would likely remove at least the first two steps, but may also remove the third and fourth for more common sites, or sites that the user has accessed recently. 
+			Furthermore, a local cache may contain the exact IP address for the site if it has been accessed within the TTL value. 
+			
+			This caching process has been implemented into the DNS structure though the use of Time To Live (TTL) values. 
+			This allows the server administrator to set the duration for which a cache can store the address to domain mapping of their server. 
+			However, this also means that if their IP address were to change, the TTL would have to be lived out before DNS started pointing at the new IP. 
+		\subsection{Protocol Extensions and DNSSEC}
+			DNS has been updated to support a number of extensions. 
+			These, when unused do not have any overhead on the system. 
+			However, when used, they can provide a significant improvement to the system. 
+			One such extension is the DNSSEC extension, which provides some security against DNS cache poisoning and other attacks. 
+
+			DNSSEC works through authenticating the packets using digital signing to ensure that the packet came from the server that it was reported to come from. 
+			However, this process does not provide any encryption, meaning that DNS packets are readable by anyone sitting between the communicating computers on the network. 
+
 	\section{HTTP}
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
