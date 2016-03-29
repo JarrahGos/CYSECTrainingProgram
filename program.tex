@@ -423,25 +423,46 @@
 				Transfers data between the two points connected by the physical layer. 
 				This layer provides some high level functions which allow for error correction and flow control. 
 				It also provides a means of activating, maintaining and ending the link. 
+				This is the layer that a switch would sit on, 
+				using the MAC addresses of the connected devices to direct traffic to the correct device. 
 			\item[Network Layer]
 				Provides a means of transmitting datagrams from one machine on the network to another. 
 				This is the layer where network addresses (IP) are translated into a physical machine address. 
+				This is the layer that routers work on, allowing them to direct a packet to the correct machine based on IP address. 
+				Due to this, you do not have to specify each hop required for a packet to get to a destination. 
 			\item[Transport Layer]
 				Provides transparent transfer of data by allowing reliable communication and known protocols. 
 				This layer means that higher layers need not worry about reliability of connection. 
+				This is implemented though means such as TCP and UDP, both of which have different requirements and functions for transport and error checking. 
+				This layer works on maintaining the integrity of individual messages. 
 			\item[Session Layer]
 				Responsible for establishing and maintaining connections between applications. 
+				While the transport layer deals with messages, the session layer works on the ongoing connection between the computers. 
+				This would usually deal with multiple messages, and numerous packets. 
+				Usually this is implemented in a socket by the OS. 
 			\item[Presentation Layer]
 				Presents the data to the application which is is being communicated to in a format which is understandable to the application. 
 				This is the layer which allows for encryption and data compression. 
+				This means that the application itself need not be sending encrypted messages to have secure communications. 
+				Instead, it could be wrapping its communication socket in a TLS session which would be securing the communications for it. 
 			\item[Application Layer] 
 				Keeps track of the requirements of the application and allows it to utilize the data which it received. 
+				This is where the data is read into the memory of the program and released to it. 
+				This allows the program to interpret and act on the data, giving it to the user or changing how it acts based on it. 
 		\end{description}
 		When data is transmitted through these layers, it is encapsulated in quanta known as packets. 
 		Each of these packets contains the meta-data required for each of the layers of the network model. 
 		Starting from the application layer, each layer that the packet passes through will add a new header for it's data, which will not be read until the packet passes through that layer on the other end of it's journey. 
 		%TODO: Think about using a figure here to show this encapsulation. 
-		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us. 
+		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us.
+
+		It is important to note that each layer of the OSI model need not understand the layers around it. 
+		Those below will encapsulate the data within their headers and requirements, while those above will simply send their data to the lower layer. 
+		Furthermore, each layer communicates only with the corresponding layer on the other machine. 
+		Thus, TCP communicates with TCP and applications communicate with applications. 
+		Due to this, layers above can be removed from the stack if not required. 
+		However, this is a rare situation, occurring only in situations such as ping. 
+
 		Network architecture is the physical layout of the computers connected using the aforementioned OSI model. 
 		This is done through means of routers, switches and hubs connecting computers. 
 		Each of these components are known as nodes within the network. 
