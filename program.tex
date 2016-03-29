@@ -352,6 +352,7 @@
 			
 			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
 			
+	\section{Executable File Formats}
 \chapter{Scoping and Mind set}
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
@@ -1261,6 +1262,7 @@ DBMS://<DATABASE FILE PATH>
 				\end{description}
 				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
 	\section{File Uploads}
+	\section{File Inclusion}
 	\section{HTTP Directory Traversal}
 	\section{HTTP Man in the Middle}
 	\section{Session Hijacking}
@@ -1362,10 +1364,15 @@ DBMS://<DATABASE FILE PATH>
 	\section{Netflow}
 	\section{DoXXing}
 	\section{Disk and Memory Analysis}
+		\subsection{File Types}
+		\subsection{Common Conversion issues}
+		% DOS -> UNIX (CRLF -> LF) conversion
+		\subsection{Cyclic Redundancy Codes}
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
 	\section{x86 Assembly}
 		%TODO: Decide whether this goes here or in programming. 
+	\section{ARM Assembly}
 	\section{Radare2}
 		Radare2 is a set of tools for working with binary files. 
 		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
@@ -1413,6 +1420,7 @@ DBMS://<DATABASE FILE PATH>
 	\section{Java Reverse Engineering}
 	\section{C\# Reverse Engineering}
 	\section{Pwn Adventure}
+	\section{IDA 64}
 \chapter{Programming}
 	\label{ch:Programming}
 	\section{Introduction to the CLI}
@@ -2245,6 +2253,8 @@ alias ls="ls --color=auto"
 				\caption{Example of a C Function Pointers}
 				\label{code:CFunctionPTR}
 			\end{code}
+		\subsection{Debugging with GDB and Peda}
+
 	\section{Programming Challenges}
 		\subsection{Linux Challenges}
 			\subsubsection{Introduction to Linux}
@@ -2313,6 +2323,12 @@ alias ls="ls --color=auto"
 \chapter{Cryptography}
 	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
+	\section{RSA}
+		\subsection{\{N : e : c \} Format}
+		\subsection{Common Flaws}
+	\section{Merkle-Hallman Knapsack Cryptosystem}
+	\section{Server Authentication}
+	\section{Rotational Algorithms}
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
 	\section{Hash Cracking}
@@ -3642,6 +3658,8 @@ Dump of assembler code for function main:
 	\section{The CVE System}
 	\section{Binary Logic}
 	\section{QR Codes}
+	\section{Regex}
+	\section{Boolean Mathematics}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
