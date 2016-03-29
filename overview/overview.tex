@@ -78,7 +78,7 @@
 \maketitle
 \tableofcontents
 \chapter{CySCA}
-	\section{Overview of challenge}
+	\section{Overview of Challenge}
 		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
 		and sponsored by multiple IT, communication and finance companies. 
 		The challenge has the goal of ``finding the next generation of Australian Cyber Security talent''.
@@ -290,8 +290,127 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\textbf{Linux CLI} & \textbf{1} &\textbf{0.6} \\ \hline
 				\quad Command Injection & 1 & \\ \hline 
 			\end{tabular}
-			\caption{Breakdown of Challenge Topics}
+			\caption{Breakdown of CySCA Topics}
 			\label{tab:CySEC Breakdown}
+		\end{table}
+\chapter{Plaid CTF 2015}
+	\section{Overview of Challenge}
+		Plaid CTF is the annual CTF run by the Plaid Parliament of Pwning. 
+		While lower profile in Australia, this CTF is both international and set at a far higher difficulty level than CySCA. 
+		This makes it a good CTF to use for ensuring that the higher level skills have been covered by the training program. 
+	
+	\section{Main Areas Of Focus}
+		\subsection{Cryptography}
+			This section has the member determine weaknesses in the implementation of cryptographic algorithms. 
+			Each challenge requires an understanding of a certain type of encryption as well as its possible failures. 
+
+
+			The following is a breakdown of the skills required to conduct these tasks:
+			\begin{itemize}
+				\item Understanding of RSA Encription
+				\begin{itemize}
+					\item Understand the \{N : e : c\} format. 
+						\item Understand the common requirements for e and d in RSA. 
+				\end{itemize}
+				\item Programming
+				\item Data Representation. 
+				\item Server Authentication
+				\item Merkle-Hallman Knapsack Cryptosystem
+			\end{itemize}
+		\subsection{Forensics}
+			This section has the member attempt to determine the types and contents of unknown files. 
+			To successfully complete it, the member will need to have a good understanding of error checking and file types. 
+
+			The following is a breakdown of the skills required to conduct these tasks:
+			\begin{itemize}
+				\item Understanding of file types. 
+				\item File conversions
+				\item File Specifications
+				\item Dos -> Unix (CRLF -> LF) conversion
+				\item Cyclic Redundancy Codes
+				\item Programming
+			\end{itemize}
+
+		\subsection{Pwnable}
+			This section requires the crafting of shellcode and manual exploit discovery. 
+			The member will discover the flag only when they have gained access to a shell on the machine that the service was running on. 
+
+			The following is a breakdown of the skills required to conduct these tasks:
+			\begin{itemize}
+				\item Shellcoding
+				\item x86\_64Registers and Assembly. 
+				\item Memory allocation. 
+				\item GDB (and Peda)
+				\item ARM assembly
+				\item ELF files
+				\item C Exploitation
+				\item URL Injection
+				\item HTTP
+				\item Web Directory Traversal
+				\item Local File Inclusion
+			\end{itemize}
+		\subsection{Reverse Engineering}
+			This section has a member attempt to understand how a program is working in order to exploit it. 
+			The member will be required to use the tools at their disposal to determine algorithms and computational flaws in the provided programs. 
+
+			The following is a breakdown of the skills required to conduct these tasks:
+			\begin{itemize}
+				\item Reverse Engineering tools
+					\begin{itemize}
+						\item radare2
+						\item IDA 64
+					\end{itemize}
+				\item Rotational functions
+				\item Algorithmic flaws. 
+				\item Regex
+				\item Boolean Mathematics. 
+			\end{itemize}
+	
+	\section{Breakdown of Requirements}
+	 	The following is a breakdown of how many times a particular area was used in the challenge. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{| l | l | l |}
+				\hline
+				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\textbf{General} & \textbf{6} & \\ \hline
+				\quad Data Representation & 1 & \\ \hline
+				\quad ELF Files & 1 & \\ \hline
+				\quad Rotational Ciphers & 1 & \\ \hline
+				\quad Algorithmic Flaws & 1 & \\ \hline 
+				\quad Regex & 1 & \\ \hline 
+				\quad Boolean Mathematics & 1 & \\ \hline 
+				\textbf{Exploitation} & \textbf{6} & \\ \hline
+				\quad Shellcode & 1 & \\ \hline
+				\quad x86\_64 Registers and Assembly & 1 & \\ \hline
+				\quad Memory Allocation & 1 & \\ \hline
+				\quad GDB and Peda & 1 & \\ \hline
+				\quad ARM Assembly & 1 & \\ \hline
+				\quad C Exploitation & 1 & \\ \hline 
+				\textbf{Cryptography} & \textbf{5} & \\ \hline
+				\quad RSA Encryption & 3 & \\ \hline
+				\qquad \{N : e : c\} Format & 1 & \\ \hline
+				\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
+				\quad Server Authentication & 1 & \\ \hline
+				\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
+				\textbf{Forensics} & \textbf{4} & \\ \hline
+				\quad File Types & 1 & \\ \hline
+				\quad File Conversions & 1 & \\ \hline 
+				\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+				\quad Cyclic Redundancy Checks & 1 & \\ \hline
+				\textbf{Web Exploitation} & \textbf{4} & \\ \hline
+				\quad URL Injection & 1 & \\ \hline
+				\quad HTTP & 1 & \\ \hline 
+				\quad Directory Traversal & 1 & \\ \hline
+				\quad Local File Inclusion & 1 & \\ \hline 
+				\textbf{Reverse Engineering} & \textbf{2} & \\ \hline
+				\quad Radare2 & 1 & \\ \hline
+				\quad IDA 64 & 1 & \\ \hline 
+				\textbf{Programming} & \textbf{2} & \\ \hline
+			\end{tabular}
+			\caption{Breakdown of PlaidCTF Topics}
+			\label{tab:PlaidCTF Breakdown}
 		\end{table}
 \appendix
 	\label{ch:Appendix}
