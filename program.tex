@@ -1418,6 +1418,32 @@ DBMS://<DATABASE FILE PATH>
 			I recommend starting with the sprint speed. 
 			%TODO: Should there be more than this section here?
 	\section{Java Reverse Engineering}
+		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
+		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
+		Thus, Java reverse engineering is simply a matter of choosing the best program to use in decompilation. 
+
+		The current recommendation for Java Decompilers is Procyon\footnote{\url{https://bitbucket.org/mstrobel/procyon}}
+		This is due to the fact that it is the most up to date and well maintained decompiler available.\footnote{You may hear of others such as jad. This is old and unmaintained.} 
+		
+		Procyon is quite easy to use. 
+		All that is required is having Java installed on the system that you are working on and running the provided JAR package. 
+		You will give it both the class files that you wish to decompile, as well as an output directory. 
+		An example of this can be found below:
+		\begin{quote}
+			./procyon.jar *.class -o src
+		\end{quote}
+
+		Furthermore, Procyon will allow you to decompile a JAR file in it's entirety. 
+		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
+
+		The reason that Java Reverse engineering is seen as easy is the fact that you now have the full source code of the program. 
+		At worse, the programmer may have obfuscated the code, making it harder to determine what the methods and variables mean. 
+		This would mean that you will have to manually determine this from the usage of the variables and the content of the methods.
+
+		Once this decompilation has been completed, you can use tools such as yFiles to get an overview of the classes or data structures. 
+		Other than this, it is simply a matter of finding the logic within the program that is used to calculate the value that you are reverse engineering for. 
+	
+		%TODO: Revise this section
 	\section{C\# Reverse Engineering}
 	\section{Pwn Adventure}
 	\section{IDA 64}
@@ -2254,7 +2280,99 @@ alias ls="ls --color=auto"
 				\label{code:CFunctionPTR}
 			\end{code}
 		\subsection{Debugging with GDB and Peda}
+			The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
+			It can be used either with or without debugging symbols, 
+			however having these makes debugging and reverse engineering easier as you have the working code. 
+			While the common purpose of GDB is debugging C and C++ programs, it can be used on any language, as well as for reverse engineering and exploit development. 
+			The following will be an introduction to the tool, as well as a cheat sheet on the commands that can be used for it. 
+			
+			The first thing to know about GDB, is how to compile your program to use GDB fully. 
+			This means that you will have to make your compiler write out the source code symbols when compiling. 
+			This can be done in GCC with the ``-g'' flag, which will create a symbols file that gdb will automatically load. 
 
+			Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB. 
+			The first step is to run GDB on the program like so:
+			\begin{quote}
+				gdb <program>
+			\end{quote}
+			This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program. 
+
+			\paragraph{List}
+			At this point, you may wish to see the code for the program. 
+			If you have enabled debugging symbols, this can be done using the command ``list''. 
+			Furthermore, you can get a specific output by telling GBB that you want a listing of a particular function or line number. 
+			This will output the 10 lines after the point you specified. 
+			However, subsequent runs of ``list'' will output the next 10 lines. 
+
+			\paragraph{Break}
+			Now that you can see the code, you will likely want to setup breakpoints within it. 
+			This can be done using the ``break'' command along with a line number or function name. 
+			This will insert a breakpoint at which the program will stop executing and allow you to investigate. 
+			
+			\paragraph{Run}
+			Now that you have set your breakpoints, you will likely want to run the program up to the first break point. 
+			This can be done with the ``run'' command.
+			This will run the program with any arguments that you give after it, 
+			as if you were runnig the program directly from the command line. 
+			As outlined earlier, this will also stop execution and allow you to investigate at any break point. 
+
+			\paragraph{Show}
+			Now that you have the program running and it has stopped at a break point, 
+			you are able to investigate the current state of the program. 
+			This is done using the ``show'' command, which with the correct arguments will give you an outline of memory and variables. 
+			The following is a list of common ``show'' arguments and their uses:
+			\begin{description}
+				\item[args] Show the current values of the arguments that were sent to the function that is currently running. 
+				\item[backtrace] Show the backtrace. This can be made more specific by giving a specific variable. 
+				\item[breakpoint] Show the current breakpoints. 
+			\end{description}
+
+			\paragraph{Info}
+			Similar to show is the ``info'' command. 
+			This command will give you information about a given area of the program or computer. 
+			This is generally more helpful in debugging, as it is more focused on execution rather than environment. 
+			The following is a list of common ``info'' arguments and their uses:
+			\begin{description}
+				\item[All-registers] List all registers and their contents. 
+				\item[Args] Argument variables of the current stack frame. 
+				\item[Breakpoints] Much like ``show breakpoints''. Gives the status of current breakpoints. 
+				\item[Float] Show the status of the floating point unit. 
+				\item[Frame] Data about the current stack frame. 
+				\item[Functions] The names of all functions in the current program. 
+				\item[Locals] The names and values of all current stack local variables. 
+				\item[Program] Execution status of the program
+				\item[Registers] Information about the registers at the current time. 
+				\item[Scope] List the variables and their values within the current scope. 
+				\item[Stack] Backtrace the stack.
+				\item[Threads] Display the currently known threads within the program. 
+				\item[Variables] Show the names and values of all global or static variables. 
+			\end{description}
+
+			\paragraph{Backtrace}
+			This will show you an output of what has happened in the program up to the current time. 
+			This is mainly useful for viewing the reasons a program crashed. 
+
+			\paragraph{Step}
+			This will allow us to step through the program, instruction or line by line. 
+			Each ``step''command will execute the next line the stop, allowing you to inspect the program. 
+			Similarly, the ``next'' command will work the same, but will not enter functions. 
+			Furthermore, the ``until'' command will continue to step until it reaches a given line number. 
+
+			\paragraph{delete}
+			This will delete all breakpoints in the current program. 
+			Rather than delete all, 
+			you can use the clear command with the same argument you used to set the breakpoint to remove that specific point. 
+
+			\paragraph{Continue}
+			This will continue execution as normal until the next breakpoint. 
+			This is the most common way of stepping through a program to be debugged. 
+			
+			\paragraph{Kill}
+			This will stop the current program. 
+			Furthermore, the ``quit'' command will allow you to exit GDB. 
+
+%TODO: Explain reverse engineering with GDB 
+%TODO: Explain PEDA. 
 	\section{Programming Challenges}
 		\subsection{Linux Challenges}
 			\subsubsection{Introduction to Linux}
