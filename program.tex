@@ -640,7 +640,32 @@ Answers
 			However, this process does not provide any encryption, meaning that DNS packets are readable by anyone sitting between the communicating computers on the network. 
 
 	\section{Hyper Text Transfer Protocol}
-		HTTP 
+		HTTP is a common protocol working on the application layer of the OSI model. 
+		This protocol forms the basis for the section of the Internet known as the ``world wide web''. 
+		Generally, this protocol would work with the following steps:
+		\begin{enumerate}
+			\item Client makes request of a server.
+			\item Server receives request and returns the requested data along with a status code. 
+			\item Client receives and loads data.
+		\end{enumerate}
+
+		This simple form can be extended upon by changing what the HTTP server acts upon. 
+		For example, a simple PHP site could use the user agent to display a slightly different site to a different browser. 
+
+		HTTP uses the following methods for requesting and sending information:
+		\begin{description}
+			\item[GET] Requests a resource. These should only retrieve data. 
+			\item[HEAD] Identical to the GET method, but without the response body. 
+				Useful for meta-information without getting the whole body. 
+			\item[POST] Requests that the server accept the data within the request as a subordinate of the URI given. 
+				This might be a forum or bulletin board post or data from a web form. 
+			\item[PUT] Requests that the data enclosed be stored under the supplied URI. Should modify existing resources. 
+			\item[DELETE] Should delete the specified resource. 
+			\item[TRACE] Echo back the received request so that the client can determine if intermediaries have altered the request. 
+			\item[OPTIONS] Returns the methods that the server supports. 
+			\item[CONNECT] Used to connect to HTTPS sites using SSL/TLS through an unencrypted proxy. 
+			\item[PATCH] Applies partial modifications to a resource. 
+		\end{itemize}
 	\section{Challenges}
 		\subsection{Building a Router}
 			This section will take you through the process of building a router on top of a Linux system. 
@@ -728,6 +753,7 @@ iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
 					\item Port forwarding.\footnote{\url{https://wiki.archlinux.org/index.php/iptables}}
 					\item Wireless routing.\footnote{\url{https://wiki.archlinux.org/index.php/Software\_access\_point}}
 				\end{itemize}
+				
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
 	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
