@@ -665,7 +665,54 @@ Answers
 			\item[OPTIONS] Returns the methods that the server supports. 
 			\item[CONNECT] Used to connect to HTTPS sites using SSL/TLS through an unencrypted proxy. 
 			\item[PATCH] Applies partial modifications to a resource. 
-		\end{itemize}
+		\end{description}
+
+		Each of these methods has a request and response section, 
+		designed to inform either side that the work has completed, as well as sending any required data. 
+		Furthermore, to allow interacting programs to understand what has happened on the server, 
+		a set of status codes has been created\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}}. 
+		A short list of these is as follows:
+		\begin{description}
+			\item[2xx] These are the success codes. 
+			\item[200] Request has succeeded. Information returned will depend on method used in request. \\
+				\textbf{GET:} Corresponding resource sent. \\
+				\textbf{HEAD:} The header for the corresponding resource sent. \\
+				\textbf{POST:} Entity describing or containing the result of the action. \\
+				\textbf{TRACE:} The request message as received by the end server. \\
+			\item[201] The request has been fulfilled and resulted in a resource being created. 
+			\item[202] The request has been accepted for processing, but has not yet been completed. 
+				The client may disconnect, as it will not get another update. 
+			\item[3xx] Redirection. 
+				This may result in the client taking action to solve the problem for either GET or HEAD requests. 
+				Clients should notice and stop infinite redirection. 
+			\item[300] There are multiple redirection choices. 
+				The user or client should determine which resource should be accessed. 
+			\item[301]] Moved permanently. 
+				The resource has a new URI, which has been returned in the response body. 
+				Client should now move to the new URI. 
+			\item[4xx] Client error.
+				This is where the clients request does not make sense to the server. 
+			\item[400] Bad Request. 
+				The request that has been sent contained malformed syntax.
+			\item[401] Unauthorised. 
+				The current request requires authentication before it can be served. 
+			\item[402] Payment Required.
+				The request is for a site that is behind a pay wall without the client having paid. 
+			\item[403] Forbidden. 
+				The server understood but is refusing to fulfill the request. 
+				This is lie 401, but authorisation will not change the servers stance. 
+			\item[404] Not Found. 
+				This status will be returned if the requested URI does not point to a resource. 
+			\item[405] Method not allowed. 
+				The method used is not allowed for the given URI. 
+				The response will include an Allow header containing the valid methods. 
+			\item[410] Gone.
+				The URI requested has been moved or deleted. 
+			\item[5xx] Server Error
+			\item[500] Internal server error.
+				Server encountered an unexpected condition while processing. 
+			\item[501] Server does not support the function requested. 
+		\end{description}
 	\section{Challenges}
 		\subsection{Building a Router}
 			This section will take you through the process of building a router on top of a Linux system. 
