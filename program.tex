@@ -641,6 +641,93 @@ Answers
 
 	\section{Hyper Text Transfer Protocol}
 		HTTP 
+	\section{Challenges}
+		\subsection{Building a Router}
+			This section will take you through the process of building a router on top of a Linux system. 
+			This will be a basic router, capable of NAT and packet forwarding, and expandable to contain multiple interfaces and devices such as firewalls. 
+			To start this, a number of conventions should be set out:
+			\begin{description}
+				\item[intern0] The internal pointing network interface. 
+					This device points at the LAN. 
+				\item[extern0] The external pointing network interface. 
+					This device points at the WAN. 
+			\end{description}
+			When these devices are seen within the configuration of this section, replace them with the equivelent name from your device. 
+
+			\subsubsection{Configuring the Interfaces}
+				The interfaces that you will be using for this need to be configured for the setup that you will be using. 
+				This can be done through ``netctl'' and the following configuration files:
+				File at /etc/netctl/extern0-profile should contain:
+				\begin{verbatim}
+Description='Public Interface.'
+Interface=<extern0>
+Connection=ethernet
+IP='dhcp
+				\end{verbatim}
+				file at /etc/netctl/intern0-profile should contain:
+				\begin{verbatim}
+Description='Private Interface'
+Interface=<intern0>
+Connection=ethernet
+IP='static'
+Address=('10.0.0.1/24')
+				\end{verbatim}
+				
+				You will then want to bring these interfaces up using the following commands:
+				\begin{quote}
+					netctl enable extern0-profile
+					netctl enable intern0-profile
+				\end{quote}
+
+			\subsection{Set up DNS and DHCP}
+				You will then want to set up the DNS and DHCP services. 
+				The former of these allows your internal machines to communicate with external name servers. 
+				The latter allows your router to provide IP addresses to the internal machines. 
+				Add the following to the top of ``/etc/dnsmasq.conf'':
+				\begin{verbatim}
+interface=<intern0>
+expand-hosts    
+domain=local    
+bind-interfaces
+dhcp-range=<intern0>,10.0.0.2,10.0.0.255,255.255.255.0,1h
+dhcp-option=option:router,10.0.0.1
+				\end{verbatim}
+
+			\subsection{Set up NAT}
+				Network Address Translation is the key utility that allows you to communicate through the router. 
+				This will allow you to send and receive data through it, and with some configuration, receive incoming connections. 
+				In order to set this up, run the following commands in order: 
+				\begin{verbatim}
+iptables -t nat -A POSTROUTING -o <extern0> -j MASQUERADE
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
+				\end{verbatim}
+				I recommend putting these commands into a script file and running that. 
+				That way, if you have to make any changes to them or add any new rules, you can put them in the correct place and run the file. 
+				Use the command ``iptables -F'' to clear the table before running the script. 
+
+			\subsection{Bring up the services}
+				The services that are required will now have to be brought up and enabled for boot. 
+				This can be done using the following commands:
+				\begin{quote}
+					systemctl start dnsmasq
+					systemctl enable dnsmasq
+				\end{quote}
+				Furthermore, for information on how the service is running, run the command ``systemctl status dnsmasq''. 
+
+			\subsection{Conclusion} 
+				You should now have a fully working router. 
+				This can be tested by plugging another machine into the internal interface and attempting to access the WAN. 
+
+				Furthermore, you can continue to configure the router. 
+				The following is a list of topics that you may wish to look at:
+				\begin{itemize}
+					\item Firewalls.\footnote{\url{https://wiki.archlinux.org/index.php/Simple\_stateful\_firewall}}
+					\item Content filtering. 
+					\item Further interfaces. 
+					\item Port forwarding.\footnote{\url{https://wiki.archlinux.org/index.php/iptables}}
+					\item Wireless routing.\footnote{\url{https://wiki.archlinux.org/index.php/Software\_access\_point}}
+				\end{itemize}
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
 	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
