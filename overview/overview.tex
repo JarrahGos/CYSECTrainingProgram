@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt]{report}
 \author{Jarrah Gosbell}
 \title{CYSEC Challenges Overview}
+\usepackage{longtable}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \renewcommand{\chaptermark}[1]{%
@@ -294,6 +295,109 @@ The initiative's customers use Python heavily, they have created a number of sec
 			\label{tab:CySEC Breakdown}
 		\end{table}
 
+\chapter{Boston Key Party}
+	\section{Overview of Challenge}
+		The Boston Key Party is a well known CTF that is run early in the year. 
+		This CTF is set at a moderate level, requiring a large amount of background, but not being overly difficult. 
+		Furthermore, it is often seen by the higher level teams as a warm up CTF. 
+		These attributes make this CTF a good starting point for second year members. 
+	\section{Main Areas of Focus}
+		\subsection{Cryptography}
+			This section is designed to test the members ability to determine cryptographical weaknesses. 
+			It also requires an ability to program and understand code. 
+			
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Programming.
+				\item SHA hashing. 
+				\item RSA Key Recovery
+				\item Elliptic Curve Encryption and Attacks.
+				\item ElGamal Signatures
+				\item Common RSA Attacks. 
+				\item DES Weak Keys. 
+				\item Hash Collisions
+			\end{itemize}
+		\subsection{Pwn}
+			This section requires the member to gain an understanding of how the target program works and attack the binary itself. 
+			Skills such as shell coding and stack enumeration will be the focus of this section. 
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item RIP Redirection. 
+				\item Common C program flaws. 
+				\item Cleaning after stack smashing. 
+				\item Heap overflow. 
+				\item Reverse Engineering.
+				\item libc attacks. 
+			\end{itemize}
+		\subsection{Reversing}
+			This section requires that the member reverse engineer and understand the program that they are given. 
+			This requires skill in a number of areas, not the least of which is programming and the use of a tool such as radare2. 
+
+			The following is a breakdown of the skills required to conduct this task. 
+			\begin{itemize}
+				\item Reverse engineering 
+				\item Reverse engineering tools. 
+				\item Programming. 
+				\item Assembly. 
+				\item Side channel attacks. 
+				\item ltrace. 
+			\end{itemize}
+		\subsection{Web}
+			This section requires that the member attack a number of websites using common vulnerabilities in them. 
+			This is one of the most common attacks in the modern world. 
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Content Security Policy.
+				\item HTTP Redirect attacks. 
+				\item Network listeners. 
+				\item HTTP Directory Traversal. 
+				\item HTTP/Ruby Directory Creation. 
+				\item Base64 encoding. 
+				\item SQL injection through encoding changes. 
+			\end{itemize}
+
+	\section{Breakdown of Requirements}
+	 	The following is a breakdown of how many times a particular area was used in the challenge. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{| l | l | l |}
+				\hline
+				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\textbf{Cryptography} & \textbf{8} & \\ \hline
+				\quad SHA Hashing & 1 & \\ \hline 
+				\quad RSA Key Recovery & 1 & \\ \hline
+				\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline
+				\quad Signatures & 1 & \\ \hline 
+				\quad Common RSA Attacks & 1 & \\ \hline
+				\quad DES Weak Keys & 1 & \\ \hline 
+				\quad Hash Collisions & 1 & \\ \hline 
+				\quad Base64 Encoding & 1 & \\ \hline 
+				\textbf{Web} & \textbf{6} & \\ \hline 
+				\quad Content Security Policy & 1 & \\ \hline 
+				\quad HTTP Redirect attacks (XSS) & 1 & \\ \hline 
+				\quad Network Listeners & 1 & \\ \hline 
+				\quad HTTP Directory Traversal & 1 & \\ \hline 
+				\quad HTTP/Ruby Directory Creation & 1 & \\ \hline 
+				\quad SQL Injection through character set encoding & 1 & \\ \hline 
+				\textbf{Exploitation} & \textbf{5} & \\ \hline 
+				\quad RIP Redirection & 1 & \\ \hline 
+				\quad Common C Flaws & 1 & \\ \hline 
+				\quad Smashed Stack Cleaning & 1 & \\ \hline 
+				\quad Heap Overflows & 1 & \\ \hline 
+				\quad libc Attacks & 1 & \\ \hline 
+				\textbf{Reverse Engineering} & \textbf{3} & \\ \hline
+				\quad Tools (IDA/Radare2) & 1 & \\ \hline 
+				\quad Assembly & 1 & \\ \hline 
+				\quad Side Channel Attacks & 1 & \\ \hline 
+				\quad ltrace & 1 & \\ \hline 
+				\textbf{Programming} & \textbf{3} & \\ \hline
+			\end{tabular}
+			\caption{Breakdown of Boston Key Party CTF Topics}
+			\label{tab:BCTFBreakdown}
+		\end{table}
 \chapter{Plaid CTF 2015}
 	\section{Overview of Challenge}
 		Plaid CTF is the annual CTF run by the Plaid Parliament of Pwning. 
@@ -414,123 +518,119 @@ The initiative's customers use Python heavily, they have created a number of sec
 			\label{tab:PlaidCTF Breakdown}
 		\end{table}
 
-\chapter{Boston Key Party}
-	\section{Overview of Challenge}
-		The Boston Key Party is a well known CTF that is run early in the year. 
-		This CTF is set at a moderate level, requiring a large amount of background, but not being overly difficult. 
-		Furthermore, it is often seen by the higher level teams as a warm up CTF. 
-		These attributes make this CTF a good starting point for second year members. 
-	\section{Main Areas of Focus}
-		\subsection{Cryptography}
-			This section is designed to test the members ability to determine cryptographical weaknesses. 
-			It also requires an ability to program and understand code. 
-			
-			The following is a breakdown of the skills required to conduct this task:
-			\begin{itemize}
-				\item Programming.
-				\item SHA hashing. 
-				\item RSA Key Recovery
-				\item Elliptic Curve Encryption and Attacks.
-				\item ElGamal Signatures
-				\item Common RSA Attacks. 
-				\item DES Weak Keys. 
-				\item Hash Collisions
-			\end{itemize}
-		\subsection{Pwn}
-			This section requires the member to gain an understanding of how the target program works and attack the binary itself. 
-			Skills such as shell coding and stack enumeration will be the focus of this section. 
+\chapter{Summary}
+	These CTFs cover a wide range of topics due to their differing goals. 
+	CySCA covers the broadest range, but at the lowest level. 
+	This makes it a good main goal for the CYSEC VECC at the current time due to the low overall level of skill. 
+	However, CTFs such as the Boston Key Party and Plaid CTF have been added as good eventual goals for the VECC. 
+	These two, in the order that they have been broken down would be good CTFs for the VECC to start working to next year when there are a number of members who have some experience with the activity. 
 
-			The following is a breakdown of the skills required to conduct this task:
-			\begin{itemize}
-				\item RIP Redirection. 
-				\item Common C program flaws. 
-				\item Cleaning after stack smashing. 
-				\item Heap overflow. 
-				\item Reverse Engineering.
-				\item libc attacks. 
-			\end{itemize}
-		\subsection{Reversing}
-			This section requires that the member reverse engineer and understand the program that they are given. 
-			This requires skill in a number of areas, not the least of which is programming and the use of a tool such as radare2. 
+	Included in table \ref{tab:summary} is the summary breakdown of all of these events. 
+	This shows the skills required to complete all of the tasks required for all of these CTFs, as well as the number of times a particular skill comes up and the weighting given to the main category. 
 
-			The following is a breakdown of the skills required to conduct this task. 
-			\begin{itemize}
-				\item Reverse engineering 
-				\item Reverse engineering tools. 
-				\item Programming. 
-				\item Assembly. 
-				\item Side channel attacks. 
-				\item ltrace. 
-			\end{itemize}
-		\subsection{Web}
-			This section requires that the member attack a number of websites using common vulnerabilities in them. 
-			This is one of the most common attacks in the modern world. 
-
-			The following is a breakdown of the skills required to conduct this task:
-			\begin{itemize}
-				\item Content Security Policy.
-				\item HTTP Redirect attacks. 
-				\item Network listeners. 
-				\item HTTP Directory Traversal. 
-				\item HTTP/Ruby Directory Creation. 
-				\item Base64 encoding. 
-				\item SQL injection through encoding changes. 
-			\end{itemize}
-
-	\section{Breakdown of Requirements}
-	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
-		\begin{table}[htb]
-			\centering
-			\begin{tabular}{| l | l | l |}
-				\hline
-				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
-				\textbf{Cryptography} & \textbf{8} & \\ \hline
-				\quad SHA Hashing & 1 & \\ \hline 
-				\quad RSA Key Recovery & 1 & \\ \hline
-				\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline
-				\quad Signatures & 1 & \\ \hline 
-				\quad Common RSA Attacks & 1 & \\ \hline
-				\quad DES Weak Keys & 1 & \\ \hline 
-				\quad Hash Collisions & 1 & \\ \hline 
-				\quad Base64 Encoding & 1 & \\ \hline 
-				\textbf{Web} & \textbf{6} & \\ \hline 
-				\quad Content Security Policy & 1 & \\ \hline 
-				\quad HTTP Redirect attacks (XSS) & 1 & \\ \hline 
-				\quad Network Listeners & 1 & \\ \hline 
-				\quad HTTP Directory Traversal & 1 & \\ \hline 
-				\quad HTTP/Ruby Directory Creation & 1 & \\ \hline 
-				\quad SQL Injection through character set encoding & 1 & \\ \hline 
-				\textbf{Exploitation} & \textbf{5} & \\ \hline 
-				\quad RIP Redirection & 1 & \\ \hline 
-				\quad Common C Flaws & 1 & \\ \hline 
-				\quad Smashed Stack Cleaning & 1 & \\ \hline 
-				\quad Heap Overflows & 1 & \\ \hline 
-				\quad libc Attacks & 1 & \\ \hline 
-				\textbf{Reverse Engineering} & \textbf{3} & \\ \hline
-				\quad Tools (IDA/Radare2) & 1 & \\ \hline 
-				\quad Assembly & 1 & \\ \hline 
-				\quad Side Channel Attacks & 1 & \\ \hline 
-				\quad ltrace & 1 & \\ \hline 
-				\textbf{Programming} & \textbf{3} & \\ \hline
-			\end{tabular}
-			\caption{Breakdown of Boston Key Party CTF Topics}
-			\label{tab:BCTFBreakdown}
-		\end{table}
+			\begin{center}
+				\begin{longtable}{| l | l | l |}
+					\hline
+					\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+					\endhead
+					\multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+					\endfoot
+					\endlastfoot
+					%--------------------------------------------------------------
+					\textbf{Web Penetration} & \textbf{14} & \textbf{1} \\ \hline
+					\quad HTTP Directory Traversal & 3 & \\ \hline
+					\quad HTTP MITM & 2 & \\ \hline
+					\quad URL Injection & 2 & \\ \hline
+					\quad HTTP/ruby Directory Creation & 1 & \\ \hline 
+					\quad Session Hijacking & 1 & \\ \hline
+					\quad Local File Inclusion & 1 & \\ \hline 
+					\quad Content Security Policy & 1 & \\ \hline 
+					\quad HTTP Redirect Attacks & 1 & \\ \hline 
+					\quad Network Listeners & 1 & \\ \hline 
+					\quad SQLi through Character Encoding & 1 & \\ \hline 
+					\textbf{Programming} & \textbf{13} & \textbf{1} \\ \hline
+					\quad Python & 3 & \\ \hline 
+						\qquad Shellcode & 1 & \\ \hline 
+						\qquad Builtins & 1 & \\ \hline 
+						\qquad Pickled input & 1 & \\ \hline 
+					\quad Sockets & 2 & \\ \hline 
+					\quad JavaScript & 1 & \\ \hline 
+					\quad Obfuscation & 1 & \\ \hline
+					\textbf{General Knowledge} & \textbf{12} & \textbf{0.5}\\ \hline 
+					\quad CVE and CVE attack Matching & 1 & \\ \hline 
+					\quad Data Representation & 1 & \\ \hline
+					\quad ELF Files & 1 & \\ \hline
+					\quad Rotational Ciphers & 1 & \\ \hline
+					\quad Algorithmic Flaws & 1 & \\ \hline 
+					\quad Regex & 1 & \\ \hline 
+					\quad Boolean Mathematics & 1 & \\ \hline 
+					\quad Binary Operations & 1 & \\ \hline 
+					\quad Logic & 1 & \\ \hline 
+					\quad Trivia, General knowledge & 1 & \\ \hline 
+					\quad Mathematics & 1 & \\ \hline 
+					\quad QR Codes & 1 & \\ \hline 
+					\textbf{Cryptography} & \textbf{12} & \textbf{0.8} \\ \hline 
+					\quad RSA Encryption & 3 & \\ \hline
+						\qquad \{N : e : c\} Format & 1 & \\ \hline
+						\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
+						\qquad Common RSA Attacks & 1 & \\ \hline 
+					\quad Hash Cracking & 2 & \\ \hline
+						\qquad SHA & 1 & \\ \hline 
+						\qquad Collisions & 1 & \\ \hline 
+					\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline 
+					\quad Signatures & 1 & \\ \hline 
+					\quad DES Weak Keys & 1 & \\ \hline 
+					\quad Server Authentication & 1 & \\ \hline
+					\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
+					\quad Cryptographic Flaws & 1 & \\ \hline 
+					\quad Encoding & 1 & \\ \hline 
+					\textbf{Exploitation} & \textbf{10} & \\ \hline
+					\quad C Exploitation & 2 & \\ \hline 
+					\quad x86\_64 Registers and Assembly & 2 & \\ \hline
+					\quad Shellcode & 1 & \\ \hline
+					\quad Memory Allocation & 1 & \\ \hline
+					\quad GDB and Peda & 1 & \\ \hline
+					\quad ARM Assembly & 1 & \\ \hline
+					\quad RIP Redirection & 1 & \\ \hline 
+					\quad Smashed Stack Cleaning & 1 & \\ \hline 
+					\quad Heap Overflows & 1 & \\ \hline 
+					\quad libc Attacks & 1 & \\ \hline 
+					\textbf{Forensics} & \textbf{9} & \textbf{0.7}\\ \hline
+					\quad PCAP & 1 & \\ \hline
+					\quad File Types & 1 & \\ \hline
+					\quad File Conversions & 1 & \\ \hline 
+					\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+					\quad Cyclic Redundancy Checks & 1 & \\ \hline
+					\quad Network Forensics & 1 & \\ \hline 
+					\quad DOXXING & 1 & \\ \hline 
+					\quad Attack Traffic & 1 & \\ \hline 
+					\quad Disk and Memory Analysis & 1 & \\ \hline 
+					\textbf{Reverse Engineering} & \textbf{9} & \textbf{0.6}\\ \hline 
+					\quad Radare2 & 2 & \\ \hline 
+					\quad IDA 64 & 2 & \\ \hline 
+					\quad C\# Reverse Engineering & 1 & \\ \hline
+					\quad Blind Reverse Engineering & 1 & \\ \hline 
+					\quad Code Testing & 1 & \\ \hline 
+					\quad Side Channel Attacks & 1 & \\ \hline 
+					\quad ltrace & 1 & \\ \hline 
+					\textbf{Network Exploitation} & \textbf{4} & \textbf{0.8} \\ \hline 
+					\quad Attack Persistence & 1 & \\ \hline 
+					\quad Metasploit & 1 & \\ \hline 
+					\quad Nmap & 1 & \\ \hline 
+					\quad Heartbleed & 1 & \\ \hline
+					\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
+					\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
+					\quad HTTP & 1 & \\ \hline 
+					\textbf{Linux CLI} & \textbf{1} &\textbf{0.6} \\ \hline
+					\quad Command Injection & 1 & \\ \hline 
+					\caption{\label{tab:summary}Summary of CTF Skills}
+				\end{longtable}
+			\end{center}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Tables}
-	\listoffigures
-		\phantomsection
-		\addcontentsline{toc}{chapter}{List of Figures}
-	{\setstretch{2}
-	 \renewcommand{\figurename}{Code Example}
-	     \listof{code}{List of Code Examples}
-	 }
-		 \phantomsection
-		 \addcontentsline{toc}{chapter}{List of Code Examples}
 	\bibliographystyle{plain}
 	\bibliography{program}
 \end{document}
