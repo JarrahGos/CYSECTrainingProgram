@@ -447,8 +447,76 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\item Cleaning after stack smashing. 
 				\item Heap overflow. 
 				\item Reverse Engineering.
-				\item 
+				\item libc attacks. 
 			\end{itemize}
+		\subsection{Reversing}
+			This section requires that the member reverse engineer and understand the program that they are given. 
+			This requires skill in a number of areas, not the least of which is programming and the use of a tool such as radare2. 
+
+			The following is a breakdown of the skills required to conduct this task. 
+			\begin{itemize}
+				\item Reverse engineering 
+				\item Reverse engineering tools. 
+				\item Programming. 
+				\item Assembly. 
+				\item Side channel attacks. 
+				\item ltrace. 
+			\end{itemize}
+		\subsection{Web}
+			This section requires that the member attack a number of websites using common vulnerabilities in them. 
+			This is one of the most common attacks in the modern world. 
+
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item Content Security Policy.
+				\item HTTP Redirect attacks. 
+				\item Network listeners. 
+				\item HTTP Directory Traversal. 
+				\item HTTP/Ruby Directory Creation. 
+				\item Base64 encoding. 
+				\item SQL injection through encoding changes. 
+			\end{itemize}
+
+	\section{Breakdown of Requirements}
+	 	The following is a breakdown of how many times a particular area was used in the challenge. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{| l | l | l |}
+				\hline
+				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\textbf{Cryptography} & \textbf{8} & \\ \hline
+				\quad SHA Hashing & 1 & \\ \hline 
+				\quad RSA Key Recovery & 1 & \\ \hline
+				\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline
+				\quad Signatures & 1 & \\ \hline 
+				\quad Common RSA Attacks & 1 & \\ \hline
+				\quad DES Weak Keys & 1 & \\ \hline 
+				\quad Hash Collisions & 1 & \\ \hline 
+				\quad Base64 Encoding & 1 & \\ \hline 
+				\textbf{Web} & \textbf{6} & \\ \hline 
+				\quad Content Security Policy & 1 & \\ \hline 
+				\quad HTTP Redirect attacks (XSS) & 1 & \\ \hline 
+				\quad Network Listeners & 1 & \\ \hline 
+				\quad HTTP Directory Traversal & 1 & \\ \hline 
+				\quad HTTP/Ruby Directory Creation & 1 & \\ \hline 
+				\quad SQL Injection through character set encoding & 1 & \\ \hline 
+				\textbf{Exploitation} & \textbf{5} & \\ \hline 
+				\quad RIP Redirection & 1 & \\ \hline 
+				\quad Common C Flaws & 1 & \\ \hline 
+				\quad Smashed Stack Cleaning & 1 & \\ \hline 
+				\quad Heap Overflows & 1 & \\ \hline 
+				\quad libc Attacks & 1 & \\ \hline 
+				\textbf{Reverse Engineering} & \textbf{3} & \\ \hline
+				\quad Tools (IDA/Radare2) & 1 & \\ \hline 
+				\quad Assembly & 1 & \\ \hline 
+				\quad Side Channel Attacks & 1 & \\ \hline 
+				\quad ltrace & 1 & \\ \hline 
+				\textbf{Programming} & \textbf{3} & \\ \hline
+			\end{tabular}
+			\caption{Breakdown of Boston Key Party CTF Topics}
+			\label{tab:BCTFBreakdown}
+		\end{table}
 \appendix
 	\label{ch:Appendix}
 	\listoftables
