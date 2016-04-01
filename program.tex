@@ -1330,7 +1330,7 @@ src=http://192.168.31.21:3000/demos/basic.html></iframe>
 				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
 				This shell will give you persistence options as well as the ability to control the whole system. 
 			\subsection{Evading Anti-XSS}
-
+			\subsection{Content Security Policy}
 	\section{SQL Injection}
 		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
 		This allows you to have direct access to the database, giving you the ability to ensure it logs you in or to gather information about other accounts within it. 
@@ -1421,12 +1421,15 @@ DBMS://<DATABASE FILE PATH>
 						This will return a Meterpreter shell which will give you access to many high level OS functions as well as the Meterpreter framework. 
 				\end{description}
 				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
+		\subsection{Character Encoding}
 	\section{File Uploads}
 	\section{File Inclusion}
 	\section{HTTP Directory Traversal}
+		\subsection{Directory Creation}
 	\section{HTTP Man in the Middle}
 	\section{Session Hijacking}
 	\section{URL Injection}
+	\section{HTTP Redirect Attacks}
 \chapter{Forensics}
 	\label{ch:Forensics}
 	\section{File Carving}
@@ -1577,6 +1580,7 @@ DBMS://<DATABASE FILE PATH>
 			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
 			I recommend starting with the sprint speed. 
 			%TODO: Should there be more than this section here?
+		\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
 		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
 		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
@@ -1607,6 +1611,9 @@ DBMS://<DATABASE FILE PATH>
 	\section{C\# Reverse Engineering}
 	\section{Pwn Adventure}
 	\section{IDA 64}
+	\section{Other Tools}
+		\subsection{Strings}
+		\subsection{Ltrace}
 \chapter{Programming}
 	\label{ch:Programming}
 	\section{Introduction to the CLI}
@@ -2601,14 +2608,19 @@ alias ls="ls --color=auto"
 \chapter{Cryptography}
 	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
+		\subsection{Encodings}
 	\section{RSA}
 		\subsection{\{N : e : c \} Format}
 		\subsection{Common Flaws}
+		\subsection{Key Recovery}
 	\section{Merkle-Hallman Knapsack Cryptosystem}
 	\section{Server Authentication}
 	\section{Rotational Algorithms}
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
+		\subsection{DES Weak Keys}
+	\section{Eilliptic Curve Encryption}
+		\subsection{Common Attacks}
 	\section{Hash Cracking}
 		Hashes are used in many situations to store passwords. 
 		This is done because the hashing algorithm is a one way action, meaning that there is no easy way to calculate the password from the hash. 
@@ -2752,6 +2764,8 @@ alias ls="ls --color=auto"
 			In either of these cases, the salt must be stored, which has led to split salting, using a random stored value or the users name/ID as well as a hard coded element. 
 			This makes knowing the salt hard, but not impossible, as we can reverse engineer the code in order to determine the salting algorithm used and a simple ``strings'' on the compiled code will give us a hard coded salt string. 
 			Nonetheless, these methods deter attackers from attempting to crack the hashes by limiting their choices and removing their ability to use rainbow tables. 
+		\subsection{SHA}
+		\subsection{Hash Collisions}
 	\section{Challenges}
 		\subsection{Hash Challenges}
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
@@ -3507,6 +3521,9 @@ alias ls="ls --color=auto"
 				As a challenge, alter the shellcode in example \ref{code:ShellcodePort} to have it conduct a reverse connection. 
 				A solution to this can be found in shellcode example \ref{code:ShellcodeReversePort} in the challenges section below. 
 
+			\subsection{RIP Redirection}
+			\subsection{Cleaning a Smashed Stack}
+
 	\section{Overflows}
 		While newer languages run their own data integrity checks, many program are written in older or faster languages which do not. 
 		C and many of it's derivatives do not run these checks, allowing a programmer to make mistakes in memory allocation and buffer writing. 
@@ -3576,7 +3593,7 @@ Dump of assembler code for function main:
 0x0000000100000f2c <+92>: ret
 		\end{Verbatim}
 		The two bold lines show the return address being calculated and the call to the checkAuth function. %TODO: Add a test to use ShellcodeData.asm 
-
+		\subsection{Heap Based Overflows}
 		
 	\section{String Format Errors}
 		Much like buffer overflows, string format errors can be used to write to memory and eventually redirect the control flow of the program. 
@@ -3618,6 +3635,8 @@ Dump of assembler code for function main:
 			Using this vulnerability, one can overwrite any memory location within the program. 
 			Using thin knowledge, find other memory locations which may be worth overwriting. 
 			They can lead to some interesting consequences. 
+	\section{Other Common C flaws}
+	\section{libc Attacks}
 	\section{IDS, IPS and AV}
 		These are systems designed to stop you getting into a system or to alert the user and enact a script when an intrusion is detected. 
 		While they do make attacks more difficult, none has yet been designed that is perfect. 
