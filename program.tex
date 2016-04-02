@@ -3224,6 +3224,7 @@ alias ls="ls --color=auto"
 		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
 		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
 		These software packages do things such as mitigate data execution or attempt to recognize malicious code. 
+		You would then remove all packages that are not used, reducing the surface area for attacks in the same way that you would for Linux or OS X. 
 		While these mitigations are a significant improvement from a default windows install, it is far more expensive to secure a home windows install than to secure a Mac OS X or Linux install. 
 		\subsection{Antivirus}
 			The first and easiest means of securing a Windows system is to install an antivirus software package. 
@@ -3263,6 +3264,23 @@ alias ls="ls --color=auto"
 			This will encrypt only the data you have stored within the encrypted volume, rather than the OS itself. 
 			While still secure for your data, this will leave the system open to offline manipulation,
 			making it possible to install malware to read the data when it is next unlocked. 
+		\subsection{Removal of Superfluous Software}
+			The Windows OS comes with a number of pre-installed items that have no use to the average user and will do little more than provide another means of entry to an attacker. 
+			These take two forms, services that run in the background and perform a task, and superfluous programs that you don't use. 
+
+			In the former case, you will have to manually disable them. 
+			Open ``services.msc'' for a list of these services then open PowerShell and run the command ``sc delete <service>. 
+			This will remove the service from the system, ensuring that it cannot be automatically started. 
+			However, doing this to the wrong service may make your computer unusable. 
+			Know what it is that you are deleting before you remove it. 
+
+			In the latter case, you will want to go through a number of lists. 
+			The first of these is the Apps and Features list, which will give you the option to uninstall many of the programs that came with windows. 
+			The second, which will give you more powerful options, is the ``Turn Windows features on or off'' option under programs and features. 
+			This option will not allow you to uninstall the feature, but it will completely disable it. 
+			For these options, turn anything that you do not use off. 
+			However, as above, be sure that you do not use it. 
+			Otherwise parts of your system may end up broken. 
 	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
