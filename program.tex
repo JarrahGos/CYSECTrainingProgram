@@ -52,6 +52,24 @@
 	stringstyle=\color{mymauve}}
 \lstloadlanguages{C}
 \lstloadlanguages{Python}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
 %Sorting code floats. 
 \usepackage{float}
 \floatstyle{plain}
@@ -2164,6 +2182,219 @@ alias ls="ls --color=auto"
 			\end{lstlisting}
 	\section{Introduction to Python}
 	\section{Introduction to JavaScript}
+		Javascript is the programming language of the Internet. 
+		It was originally built in 1995 to allow for programming on a web page. 
+		% Dave flanagan's definitive guide to javascript. 
+		It is also worth noting that Javascript is a functional language. 
+		It is based on creating functions which are then extended upon in functions which then call those. 
+
+		\subsection{Origins}
+			Javascript started as Livescript, a language started by Netscape in order to write programs for the web. 
+			It's main goal was to be able to write cross platform programs which could be written and used on the web. 
+			This was done in order to allow non-Microsoft OS's to run programs. 
+
+			Netscape then joined with Sun Microsystems to make Javascript. 
+			This was then made into a standard in order to stop other companies from altering the program. 
+			However, a number of problems were implemented into this standard and continue to this date. 
+		\subsection{Key Differences}
+			\begin{description}
+				\item[Load and go delivery:] Programs are delivered as source code. 
+					This is because it was intended to be embedded into web pages. 
+				\item[Loose Typing:] This allows better expression of ideas,
+					but is not as strict, making it less likely that a compiler will find errors. 
+				\item[Objects as Containers:] This is the unification of objects and hash tables.
+					This allows new methods and members to be added at any time. 
+				\item[Prototypal Inheritance:] Objects inherit directly from other classes. 
+					This can be difficult when coming from traditional Object Oriented languages, but can be powerful. 
+				\item[Lambda:] This is a functional notion that allows functions to be used as first class objects. 
+				\item[Linkage through Global Variables:] Due to the load and go model there is no linker. 
+					This means that compilation variables are created with a global scope. 
+					This is horrid for security. 
+			\end{description}
+		\subsection{Types}
+			Javascript has a number of types which are similar to those in other languages. 
+			However, as this is a loosely typed language, they need not be specified. 
+			\begin{itemize}
+				\item Numbers
+				\item Strings
+				\item Boolean
+				\item Objects
+				\item Null
+				\item Undefined
+			\end{itemize}
+			There are no different types of numbers. 
+			Instead, this is purely a double precision floating number. 
+			This must be taken into account when programming. 
+			For example, division between two integers can produce a non-integer number. 
+
+			There is also a special type known as NaN or Not a Number. 
+			This is a type of undefined and will continue through any arithmetic that is done on it. 
+			This means that a NaN anywhere through the expression will end in NaN. 
+			NaN is also not equal to anything. 
+			Thus $NaN \ne NaN$. 
+			
+			Strings can be turned into a number using the ``Number'' Function. 
+			However, if this cannot be done, it will return NaN. 
+			Similarly, there is a parseInt function which can be used. 
+			However, this should always be used with a radix. 
+			Otherwise it will try to determine the radix itself and can fail in interesting ways. 
+
+			Strings are always encoded in the 16 bit UCS-2. 
+			This is because Javascript was created before UTF-16 became mature. 
+			This is usually not a problem, but can be if you need the extra characters. 
+
+			Strings are immutable in Javascript. 
+			This means that the strings cannot be modified but rather have to be recreated. 
+			However, concatenation will do this automatically. 
+
+			Similar strings are equal with ``==''. 
+			Furthermore string literals can be created with either single quotes (``\'String\''') or double quotes (``"String"''). 
+			Strings also have a length variable which contains the number of 16 bit characters stored within it. 
+
+			The string function can be used to turn a number into a string. 
+			Strings are objects and thus have a number of methods for substrings or other functions. 
+
+			Boolean can either be true of false. 
+			There are also functions which can be used to determine whither something is near true or false. 
+			Values similar to false are:
+			\begin{itemize}
+				\item False
+				\item Null
+				\item ""
+				\item Undefined. 
+				\item 0
+				\item NaN
+			\end{itemize}
+			All other values are true. 
+			However, ensure that you check you aren't checking for the string ``0'' or the string ``false''. 
+
+			Null means no value. 
+			Undefined is the default value for a variable. 
+			This is also the value given when you try to extract a member that doesn't exist from an object. 
+			
+			It is also worth noting that any variable can receive any type of value. 
+			This includes parameters an return values. 
+			
+			All key words are lower case and case sensitive. 
+		\subsection{Objects}
+			Objects in Javascript are dynamic. 
+			This is due to the fact that the ``new'' command produces an empty container of name-value pairs.
+			In this, the name can be any string and the value can be anything other than undefined. 
+			At this point, members can be added. 
+			
+			Object members can be accessed through the traditional ``.'' notation. 
+			These members can also be accessed through a subscript notation as follows:
+			\begin{quote}
+				object[key]
+			\end{quote}
+			Furthermore, the ``\{\}'' braces are used to create a new empty object. 
+
+			Objects are created with a number of key-value pairs stored within them. 
+			This is done by having a key (which can be, but doesn't have to be a string) followed by a value. 
+			For example:
+			\begin{quote}
+				KVP : "This is a key-value pair"
+			\end{quote}
+			 
+			Objects can also be created using object literals. 
+			This allows you to create an object in place and work with it.
+			For example:
+			\begin{code}
+				\lstinputlisting[language=JavaScript]{./ObjectLiteral.js}
+				\caption{A basic Javascript Object Literal}
+				\label{code:JSObjectLiteral}
+			\end{code}
+			It is also worth noting that this is the same format used in JSON. 
+
+			
+		\subsection{Syntax}
+			Javascript follows the basic syntax rules of C. 
+			This means that the basic brace rules, as well as loops and statements follow the same rules as C. 
+			However, there are a number of differences, mainly due to the functional nature of Javascript. 
+			This is most evident in it's allowance of functions to be values. 
+
+			Everything except for constructors should start with a lower case letter by convention. 
+			The initial underscore should be reserved for implementations. 
+			These are usually used for internal variables. 
+			The \$ is used for macros in the standard. 
+			However, this is not always adhered to within the community. 
+
+			Reserved words are as follows:
+			\begin{itemize}
+				\item 
+			\end{itemize}
+
+			Commenting works in the normal C style. 
+			As do most operators. 
+			The plus sign is used for both addition and concatenation. 
+			This can be the cause of a number of issues due to the loosely typed nature of the language. 
+			The plus sign will also convert a string into a number. 
+
+			The ``$==$'' and ``$!=$'' work mostly as expected but will do type cohesion. 
+			For exact equality, use the ``$===$'' or ``$!==$''. 
+
+			The logical and operator works differently to those in other languages. 
+			If the first operand would evaluate to true, it will return the second.
+			Otherwise, it will return the first. 
+			This can be used to avoid null references. 
+
+			Conversely, the OR operator will return the first operand if it evaluates to true. 
+			Otherwise it will return the second. 
+
+			Bitwise operators exist. 
+			They convert the number from float to int, then conduct the operation. 
+			However, this means that they are far slower for operations that don't need a bitwise operation. 
+
+			Javascript also has the ability to create a labeled break. 
+			This means that if you have a number of nested loops, you can break out of all of them, or just the first two. 
+			This is done by putting a label at the end of the loop that you wish to break out of. 
+
+			While the for loop can be used in the normal manner, 
+			there is also another for construct which allows you to iterate through the members of objects. 
+			In this case, the loop will be constructed giving a name and an object. 
+			In each iteration of the loop, name will be equal to one of the keys for the given object. 
+			However, this will also go through all keys of all objects that the given object inherits from. 
+			To solve this, at the start of the loop check that the object you gave has the property given by name. 
+			%TODO: Add in code here. 
+
+			The switch statement can work with strings, allowing you fork based on string input. 
+			Furthermore, the case statements can test against variables rather than the usual constant requirement. 
+			Remember that you still have to break at each statement. 
+
+			Unlike C, Javascript has exceptions. 
+			These can be created by creating a new exception, or by creating one in place. 
+			%TODO: more detail. 
+			These exceptions can be caught within a try-catch block. 
+			However, because there are no classes, there can only be one catch block. 
+			This means that the single catch block must determine what type of exception was thrown and how to act with it. 
+
+			There is also a function statement used for declaring a function. 
+			This, as with most other languages expects a name, a set of parameters and the code block for the function to execute. 
+			This is quite similar to the ``def'' statement in Python. 
+
+			There is also the var statement, which is used to declare a variable. 
+			This is used instead of the type in languages like C. 
+			Types will be determined based on the values given to the variable.
+			However, if a value is not given, Javascript will initialise it to ``undefined''. 
+
+			Unlike most C-like languages, blocks do not have scope. 
+			Thus, only functions have scope. 
+			This means that creating a variable within a code block such as a loop will create it for the whole function. 
+			Furthermore, creating the same variable twice within a scope will not raise an error. 
+
+			Further to this, Javascript has implied globals. 
+			This means that if you forget to declare a variable, then use it, 
+			rather than raising an error, Javascript will simply use it as a global variable. 
+
+			Every function will return something. 
+			Functions that do not explicitly return something will return undefined. 
+			Constructors will always return the newly created object. 
+
+
+
+
+
+%First lecture complete. 
 	\section{Introduction to Code Obfuscation}
 	\section{Introduction to C}
 		To many people, C is a scary language that causes Segmentation Faults and allows numerous mistakes. 
@@ -2494,97 +2725,97 @@ alias ls="ls --color=auto"
 				\caption{Example of a C Function Pointers}
 				\label{code:CFunctionPTR}
 			\end{code}
-		\subsection{Debugging with GDB and Peda}
-			The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
-			It can be used either with or without debugging symbols, 
-			however having these makes debugging and reverse engineering easier as you have the working code. 
-			While the common purpose of GDB is debugging C and C++ programs, it can be used on any language, as well as for reverse engineering and exploit development. 
-			The following will be an introduction to the tool, as well as a cheat sheet on the commands that can be used for it. 
+	\section{Debugging with GDB and Peda}
+		The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
+		It can be used either with or without debugging symbols, 
+		however having these makes debugging and reverse engineering easier as you have the working code. 
+		While the common purpose of GDB is debugging C and C++ programs, it can be used on any language, as well as for reverse engineering and exploit development. 
+		The following will be an introduction to the tool, as well as a cheat sheet on the commands that can be used for it. 
 			
-			The first thing to know about GDB, is how to compile your program to use GDB fully. 
-			This means that you will have to make your compiler write out the source code symbols when compiling. 
-			This can be done in GCC with the ``-g'' flag, which will create a symbols file that gdb will automatically load. 
+		The first thing to know about GDB, is how to compile your program to use GDB fully. 
+		This means that you will have to make your compiler write out the source code symbols when compiling. 
+		This can be done in GCC with the ``-g'' flag, which will create a symbols file that gdb will automatically load. 
 
-			Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB. 
-			The first step is to run GDB on the program like so:
-			\begin{quote}
-				gdb <program>
-			\end{quote}
-			This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program. 
+		Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB. 
+		The first step is to run GDB on the program like so:
+		\begin{quote}
+			gdb <program>
+		\end{quote}
+		This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program. 
 
-			\paragraph{List}
-			At this point, you may wish to see the code for the program. 
-			If you have enabled debugging symbols, this can be done using the command ``list''. 
-			Furthermore, you can get a specific output by telling GBB that you want a listing of a particular function or line number. 
-			This will output the 10 lines after the point you specified. 
-			However, subsequent runs of ``list'' will output the next 10 lines. 
+		\paragraph{List}
+		At this point, you may wish to see the code for the program. 
+		If you have enabled debugging symbols, this can be done using the command ``list''. 
+		Furthermore, you can get a specific output by telling GBB that you want a listing of a particular function or line number. 
+		This will output the 10 lines after the point you specified. 
+		However, subsequent runs of ``list'' will output the next 10 lines. 
 
-			\paragraph{Break}
-			Now that you can see the code, you will likely want to setup breakpoints within it. 
-			This can be done using the ``break'' command along with a line number or function name. 
-			This will insert a breakpoint at which the program will stop executing and allow you to investigate. 
+		\paragraph{Break}
+		Now that you can see the code, you will likely want to setup breakpoints within it. 
+		This can be done using the ``break'' command along with a line number or function name. 
+		This will insert a breakpoint at which the program will stop executing and allow you to investigate. 
 			
-			\paragraph{Run}
-			Now that you have set your breakpoints, you will likely want to run the program up to the first break point. 
-			This can be done with the ``run'' command.
-			This will run the program with any arguments that you give after it, 
-			as if you were runnig the program directly from the command line. 
-			As outlined earlier, this will also stop execution and allow you to investigate at any break point. 
+		\paragraph{Run}
+		Now that you have set your breakpoints, you will likely want to run the program up to the first break point. 
+		This can be done with the ``run'' command.
+		This will run the program with any arguments that you give after it, 
+		as if you were runnig the program directly from the command line. 
+		As outlined earlier, this will also stop execution and allow you to investigate at any break point. 
 
-			\paragraph{Show}
-			Now that you have the program running and it has stopped at a break point, 
-			you are able to investigate the current state of the program. 
-			This is done using the ``show'' command, which with the correct arguments will give you an outline of memory and variables. 
-			The following is a list of common ``show'' arguments and their uses:
-			\begin{description}
-				\item[args] Show the current values of the arguments that were sent to the function that is currently running. 
-				\item[backtrace] Show the backtrace. This can be made more specific by giving a specific variable. 
-				\item[breakpoint] Show the current breakpoints. 
-			\end{description}
+		\paragraph{Show}
+		Now that you have the program running and it has stopped at a break point, 
+		you are able to investigate the current state of the program. 
+		This is done using the ``show'' command, which with the correct arguments will give you an outline of memory and variables. 
+		The following is a list of common ``show'' arguments and their uses:
+		\begin{description}
+			\item[args] Show the current values of the arguments that were sent to the function that is currently running. 
+			\item[backtrace] Show the backtrace. This can be made more specific by giving a specific variable. 
+			\item[breakpoint] Show the current breakpoints. 
+		\end{description}
 
-			\paragraph{Info}
-			Similar to show is the ``info'' command. 
-			This command will give you information about a given area of the program or computer. 
-			This is generally more helpful in debugging, as it is more focused on execution rather than environment. 
-			The following is a list of common ``info'' arguments and their uses:
-			\begin{description}
-				\item[All-registers] List all registers and their contents. 
-				\item[Args] Argument variables of the current stack frame. 
-				\item[Breakpoints] Much like ``show breakpoints''. Gives the status of current breakpoints. 
-				\item[Float] Show the status of the floating point unit. 
-				\item[Frame] Data about the current stack frame. 
-				\item[Functions] The names of all functions in the current program. 
-				\item[Locals] The names and values of all current stack local variables. 
-				\item[Program] Execution status of the program
-				\item[Registers] Information about the registers at the current time. 
-				\item[Scope] List the variables and their values within the current scope. 
-				\item[Stack] Backtrace the stack.
-				\item[Threads] Display the currently known threads within the program. 
-				\item[Variables] Show the names and values of all global or static variables. 
-			\end{description}
+		\paragraph{Info}
+		Similar to show is the ``info'' command. 
+		This command will give you information about a given area of the program or computer. 
+		This is generally more helpful in debugging, as it is more focused on execution rather than environment. 
+		The following is a list of common ``info'' arguments and their uses:
+		\begin{description}
+			\item[All-registers] List all registers and their contents. 
+			\item[Args] Argument variables of the current stack frame. 
+			\item[Breakpoints] Much like ``show breakpoints''. Gives the status of current breakpoints. 
+			\item[Float] Show the status of the floating point unit. 
+			\item[Frame] Data about the current stack frame. 
+			\item[Functions] The names of all functions in the current program. 
+			\item[Locals] The names and values of all current stack local variables. 
+			\item[Program] Execution status of the program
+			\item[Registers] Information about the registers at the current time. 
+			\item[Scope] List the variables and their values within the current scope. 
+			\item[Stack] Backtrace the stack.
+			\item[Threads] Display the currently known threads within the program. 
+			\item[Variables] Show the names and values of all global or static variables. 
+		\end{description}
 
-			\paragraph{Backtrace}
-			This will show you an output of what has happened in the program up to the current time. 
-			This is mainly useful for viewing the reasons a program crashed. 
+		\paragraph{Backtrace}
+		This will show you an output of what has happened in the program up to the current time. 
+		This is mainly useful for viewing the reasons a program crashed. 
 
-			\paragraph{Step}
-			This will allow us to step through the program, instruction or line by line. 
-			Each ``step''command will execute the next line the stop, allowing you to inspect the program. 
-			Similarly, the ``next'' command will work the same, but will not enter functions. 
-			Furthermore, the ``until'' command will continue to step until it reaches a given line number. 
+		\paragraph{Step}
+		This will allow us to step through the program, instruction or line by line. 
+		Each ``step''command will execute the next line the stop, allowing you to inspect the program. 
+		Similarly, the ``next'' command will work the same, but will not enter functions. 
+		Furthermore, the ``until'' command will continue to step until it reaches a given line number. 
 
-			\paragraph{delete}
-			This will delete all breakpoints in the current program. 
-			Rather than delete all, 
-			you can use the clear command with the same argument you used to set the breakpoint to remove that specific point. 
+		\paragraph{delete}
+		This will delete all breakpoints in the current program. 
+		Rather than delete all, 
+		you can use the clear command with the same argument you used to set the breakpoint to remove that specific point. 
 
-			\paragraph{Continue}
-			This will continue execution as normal until the next breakpoint. 
-			This is the most common way of stepping through a program to be debugged. 
+		\paragraph{Continue}
+		This will continue execution as normal until the next breakpoint. 
+		This is the most common way of stepping through a program to be debugged. 
 			
-			\paragraph{Kill}
-			This will stop the current program. 
-			Furthermore, the ``quit'' command will allow you to exit GDB. 
+		\paragraph{Kill}
+		This will stop the current program. 
+		Furthermore, the ``quit'' command will allow you to exit GDB. 
 
 %TODO: Explain reverse engineering with GDB 
 %TODO: Explain PEDA. 
