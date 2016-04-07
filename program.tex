@@ -1194,6 +1194,54 @@ iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
 			When given the correct information, such as attacking IP (``-r'') and attackers port (``-p''), it will attempt to connect to the attacking computer repeatedly. 
 			While this is useful, it does require access to the hard drive. 
 			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
+	\section{ARP Attacks}
+		ARP, or the Address Resolution Protocol resides on layer three of the OSI Model. 
+		This protocol is used to translate layer 3 IP addresses into layer 2 MAC addresses using a table stored within the switch. 
+		This table must be updated when new devices enter the network, as well as when they leave. 
+		Thus, ARP tables have a set timeout, causing the data to be removed after that time. 
+		ARP attacks use this table as a means to gain access to traffic that was not destined for them. 
+
+		ARP poisoning is the sending of unsolicited and forged ARP messages. 
+		These will usually contain the IP address of a network resource such as the default gateway or a local server. 
+		This means that all traffic sent to that gateway will be transmitted through the poisoning machine. 
+		This is due to the fact that network devices are designed to overwrite the old data within their ARP tables with new entries. 
+		Thus, any ARP packet sent could result in the destination computer being poisoned. 
+
+		At this point, the attacker is now a man in the middle, able to perform any action they desire on the data being sent to or from the machine. 
+		For example, this could be used to insert BeEF hooks (See chapter /ref{ch:WebPenetration}) into an insecure page or to DoS attack the system by dropping all to the network resource targeted. 
+
+		The main tool used for this attack is ``Ettercap''. 
+		This tool provides a suite of tools for ``Man in the Middle'' (MitM) attacks. 
+		Furthermore, it will filter content on the fly, giving you only useful data. 
+
+		The following is a short guide to using Ettercap for ARP poisoning. 
+		\begin{enumerate}
+			\item Open Ettercap and ensure  it is set to promiscuous mode under options. 
+			\item From the Sniff menu, select ``Unified Sniffing''. 
+			\item Select the NIC attached to the network you wish to attack. 
+			\item Under hosts, select scan for hosts. 
+			\item View the hosts list and choose your targets. 
+			\item Ensure that sniffing has started by selecting Start -> Start Sniffing. 
+			\item All data sent between the targets will be intercepted and filtered. 
+				You will be shown relevant data. 
+		\end{enumerate}
+		This however, is just the start of a useful session with Ettercap. 
+		Once you have found a session, you can insert data to be sent. 
+		On a simple level, this could be done do an admin using a telnet session to inform them that you have gotten access or to run commands on their server. 
+		However, you could also use this to insert a script into a page they are downloading, hooking them with BeEF and gaining access to their computer. 
+
+		Thus, Ettercap and ARP poisoning are exceptionally useful tools within a switched network, 
+		giving you the power to run MitM attacks and capture any traffic. 
+		However, there are some constraints:
+		\begin{itemize}
+			\item While this attack will pick up encrypted traffic, it will not be able to read it. 
+				Further work would have to occur before you would be able to capture the transmitted keys. 
+			\item This will not work on a network that is not switched. 
+			\item While these attacks are hard to find, many of the uses of them will be immediately obvious. 
+				Inserting a message into a telnet session is a good example of this. 
+			\item This type of attack can be found in the ARP poisoning stage by numerous tools such as 
+				AntiARP (Windows), ARPStar (Linux) or Dynamic Arp Inspection (Cisco Switches)
+		\end{itemize}
 	\section{DNS Attacks}
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
