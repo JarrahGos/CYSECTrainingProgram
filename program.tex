@@ -18,6 +18,7 @@
 	  }
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage{multicol}
 \usepackage{microtype}
 \usepackage{menukeys}
 \usepackage{attachfile}
@@ -2375,9 +2376,66 @@ list = ['one', 'two', 'three'];
 			However, this is not always adhered to within the community. 
 
 			Reserved words are as follows:
-			\begin{itemize}
-				\item 
-			\end{itemize}
+			\begin{multicols}{3}
+				\begin{itemize}
+					\item abstract
+					\item boolean
+					\item \textbf{break}
+					\item byte
+					\item debugger
+					\item \textbf{default}
+					\item \textbf{delete}
+					\item \textbf{do}
+					\item double
+					\item \textbf{else}
+					\item enum
+					\item export
+					\item export
+					\item extends
+					\item \textbf{false}
+					\item final
+					\item \textbf{finally}
+					\item float
+					\item \textbf{for}
+					\item \textbf{function}
+					\item goto
+					\item \textbf{if}
+					\item implements
+					\item import
+					\item \textbf{in}
+					\item \textbf{instanceof}
+					\item int
+					\item interface
+					\item long
+					\item native 
+					\item \textbf{new}
+					\item \textbf{null}
+					\item package
+					\item private
+					\item protected
+					\item public
+					\item \textbf{return} 
+					\item short
+					\item static 
+					\item super
+					\item \textbf{switch}
+					\item synchronized
+					\item \textbf{this}
+					\item \textbf{throw}
+					\item throws
+					\item transient
+					\item \textbf{true}
+					\item \textbf{try}
+					\item \textbf{typeof}
+					\item \textbf{var} 
+					\item volatile
+					\item \textbf{void}
+					\item \textbf{while}
+					\item \textbf{with}
+				\end{itemize}
+			\end{multicols}
+			Reserved words that are used within the language are highlighted in bold. 
+			However, most of this list was created to avoid confusion when coming from other C-like languages. 
 
 			Commenting works in the normal C style. 
 			As do most operators. 
