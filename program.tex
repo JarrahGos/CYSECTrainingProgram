@@ -2288,6 +2288,8 @@ alias ls="ls --color=auto"
 				object[key]
 			\end{quote}
 			Furthermore, the ``\{\}'' braces are used to create a new empty object. 
+			Alternatively, you can use the ``new Object()'' command or 
+			use the object function as ``object(Object.prototype)''
 
 			Objects are created with a number of key-value pairs stored within them. 
 			This is done by having a key (which can be, but doesn't have to be a string) followed by a value. 
@@ -2305,8 +2307,60 @@ alias ls="ls --color=auto"
 				\label{code:JSObjectLiteral}
 			\end{code}
 			It is also worth noting that this is the same format used in JSON. 
+			These can be used anywhere that a on object could be used. 
+			These can be used for creating named parameters in functions. 
 
+			Objects can also be augmented at any time. 
+			This means that you can assign a new key-value pair to the object. 
+			If the key did not previously exist, it will be created. 
+
+			Inheritance works by creating a link between the main object and the one it inherited from. 
+			If an attempt to access a key within an object fails, it will run down this inheritance chain. 
+			Only if no object down this chain has a key with the same name will it return undefined. 
 			
+			Objects are always passed by reference, rather than value. 
+			Thus, the ``==='' operator will tell you whether the references are the same. 
+
+			You can also delete a key from an object. 
+			This is done using the delete command as ``delete theObject[key];''. 
+			This will change the keys value to undefined. 
+		\subsection{Arrays}
+			In Javascript, arrays will inherit from objects. 
+			This means that the arrays are key-value pairs. 
+			Thus, Javascript arrays are only efficient for sparse arrays, but not for most normal arrays. 
+
+			Arrays have a length member which will give you 1 more than the highest integer subscript. 
+			This may be the same as the length of the array, but may not be. 
+
+			Array literals can be written in a similar manner to the object literal. 
+			These look as follows:
+			\begin{verbatim}
+list = ['one', 'two', 'three'];
+			\end{verbatim}
+			Furthermore, arrays can be appended at any time as they do not have normal bounds. 
+
+			Arrays have the following members:
+			\begin{itemize}
+				\item concat
+				\item join
+				\item pop
+				\item push 
+				\item slice
+				\item sort
+				\item splice
+			\end{itemize}
+
+			Members are deleted in the same way as for objects. 
+			However, this will leave a hole in the array. 
+			Thus, the splice method should be used to move the values down to fill the hole. 
+
+			Because objects and arrays are similar, it can be hard to decide between them. 
+			Thus, use objects when you need a key-value pair. 
+			Use arrays when you need sequential ordering. 
+
+			You can also assign new methods to an array. 
+			This can be done on an array by array basis, or by assigning them to array.prototype, 
+			which will assign them to all arrays. 
 		\subsection{Syntax}
 			Javascript follows the basic syntax rules of C. 
 			This means that the basic brace rules, as well as loops and statements follow the same rules as C. 
