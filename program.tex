@@ -2181,11 +2181,12 @@ fi
 alias ls="ls --color=auto"
 			\end{lstlisting}
 	\section{Introduction to Python}
-	\section{Introduction to JavaScript}
+	\section{Introducton to JavaScript}
+		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
 		It was originally built in 1995 to allow for programming on a web page. 
 		% Dave flanagan's definitive guide to javascript. 
-		It is also worth noting that Javascript is a functional language. 
+		It is also worth noting that Javascript is a functional language\cite{JSProgrammingLanguage}
 		It is based on creating functions which are then extended upon in functions which then call those. 
 
 		\subsection{Origins}
@@ -2444,11 +2445,45 @@ list = ['one', 'two', 'three'];
 			Functions that do not explicitly return something will return undefined. 
 			Constructors will always return the newly created object. 
 
+		\subsection{Functions}
+			The function operator is used to created a new function. 
+			However, this can be used in any location within the program. 
+			This means that you can pass a function to another function as an argument. 
+			Furthermore, this means that you can store a function in a variable.
+			The function statement is simply a shorthand which creates a variable named with the same name as the function. 
+			Furthermore, functions can be defined within other functions. 
 
+			Scope is defined based on functions. 
+			This means that the inner function will have access to the variables of the outer function. 
+			Thus, functions are commonly used to limit scope within the program. 
 
+			It is also worth noting that functions are objects, meaning that they can contain key-value pairs. 
+			Similarly, objects can contain functions. 
 
+			Rules when invoking functions:
+			\begin{itemize}
+				\item If a function is called with too many arguments, the extra ones are ignored. 
+				\item If a function is called with too few arguments, the missing values will be undefined. 
+				\item There is no implicit type checking. 
+			\end{itemize}
+			
+			There are numerous ways to call a function:
+			\begin{enumerate}
+				\item Method form: This is a function within an object. 
+					It is called as ``object.method''. 
+					This will also allow the function access to the object that it was called from. 
+				\item Function form: This will call a function directly. 
+					It will bind ``this'' to the global object variable. 
+				\item Constructor form: The new operator assigns the new object to this. 
+			\end{enumerate}
 
-%First lecture complete. 
+			Functions are further given an object called arguments. 
+			This will contain the arguments given to the function, no matter whether they were expected or not. 
+			This provides a manner for giving a variable set of arguments. 
+
+			The ``eval'' function is a common cause of security flaws. 
+			This was created in order to allow the browser to execute arbitrary scripts from external sources. 
+			For this exact reason, ``eval'' should be avoided. 
 	\section{Introduction to Code Obfuscation}
 	\section{Introduction to C}
 		To many people, C is a scary language that causes Segmentation Faults and allows numerous mistakes. 
