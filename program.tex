@@ -1259,9 +1259,47 @@ iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
 			\item While these attacks are hard to find, many of the uses of them will be immediately obvious. 
 				Inserting a message into a telnet session is a good example of this. 
 			\item This type of attack can be found in the ARP poisoning stage by numerous tools such as 
-				AntiARP (Windows), ARPStar (Linux) or Dynamic Arp Inspection (Cisco Switches)
+				AntiARP (Windows), ARPStar (Linux) or Dynamic ARP Inspection (Cisco Switches)
 		\end{itemize}
 	\section{DNS Attacks}
+		DNS, as you saw in Chapter \ref{ch:NetworkOperations} is the backbone of the Internet. 
+		Without it, most of what we know on the Internet would be quite dead as the machines would have no way of updating addresses and humans would have no remember ever changing IP addresses. 
+		However, DNS is also the Holy Grail of server enumeration and Man-in-the-Middle (MitM).
+		This is because it contains the information that maps Domain names to the IP addresses needed to communicate with them. 
+
+		This section will first discuss the act of DNS enumeration through either zone transfer or brute force. 
+		It will then explain the process of DNS poisoning in order to conduct a MitM attack. 
+
+		\subsection{DNS enumeration}
+			DNS enumeration gives you access to some or all of the data stored on the DNS server or cache. 
+			This means that you will have a listing of all computers within the DNS zone: your list of targets. 
+			There are two ways of doing this, the easy way and the hard way. 
+			The former requires that the server that you are targeting was misconfigured, leaving it open to zone transfer. 
+			The latter must be done using brute force DNS enumeration, which can take numerous hours. 
+
+			\subsubsection{DNS Zone Transfer}
+				DNS zone transfer is the act of gaining access to the internal DNS servers of an organisation. 
+				It's original use was to allow a slave name server to request a master copy of a particular zone's information from the master server. 
+				However, this can be subverted to get the server to enumerate the whole network to anyone if it is misconfigured. 
+				There are a number of name servers\footnote{\url{https://digi.ninja/projects/zonetransferme.php}} which are vulnerable to this. 
+				An example of such a zone transfer can be found by running the following command. 
+				\begin{quote}
+					dig axfr @nsztm1.digi.ninja zonetransfer.me
+				\end{quote}
+				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book. 
+				However, this will output all relevant data about the domain that you are targeting. 
+				This is because while you are accessing the name server from outside it's internal zone, you are also transfering into it. 
+				Thus, you will receive all information from within this internal zone. 
+
+				On a normal business system, this could be information such as mail servers, VPN hosts or web servers. 
+				However, on particularly bad systems, you will get a list of all hosts connected to the network, allowing you to target any machine within it. 
+
+				Furthermore, the names of these systems give you more information for your attack. 
+				If you come across an office or other branch like setup within the network, it is likely that this will come with a location (or that the location could be found through DoXXing, see Chapter \ref{ch:Forensics}). 
+				Using this, and looking up time zones and business hours, you could target this system while no one is looking, 
+				giving you a far better shot of getting in without being noticed. 
+			%TODO: Finish zone transfer and this section.
+
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
