@@ -25,5 +25,4 @@ push byte 0x2a
 pop rax			; syscall connect 42 
 int 0x80
 
-
 mov r9, rax		; store client socket fd

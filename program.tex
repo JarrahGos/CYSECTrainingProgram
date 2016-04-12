@@ -1593,6 +1593,36 @@ DBMS://<DATABASE FILE PATH>
 			
 	\section{Netflow}
 	\section{DoXXing}
+		DoXXing is the act of attempting to find out the physical location and real identity of an individual or Internet facing machine. 
+		There are a number of ways that this can be done. 
+		The focus of this section will be on doXXing a remote server. 
+		This is because it can be a useful tool in determining where a compromised system is hosted as well as who may have compromised it. 
+		\subsection{Traceroute}
+			Traceroute one of the better ways to gain this information. 
+			This is because while the domain name of the server that you are attempting to access may not give you the information that you require, those that you must go through to get to it usually will. 
+			You will see every server that responds to ping between you and the server, thus giving you a readout of where the connection had to go through to get to the final destination. 
+
+			The key points to look for here is where the packet leaves your country, if it does. 
+			This will be the key indicator for traffic outside your own nation and can be seen through items such as ``telstraglobal'' for Australia. 
+			Furthermore, the country code TLDs that you receive back will tell you which nation you are connecting to. 
+			The final one of these TLDs will give you the most likely nation that you are connecting to. 
+			Finally, the hosts that are near it may tell you which ISP the server is connected with or which hosting company the server is hosted on. 
+
+		\subsection{Whois}
+			Whois records are created when the domain is registered. 
+			While there are ways to hide these, such as registering through an anonomizer or in another nation, generally these will contain detail about who registered the domain. 
+			You will usually get the following information:
+			\begin{itemize}
+				\item Registrant: Which person or organisation registered the Domain. 
+				\item The name, ID and email for the contact for the domain. 
+				\item The name, ID and email for the technical contact for the domain.
+				\item The name servers for the domain.
+				\item The registrar used to register the name. 
+			\end{itemize}
+			These details are exactly what you need when doXXing an organisation. 
+			They will allow you to search for the physical location of the organisation, as well as the contact details of a number of members within it. 
+			Furthermore, the registrar name will often tell you which nation the server is hosted in. 
+		%TODO: More on server doXXing and some on personal doXXing.  
 	\section{Disk and Memory Analysis}
 		\subsection{File Types}
 		\subsection{Common Conversion issues}
@@ -2250,7 +2280,7 @@ alias ls="ls --color=auto"
 			However, concatenation will do this automatically. 
 
 			Similar strings are equal with ``==''. 
-			Furthermore string literals can be created with either single quotes (``\'String\''') or double quotes (``"String"''). 
+			Furthermore string literals can be created with either single quotes ('String') or double quotes ("String"). 
 			Strings also have a length variable which contains the number of 16 bit characters stored within it. 
 
 			The string function can be used to turn a number into a string. 
@@ -2284,7 +2314,7 @@ alias ls="ls --color=auto"
 			In this, the name can be any string and the value can be anything other than undefined. 
 			At this point, members can be added. 
 			
-			Object members can be accessed through the traditional ``.'' notation. 
+			Object members can be accessed through the traditional `` . '' notation. 
 			These members can also be accessed through a subscript notation as follows:
 			\begin{quote}
 				object[key]
@@ -2663,7 +2693,7 @@ list = ['one', 'two', 'three'];
 			\begin{description}
 				\item[Equals] is done through the ``=='' operator.
 				\item[Assignment] is done through the ``='' operator.
-				\item[Multiplication] is done using the ``\*'' operator.
+				\item[Multiplication] is done using the ``*'' operator.
 				\item[Division] is done using the ``/'' operator. 
 			\end{description}
 
