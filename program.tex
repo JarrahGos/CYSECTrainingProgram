@@ -489,26 +489,47 @@
 		Nodes are any item along the way that will receive and either terminate or retransmit data. 
 
 	\section{TCP/IP Model}
-		%TODO: Add in this section and revise OSI based on CCNA/CCENT Book. 
-		Much like the OSI Model, the TCP/IP model was created in order to standardise the way that computers communicate. 
+		Much like the OSI Model, the TCP/IP model was created in order to standardise the way that computers communicate.\cite{ICND1}
 		However, this model was created by the DoD, and has become the model that is used in the modern world. 
 		It follows a similar idea to the OSI Model, and the same terms are often used to discuss the TCP/IP model, even though they aren't a part of the specification. 
+	
+		The TCP/IP Model was created through two means, finding other standards to use or creating Request for Comments submissions. 
+		The former of these is the way that the Ethernet standard (IEEE 802.3) was added. 
+		The latter is what was used to create the protocols and structure of the model. 
 
 		The layers of the TCP/IP Model can be found in Table \ref{tab:TCPIPModel}
 		\begin{table}[htb]
 			\centering
-			\begin{tabular}{|c|}
+			\begin{tabular}{| l | l |}
 				\hline
-				\textbf{TCP/IP layers}\\ \hline
-				Application \\ \hline
-				Transport \\ \hline
-				Network \\ \hline
-				Data Link \\ \hline
-				Physical \\ \hline
+				\textbf{TCP/IP layers} & \textbf{Focus of Layer}\\ \hline
+				Application & Application data to be sent or recieved\\ \hline
+				Transport & Transmission assurance and error recovery\\ \hline
+				Network & Data delivery along whole path\\ \hline
+				Data Link & Individual link delivery\\ \hline
+				Physical & Physical make up of the network\\ \hline
 			\end{tabular}
 			\caption{TCP/IP Networking Model}
 			\label{tab:TCPIPModel}
 		\end{table}
+
+		The Layers of the TCP/IP Model cause one of two types of interaction to occur. 
+		\begin{description}
+			\item[Same Layer Interaction:] Interaction between machines on the same layer of the TCP/IP Model. 
+				This is used to transmit data between machines. 
+				Only the layer that sent a particular piece of data will read that data. 
+			\item[Adjacent Layer Interaciton:] Interaction between layers on the same machine. 
+				This is used to encapsulate data from a higher layer or deliver data from a lower layer. 
+				This is used as each layer needs the services of the layer below it in order to send the packet and have it received at the destination. 
+		\end{description}
+
+		The TCP/IP Model also specifies the manner in which IP will be used. 
+		This allows it to control routing within a network as large as the internet, 
+		ensuring that it has a way to get a packet from a source to the destination. 
+
+		This is done using IP routing and subnetting, which lets nodes along the route know approximately where to send a packet. 
+		This process leads to the packet eventually being received by a node that is within the same LAN as the destination and forwarding it to it. 
+
 	
 	\section{Connecting to Networked Software}
 		There are a number of pieces of networked software available. 
