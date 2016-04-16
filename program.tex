@@ -3186,8 +3186,152 @@ list = ['one', 'two', 'three'];
 					Messages that are sent can be traced back to the original source. 
 					That source cannot say that they did not send the message as a digital signature has stated their action. 
 					This is done in much the same manner as authentication. 
+				\item[Hash]
+					This is a ``one way'' algorithm that takes a message an converts in into another form. 
+					The basis of this is that there should be no way to reverse the algorithm given the output hash. 
+					Furthermore, there should be minimal collisions with other messages. 
+				\item[Keyspace] The maximum number of possible keys that a cryptographical algorithm could use. 
 			\end{description}
-		\subsection{Encodings}
+		\subsection{Types of Cryptography}
+			This section will discuss the three main types of cryptography: secret key, public key and hashing. 
+			\subsubsection{Secret Key Cryptograhpy}
+				This form uses a single key that all accessing parties must have. 
+				The keys complexity---along with the strength of the algorithm---determines the strength of the encryption.
+				Due to the use of the same key at either side of the process, this is also commonly known as ``symmetric key encryption. 
+				While this type of encryption is usually faster, is poses the problem of getting the key to the other user. 
+				This problem is largely alleviated through the use of public key cryptography and key exchange algorithms.
+				An example of this process can be found in Figure \ref{fig:SymmetricKey}
+				\begin{figure}[htb]
+					\centering
+					\includegraphics[scale=0.25]{./SymmetricKey.png}
+					\caption{Symmetric Key Cryptography Process}
+					\label{fig:SymmetricKey}
+				\end{figure}
+			\subsubsection{Public Key Cryptography}
+				Unlike symmetric key cryptography, public key cryptography uses two keys, one stored at each party. 
+				These two keys are completely different. 
+				They are designed in such a way that given one of them, you should not be able to determine the other. 
+				These two keys each have a name and a set of properties. 
+				The key used to encrypt the data is known as the public key. 
+				It can be read by anyone, as it will not give them access to the data. 
+				The key used to decrypt the data is known as the private key. 
+				This key will be securely stored on the receiving computer and should never be transmitted. 
+				While this solves the problem of key exchange, it is significantly slower. 
+				An example of this process can be found in figure \ref{fig:PublicKey}
+				\begin{figure}[htb]
+					\centering
+					\includegraphics[scale=0.25]{./PublicKey.png}
+					\caption{Public Key Cryptography Process}
+					\label{fig:PublicKey}
+				\end{figure}
+			\subsubsection{Hashing}
+				Hashing does not involve a key, though it may use a salt to ensure the uniqueness of the hash. 
+				This process creates a fixed length hash value which represents the plain text message. 
+				However, there is no way of taking this hash value and algorithmically decoding the plain text from it. 
+
+				This process is often used in checking that the correct data was transmitted unaltered. 
+				It can further be used for the storage of items that need to be checked but should not be stored in plain text. 
+				An example of this would be the storage of passwords. 
+				
+				An example of the hashing process can be found in figure \ref{fig:HashingProcess}
+				\begin{figure}[htb]
+					\centering
+					\includegraphics[scale=0.25]{./HashProcess.png}
+					\caption{Hashing Process}
+					\label{fig:HashingProcess}
+				\end{figure}
+
+
+
+		\subsection{Basic Cryptography}
+			Cryptography has been around since ancient times. 
+			However, it has only been with the introduction of the modern computer that it has become complex and of a high standard. 
+			This is because computers are good at breaking weak cryptography, that was the whole purpose of the first digital computer created by Alan Turing and his team at Bletchley Park. 
+			This first machine was designed to break the German Enigma Code and was exceptionally successful at it. 
+
+			Basic encryption should not be used in the modern world. 
+			It is not the type of encryption that would survive seconds against a well programmed computer. 
+			Rather, it is the type of encryption that worked well for the Romans on the battlefield, well before the other commanders had heard of such techniques. 
+
+			\subsubsection{Caesar's Cipher}
+				This is the first algorithm that we will discuss. 
+				It has little current use, as it's keyspace is 25, however, it serves as a good learning tool. 
+
+				Caesar's Cipher is a simple substitution cipher\footnote{\url{http://www.pgpi.org/doc/pgpintro/}}. 
+				This means that the key is simply a number that the alphabet used is shifted by. 
+				Then, each letter in the plain text is substituted for the equivalent letter in the shifted alphabet. 
+				This process can be seen in figure \ref{fig:CaesarsCipher}
+				\begin{figure}[htb]
+					\centering
+					\includegraphics[scale=0.25]{./CaesarsCipher.png}
+					\caption{The Method used for a substitution cipher}
+					\label{fig:CaesarsCipher}
+				\end{figure}
+			\subsection{XOR Cryptography}
+				In the same light as the Caesar's cipher, XOR should not be used when you are looking for security. 
+				However, it is a stronger algorithm than the substitution cipher shown above. 
+				This is due to the fact that the key which can be used for XOR can be as long as the plain text. 
+
+				While stronger than a substitution cipher, XOR still has a number of issues. 
+				Foremost is the fact that it is easily reversible. 
+				This means that given a known part of the plain text, the key can be deduced. 
+				This becomes most obvious when the plain text has a section of null bytes. 
+				These bytes will output as the key when passed through the algorithm. 
+				Thus, if the attacker may know any part of the plain text, or can control it, XOR is just as weak as a substitution cipher. 
+
+				Furthermore, there is no key chaining done in this algorithm. 
+				Thus, if a short key is used, common parts of the plain text will be output in a similar way. 
+				This means that images could still show detail and the cipher text is vulnerable to statistical analysis. 
+
+				The XOR algorithm works by running a binary exclusive OR (see chapter \ref{ch:GeneralKnowledge}) 
+				over each bit within the plain text and key. 
+				The key is looped around, such that each time it gets to the end it links back to the start. 
+
+			\begin{figure}[htb]
+				\centering
+				\begin{tabular}{| l | l | l |}
+					\hline
+					\textbf{Plaintext} & \textbf{Key} & \textbf{Ciphertext} \\ \hline
+					10101011101010 & 10101110 & 00000100111101 \\ \hline
+					00000000000000 & 10101110 & 10101110101011 \\ \hline
+					10101011101010 & 00000000 & 10101011101010 \\ \hline
+				\end{tabular}
+				\caption{XOR Cryptography Example}
+				\label{fig:XORExample}
+			\end{figure}
+			\subsubsection{Encodings}
+				Many people confuse encoding for encryption. 
+				This confusion can lead to information being leaked, as encoding will not provide any protection. 
+				To the untrained eye, these two look similar. 
+				However, there are differences that should be understood and can be used to detect which is being used. 
+
+				Encoding, much like encryption and hashing uses a known algorithm. 
+				However, unlike encryption, encoding does not use a key. 
+				Furthermore, unlike hashing, encoding is not one way. 
+				This means that encoding can quickly and easily be returned to plain text as the means of returning is embedded within the algorithm.
+
+				Encoding works by specifying a known character set and mappings amongst this. 
+				For example, the binary data that forms this document in encoded as UTF-8, which you read as text. 
+				However, this can be done in a different manner. 
+				For example, this text could be encoded as a number, or as base 64. 
+
+				Each of these different types of encoding has some part which can be used to determine what type of encoding is used. 
+				For example, simple text will usually be encoded as ASCII. 
+				Higher characters will have to be encoded as UTF-8 or UTF-16. 
+				Numbers can be encoded as decimals, or in a higher base such as 16 or 64. 
+				Table \ref{tab:Encodings} contains a list of the names and look of many common encodings. 
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{| l | l |}
+						\hline
+						\textbf{Name} & \textbf{Encoded Text Example} \\ \hline
+						ASCII, UTF-8 etc & This is normal text \\ \hline
+						Hexadecimal, base 16 & DEADBEEF, 46DEAC46BC \\ \hline
+						Base 64 & YW55IGNhcm5hbCBwbGVhcw== \\ \hline
+					\end{tabular}
+					\caption{Common Encoding Examples}
+					\label{tab:Encodings}
+				\end{table}
 	\section{RSA}
 		\subsection{\{N : e : c \} Format}
 		\subsection{Common Flaws}
@@ -4551,6 +4695,7 @@ Dump of assembler code for function main:
 		\url{http://stixproject.github.io/}
 \newpage
 \chapter{General Knowledge}
+	\label{ch:GeneralKnowledge}
 	\section{The CVE System}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
 		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
