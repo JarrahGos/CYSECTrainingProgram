@@ -3144,12 +3144,57 @@ list = ['one', 'two', 'three'];
 \chapter{Cryptography}
 	\label{ch:Cryptography}
 	\section{Introduction to Cryptography}
+		%Resource: http://www.thegeekstuff.com/2012/07/cryptography-basics/
+		%Resource: http://www.pgpi.org/doc/pgpintro/
+		%Resource: http://cacr.uwaterloo.ca/hac/
+		Cryptography is the only means of securely transmitting data across a network. 
+		It is also the only means of ensuring that data cannot be read by any individual who has access to a storage medium. 
+		Thus, it is one of the more important concepts in computational security. 
+		Without cryptography, nothing can be confirmed and nothing is secure. 
+		However, even with it, it is easy to get wrong. 
+		This section will discuss the basic ideas of cryptography without the mathematical background or the algorithmic understanding. 
+		It will provide an overview on the requirements for a secure transmission. 
+		The technical details of this will be presented in the later sections of this chapter. 
+		\subsection{Key Terms}
+			There are a number of terms within Cryptography that you will need to understand before you will understand the field.
+			These terms are used to explain the goal or use of a particular part of cryptography\footnote{\url{http://www.thegeekstuff.com/2012/07/cryptography-basics/}}
+			\begin{description}
+				\item[Plaintext]
+					The original message that is to be sent, signed or checked. 
+					This is the message that the user or protocol writes to be transmitted to the other host or stored. 
+				\item[Ciphertext]
+					This is the cryptographically ``secure'' form of the plaintext above. 
+					This means that the plaintext has gone through a cryptographical algorithm and is now enciphered within this text. 
+				\item[Encryption]
+					Conversion from a readable plaintext into an unreadable ciphertext. 
+					This is mainly used to gain privacy in either storage or transmission. 
+					This process will also come with a key or key pair that is used to encrypt the plaintext. 
+				\item[Decryption]
+					The process of converting an unreadable ciphertext into a readable plaintext. 
+					This is used to allow the decrypting party to read the text. 
+					This process will also need either the key, or the second half of the key pair. 
+				\item[Authentication]
+					This is the act of ensuring that the message received came from the sender claimed by the message. 
+					This is based on an action that the receiving party knows only the sending party should be able to do. 
+					Usually, this is done through signing with a private key. 
+					The signature is then checked with the public key. 
+				\item[Integrity] 
+					This is the process of checking that the message received has not been altered in transmission. 
+					This check is done on receipt of the message, ensuring that any changes in transmission are noticed. 
+					Hashing algorithms such as SHA and MD5 are usually used for this process. 
+				\item[Non-repudiation]
+					Messages that are sent can be traced back to the original source. 
+					That source cannot say that they did not send the message as a digital signature has stated their action. 
+					This is done in much the same manner as authentication. 
+			\end{description}
 		\subsection{Encodings}
 	\section{RSA}
 		\subsection{\{N : e : c \} Format}
 		\subsection{Common Flaws}
 		\subsection{Key Recovery}
 	\section{Merkle-Hallman Knapsack Cryptosystem}
+	\section{Key Exchange}
+		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
 	\section{Server Authentication}
 	\section{Rotational Algorithms}
 	\section{Utilizing Cryptography in Python}
