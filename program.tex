@@ -4716,7 +4716,7 @@ Dump of assembler code for function main:
 	\label{ch:GeneralKnowledge}
 	\section{Linux}
 		This section will be a general overview of the Linux world. 
-		It will go through the terminology, history, reasoning and other issues that people new to the OS face. 
+		It will go through the terminology, history, reasoning and other issues that people new to the OS face\cite{LinuxIntro}. 
 		\subsection{Terminology}
 			Below is a far from exhaustive list of terminology used within the Linux world:
 			\begin{description}
@@ -4727,15 +4727,16 @@ Dump of assembler code for function main:
 				\item[Root] Either the base user or base directory. 
 					In the former case, this is the user that has absolute power over the OS. 
 					In the latter case, this is the first directory of the system. 
-				\item[Filesystem] The system that file storage works on. 
+				\item[Filesystem] The system that file storage works on\footnote{\href{http://linux.die.net/man/7/hier}{man 7 hier}}: 
 				\begin{description}
 					\item[/etc] The configuration directory. 
 						This houses all system configuration as well as specific program configurations. 
 						This serves much the same purpose as the windows registry, but in a far better format. 
 					\item[/boot] The boot configuration of the system. 
+						Should only contain the minimum necessary to boot the system. 
 						On an MBR system, the bootloader configuration will be here. 
 						On an EFI system, the EFI boot manager will be mounted at /boot/efi
-					\item[/dev] A virtual filesystem which gives the OS pointers to certain devices. 
+					\item[/dev] A virtual filesystem which gives the OS pointers to certain devices\footnote{\href{http://linux.die.net/man/1/mknod}{man 1 mknod}}. 
 						\begin{itemize}
 							\item Storage devices
 							\item CPUs
@@ -4748,13 +4749,135 @@ Dump of assembler code for function main:
 							\item input
 						\end{itemize}
 					\item[/bin] The binaries used for basic user interaction. 
-					\item[/sbin] /bin, but for system binaries
+					\item[/sbin] /bin, but for system binaries, usually not used by normal users.
 					\item[/home] Stores user home directories (which then store documents, photos, etc)
 					\item[/lib] System libraries which are used for running dynamically linked programs. 
+						These are the minimum required to boot and run the system. 
 					\item[/media or /mnt] Used for mounting drives to. 
-						%not done
+					\item[/opt] Optional or extra packages from outside the systems package manager
+					\item[/proc] Process information. Can be a good place to find information that shouldn't have been leaked\footnote{\href{http://linux.die.net/man/5/proc}{man 5 proc}}.
+					\item[/root] The root user's home directory. 
+					\item[/run] Files that support the current running of the system. Usually temporary. 
+					\item[/srv] Server files. Some systems use this for web or other services rather than ``/var''. 
+					\item[/sys] Similar to ``/proc'' but kernel only and better secured. 
+					\item[/tmp] Temporary files which may be deleted at any time (such as booting or a regular job).
+					\item[/usr] Data that can be shared between systems, generally minor program specific config and libraries. 
+					\item[/var] Items that can change in size, such as logs and caches. 
 				\end{description}
-		\end{description}
+				\item[CLI] Command Line Interface, also referred to as a \textbf{shell}. 
+					This is the system used to interact with the computer using typed commands, rather than selecting the item that you wish to interact with graphically. 
+				\item[GUI] Graphical User Interface, the opposite of CLI. 
+					This is the interface that you see and select graphically what you want to do. 
+					However, it is far more limiting than the CLI as you cannot string ideas and programs together in infinite ways. 
+					It is just simpler to learn and understand. 
+				\item[Distro] A distribution. Someone's (usually an organisation's) version of Linux and the configuration and tools that make it a useful operating system. 
+					Examples include Debian, Arch, Gentoo and Kali. 
+				\item[Kernel] The core of an operating system. 
+					This program interacts with the hardware of the system, creating an abstraction layer that other software can interact with. 
+				\item[Open Source] This is the notation that the source code of a program is available freely. 
+					This means that people can read it, adapt it to their needs and then re-introduce it into the world. 
+					It has been the main driver for Linux adoption.
+				\item[Free Software] This is a movement similar to open source, but more vehement in their stance. 
+					All software must be free (as in the code freely available) for reasons of security, progress and ideology. 
+					This is mainly pushed by the GNU movement and the Free Software Foundation.
+			\end{description}
+		\subsection{History}
+			\subsubsection{UNIX}
+				No section on Linux would be complete with out at least a small section on UNIX. 
+				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large. 
+				Furthermore, most of them had software specific to that computer, running on a processor architecture that no other type of machine used. 
+				Thus, software written for one system would almost never work on another, 
+				and the skills gained on one would be useless on another. 
+
+				Until this time, these issues were the only paradigm for computing. 
+				However, in 1969, a team at AT\&T Bell Labs began working on a solution to the problem. 
+				There system---which became UNIX---was designed to be:
+				\begin{itemize}
+					\item Simple and Elegant
+					\item Written in the more portable C language, rather than the Assembly that was common at the time. 
+					\item Able to recycle code. 
+				\end{itemize}
+				The idea of code recycling was the important part of UNIX. 
+				Until this time, all operating systems were built using a language and environment specific to that machine. 
+				UNIX however, had only one small part which needed to be specific: the Kernel. 
+				This piece of code was built to interact with the hardware and allow other software to interact with it. 
+				Thus, no matter what hardware the Kernel was running on, the software could be made work. 
+
+				This idea of multiple computers from different vendors running the same OS led to a number of ``weird'' situations. 
+				Computers from different vendors could communicate over a network, 
+				software vendors could sell for multiple computer vendors with little extra work. 
+				Finally, people could be educated on one system and use most of them. 
+
+				Sadly, at the time, computers that could run UNIX were expensive and large. 
+				Thus, when the home computer (or micro-computer) revolution happened, these computers were left out of UNIX. 
+				This led to many people running MS-DOS (or another DOS) or early versions of Windows. 
+				This is a situation that has not changed to date. 
+				However, progress is being made. 
+
+			\subsection{Building Linux}
+				While UNIX itself was proprietary code, the concepts and standards that it created were open to anyone. 
+				Thus, when in the 90s, home PCs became powerful enough to run full UNIX systems, 
+				Linux Torvalds, a computer science student, started writing the code required for it. 
+
+				From the outset, the goal of this system was to crate a fully POSIX (the standard for UNIX) compliant OS for academic use. 
+				This led to a system that was free to use with the code available to edit and that was completely UNIX compliant. 
+				Thus, people came in droves. 
+				They were looking for a system similar to what they had in universities, or at work and Linux provided it. 
+				However, the hardware for a home PC was vastly different and more varied than that of a mainframe from the 1970s. 
+				It was this difference that could have been the downfall of Linux. 
+				But with Linus' decision to leave the code open, many people wrote their own drivers for it, allowing sound, graphics and general system use to work on some of the most obscure hardware around. 
+
+				Within two years, the project had grown to 12000 users. 
+				It continued to grow and stay within the POSIX standard, slowly adding the whole feature set of UNIX.
+				This had made it a huge player in the server arena of computing. 
+				However, it has still not taken over the desktop computing environment, though that was it's original goal. 
+
+				While back in these early times, it was necessary to know how Linux worked and some systems programming to get it to run, modern Linux systems require none of this. 
+				Originally, one had to be able to read and understand manual pages for systems that would not work when first installing Linux. 
+				These systems, such as the X11 display driver could often be hard to set up, 
+				in some cases, they could physically burn the hardware you were running on. 
+				In the modern Linux world, however, distros such as Debian and Linux Mint do all of this for you. 
+				This is not to say that you cannot learn the system, distros such as Gentoo and Linux From Scratch will give you that opportunity. 
+
+
+		\subsection{File Systems}
+			\subsubsection{Mounting}
+
+			\subsubsection{File Permissions}
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{| l | l | l |}
+						\hline
+						\textbf{Letter} & \textbf{Octal} & \textbf{Meaning} \\ \hline
+						- & 0 & Right in this position not granted \\ \hline
+						r & 4 & Read access is granted in this position \\ \hline
+						w & 2 & Write access is granted in this position \\ \hline
+						x & 1 & Execute access is granted in this position \\ \hline
+					\end{tabular}
+					\caption{UNIX File Permissions Keys}
+					\label{tab:UNIXPermissionKeys}
+				\end{table}
+				UNIX file permissions are shown in the following format:
+				\begin{center}
+				\begin{tabular}{| c | c | c | c | l |}
+					\hline
+					Directory & User & Group & Other & Extended \\ \hline
+					d or - & rwx or -{}-{}- & rwx or -{}-{}- & rwx or -{}-{}- & . for SELINUX. \\ \hline
+				\end{tabular}
+				\end{center}
+
+
+				When you are working with these, the chmod command is used to change them. 
+				This command uses the following options to choose where to set the flag:
+				\begin{center}
+					\begin{tabular}{| c | l |}
+						\hline
+						\textbf{Code} & \textbf{Description} \\ \hline
+						u & User Permissions \\ \hline
+						g & Group Permissions \\ \hline
+						o & Other Permissions \\ \hline
+					\end{tabular}
+				\end{center}
 	\section{The CVE System}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
 		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
