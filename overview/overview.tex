@@ -361,7 +361,7 @@
 			\end{itemize}
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
 		There is then a weighting section which conveys how important a given section is to completing the whole challenge. 
 		\begin{table}[htb]
 			\centering
@@ -422,9 +422,24 @@
 	\section{Overview of Challenge}
 		The Boston Key Party is a well known CTF that is run early in the year. 
 		This CTF is set at a moderate level, requiring a large amount of background, but not being overly difficult. 
+		It has been used for the last three years as a qualifier for the DEFCON CTF, 
+		which is one of the most prestigious CTFs held each year at the DEFCON conference. 
 		Furthermore, it is often seen by the higher level teams as a warm up CTF. 
 		These attributes make this CTF a good starting point for second year members. 
+
+		The team that runs this CTF are from a diverse background, with many contributing to other teams and large open source projects such as Radare2.
+		Their site can be found at \href{https://web.archive.org/web/20160131055956/http://bostonkeyparty.net/}{bostonkeyparty.net}. 
+		However, this site is only used for the actual CTF event, rather than information. 
+		More information can be found at the \href{https://ctftime.org/event/252}{CTF Time page}.
 	\section{Main Areas of Focus}
+		This section will explain the skills required for the completion of the challenges within this CTF. 
+		It will list the requirements for each section, defining them so that they can be implemented into the training program. 
+		The sections within this CTF are:
+		\begin{itemize}
+			\item Pwn
+			\item Reversing
+			\item Web
+		\end{itemize}
 		\subsection{Cryptography}
 			This section is designed to test the members ability to determine cryptographical weaknesses. 
 			It also requires an ability to program and understand code. 
@@ -432,26 +447,50 @@
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item Programming.
+					The act of giving a computer a set of actions to complete. 
 				\item SHA hashing. 
-				\item RSA Key Recovery
+					The one way Secure Hashing Algorithm and it's possible weaknesses. 
+				\item RSA Key Recovery.
+					Returning from a public key (which is weak due to poor generation) to a private key. 
 				\item Elliptic Curve Encryption and Attacks.
-				\item ElGamal Signatures
+					This is a new encryption standard which was designed to replace AES. 
+					It has a number of weaknesses that can be exploited if the implementation is poor. 
+				\item ElGamal Signatures.
+					These are digital signatures which are used to sign documents as a certain person. 
+					There are a number of security issues with this, mainly due to hash collisions. 
 				\item Common RSA Attacks. 
+					RSA being a long serving standard has a number of common attacks, such as the weak random number generator found in some older versions of Debian. 
 				\item DES Weak Keys. 
+					These are a small number of keys which cause the encryption and decryption modes of DES to act in the same or similar ways. 
+					This makes attacking these keys significantly easier. 
 				\item Hash Collisions
+					By nature of taking something and turning it into a constant sized string, hashes have collisions. 
+					Understanding how these collisions work and where they can be found, one can attack some forms of hash. 
+					Specifically MD5 and SHA1 are vulnerable to this. 
 			\end{itemize}
-		\subsection{Pwn}
+		\subsection{``Pwn''}
 			This section requires the member to gain an understanding of how the target program works and attack the binary itself. 
 			Skills such as shell coding and stack enumeration will be the focus of this section. 
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item RIP Redirection. 
+					This is the process of altering the running of a program in such a way that the current instruction pointer now points at a section of memory controlled by the attacker. 
+					It is often used in shellcode. 
 				\item Common C program flaws. 
+					Issues such as string format vulnerabilities and buffer overflows are common amongst C (or similar) programs. 
+					Understanding this allows for numerous new entry points into multiple programs. 
 				\item Cleaning after stack smashing. 
+					Once you have smashed into the stack of a program, you will need to clean up the damage done. 
+					This means that the program will continue running and the user will not be notified by a crashed program. 
 				\item Heap overflow. 
+					While not as easy as stack based overflows, heap overflows can be used to gain the same level of access. 
+					This is either through writing a program to the heap and then altering the RIP, or growing the heap to overwrite the stack. 
 				\item Reverse Engineering.
+					This is the process of taking a compiled binary and reading through it to determine how it works and how to break it. 
 				\item libc attacks. 
+					Many modern Linux programs use libc, rather than implementing their own calls or statically linking. 
+					If these calls can be intercepted or redirected, the attacker can own the running process and have it do whatever they desire. 
 			\end{itemize}
 		\subsection{Reversing}
 			This section requires that the member reverse engineer and understand the program that they are given. 
@@ -459,12 +498,23 @@
 
 			The following is a breakdown of the skills required to conduct this task. 
 			\begin{itemize}
-				\item Reverse engineering 
+				\item Reverse engineering. 
+					The act of reading through and determining how a program works. 
+					This can also help in exploit development. 
 				\item Reverse engineering tools. 
+					Tools such as GDB/PEDA, Radare2 and IDA are useful in reverse engineering and should be covered when training for it. 
 				\item Programming. 
+					Without understanding how to program one cannot expect to understand how someone else did it without even having the source code. 
 				\item Assembly. 
+					Due to the compilation process, one often cannot gain access to the source code of the program. 
+					While call flow graphs are useful, to gain a true understanding of what the program is doing, one needs to understand Assembly code. 
 				\item Side channel attacks. 
-				\item ltrace. 
+					This is attacking a program through alternative means. 
+					Rather than attempting to break it through direct reverse engineering, it uses dependencies or some other means. 
+				\item ltrace anh strace. 
+					These are library and system call tracers. 
+					They are useful in determining how a program interacts with the system and how to attack it. 
+					They can also be useful in determining how to conduct side channel attacks. 
 			\end{itemize}
 		\subsection{Web}
 			This section requires that the member attack a number of websites using common vulnerabilities in them. 
@@ -473,23 +523,42 @@
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item Content Security Policy.
+					This is a standard introduced to prevent common web attacks. 
+					It is based on approving the origin of changes or additions to a website. 
+					However, like every security mechanism, it can be circumvented if poorly implemented. 
 				\item HTTP Redirect attacks. 
+					This is based on systems that will redirect based on a parameter given in the request. 
+					It is commonly used in phishing attacks. 
 				\item Network listeners. 
+					Programs such as ``nc -l'' or other network listeners can be exceptionally useful in web based attacks to determine whether something it attempting to return to your system. 
 				\item HTTP Directory Traversal. 
+					Poorly configured servers will allow you to use the POSIX ``..'' link within a directory to move about. 
+					This means that you can gain access to parts of the system that the server was set to block. 
 				\item HTTP/Ruby Directory Creation. 
+					Some systems will also allow for the creation of directories. 
+					This can be used to alter the systems running and as a step for gaining a higher level of access, especially when coupled with directory traversal. 
 				\item Base64 encoding. 
+					This is a method of storing and transmitting data in a different format. 
+					It looks similar to a hash, but often contains padding equals signs. 
+					If data is stored in this format, it is trivial to return it to a readable form. 
 				\item SQL injection through encoding changes. 
+					SQLi is a common form of database based web attack. 
+					However, it is also often setup in such a way that the data that is entered is filtered. 
+					Encodings will sometimes allow you to bypass these filters and insert your SQL code into the database. 
 			\end{itemize}
 
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
+		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program. 	
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
-				\textbf{Cryptography} & \textbf{8} & \\ \hline
+				\textbf{Cryptography} & \textbf{8} & \textbf{0.8}\\ \hline
 				\quad SHA Hashing & 1 & \\ \hline 
 				\quad RSA Key Recovery & 1 & \\ \hline
 				\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline
@@ -498,34 +567,42 @@
 				\quad DES Weak Keys & 1 & \\ \hline 
 				\quad Hash Collisions & 1 & \\ \hline 
 				\quad Base64 Encoding & 1 & \\ \hline 
-				\textbf{Web} & \textbf{6} & \\ \hline 
+				\textbf{Web} & \textbf{6} & \textbf{1} \\ \hline 
 				\quad Content Security Policy & 1 & \\ \hline 
 				\quad HTTP Redirect attacks (XSS) & 1 & \\ \hline 
 				\quad Network Listeners & 1 & \\ \hline 
 				\quad HTTP Directory Traversal & 1 & \\ \hline 
 				\quad HTTP/Ruby Directory Creation & 1 & \\ \hline 
 				\quad SQL Injection through character set encoding & 1 & \\ \hline 
-				\textbf{Exploitation} & \textbf{5} & \\ \hline 
+				\textbf{Exploitation} & \textbf{5} & \textbf{0.7} \\ \hline 
 				\quad RIP Redirection & 1 & \\ \hline 
 				\quad Common C Flaws & 1 & \\ \hline 
 				\quad Smashed Stack Cleaning & 1 & \\ \hline 
 				\quad Heap Overflows & 1 & \\ \hline 
 				\quad libc Attacks & 1 & \\ \hline 
-				\textbf{Reverse Engineering} & \textbf{3} & \\ \hline
+				\textbf{Reverse Engineering} & \textbf{3} & \textbf{0.6} \\ \hline
 				\quad Tools (IDA/Radare2) & 1 & \\ \hline 
 				\quad Assembly & 1 & \\ \hline 
 				\quad Side Channel Attacks & 1 & \\ \hline 
 				\quad ltrace & 1 & \\ \hline 
-				\textbf{Programming} & \textbf{3} & \\ \hline
+				\textbf{Programming} & \textbf{3} & \textbf{1}\\ \hline
 			\end{tabular}
 			\caption{Breakdown of Boston Key Party CTF Topics}
 			\label{tab:BCTFBreakdown}
 		\end{table}
 \chapter{Plaid CTF 2015}
 	\section{Overview of Challenge}
-		Plaid CTF is the annual CTF run by the Plaid Parliament of Pwning. 
+		Plaid CTF is the annual CTF run by the ``Plaid Parliament of Pwning''. 
 		While lower profile in Australia, this CTF is both international and set at a far higher difficulty level than CySCA. 
+		It's timing within the year allows just enough time for third years returning to the VECC to rebuild their skills after leave and attempt the challenge. 
 		This makes it a good CTF to use for ensuring that the higher level skills have been covered by the training program. 
+
+		This CTF is also a DEFCON qualifier. 
+		This means that it is held at the same high standard as the Boston Key Party, while also having a broader range of challenges and being harder overall. 
+
+		The team that runs this CTF is from Carnegie Mellon University and runs a number of other CTFs, such as picoctf. 
+		This team is regularly one of the highest scoring teams on CTF Time, making them experts in the competitions. 
+		Due to this, their own CTF competitions are often well built and difficult. 
 	
 	\section{Main Areas Of Focus}
 		\subsection{Cryptography}
@@ -538,12 +615,19 @@
 				\item Understanding of RSA Encription
 				\begin{itemize}
 					\item Understand the \{N : e : c\} format. 
-						\item Understand the common requirements for e and d in RSA. 
+					\item Understand the common requirements for e and d in RSA. 
 				\end{itemize}
-				\item Programming
+				\item Programming. 
+					The act of telling a computer what to do and how to do it. 
 				\item Data Representation. 
+					Data can be stored, interacted with and represented in many different ways. 
+					Understanding this can be a key factor in breaking into a system. 
 				\item Server Authentication
+					Servers use a number of systems, such as private/public key pairs and cookies to authenticate. 
+					Understanding this can allow an attacker to find weaknesses in the authentication system. 
 				\item Merkle-Hallman Knapsack Cryptosystem
+					A public/private key system similar to RSA, but significantly weaker. 
+					A system using this can be broken using known tools. 
 			\end{itemize}
 		\subsection{Forensics}
 			This section has the member attempt to determine the types and contents of unknown files. 
@@ -552,11 +636,23 @@
 			The following is a breakdown of the skills required to conduct these tasks:
 			\begin{itemize}
 				\item Understanding of file types. 
-				\item File conversions
+					The file types and their heads/trailers can be used to determine whether multiple files are stored in one, or why a file is corrupted. 
+					This understanding allows one to repair or retrieve corrupted files.
+				\item File conversions. 
+					This is the process of taking one file and creating another type of file from it. 
+					It often has some artifacts which are left and can be used to gain information about the system. 
 				\item File Specifications
-				\item Dos -> Unix (CRLF -> LF) conversion
+					This is the standard headers and trailers as well as the IVs which make up a file. 
+					Understanding this can allow an attacker to understand what the file is that they are finding on a bare disk and how to read it. 
+				\item DOS -> Unix (CRLF -> LF) conversion
+					This conversion can cause issues with some files. 
+					It occurs due to DOS using the full ``\verb+\r\n+'' line endings, while Unix uses only ``\verb+\n+''. 
 				\item Cyclic Redundancy Codes
+					These are used to check whether a file has been altered while stored or in transit. 
+					They can then be used to return the file to it's original state. 
 				\item Programming
+					This is the act of telling a computer how to do something. 
+					It is useful here as automation of slow or arduous tasks. 
 			\end{itemize}
 
 		\subsection{Pwnable}
@@ -566,16 +662,39 @@
 			The following is a breakdown of the skills required to conduct these tasks:
 			\begin{itemize}
 				\item Shellcoding
+					This is the act of writing code which will give an attacker a shell on another system. 
+					It is usually done in assembly. 
 				\item x86\_64Registers and Assembly. 
+					This is the base programming language of most computers. 
+					It is assembled into machine code, which can then be run by the machine. 
+					It is also the basis for shell coding. 
 				\item Memory allocation. 
-				\item GDB (and Peda)
-				\item ARM assembly
-				\item ELF files
-				\item C Exploitation
-				\item URL Injection
-				\item HTTP
-				\item Web Directory Traversal
-				\item Local File Inclusion
+					Memory allocation and it's standards is one of the key parts of writing shellcode. 
+					This is due to the fact that you will have only a small amount of memory in which to write the code and its data. 
+					Understanding how this works allow one to create shell code that will work in most systems, as well as injecting shellcode into a program in the first place. 
+				\item GDB (and Peda).
+					This is a tool used for exploit development. 
+					It allows one to step through a program, seeing the full memory and register setup of the computer as it is processed. 
+				\item ARM assembly.
+					Like x86 assembly, this is the base machine language for ARM processors. 
+				\item ELF files.
+					These are the standard Linux executable files. 
+					Understanding how they work will allow easier analysis of them. 
+				\item C Exploitation.
+					C has a number of pitfalls that programmers commonly fall into. 
+					Understanding these pitfalls allows an attacker to look for the most common avenues of attack. 
+				\item URL Injection.
+					Knowing what to look for when attempting to gain further access to a website is helpful to the attack. 
+					Understanding URL injection is useful to gaining access that you are not expected to have. 
+				\item HTTP. 
+					This is the main protocol used to communicate between computers and web servers. 
+					Understanding it will allow you to exploit common flaws in the implementation of it, or the programs using it. 
+				\item Web Directory Traversal. 
+					This is a common attack which will allow one to access part of a web server that they did not have permissions for. 
+					It can be used for gathering further data on the server, or for editing files and gaining full access. 
+				\item Local File Inclusion.
+					This is the precursor to a number of attacks, such as arbitrary code execution or reflected XSS. 
+					Understanding this can be a major step to either gaining access to a server, or gaining access to a users machine. 
 			\end{itemize}
 		\subsection{Reverse Engineering}
 			This section has a member attempt to understand how a program is working in order to exploit it. 
@@ -588,54 +707,66 @@
 						\item radare2
 						\item IDA 64
 					\end{itemize}
-				\item Rotational functions
+				\item Rotational Algorithms.
+					This is a common part of many cryptographic standards such as AES. 
+					Understanding how it works will allow an attacker to find flaws in harder cryptosystems.
 				\item Algorithmic flaws. 
-				\item Regex
+					Understanding common algorithmic flaws is useful in determining how to break an algorithm as well as how to guess what it's output will be. 
+					This can be useful when attempting break into a system which is protected by a proprietary authentication system. 
+				\item Regex.
+					A common method of finding data in a large collection. 
+					Used for specifying a generic schema and collecting all matching items. 
 				\item Boolean Mathematics. 
+					The logic which bounds all computer processing and programming. 
+					It deals with truthfulness and comparison. 
 			\end{itemize}
 	
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
 		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program.
+
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
-				\textbf{General} & \textbf{6} & \\ \hline
+				\textbf{General} & \textbf{6} & \textbf{0.5} \\ \hline
 				\quad Data Representation & 1 & \\ \hline
 				\quad ELF Files & 1 & \\ \hline
 				\quad Rotational Ciphers & 1 & \\ \hline
 				\quad Algorithmic Flaws & 1 & \\ \hline 
 				\quad Regex & 1 & \\ \hline 
 				\quad Boolean Mathematics & 1 & \\ \hline 
-				\textbf{Exploitation} & \textbf{6} & \\ \hline
+				\textbf{Exploitation} & \textbf{6} & \textbf{0.7}\\ \hline
 				\quad Shellcode & 1 & \\ \hline
 				\quad x86\_64 Registers and Assembly & 1 & \\ \hline
 				\quad Memory Allocation & 1 & \\ \hline
 				\quad GDB and Peda & 1 & \\ \hline
 				\quad ARM Assembly & 1 & \\ \hline
 				\quad C Exploitation & 1 & \\ \hline 
-				\textbf{Cryptography} & \textbf{5} & \\ \hline
+				\textbf{Cryptography} & \textbf{5} & \textbf{0.8} \\ \hline
 				\quad RSA Encryption & 3 & \\ \hline
 				\qquad \{N : e : c\} Format & 1 & \\ \hline
 				\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
 				\quad Server Authentication & 1 & \\ \hline
 				\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
-				\textbf{Forensics} & \textbf{4} & \\ \hline
-				\quad File Types & 1 & \\ \hline
-				\quad File Conversions & 1 & \\ \hline 
-				\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
-				\quad Cyclic Redundancy Checks & 1 & \\ \hline
-				\textbf{Web Exploitation} & \textbf{4} & \\ \hline
+				\textbf{Web Exploitation} & \textbf{4} & \textbf{1} \\ \hline
 				\quad URL Injection & 1 & \\ \hline
 				\quad HTTP & 1 & \\ \hline 
 				\quad Directory Traversal & 1 & \\ \hline
 				\quad Local File Inclusion & 1 & \\ \hline 
-				\textbf{Reverse Engineering} & \textbf{2} & \\ \hline
+				\textbf{Forensics} & \textbf{4} & \textbf{0.7} \\ \hline
+				\quad File Types & 1 & \\ \hline
+				\quad File Conversions & 1 & \\ \hline 
+				\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+				\quad Cyclic Redundancy Checks & 1 & \\ \hline
+				\textbf{Reverse Engineering} & \textbf{2} & \textbf{0.6} \\ \hline
 				\quad Radare2 & 1 & \\ \hline
 				\quad IDA 64 & 1 & \\ \hline 
-				\textbf{Programming} & \textbf{2} & \\ \hline
+				\textbf{Programming} & \textbf{2} & \textbf{1} \\ \hline
 			\end{tabular}
 			\caption{Breakdown of PlaidCTF Topics}
 			\label{tab:PlaidCTF Breakdown}
@@ -707,7 +838,7 @@
 					\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
 					\quad Cryptographic Flaws & 1 & \\ \hline 
 					\quad Encoding & 1 & \\ \hline 
-					\textbf{Exploitation} & \textbf{10} & \\ \hline
+					\textbf{Exploitation} & \textbf{10} & \textbf{0.7} \\ \hline
 					\quad C Exploitation & 2 & \\ \hline 
 					\quad x86\_64 Registers and Assembly & 2 & \\ \hline
 					\quad Shellcode & 1 & \\ \hline
