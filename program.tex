@@ -17,6 +17,7 @@
 	      \renewcommand{\headrulewidth}{0pt} % and the line
 	  }
 \usepackage{graphicx}
+\usepackage{multirow}
 \usepackage{setspace}
 \usepackage{multicol}
 \usepackage{microtype}
@@ -1215,46 +1216,7 @@ iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
 		This is due to the fact that you will have to know the port and how you will attack it well before setting up the forwarding rule. 
 		By utilizing this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
 		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
-	\section{Maintaining a presence}
-		After successfully compromising a target, it is usually good measure to ensure that your access is permanent. 
-		This section will show you how to retain access across reboots as well as creating monitoring tools which will automatically report back to you. 
-		These methods take two styles, smash and grab or low and slow. 
-		The former of these will be far more obvious, but will give you the information you require quickly. 
-		The latter will give you long term access, allowing you to use the machine as a staging ground for other attacks. 
 
-		\subsection{Key loggers}
-			This section assumes that you have already gained access to a Windows PC. 
-			However, it will work in a similar manner for other OS's. 
-			
-			The first step is to migrate into a system process. 
-			This is done first by using the ``ps'' command to show the running processes, 
-			then by choosing one and running ``migrate <PID>''. 
-			This will ensure that the process that we are inhabiting will not easily be reset, killing our connection. 
-
-			At this point we can start the key logger.
-			This is done using the command ``keyscan\_start'', 
-			which will start saving the typed keys to memory, ready to be dumped to the attacking computer. 
-			These keys can be saved written to screen using the command ``keyscan\_dump''. 
-			Furthermore, if you would like to capture login information, migration to the login manager will ensure that the key logger is running at that point too. 
-			In windows this can be done by migrating to the ``winlogon.exe'' process. 
-		\subsection{Meterpreter Back door}
-			Rather than just logging the keys pressed on a system, we can also retain our Meterpreter session between process resets, but not boots, keeping the hard drive clean.  
-			This is done using the ``metsvc'' back door, which installs a Meterpreter shell on the system. 
-			However, this basic setup has one major security flaw: \emph{it requires no authentication.}
-			The only two means of solving this is altering the source code or setting up port filtering on the target. 
-
-			As above, the first step is to migrate into a system process that can be trusted to be stable. 
-			After this, the service can be installed and started using the command ``run metsvc''. 
-
-			To connect to this service, we run a specific exploit in Metasploit designed to correctly connect. 
-			One could simply use netcat, however, this would result in poor terminal management. 
-			The exploit ``exploit/multi/handler'' alongside the payload ``windows/metsvc\_bind\_tcp'' is used to connect, creating a new Meterpreter session within Metasploit if the options are correctly set. 
-			
-		\subsection{Persistence.rb}
-			This is a ruby script which will start on boot or login (``-X'' or ``-U'' flags respectively) and bring up a Meterpreter session. 
-			When given the correct information, such as attacking IP (``-r'') and attackers port (``-p''), it will attempt to connect to the attacking computer repeatedly. 
-			While this is useful, it does require access to the hard drive. 
-			This makes it risky, in that if you are found, evidence of your attack will be left on the system. 
 	\section{ARP Attacks}
 		ARP, or the Address Resolution Protocol resides on layer three of the OSI Model. 
 		This protocol is used to translate layer 3 IP addresses into layer 2 MAC addresses using a table stored within the switch. 
@@ -1791,6 +1753,7 @@ DBMS://<DATABASE FILE PATH>
 	\section{Other Tools}
 		\subsection{Strings}
 		\subsection{Ltrace}
+		\subsection{Strace}
 \chapter{Programming}
 	\label{ch:Programming}
 	\section{Introduction to the CLI}
@@ -2652,7 +2615,6 @@ list = ['one', 'two', 'three'];
 			The ``eval'' function is a common cause of security flaws. 
 			This was created in order to allow the browser to execute arbitrary scripts from external sources. 
 			For this exact reason, ``eval'' should be avoided. 
-	\section{Introduction to Code Obfuscation}
 	\section{Introduction to C}
 		To many people, C is a scary language that causes Segmentation Faults and allows numerous mistakes. 
 		However, C is not the cause of this. Simply the tool that allows programmers to make these mistakes. 
@@ -2698,14 +2660,23 @@ list = ['one', 'two', 'three'];
 			C requires that it is compiled before use. 
 			Thus, one must learn both the language and the complier that is used for it. 
 			Furthermore, in C, a tool known as make is used to run numerous or complex compiler functions. 
-			Code example \ref{code:Makefile} contains a basic setup for compiling moderate sized C programs. 
+			Code example \ref{code:Makefile} contains a complex setup for compiling moderate sized C programs. 
 			It will have to be altered for the specific program structure, but it will be a good starting point. 
+			For smaller programs, use the makefile in code example \ref{code:BasicMakefile}.
+
+			\begin{code}
+				\lstinputlisting[language={[gnu]make}]{./makefile}
+				\caption{A Basic Makefile}
+				\label{code:BasicMakefile}
+			\end{code}
 
 			\begin{code}
 				\lstinputlisting[language={[gnu]make}]{./make}
-				\caption{A Basic Makefile}
+				\caption{A Complex Makefile}
 				\label{code:Makefile}
 			\end{code}
+
+
 			Go through the settings within this. 
 			It is far more complex than the simple make files that you will need for this section. 
 			However, it gives you an insight into what is required for creating a Makefile for a large project.
@@ -2982,6 +2953,7 @@ list = ['one', 'two', 'three'];
 				\caption{Example of a C Function Pointers}
 				\label{code:CFunctionPTR}
 			\end{code}
+	\section{Introduction to Code Obfuscation}
 	\section{Debugging with GDB and Peda}
 		The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
 		It can be used either with or without debugging symbols, 
@@ -3493,6 +3465,33 @@ list = ['one', 'two', 'three'];
 			Nonetheless, these methods deter attackers from attempting to crack the hashes by limiting their choices and removing their ability to use rainbow tables. 
 		\subsection{SHA}
 		\subsection{Hash Collisions}
+			Hashes, by their nature must have collisions. 
+			This is due to the fact that they take a large amount of information and turn it into a string of a standard size. 
+			For example, an SHA256 hash has a length of 65 and a character space of 36. 
+			This gives $1.84\times10^{66}$ possible values. 
+
+			This is the basis for collisions. 
+			Consider that there are vastly more than this number of items that can be hashed, 
+			If this is true, some of these items must have the same hash value as other items.
+			Furthermore, if you can find a collision with the item you are testing, you need only pass that collision, rather than the item itself. 
+
+			This is the exact reason hashing algorithms such as MD5 are being replaced with SHA512. 
+			It is now easy to find a collision value for the smaller key space MD5, meaning that using it for secure storage or any other purpose is near pointless. 
+
+			Table \ref{tab:HashCollisions} contains the maximum number of hash values for common hash types.
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | l |}
+					\hline
+					\textbf{Hash Type} & \textbf{Number of Values} \\ \hline
+					SHA256 & $1.44\times10^{102}$ \\ \hline
+					SHA512 & $5.79\times10^{201}$ \\ \hline
+					SHA1   & $6.4\times10^{64}$ \\ \hline
+					MD5	   & $2.28\times10^{52}$ \\ \hline
+				\end{tabular}
+				\label{tab:HashCollisions}
+				\caption{Number of Possible Hashes for Different Algorithms}
+			\end{table} 
 	\section{Challenges}
 		\subsection{Hash Challenges}
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
@@ -4780,6 +4779,9 @@ Dump of assembler code for function main:
 				\item[Free Software] This is a movement similar to open source, but more vehement in their stance. 
 					All software must be free (as in the code freely available) for reasons of security, progress and ideology. 
 					This is mainly pushed by the GNU movement and the Free Software Foundation.
+				\item[Run Level] This is the level to which the system boots. 
+					These can also be known as targets on newer systems. 
+					They can be single user, multi-user, CLI only or graphical. 
 			\end{description}
 		\subsection{History}
 			\subsubsection{UNIX}
@@ -4878,6 +4880,102 @@ Dump of assembler code for function main:
 						o & Other Permissions \\ \hline
 					\end{tabular}
 				\end{center}
+		\subsection{Linux Commands}
+			Linux commands are the basis for interacting with the system. 
+			One can think of them as a way to speak to the computer without going through the interpreter that is the GUI. 
+			The difference between these two is that the GUI was made to make simple things easy, the CLI makes complex things possible. 
+			Thus, using the CLI to ``speak'' to the computer allows you to interact with the system. 
+
+			The CLI can be broken down into parts. 
+			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
+					\hline
+					\textbf{Command} & \multicolumn{2}{| c |}{Arguments}  & Other \\ \hline
+					& \textbf{Flags} & \textbf{Data} & \\ \hline
+					The name or location of the command to run & 
+					Switches that change the way the program will work & 
+					Data which the program operates on. This can be dispersed within multiple flags &
+					Other content such as pipes and redirection. 
+					Any commands passed here follow the same format \\ \hline
+				\end{tabular}
+				\label{tab:CLIParts}
+				\caption{Parts of a CLI Command}
+			\end{table}
+
+			Further to this, understanding how the shell that you are using works can make using it far more efficient. 
+			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| p{3cm} | p{7cm} |} 
+					\hline
+					\textbf{Key Combination} & \textbf{Function} \\ \hline
+					\keys{\ctrl + A} & Move cursor to the beginning of the line. \\ \hline
+					\keys{\ctrl + C} & End a running program and return to the prompt. \\ \hline
+					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\ \hline
+					\keys{\ctrl + E} & Move the cursor to the end of the line. \\ \hline
+					\keys{\ctrl + H} & Generate a backspace character. \\ \hline
+					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline 
+					\keys{\ctrl + R} & Search command history. \\ \hline
+					\keys{\ctrl + Z} & Suspend a program. \\ \hline
+					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\ \hline
+					\keys{\arrowkeyup} or \keys{\arrowkeydown} & Browse command history. \\ \hline
+					\keys{\shift + Page Up} or \keys{\shift + Page Down} & Browse terminal buffer (See text that has been scrolled off screen. \\ \hline
+					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\ \hline
+					\keys{\tab + \tab} & Show options for completion. \\ \hline
+				\end{tabular}
+				\label{tab:BashKeyShortcuts}
+				\caption{Keyboard Shortcuts for the Bourne Again Shell}
+			\end{table}
+
+			Commands are also altered by a set of variables called the environment. 
+			These variables are inherited from the calling program, and can give instructions as to where to find things or how to act. 
+			For example, when you load up your favorite shell, it reads from the ``PATH'' variable to determine where to find programs to run. 
+			You can see the values of these variables by running the command ``echo \$<name>'' at the prompt. 
+			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
+		\subsection{Man Pages}
+			The information found here is simply an introduction. 
+			It is a small subsection of the information that exists on Linux and it's systems. 
+			Most of this information can be found in its most raw technical form in the Linux man pages. 
+
+			These documents are the basis for working with Linux programming, as well as programming on Linux. 
+			It is broken down into chapters---each having an overarching topic---then further broken into commands or functions. 
+			A condensed table of contents for man pages is below:
+			\begin{enumerate}
+				\item User Commands
+				\item System Calls
+				\item Library Functions
+				\item Special Files
+				\item File Formats
+				\item Games
+				\item Conventions and Miscellany
+				\item Administration and Privileged Commands
+				\item[L.] Math Library Functions
+				\item[N.] TCL Functions
+			\end{enumerate}
+
+			The individual pages within these documents are also broken into standard sections. 
+			These sections are:
+			\begin{enumerate}
+				\item Name of the command and ID of section.
+				\item Name of command and a short description. 
+					This description is seachable using the ``apropos'' command. 
+				\item Synopsis of the command with full technical notation. 
+					Generally this will give all basic options. 
+					Optional arguments are within \[\] brackets.
+				\item A longer Description
+				\item Options with descriptions listed. 
+				\item Environmental Variables that effect the command or function. 
+				\item Command or function specific sections. 
+				\item See Also references to other man pages. 
+				\item Author of the given page. 
+				\item Known bugs. 
+			\end{enumerate}
+
+			These pages can be navigated in the same way as the system pager, which on most modern systems is less. 
+			For simpler descriptions, the ``info'' command works in a similar way. 
+
 	\section{The CVE System}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
 		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
