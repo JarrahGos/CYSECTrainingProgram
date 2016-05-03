@@ -101,6 +101,7 @@
 	\section{Overview of Challenge}
 		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
 		and sponsored by multiple IT, communication and finance companies. 
+		In the 2015 competition, there were 64 teams that competed, each from Australian Universities. 
 		The challenge has the goal of ``finding the next generation of Australian Cyber Security talent''.
 		This makes this challenge a good starting point for compiling the requirements for a Cyber Security training program. 
 	\section{Main Areas of Focus}
@@ -125,7 +126,7 @@
 			The member will then move through a number of systems, 
 			until they gain full access to the remote domain and it's DNS server. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/corporate\_network\_pentest}}
 			\begin{quote}
 				``The Chief Visionary Officer would like you to assess the security of the ECWI corporate network and explain the vulnerabilites located to non-technical staff. This will allow ECWI staff to provide sound advice to enterprises. Players should set their DNS server to 192.168.5.53''
 			\end{quote}
@@ -152,7 +153,7 @@
 			This site is also connected to the IT administrative equipment. 
 			Succeeding in this challenge starts with a basic understanding of javascript, moving to session hijacking and other more complex web attacks. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/web\_application\_pentest}}
 			\begin{quote}
 				``The initiative believe their intranet web site is secure due to them using all of the wellness advice that they provide to enterprises. However they are big believers in 'trust but verify' and would like you to verify that the website is secure. You can find the website at http://www.ecwi.cysca''. 
 			\end{quote}
@@ -174,11 +175,45 @@
 					%TODO: There may be more. 
 			\end{itemize}
 		\subsection{Detect and Defend}
+			This section required the member to move from attack to defence. 
+			It starts with cyber event reporting and moves to IPS tuning and exploit forensics. 
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/detect\_and\_defend}}
+			\begin{quote}
+				``After being notifed by the ECWI network administrator, 
+				the initiative took some network traffic dumps and recovered a malware sample. 
+				However, they don't know how to discover if there is any maliciousness within.
+				Once you have located the malicious data, 
+				the initiative would like you to create STIX reports so they can share information 
+				with enterprises to improve their cloud wellness.''
+			\end{quote}
+			
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item STIX Reporting.
+					Structured Threat Information Expression is a standard (XML based) reporting scheme for cyber security incidents. 
+					It is commonly used to communicate these events between organisations.
+				\item Network Forensics.
+					When writing reports on attacks, one must be able to understand how the attack occurred. 
+					Being able to determine what occurred during the attack is fundamental in creating useful threat intelligence. 
+				\item Malware analysis.
+					This it the act of gathering information from captured malware. 
+					It usually takes both static reverse engineering and sandboxed dynamic analysis. 
+					One should also create hash based signatures so the malware can be found elsewhere. 
+				\item Snort. 
+					This is a network IPS that is used to ensure all traffic on the network follows a known set of rules. 
+					Understanding how to configure these tools is a core part of network defence. 
+				\item Netflow.
+					Netflow is a tool used to gather basic data on communications. 
+					While it will not give content, it is useful in determining who accessed what part of the network and when. 
+				\item PCAP analysis. 
+					Analysing packet captures is one of the more detailed ways of finding how an attack occurred and what information was released. 
+					This is usually done using tools such as wireshark. 
+			\end{itemize}
 		\subsection{Forensics}
 			This section involves both file and network forensics, as well as gathering information on previous attacks. 
 			This section starts with a PCAP of an attack in which the country of origin was hidden and moves to Memory analysis to determine the means of the attack. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/forensics}}
 			\begin{quote}
 				``Following on from a security report, the initiative would like you to use your forensics skills to get to the bottom of any wrongdoing (either internal or external) on their network. Using the following files, find out what is happening and who is behind it.'' 
 			\end{quote}
@@ -203,12 +238,13 @@
 					This will allow the attacker to retain access to the system across reboots and other system changes. 
 					However, it will leave a signature on the system that can be found. 
 			\end{itemize}
+
 		\subsection{Hash Cracking and Cryptography}
 			This section required that the member break a number of hashes and determine weakness in home build cryptography solutions. 
 			An understanding of John the Ripper or Hashcat would be a good starting point for this section. 
 			However, a stronger understanding of cryptography is necessary in order to break the later challenges. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/crypto\_and\_hash\_cracking}}
 			\begin{quote}
 				``The initiative provide wellness advice to enterprises and this includes information on choosing a good password. They would like you to see how resistant each of these passwords are to password recovery. The initiative do not have anyone skilled in Cryptography. They would like you to assess some of their secure crypto systems and solve a crypto problem discovered as part of a security response.''
 			\end{quote}
@@ -233,7 +269,7 @@
 			This section is designed to test the members programming skill by giving them logic challenges which are not a part of normal programming. 
 			It starts with word unscrambling, ending in mathematical calculation. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/programming}}
 			\begin{quote}
 				``The initiative staff would like to show them how to 'code'. They have a number of samples that they would like to see you solve in code to help them learn.''
 			\end{quote}
@@ -267,7 +303,7 @@
 			It starts with a semi-blind attack, with some source given, but not the rest of the program. 
 			It then ends with a C programming and comparison challenge. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/reverse\_engineering}}
 			\begin{quote}
 				``There are no reverse engineers in the initiative, however they have a number of systems with incomplete documentation and one backdoored version of their software. They would like you to determine the functionality to allow them to continue to use these services.''
 			\end{quote}
@@ -295,7 +331,7 @@
 			Some of these flaws are well known and obvious, but others are significantly harder to see. 
 			This section starts with running a command without python builtins, ending with deobfuscating code and writing python shellcode. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/python\_exploitation}}
 			\begin{quote}
 				``The initiative's customers use Python heavily, they have created a number of secure python systems for use by enterprises. Please verify that the cloud wellness is suitable on these systems.''
 			\end{quote}
@@ -324,7 +360,7 @@
 			This server is running a number of services which make it vulnerable to attacks. 
 			This attacks starts with a basic Heartbleed credential steal, ending with privilege escalation. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/hackthebox1}\\\qquad\url{https://github.com/CySCA/CySCA2015/tree/master/hackthebox2}} 
 			\begin{quote}
 				``The initiative would like you to assess this machine on their network. They are concerned that it may have a number of high profile vulnerabilities.''
 			\end{quote}
@@ -383,9 +419,9 @@
 				\quad Trivia, General knowledge & 1 & \\ \hline 
 				\quad Mathematics & 1 & \\ \hline 
 				\quad QR Codes & 1 & \\ \hline 
-				\textbf{Forensics} & \textbf{4} & \textbf{0.7}\\ \hline
-				\quad PCAP & 1 & \\ \hline
-				\quad Network Forensics & 1 & \\ \hline 
+				\textbf{Forensics} & \textbf{6} & \textbf{0.7}\\ \hline
+				\quad PCAP & 2 & \\ \hline
+				\quad Network Forensics & 3 & \\ \hline 
 				\quad DOXXING & 1 & \\ \hline 
 				\quad Attack Traffic & 1 & \\ \hline 
 				\quad Disk and Memory Analysis & 1 & \\ \hline 
@@ -394,10 +430,11 @@
 				\quad Metasploit & 1 & \\ \hline 
 				\quad Nmap & 1 & \\ \hline 
 				\quad Heartbleed & 1 & \\ \hline
-				\textbf{Reverse Engineering} & \textbf{3} & \textbf{0.6}\\ \hline 
+				\textbf{Reverse Engineering} & \textbf{4} & \textbf{0.6}\\ \hline 
 				\quad C\# Reverse Engineering & 1 & \\ \hline
 				\quad Blind Reverse Engineering & 1 & \\ \hline 
 				\quad Code Testing & 1 & \\ \hline 
+				\quad Malware Analysis & 2 & \\ \hline
 				\textbf{Cryptography} & \textbf{3} & \textbf{0.8} \\ \hline 
 				\quad Hash Cracking & 2 & \\ \hline
 				\quad Cryptographic Flaws & 1 & \\ \hline 
@@ -406,6 +443,9 @@
 				\quad HTTP MITM & 1 & \\ \hline
 				\quad Session Hijacking & 1 & \\ \hline
 				\quad URL Injection & 1 & \\ \hline
+				\textbf{Network Defence} & \textbf{3} & \textbf{0.6} \\ \hline
+				\quad STIX Reporting & 2 & \\ \hline
+				\quad Snort & 1 & \\ \hline
 				\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
 				\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
 				\quad HTTP & 1 & \\ \hline 
@@ -413,7 +453,7 @@
 				\quad Command Injection & 1 & \\ \hline 
 			\end{tabular}
 			\caption{Breakdown of CySCA Topics}
-			\label{tab:CySEC Breakdown}
+			\label{tab:CySCABreakdown}
 		\end{table}
 		Using both the weighting and the count, one can determine the most useful content to place into a training program. 
 		While all of this content will be added, it will be ordered in the same way as it is here and weighted for importance. 
@@ -434,7 +474,7 @@
 	\section{Main Areas of Focus}
 		This section will explain the skills required for the completion of the challenges within this CTF. 
 		It will list the requirements for each section, defining them so that they can be implemented into the training program. 
-		The sections within this CTF are:
+		The sections within this CTF are:\footnote{\url{https://ctftime.org/event/252/tasks/}}
 		\begin{itemize}
 			\item Pwn
 			\item Reversing
@@ -444,7 +484,7 @@
 			This section is designed to test the members ability to determine cryptographical weaknesses. 
 			It also requires an ability to program and understand code. 
 			
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/crypto}}
 			\begin{itemize}
 				\item Programming.
 					The act of giving a computer a set of actions to complete. 
@@ -472,7 +512,7 @@
 			This section requires the member to gain an understanding of how the target program works and attack the binary itself. 
 			Skills such as shell coding and stack enumeration will be the focus of this section. 
 
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/pwn}}
 			\begin{itemize}
 				\item RIP Redirection. 
 					This is the process of altering the running of a program in such a way that the current instruction pointer now points at a section of memory controlled by the attacker. 
@@ -496,7 +536,7 @@
 			This section requires that the member reverse engineer and understand the program that they are given. 
 			This requires skill in a number of areas, not the least of which is programming and the use of a tool such as radare2. 
 
-			The following is a breakdown of the skills required to conduct this task. 
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/reversing}}
 			\begin{itemize}
 				\item Reverse engineering. 
 					The act of reading through and determining how a program works. 
@@ -520,7 +560,7 @@
 			This section requires that the member attack a number of websites using common vulnerabilities in them. 
 			This is one of the most common attacks in the modern world. 
 
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/web}}
 			\begin{itemize}
 				\item Content Security Policy.
 					This is a standard introduced to prevent common web attacks. 
@@ -592,7 +632,7 @@
 		\end{table}
 \chapter{Plaid CTF 2015}
 	\section{Overview of Challenge}
-		Plaid CTF is the annual CTF run by the ``Plaid Parliament of Pwning''. 
+		Plaid CTF\footnote{\url{https://play.plaidctf.com/}} is the annual CTF run by the \href{http://pwning.net/}{``Plaid Parliament of Pwning''}.
 		While lower profile in Australia, this CTF is both international and set at a far higher difficulty level than CySCA. 
 		It's timing within the year allows just enough time for third years returning to the VECC to rebuild their skills after leave and attempt the challenge. 
 		This makes it a good CTF to use for ensuring that the higher level skills have been covered by the training program. 
@@ -605,12 +645,15 @@
 		Due to this, their own CTF competitions are often well built and difficult. 
 	
 	\section{Main Areas Of Focus}
+		This section will explain the skills required for the completion of the challenges within the CTF. 
+		It will list the requirements for each section, defining them so that they can be implemented into the training program. 
+		The sections within this CTF are:\footnote{\url{https://ctftime.org/event/185}}
 		\subsection{Cryptography}
 			This section has the member determine weaknesses in the implementation of cryptographic algorithms. 
 			Each challenge requires an understanding of a certain type of encryption as well as its possible failures. 
 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/crypto}}
 			\begin{itemize}
 				\item Understanding of RSA Encription
 				\begin{itemize}
@@ -633,7 +676,7 @@
 			This section has the member attempt to determine the types and contents of unknown files. 
 			To successfully complete it, the member will need to have a good understanding of error checking and file types. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/forensics}}
 			\begin{itemize}
 				\item Understanding of file types. 
 					The file types and their heads/trailers can be used to determine whether multiple files are stored in one, or why a file is corrupted. 
@@ -659,7 +702,7 @@
 			This section requires the crafting of shellcode and manual exploit discovery. 
 			The member will discover the flag only when they have gained access to a shell on the machine that the service was running on. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/pwnable}}
 			\begin{itemize}
 				\item Shellcoding
 					This is the act of writing code which will give an attacker a shell on another system. 
@@ -700,7 +743,7 @@
 			This section has a member attempt to understand how a program is working in order to exploit it. 
 			The member will be required to use the tools at their disposal to determine algorithms and computational flaws in the provided programs. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/reversing}}
 			\begin{itemize}
 				\item Reverse Engineering tools
 					\begin{itemize}
@@ -723,7 +766,7 @@
 	
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
 		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
 		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
 		This will be used in determining how much depth will be entered into when writing the training program.
@@ -838,6 +881,16 @@
 					\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
 					\quad Cryptographic Flaws & 1 & \\ \hline 
 					\quad Encoding & 1 & \\ \hline 
+					\textbf{Forensics} & \textbf{11} & \textbf{0.7}\\ \hline
+					\quad PCAP & 2 & \\ \hline
+					\quad File Types & 1 & \\ \hline
+					\quad File Conversions & 1 & \\ \hline 
+					\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+					\quad Cyclic Redundancy Checks & 1 & \\ \hline
+					\quad Network Forensics & 2 & \\ \hline 
+					\quad DOXXING & 1 & \\ \hline 
+					\quad Attack Traffic & 1 & \\ \hline 
+					\quad Disk and Memory Analysis & 1 & \\ \hline 
 					\textbf{Exploitation} & \textbf{10} & \textbf{0.7} \\ \hline
 					\quad C Exploitation & 2 & \\ \hline 
 					\quad x86\_64 Registers and Assembly & 2 & \\ \hline
@@ -849,17 +902,7 @@
 					\quad Smashed Stack Cleaning & 1 & \\ \hline 
 					\quad Heap Overflows & 1 & \\ \hline 
 					\quad libc Attacks & 1 & \\ \hline 
-					\textbf{Forensics} & \textbf{9} & \textbf{0.7}\\ \hline
-					\quad PCAP & 1 & \\ \hline
-					\quad File Types & 1 & \\ \hline
-					\quad File Conversions & 1 & \\ \hline 
-					\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
-					\quad Cyclic Redundancy Checks & 1 & \\ \hline
-					\quad Network Forensics & 1 & \\ \hline 
-					\quad DOXXING & 1 & \\ \hline 
-					\quad Attack Traffic & 1 & \\ \hline 
-					\quad Disk and Memory Analysis & 1 & \\ \hline 
-					\textbf{Reverse Engineering} & \textbf{9} & \textbf{0.6}\\ \hline 
+					\textbf{Reverse Engineering} & \textbf{10} & \textbf{0.6}\\ \hline 
 					\quad Radare2 & 2 & \\ \hline 
 					\quad IDA 64 & 2 & \\ \hline 
 					\quad C\# Reverse Engineering & 1 & \\ \hline
@@ -867,11 +910,15 @@
 					\quad Code Testing & 1 & \\ \hline 
 					\quad Side Channel Attacks & 1 & \\ \hline 
 					\quad ltrace & 1 & \\ \hline 
+					\quad Malware Analysis & 1 & \\ \hline
 					\textbf{Network Exploitation} & \textbf{4} & \textbf{0.8} \\ \hline 
 					\quad Attack Persistence & 1 & \\ \hline 
 					\quad Metasploit & 1 & \\ \hline 
 					\quad Nmap & 1 & \\ \hline 
 					\quad Heartbleed & 1 & \\ \hline
+					\textbf{Network Defence} & \textbf{3} & \textbf{0.6} \\ \hline
+					\quad STIX Reporting & 2 & \\ \hline
+					\quad Snort & 1 & \\ \hline
 					\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
 					\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
 					\quad HTTP & 1 & \\ \hline 
@@ -880,6 +927,19 @@
 					\caption{\label{tab:summary}Summary of CTF Skills}
 				\end{longtable}
 			\end{center}
+	
+	The Skills included in table \ref{tab:summary} are the basis for a good understanding of cyber security as seen in CTFs. 
+	However, these events are not the only part of the industry. 
+	These skills have been weighted to bring out the necessity of the skill not only to the CTF competitions listed here, 
+	but also to a member entering the industry. 
+	Thus, when compiling the training program, one should take thees weightings into account. 
+	Items weighted higher should be taught with more depth and focus, while items weighted lower should have less focus and time. 
+
+	The skills outlined here also include a number of specific tools. 
+	While these tools don't constantly change, they do evolve and occasionally become deprecated. 
+	Due to this, any training should focus on skills, rather than tools. 
+	This will enable those being taught to learn the necessary tools in their own time, 
+	gaining the skill necessary to learn new ones as they are released. 
 \appendix
 	\label{ch:Appendix}
 	\listoftables
