@@ -78,105 +78,224 @@
 \begin{document}
 \maketitle
 \tableofcontents
+\begin{abstract}
+	\addcontentsline{toc}{chapter}{Introduction}
+	This document is the fore-bare for a cyber security training program. 
+	The program will focus on both the skills needed to be able to enter the field professionally, but also those needed to compete in CTFs, which are the main testing activity of students studying in the filed. 
+	The goal of the training program is to set out the topics which need to be discussed before beginning to compete, 
+	while also giving detail on how the systems used work for those desiring more depth. 
+
+	This overview of challenges sets out the requirements of a number of CTFs, giving detail on what they individually require. 
+	This will then be used in the creation of the training program, ensuring that it contains the required skills for a wide set of CTFs. 
+
+	Each CTF within this overview will be broken down into categories, with each category containing a list and description of the skills required to complete the challenges within. 
+	These categories will then be amalgamated into one table for each challenge. 
+	This table will give both the number of times a particular skill was found in the challenge and the weighting that was placed on the skill. 
+	Using these two values, it can be determined how important any one skill is compared to the others within the challenge. 
+
+	At the end of the document is the overview of all challenges which have been analysed. 
+	This overview contains the same content as the prior tables, but it has been condensed into a single reference with all duplicates removed and accounted for. 
+	It is this final table which will be used in writing the final training program. 
+\end{abstract}
 \chapter{CySCA}
 	\section{Overview of Challenge}
 		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
 		and sponsored by multiple IT, communication and finance companies. 
+		In the 2015 competition, there were 64 teams that competed, each from Australian Universities. 
 		The challenge has the goal of ``finding the next generation of Australian Cyber Security talent''.
 		This makes this challenge a good starting point for compiling the requirements for a Cyber Security training program. 
 	\section{Main Areas of Focus}
+		This section will explain the skills required for the 2015 challenge. 
+		Specifically, it will explain the requirements for the following areas:
+		\begin{itemize}
+			\item Corporate Network Penetration Test.
+			\item Web Application Penetration Test. 
+			\item Detect and Defend
+			\item Forensics
+			\item Hash Cracking and Cryptography
+			\item Programming
+			\item Reverse Engineering
+			\item Python Exploitation
+			\item Hack the Box. 
+		\end{itemize}
+		These sections were the main areas of the competition, and correspond with some of the major areas of cyber security. 
+		Thus, these sections will be used to determine which skills are required for the competition in the following section. 
 		\subsection{Corporate Network Penetration Test}
 			This is a step by step Penetration Test of a corporate network. 
 			It requires the member to start a DNS enumeration to work out the external systems on the network. 
 			The member will then move through a number of systems, 
 			until they gain full access to the remote domain and it's DNS server. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/corporate\_network\_pentest}}
 			\begin{quote}
-				The Chief Visionary Officer would like you to assess the security of the ECWI corporate network and explain the vulnerabilites located to non-technical staff. This will allow ECWI staff to provide sound advice to enterprises. Players should set their DNS server to 192.168.5.53
+				``The Chief Visionary Officer would like you to assess the security of the ECWI corporate network and explain the vulnerabilites located to non-technical staff. This will allow ECWI staff to provide sound advice to enterprises. Players should set their DNS server to 192.168.5.53''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
-				\item DNS enumeration or zone transfer. 
-				\item Command Injection
+				\item DNS enumeration or zone transfer.
+					This is the act of gathering data on internal systems based on the responses of external facing DNS servers. 
+				\item Command Injection.
+					Using a system, inject commands for the underling shell. 
+					This requires a good understanding of the shell of the running system. 
 				\item HTTP Directory Traversal. 
-				\item Man-in-the-Middle HTTP attack
-				\item C\# Reverse Engineering
-				\item Hash Cracking
+					Forcing a web server to serve files that it should not have access to by moving along the directory structure.
+				\item Man-in-the-Middle HTTP attack.
+					Intercepting traffic from server to client and either gathering data from that traffic or injecting code into it. 
+				\item C\# Reverse Engineering.
+					Taking a program written and compiled into C\# and determining what it is trying to do and how. 
+					This gives significant information on the system that was originally hidden. 
+				\item Hash Cracking. 
+					Taking the output of a one way algorithm and finding the original data. 
 			\end{itemize}
 		\subsection{Web Application Penetration Test}
 			This is a penetration test of an Intranet site which is used for most of the communications of the business. 
 			This site is also connected to the IT administrative equipment. 
 			Succeeding in this challenge starts with a basic understanding of javascript, moving to session hijacking and other more complex web attacks. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/web\_application\_pentest}}
 			\begin{quote}
-				The initiative believe their intranet web site is secure due to them using all of the wellness advice that they provide to enterprises. However they are big believers in 'trust but verify' and would like you to verify that the website is secure. You can find the website at http://www.ecwi.cysca
+				``The initiative believe their intranet web site is secure due to them using all of the wellness advice that they provide to enterprises. However they are big believers in 'trust but verify' and would like you to verify that the website is secure. You can find the website at http://www.ecwi.cysca''. 
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
-				\item Javascript and information obfuscation. 
+				\item JavaScript and information obfuscation. 
+					JavaScript is the language of the web. It is used to allow code to set up and act on a web page and should be able to be run on any client. 
+					Often, information or the code itself is obfuscated into the website using JavaScript.
+					Understanding how this is done will make finding that data far easier. 
 				\item Session hijacking.
+					When a user connects to a website, it will create a cookie which can be used to check that the user has been authenticated. 
+					This cookie should be accessible only to the person browsing the site. 
+					However, session hijacking is a means of taking this cookie and pretending to be the original user. 
 				\item URL Injection
+					Knowing how a URL (and the underlying HTTP) works allows you to alter it to gain access that you shouldn't have. 
+					This can be used to access other users data or to 
 				\item Cryptography
 					%TODO: There may be more. 
 			\end{itemize}
 		\subsection{Detect and Defend}
+			This section required the member to move from attack to defence. 
+			It starts with cyber event reporting and moves to IPS tuning and exploit forensics. 
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/detect\_and\_defend}}
+			\begin{quote}
+				``After being notifed by the ECWI network administrator, 
+				the initiative took some network traffic dumps and recovered a malware sample. 
+				However, they don't know how to discover if there is any maliciousness within.
+				Once you have located the malicious data, 
+				the initiative would like you to create STIX reports so they can share information 
+				with enterprises to improve their cloud wellness.''
+			\end{quote}
+			
+			The following is a breakdown of the skills required to conduct this task:
+			\begin{itemize}
+				\item STIX Reporting.
+					Structured Threat Information Expression is a standard (XML based) reporting scheme for cyber security incidents. 
+					It is commonly used to communicate these events between organisations.
+				\item Network Forensics.
+					When writing reports on attacks, one must be able to understand how the attack occurred. 
+					Being able to determine what occurred during the attack is fundamental in creating useful threat intelligence. 
+				\item Malware analysis.
+					This it the act of gathering information from captured malware. 
+					It usually takes both static reverse engineering and sandboxed dynamic analysis. 
+					One should also create hash based signatures so the malware can be found elsewhere. 
+				\item Snort. 
+					This is a network IPS that is used to ensure all traffic on the network follows a known set of rules. 
+					Understanding how to configure these tools is a core part of network defence. 
+				\item Netflow.
+					Netflow is a tool used to gather basic data on communications. 
+					While it will not give content, it is useful in determining who accessed what part of the network and when. 
+				\item PCAP analysis. 
+					Analysing packet captures is one of the more detailed ways of finding how an attack occurred and what information was released. 
+					This is usually done using tools such as wireshark. 
+			\end{itemize}
 		\subsection{Forensics}
 			This section involves both file and network forensics, as well as gathering information on previous attacks. 
 			This section starts with a PCAP of an attack in which the country of origin was hidden and moves to Memory analysis to determine the means of the attack. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/forensics}}
 			\begin{quote}
-				Following on from a security report, the initiative would like you to use your forensics skills to get to the bottom of any wrongdoing (either internal or external) on their network. Using the following files, find out what is happening and who is behind it. 
+				``Following on from a security report, the initiative would like you to use your forensics skills to get to the bottom of any wrongdoing (either internal or external) on their network. Using the following files, find out what is happening and who is behind it.'' 
 			\end{quote}
-
+			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
-				\item PCAP forensics
-				\item DOXXING
-				\item CVEs and CVE to attack matching
-				\item Attack traffic Forensics
-				\item Disk/memory Analysis
-				\item Attack persistence
+				\item PCAP forensics.
+					Reading and understanding packet captures in order to determine what occurred while the capture was being taken. 
+					This can be used to gather location and identity data on the attacker and victim. 
+				\item DOXXING. 
+					Given a small amount of information, determine the identity or location of a person or organisation.
+				\item CVEs and CVE to attack matching.
+					The common vulnerabilities and exposures system is used to maintain a database of possible exploits. 
+					This can be used to track down the attack vector that was used for exploiting a system. 
+				\item Attack traffic Forensics.
+					Using a PCAP or NetFlow capture to determine what occurred during an attack. 
+					This should give information on the systems affected and the attacker. 
+				\item Disk/memory Analysis.
+					Gathering information from the disk or memory of a computer. 
+					This can be done either live or in an image, but requires an understanding of tools and architecture.
+				\item Attack persistence.
+					The method of making an attack self supporting. 
+					This will allow the attacker to retain access to the system across reboots and other system changes. 
+					However, it will leave a signature on the system that can be found. 
 			\end{itemize}
+
 		\subsection{Hash Cracking and Cryptography}
 			This section required that the member break a number of hashes and determine weakness in home build cryptography solutions. 
 			An understanding of John the Ripper or Hashcat would be a good starting point for this section. 
 			However, a stronger understanding of cryptography is necessary in order to break the later challenges. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/crypto\_and\_hash\_cracking}}
 			\begin{quote}
-				The initiative provide wellness advice to enterprises and this includes information on choosing a good password. They would like you to see how resistant each of these passwords are to password recovery. The initiative do not have anyone skilled in Cryptography. They would like you to assess some of their secure crypto systems and solve a crypto problem discovered as part of a security response.
+				``The initiative provide wellness advice to enterprises and this includes information on choosing a good password. They would like you to see how resistant each of these passwords are to password recovery. The initiative do not have anyone skilled in Cryptography. They would like you to assess some of their secure crypto systems and solve a crypto problem discovered as part of a security response.''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
-				\item Hashcat or John the Ripper
-				\item Network Forensics
+				\item Hashcat or John the Ripper. 
+					These are common hash cracking tools, they both have the power to conduct significant attacks while being able to distribute over multiple machines. 
+				\item Network Forensics.
+					Taking captured data or a live network and determining either it's make up or what was sent across it. 
 				\item Binary operations. 
+					Working at the lowest level of data and code, understanding how the CPU itself interacts with this. 
+					This is useful in both programming and cryptography. 
 				\item Hashing theory and cryptographic flaws.
+					The one-way means of taking data and storing it in such a way that the hash cannot be used to get the original data. 
 				\item Programming.
+					This is the act of telling a computer what to do and how to do it. 
+					It is useful in a number of cyber security challenges and has been found to be necessary here. 
 			\end{itemize}
 
 		\subsection{Programming}
 			This section is designed to test the members programming skill by giving them logic challenges which are not a part of normal programming. 
 			It starts with word unscrambling, ending in mathematical calculation. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/programming}}
 			\begin{quote}
-				The initiative staff would like to show them how to 'code'. They have a number of samples that they would like to see you solve in code to help them learn.
+				``The initiative staff would like to show them how to 'code'. They have a number of samples that they would like to see you solve in code to help them learn.''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
-				\item Programming (Python)
-				\item Networking
-				\item Logic
+				\item Programming (Python).
+					Programming is the act of telling a computer what to do. 
+					Python is a language that due to it's support and modules, as well as the ease of writing and error checking it has become the standard language in cyber security. 
+				\item Networking.
+					This is the means of connecting two or more computers together. 
+					At the base level it is the understanding of how these physical and logical connections work. 
+					But at the higher programming level, it is an understanding of sockets and protocols. 
+				\item Logic.
+					The structured thought process used to get to an answer. 
+					This is especially important in programming as it forms the basis of how a computer works. 
 				\item Trivia and general knowledge. 
+					These are items which while not necessary are helpful to understand in order to know what the challenge means. 
+					For example, a number of older games were used in challenge hints, helping those who understood them to complete the challenge. 
 				\item Mathematics. 
-				\item QR Codes
+					A general understanding of mathematics is useful in the programming of solutions to these problems. 
+					High level mathematics is not required outside specialist fields such as cryptography, but a lower level understanding helps. 
+				\item QR Codes.
+					These are digital codes similar (but more complex) to bar codes.
+					The contain information as well as a means of restoring that information if the code is damaged. 
+					This restorative process requires an understanding of mathematics as well as error correction. 
 			\end{itemize}
 
 		\subsection{Reverse Engineering}
@@ -184,18 +303,27 @@
 			It starts with a semi-blind attack, with some source given, but not the rest of the program. 
 			It then ends with a C programming and comparison challenge. 
 			
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/reverse\_engineering}}
 			\begin{quote}
-				There are no reverse engineers in the initiative, however they have a number of systems with incomplete documentation and one backdoored version of their software. They would like you to determine the functionality to allow them to continue to use these services.
+				``There are no reverse engineers in the initiative, however they have a number of systems with incomplete documentation and one backdoored version of their software. They would like you to determine the functionality to allow them to continue to use these services.''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item Programming
+					The art of telling a computer what to do. 
 				\item Accessing networked programs. 
+					This requires tools such as ``nc'' or socket programming in order to properly interface with the computer on the other end of the network. 
 				\item Blind Reverse Engineering. 
+					This is the act of gathering information and algorithms from a system for which you are supplied no code or documentation. 
+					You may be given a binary to attack, or you may have to logically reverse engineer it from the other side of a socket. 
 				\item Logic and code testing. 
+					Logic is the key thought process required in understanding how a computer works. 
+					Code testing requires you to interact with a program in every possible way, 
 				\item HTTP. 
+					This is the protocol that the Web runs on. 
+					Understanding it allows one to understand how many of the programs which have been created to interact on the Web will format their transmissions. 
+					Furthermore, it is useful as it enables you to manually create requests and send them to servers that you are attempting to exploit. 
 			\end{itemize}
 
 		\subsection{Python Exploitation}
@@ -203,18 +331,28 @@
 			Some of these flaws are well known and obvious, but others are significantly harder to see. 
 			This section starts with running a command without python builtins, ending with deobfuscating code and writing python shellcode. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/python\_exploitation}}
 			\begin{quote}
-The initiative's customers use Python heavily, they have created a number of secure python systems for use by enterprises. Please verify that the cloud wellness is suitable on these systems.
+				``The initiative's customers use Python heavily, they have created a number of secure python systems for use by enterprises. Please verify that the cloud wellness is suitable on these systems.''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item Python coding.
+					Programming in the python language is the main method of programming within cyber security. 
+					Understanding this within the python exploitation section was fundamental to creating a working solution to the given problems. 
 				\item Python builtins. 
+					These are the language features that come with the base environment of python. 
+					When no modules have been imported, python has only it's builtins. 
 				\item Pickled input. 
-				\item obfuscation and deobfuscation. 
+					Pickling is a method of packing data for transmission or storage. 
+					It is used to keep a set of data together over an action, but can also be exploited to give unexpected results. 
+				\item Obfuscation and Deobfuscation. 
+					This is an attempt at hiding information. 
+					Rather than encrypting it and making the information cease to be there without the correct key, obfuscation simply hides it within the surrounding text or data. 
+					Deobfuscation is the act of finding this information.
 				\item Python shellcode. 
+					Python shellcode is code which is used to gain shell access to a computer running through a python program. 
 			\end{itemize}
 
 		\subsection{Hack the Box}
@@ -222,26 +360,45 @@ The initiative's customers use Python heavily, they have created a number of sec
 			This server is running a number of services which make it vulnerable to attacks. 
 			This attacks starts with a basic Heartbleed credential steal, ending with privilege escalation. 
 
-			The official description of this section is as follows:
+			The official description of this section is as follows:\footnote{\url{https://github.com/CySCA/CySCA2015/tree/master/hackthebox1}\\\qquad\url{https://github.com/CySCA/CySCA2015/tree/master/hackthebox2}} 
 			\begin{quote}
-				The initiative would like you to assess this machine on their network. They are concerned that it may have a number of high profile vulnerabilities.
+				``The initiative would like you to assess this machine on their network. They are concerned that it may have a number of high profile vulnerabilities.''
 			\end{quote}
 
 			The following is a breakdown of the skills required to conduct this task:
 			\begin{itemize}
 				\item Metasploit basics. 
+					This is the exploitation framework used for most of the worlds current network exploitation. 
+					It is based on modules written in Ruby which launch the attack and create a payload to execute on the system. 
 				\item Nmap.
+					This is the tool used for scanning a computer or network and determining what is running on it. 
+					It can be used on multiple targets and will give detailed information about the services running on the systems. 
 				\item Heartbleed.
+					This is a vulnerability which occurred in April of 2014. 
+					This allowed a malicious user to request far more information from the server than necessary in an attempt to get keys or other sensitive data stored in memory. 
+					It is also recommended that competitors keep up to date with major vulnerabilities before entering a CTF.
 				\item SSH.
+					The secure shell program used for gaining shell access to a networked computer. 
+					This uses passwords or public key authentication in order to gain access. 
 				\item RSA key cracking. 
+					This is the practice of taking a weak or known RSA key and testing it against other known keys in order to determine the other half of the key. 
 				\item Privilage escalation. 
-				\item NFS
+					When gaining access to a system, often the exploit will not give you full system access. 
+					Privilage escalation is the act of gaining a higher level of access to the system. 
+				\item NFS.
+					Network File Share is one means of sharing files over a network. 
+					Given it's configuration options, it can be difficult to create this in a secure manner. 
 				\item SETUID. 
-				\item Linux Privileges. 
+					This is a bit within the permissions of a file which has it run as another user, no matter who executes it. 
+					This is the basis of local privilege escalation. 
+				\item Linux Privileges and permissions. 
+					Based on the user account and file ownership, Linux gives a given user a set level of access to the system. 
+					Understanding this and the details which go along with it allows an attacker to have a better chance of finding the exploitable program within the system. 
 			\end{itemize}
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
+		There is then a weighting section which conveys how important a given section is to completing the whole challenge. 
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{| l | l | l |}
@@ -262,9 +419,9 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\quad Trivia, General knowledge & 1 & \\ \hline 
 				\quad Mathematics & 1 & \\ \hline 
 				\quad QR Codes & 1 & \\ \hline 
-				\textbf{Forensics} & \textbf{4} & \textbf{0.7}\\ \hline
-				\quad PCAP & 1 & \\ \hline
-				\quad Network Forensics & 1 & \\ \hline 
+				\textbf{Forensics} & \textbf{6} & \textbf{0.7}\\ \hline
+				\quad PCAP & 2 & \\ \hline
+				\quad Network Forensics & 3 & \\ \hline 
 				\quad DOXXING & 1 & \\ \hline 
 				\quad Attack Traffic & 1 & \\ \hline 
 				\quad Disk and Memory Analysis & 1 & \\ \hline 
@@ -273,10 +430,11 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\quad Metasploit & 1 & \\ \hline 
 				\quad Nmap & 1 & \\ \hline 
 				\quad Heartbleed & 1 & \\ \hline
-				\textbf{Reverse Engineering} & \textbf{3} & \textbf{0.6}\\ \hline 
+				\textbf{Reverse Engineering} & \textbf{4} & \textbf{0.6}\\ \hline 
 				\quad C\# Reverse Engineering & 1 & \\ \hline
 				\quad Blind Reverse Engineering & 1 & \\ \hline 
 				\quad Code Testing & 1 & \\ \hline 
+				\quad Malware Analysis & 2 & \\ \hline
 				\textbf{Cryptography} & \textbf{3} & \textbf{0.8} \\ \hline 
 				\quad Hash Cracking & 2 & \\ \hline
 				\quad Cryptographic Flaws & 1 & \\ \hline 
@@ -285,6 +443,9 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\quad HTTP MITM & 1 & \\ \hline
 				\quad Session Hijacking & 1 & \\ \hline
 				\quad URL Injection & 1 & \\ \hline
+				\textbf{Network Defence} & \textbf{3} & \textbf{0.6} \\ \hline
+				\quad STIX Reporting & 2 & \\ \hline
+				\quad Snort & 1 & \\ \hline
 				\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
 				\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
 				\quad HTTP & 1 & \\ \hline 
@@ -292,81 +453,152 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\quad Command Injection & 1 & \\ \hline 
 			\end{tabular}
 			\caption{Breakdown of CySCA Topics}
-			\label{tab:CySEC Breakdown}
+			\label{tab:CySCABreakdown}
 		\end{table}
+		Using both the weighting and the count, one can determine the most useful content to place into a training program. 
+		While all of this content will be added, it will be ordered in the same way as it is here and weighted for importance. 
 
 \chapter{Boston Key Party}
 	\section{Overview of Challenge}
 		The Boston Key Party is a well known CTF that is run early in the year. 
 		This CTF is set at a moderate level, requiring a large amount of background, but not being overly difficult. 
+		It has been used for the last three years as a qualifier for the DEFCON CTF, 
+		which is one of the most prestigious CTFs held each year at the DEFCON conference. 
 		Furthermore, it is often seen by the higher level teams as a warm up CTF. 
 		These attributes make this CTF a good starting point for second year members. 
+
+		The team that runs this CTF are from a diverse background, with many contributing to other teams and large open source projects such as Radare2.
+		Their site can be found at \href{https://web.archive.org/web/20160131055956/http://bostonkeyparty.net/}{bostonkeyparty.net}. 
+		However, this site is only used for the actual CTF event, rather than information. 
+		More information can be found at the \href{https://ctftime.org/event/252}{CTF Time page}.
 	\section{Main Areas of Focus}
+		This section will explain the skills required for the completion of the challenges within this CTF. 
+		It will list the requirements for each section, defining them so that they can be implemented into the training program. 
+		The sections within this CTF are:\footnote{\url{https://ctftime.org/event/252/tasks/}}
+		\begin{itemize}
+			\item Pwn
+			\item Reversing
+			\item Web
+		\end{itemize}
 		\subsection{Cryptography}
 			This section is designed to test the members ability to determine cryptographical weaknesses. 
 			It also requires an ability to program and understand code. 
 			
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/crypto}}
 			\begin{itemize}
 				\item Programming.
+					The act of giving a computer a set of actions to complete. 
 				\item SHA hashing. 
-				\item RSA Key Recovery
+					The one way Secure Hashing Algorithm and it's possible weaknesses. 
+				\item RSA Key Recovery.
+					Returning from a public key (which is weak due to poor generation) to a private key. 
 				\item Elliptic Curve Encryption and Attacks.
-				\item ElGamal Signatures
+					This is a new encryption standard which was designed to replace AES. 
+					It has a number of weaknesses that can be exploited if the implementation is poor. 
+				\item ElGamal Signatures.
+					These are digital signatures which are used to sign documents as a certain person. 
+					There are a number of security issues with this, mainly due to hash collisions. 
 				\item Common RSA Attacks. 
+					RSA being a long serving standard has a number of common attacks, such as the weak random number generator found in some older versions of Debian. 
 				\item DES Weak Keys. 
+					These are a small number of keys which cause the encryption and decryption modes of DES to act in the same or similar ways. 
+					This makes attacking these keys significantly easier. 
 				\item Hash Collisions
+					By nature of taking something and turning it into a constant sized string, hashes have collisions. 
+					Understanding how these collisions work and where they can be found, one can attack some forms of hash. 
+					Specifically MD5 and SHA1 are vulnerable to this. 
 			\end{itemize}
-		\subsection{Pwn}
+		\subsection{``Pwn''}
 			This section requires the member to gain an understanding of how the target program works and attack the binary itself. 
 			Skills such as shell coding and stack enumeration will be the focus of this section. 
 
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/pwn}}
 			\begin{itemize}
 				\item RIP Redirection. 
+					This is the process of altering the running of a program in such a way that the current instruction pointer now points at a section of memory controlled by the attacker. 
+					It is often used in shellcode. 
 				\item Common C program flaws. 
+					Issues such as string format vulnerabilities and buffer overflows are common amongst C (or similar) programs. 
+					Understanding this allows for numerous new entry points into multiple programs. 
 				\item Cleaning after stack smashing. 
+					Once you have smashed into the stack of a program, you will need to clean up the damage done. 
+					This means that the program will continue running and the user will not be notified by a crashed program. 
 				\item Heap overflow. 
+					While not as easy as stack based overflows, heap overflows can be used to gain the same level of access. 
+					This is either through writing a program to the heap and then altering the RIP, or growing the heap to overwrite the stack. 
 				\item Reverse Engineering.
+					This is the process of taking a compiled binary and reading through it to determine how it works and how to break it. 
 				\item libc attacks. 
+					Many modern Linux programs use libc, rather than implementing their own calls or statically linking. 
+					If these calls can be intercepted or redirected, the attacker can own the running process and have it do whatever they desire. 
 			\end{itemize}
 		\subsection{Reversing}
 			This section requires that the member reverse engineer and understand the program that they are given. 
 			This requires skill in a number of areas, not the least of which is programming and the use of a tool such as radare2. 
 
-			The following is a breakdown of the skills required to conduct this task. 
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/reversing}}
 			\begin{itemize}
-				\item Reverse engineering 
+				\item Reverse engineering. 
+					The act of reading through and determining how a program works. 
+					This can also help in exploit development. 
 				\item Reverse engineering tools. 
+					Tools such as GDB/PEDA, Radare2 and IDA are useful in reverse engineering and should be covered when training for it. 
 				\item Programming. 
+					Without understanding how to program one cannot expect to understand how someone else did it without even having the source code. 
 				\item Assembly. 
+					Due to the compilation process, one often cannot gain access to the source code of the program. 
+					While call flow graphs are useful, to gain a true understanding of what the program is doing, one needs to understand Assembly code. 
 				\item Side channel attacks. 
-				\item ltrace. 
+					This is attacking a program through alternative means. 
+					Rather than attempting to break it through direct reverse engineering, it uses dependencies or some other means. 
+				\item ltrace anh strace. 
+					These are library and system call tracers. 
+					They are useful in determining how a program interacts with the system and how to attack it. 
+					They can also be useful in determining how to conduct side channel attacks. 
 			\end{itemize}
 		\subsection{Web}
 			This section requires that the member attack a number of websites using common vulnerabilities in them. 
 			This is one of the most common attacks in the modern world. 
 
-			The following is a breakdown of the skills required to conduct this task:
+			The following is a breakdown of the skills required to conduct this task:\footnote{\url{https://github.com/ctfs/write-ups-2016/tree/master/boston-key-party-2016/web}}
 			\begin{itemize}
 				\item Content Security Policy.
+					This is a standard introduced to prevent common web attacks. 
+					It is based on approving the origin of changes or additions to a website. 
+					However, like every security mechanism, it can be circumvented if poorly implemented. 
 				\item HTTP Redirect attacks. 
+					This is based on systems that will redirect based on a parameter given in the request. 
+					It is commonly used in phishing attacks. 
 				\item Network listeners. 
+					Programs such as ``nc -l'' or other network listeners can be exceptionally useful in web based attacks to determine whether something it attempting to return to your system. 
 				\item HTTP Directory Traversal. 
+					Poorly configured servers will allow you to use the POSIX ``..'' link within a directory to move about. 
+					This means that you can gain access to parts of the system that the server was set to block. 
 				\item HTTP/Ruby Directory Creation. 
+					Some systems will also allow for the creation of directories. 
+					This can be used to alter the systems running and as a step for gaining a higher level of access, especially when coupled with directory traversal. 
 				\item Base64 encoding. 
+					This is a method of storing and transmitting data in a different format. 
+					It looks similar to a hash, but often contains padding equals signs. 
+					If data is stored in this format, it is trivial to return it to a readable form. 
 				\item SQL injection through encoding changes. 
+					SQLi is a common form of database based web attack. 
+					However, it is also often setup in such a way that the data that is entered is filtered. 
+					Encodings will sometimes allow you to bypass these filters and insert your SQL code into the database. 
 			\end{itemize}
 
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
+		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program. 	
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
-				\textbf{Cryptography} & \textbf{8} & \\ \hline
+				\textbf{Cryptography} & \textbf{8} & \textbf{0.8}\\ \hline
 				\quad SHA Hashing & 1 & \\ \hline 
 				\quad RSA Key Recovery & 1 & \\ \hline
 				\quad Eilliptic Curve Encryption and Attacks & 1 & \\ \hline
@@ -375,144 +607,209 @@ The initiative's customers use Python heavily, they have created a number of sec
 				\quad DES Weak Keys & 1 & \\ \hline 
 				\quad Hash Collisions & 1 & \\ \hline 
 				\quad Base64 Encoding & 1 & \\ \hline 
-				\textbf{Web} & \textbf{6} & \\ \hline 
+				\textbf{Web} & \textbf{6} & \textbf{1} \\ \hline 
 				\quad Content Security Policy & 1 & \\ \hline 
 				\quad HTTP Redirect attacks (XSS) & 1 & \\ \hline 
 				\quad Network Listeners & 1 & \\ \hline 
 				\quad HTTP Directory Traversal & 1 & \\ \hline 
 				\quad HTTP/Ruby Directory Creation & 1 & \\ \hline 
 				\quad SQL Injection through character set encoding & 1 & \\ \hline 
-				\textbf{Exploitation} & \textbf{5} & \\ \hline 
+				\textbf{Exploitation} & \textbf{5} & \textbf{0.7} \\ \hline 
 				\quad RIP Redirection & 1 & \\ \hline 
 				\quad Common C Flaws & 1 & \\ \hline 
 				\quad Smashed Stack Cleaning & 1 & \\ \hline 
 				\quad Heap Overflows & 1 & \\ \hline 
 				\quad libc Attacks & 1 & \\ \hline 
-				\textbf{Reverse Engineering} & \textbf{3} & \\ \hline
+				\textbf{Reverse Engineering} & \textbf{3} & \textbf{0.6} \\ \hline
 				\quad Tools (IDA/Radare2) & 1 & \\ \hline 
 				\quad Assembly & 1 & \\ \hline 
 				\quad Side Channel Attacks & 1 & \\ \hline 
 				\quad ltrace & 1 & \\ \hline 
-				\textbf{Programming} & \textbf{3} & \\ \hline
+				\textbf{Programming} & \textbf{3} & \textbf{1}\\ \hline
 			\end{tabular}
 			\caption{Breakdown of Boston Key Party CTF Topics}
 			\label{tab:BCTFBreakdown}
 		\end{table}
 \chapter{Plaid CTF 2015}
 	\section{Overview of Challenge}
-		Plaid CTF is the annual CTF run by the Plaid Parliament of Pwning. 
+		Plaid CTF\footnote{\url{https://play.plaidctf.com/}} is the annual CTF run by the \href{http://pwning.net/}{``Plaid Parliament of Pwning''}.
 		While lower profile in Australia, this CTF is both international and set at a far higher difficulty level than CySCA. 
+		It's timing within the year allows just enough time for third years returning to the VECC to rebuild their skills after leave and attempt the challenge. 
 		This makes it a good CTF to use for ensuring that the higher level skills have been covered by the training program. 
+
+		This CTF is also a DEFCON qualifier. 
+		This means that it is held at the same high standard as the Boston Key Party, while also having a broader range of challenges and being harder overall. 
+
+		The team that runs this CTF is from Carnegie Mellon University and runs a number of other CTFs, such as picoctf. 
+		This team is regularly one of the highest scoring teams on CTF Time, making them experts in the competitions. 
+		Due to this, their own CTF competitions are often well built and difficult. 
 	
 	\section{Main Areas Of Focus}
+		This section will explain the skills required for the completion of the challenges within the CTF. 
+		It will list the requirements for each section, defining them so that they can be implemented into the training program. 
+		The sections within this CTF are:\footnote{\url{https://ctftime.org/event/185}}
 		\subsection{Cryptography}
 			This section has the member determine weaknesses in the implementation of cryptographic algorithms. 
 			Each challenge requires an understanding of a certain type of encryption as well as its possible failures. 
 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/crypto}}
 			\begin{itemize}
 				\item Understanding of RSA Encription
 				\begin{itemize}
 					\item Understand the \{N : e : c\} format. 
-						\item Understand the common requirements for e and d in RSA. 
+					\item Understand the common requirements for e and d in RSA. 
 				\end{itemize}
-				\item Programming
+				\item Programming. 
+					The act of telling a computer what to do and how to do it. 
 				\item Data Representation. 
+					Data can be stored, interacted with and represented in many different ways. 
+					Understanding this can be a key factor in breaking into a system. 
 				\item Server Authentication
+					Servers use a number of systems, such as private/public key pairs and cookies to authenticate. 
+					Understanding this can allow an attacker to find weaknesses in the authentication system. 
 				\item Merkle-Hallman Knapsack Cryptosystem
+					A public/private key system similar to RSA, but significantly weaker. 
+					A system using this can be broken using known tools. 
 			\end{itemize}
 		\subsection{Forensics}
 			This section has the member attempt to determine the types and contents of unknown files. 
 			To successfully complete it, the member will need to have a good understanding of error checking and file types. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/forensics}}
 			\begin{itemize}
 				\item Understanding of file types. 
-				\item File conversions
+					The file types and their heads/trailers can be used to determine whether multiple files are stored in one, or why a file is corrupted. 
+					This understanding allows one to repair or retrieve corrupted files.
+				\item File conversions. 
+					This is the process of taking one file and creating another type of file from it. 
+					It often has some artifacts which are left and can be used to gain information about the system. 
 				\item File Specifications
-				\item Dos -> Unix (CRLF -> LF) conversion
+					This is the standard headers and trailers as well as the IVs which make up a file. 
+					Understanding this can allow an attacker to understand what the file is that they are finding on a bare disk and how to read it. 
+				\item DOS -> Unix (CRLF -> LF) conversion
+					This conversion can cause issues with some files. 
+					It occurs due to DOS using the full ``\verb+\r\n+'' line endings, while Unix uses only ``\verb+\n+''. 
 				\item Cyclic Redundancy Codes
+					These are used to check whether a file has been altered while stored or in transit. 
+					They can then be used to return the file to it's original state. 
 				\item Programming
+					This is the act of telling a computer how to do something. 
+					It is useful here as automation of slow or arduous tasks. 
 			\end{itemize}
 
 		\subsection{Pwnable}
 			This section requires the crafting of shellcode and manual exploit discovery. 
 			The member will discover the flag only when they have gained access to a shell on the machine that the service was running on. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/pwnable}}
 			\begin{itemize}
 				\item Shellcoding
+					This is the act of writing code which will give an attacker a shell on another system. 
+					It is usually done in assembly. 
 				\item x86\_64Registers and Assembly. 
+					This is the base programming language of most computers. 
+					It is assembled into machine code, which can then be run by the machine. 
+					It is also the basis for shell coding. 
 				\item Memory allocation. 
-				\item GDB (and Peda)
-				\item ARM assembly
-				\item ELF files
-				\item C Exploitation
-				\item URL Injection
-				\item HTTP
-				\item Web Directory Traversal
-				\item Local File Inclusion
+					Memory allocation and it's standards is one of the key parts of writing shellcode. 
+					This is due to the fact that you will have only a small amount of memory in which to write the code and its data. 
+					Understanding how this works allow one to create shell code that will work in most systems, as well as injecting shellcode into a program in the first place. 
+				\item GDB (and Peda).
+					This is a tool used for exploit development. 
+					It allows one to step through a program, seeing the full memory and register setup of the computer as it is processed. 
+				\item ARM assembly.
+					Like x86 assembly, this is the base machine language for ARM processors. 
+				\item ELF files.
+					These are the standard Linux executable files. 
+					Understanding how they work will allow easier analysis of them. 
+				\item C Exploitation.
+					C has a number of pitfalls that programmers commonly fall into. 
+					Understanding these pitfalls allows an attacker to look for the most common avenues of attack. 
+				\item URL Injection.
+					Knowing what to look for when attempting to gain further access to a website is helpful to the attack. 
+					Understanding URL injection is useful to gaining access that you are not expected to have. 
+				\item HTTP. 
+					This is the main protocol used to communicate between computers and web servers. 
+					Understanding it will allow you to exploit common flaws in the implementation of it, or the programs using it. 
+				\item Web Directory Traversal. 
+					This is a common attack which will allow one to access part of a web server that they did not have permissions for. 
+					It can be used for gathering further data on the server, or for editing files and gaining full access. 
+				\item Local File Inclusion.
+					This is the precursor to a number of attacks, such as arbitrary code execution or reflected XSS. 
+					Understanding this can be a major step to either gaining access to a server, or gaining access to a users machine. 
 			\end{itemize}
 		\subsection{Reverse Engineering}
 			This section has a member attempt to understand how a program is working in order to exploit it. 
 			The member will be required to use the tools at their disposal to determine algorithms and computational flaws in the provided programs. 
 
-			The following is a breakdown of the skills required to conduct these tasks:
+			The following is a breakdown of the skills required to conduct these tasks:\footnote{\url{https://github.com/ctfs/write-ups-2015/tree/master/plaidctf-2015/reversing}}
 			\begin{itemize}
 				\item Reverse Engineering tools
 					\begin{itemize}
 						\item radare2
 						\item IDA 64
 					\end{itemize}
-				\item Rotational functions
+				\item Rotational Algorithms.
+					This is a common part of many cryptographic standards such as AES. 
+					Understanding how it works will allow an attacker to find flaws in harder cryptosystems.
 				\item Algorithmic flaws. 
-				\item Regex
+					Understanding common algorithmic flaws is useful in determining how to break an algorithm as well as how to guess what it's output will be. 
+					This can be useful when attempting break into a system which is protected by a proprietary authentication system. 
+				\item Regex.
+					A common method of finding data in a large collection. 
+					Used for specifying a generic schema and collecting all matching items. 
 				\item Boolean Mathematics. 
+					The logic which bounds all computer processing and programming. 
+					It deals with truthfulness and comparison. 
 			\end{itemize}
 	
 	\section{Breakdown of Requirements}
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
-		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each came up. 
+		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
+		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program.
+
 		\begin{table}[htb]
 			\centering
 			\begin{tabular}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
-				\textbf{General} & \textbf{6} & \\ \hline
+				\textbf{General} & \textbf{6} & \textbf{0.5} \\ \hline
 				\quad Data Representation & 1 & \\ \hline
 				\quad ELF Files & 1 & \\ \hline
 				\quad Rotational Ciphers & 1 & \\ \hline
 				\quad Algorithmic Flaws & 1 & \\ \hline 
 				\quad Regex & 1 & \\ \hline 
 				\quad Boolean Mathematics & 1 & \\ \hline 
-				\textbf{Exploitation} & \textbf{6} & \\ \hline
+				\textbf{Exploitation} & \textbf{6} & \textbf{0.7}\\ \hline
 				\quad Shellcode & 1 & \\ \hline
 				\quad x86\_64 Registers and Assembly & 1 & \\ \hline
 				\quad Memory Allocation & 1 & \\ \hline
 				\quad GDB and Peda & 1 & \\ \hline
 				\quad ARM Assembly & 1 & \\ \hline
 				\quad C Exploitation & 1 & \\ \hline 
-				\textbf{Cryptography} & \textbf{5} & \\ \hline
+				\textbf{Cryptography} & \textbf{5} & \textbf{0.8} \\ \hline
 				\quad RSA Encryption & 3 & \\ \hline
 				\qquad \{N : e : c\} Format & 1 & \\ \hline
 				\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
 				\quad Server Authentication & 1 & \\ \hline
 				\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
-				\textbf{Forensics} & \textbf{4} & \\ \hline
-				\quad File Types & 1 & \\ \hline
-				\quad File Conversions & 1 & \\ \hline 
-				\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
-				\quad Cyclic Redundancy Checks & 1 & \\ \hline
-				\textbf{Web Exploitation} & \textbf{4} & \\ \hline
+				\textbf{Web Exploitation} & \textbf{4} & \textbf{1} \\ \hline
 				\quad URL Injection & 1 & \\ \hline
 				\quad HTTP & 1 & \\ \hline 
 				\quad Directory Traversal & 1 & \\ \hline
 				\quad Local File Inclusion & 1 & \\ \hline 
-				\textbf{Reverse Engineering} & \textbf{2} & \\ \hline
+				\textbf{Forensics} & \textbf{4} & \textbf{0.7} \\ \hline
+				\quad File Types & 1 & \\ \hline
+				\quad File Conversions & 1 & \\ \hline 
+				\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+				\quad Cyclic Redundancy Checks & 1 & \\ \hline
+				\textbf{Reverse Engineering} & \textbf{2} & \textbf{0.6} \\ \hline
 				\quad Radare2 & 1 & \\ \hline
 				\quad IDA 64 & 1 & \\ \hline 
-				\textbf{Programming} & \textbf{2} & \\ \hline
+				\textbf{Programming} & \textbf{2} & \textbf{1} \\ \hline
 			\end{tabular}
 			\caption{Breakdown of PlaidCTF Topics}
 			\label{tab:PlaidCTF Breakdown}
@@ -584,7 +881,17 @@ The initiative's customers use Python heavily, they have created a number of sec
 					\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
 					\quad Cryptographic Flaws & 1 & \\ \hline 
 					\quad Encoding & 1 & \\ \hline 
-					\textbf{Exploitation} & \textbf{10} & \\ \hline
+					\textbf{Forensics} & \textbf{11} & \textbf{0.7}\\ \hline
+					\quad PCAP & 2 & \\ \hline
+					\quad File Types & 1 & \\ \hline
+					\quad File Conversions & 1 & \\ \hline 
+					\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
+					\quad Cyclic Redundancy Checks & 1 & \\ \hline
+					\quad Network Forensics & 2 & \\ \hline 
+					\quad DOXXING & 1 & \\ \hline 
+					\quad Attack Traffic & 1 & \\ \hline 
+					\quad Disk and Memory Analysis & 1 & \\ \hline 
+					\textbf{Exploitation} & \textbf{10} & \textbf{0.7} \\ \hline
 					\quad C Exploitation & 2 & \\ \hline 
 					\quad x86\_64 Registers and Assembly & 2 & \\ \hline
 					\quad Shellcode & 1 & \\ \hline
@@ -595,17 +902,7 @@ The initiative's customers use Python heavily, they have created a number of sec
 					\quad Smashed Stack Cleaning & 1 & \\ \hline 
 					\quad Heap Overflows & 1 & \\ \hline 
 					\quad libc Attacks & 1 & \\ \hline 
-					\textbf{Forensics} & \textbf{9} & \textbf{0.7}\\ \hline
-					\quad PCAP & 1 & \\ \hline
-					\quad File Types & 1 & \\ \hline
-					\quad File Conversions & 1 & \\ \hline 
-					\quad Dos -> Unix (CRLF -> LF) conversion & 1 & \\ \hline 
-					\quad Cyclic Redundancy Checks & 1 & \\ \hline
-					\quad Network Forensics & 1 & \\ \hline 
-					\quad DOXXING & 1 & \\ \hline 
-					\quad Attack Traffic & 1 & \\ \hline 
-					\quad Disk and Memory Analysis & 1 & \\ \hline 
-					\textbf{Reverse Engineering} & \textbf{9} & \textbf{0.6}\\ \hline 
+					\textbf{Reverse Engineering} & \textbf{10} & \textbf{0.6}\\ \hline 
 					\quad Radare2 & 2 & \\ \hline 
 					\quad IDA 64 & 2 & \\ \hline 
 					\quad C\# Reverse Engineering & 1 & \\ \hline
@@ -613,11 +910,15 @@ The initiative's customers use Python heavily, they have created a number of sec
 					\quad Code Testing & 1 & \\ \hline 
 					\quad Side Channel Attacks & 1 & \\ \hline 
 					\quad ltrace & 1 & \\ \hline 
+					\quad Malware Analysis & 1 & \\ \hline
 					\textbf{Network Exploitation} & \textbf{4} & \textbf{0.8} \\ \hline 
 					\quad Attack Persistence & 1 & \\ \hline 
 					\quad Metasploit & 1 & \\ \hline 
 					\quad Nmap & 1 & \\ \hline 
 					\quad Heartbleed & 1 & \\ \hline
+					\textbf{Network Defence} & \textbf{3} & \textbf{0.6} \\ \hline
+					\quad STIX Reporting & 2 & \\ \hline
+					\quad Snort & 1 & \\ \hline
 					\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
 					\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
 					\quad HTTP & 1 & \\ \hline 
@@ -626,11 +927,22 @@ The initiative's customers use Python heavily, they have created a number of sec
 					\caption{\label{tab:summary}Summary of CTF Skills}
 				\end{longtable}
 			\end{center}
+	
+	The Skills included in table \ref{tab:summary} are the basis for a good understanding of cyber security as seen in CTFs. 
+	However, these events are not the only part of the industry. 
+	These skills have been weighted to bring out the necessity of the skill not only to the CTF competitions listed here, 
+	but also to a member entering the industry. 
+	Thus, when compiling the training program, one should take thees weightings into account. 
+	Items weighted higher should be taught with more depth and focus, while items weighted lower should have less focus and time. 
+
+	The skills outlined here also include a number of specific tools. 
+	While these tools don't constantly change, they do evolve and occasionally become deprecated. 
+	Due to this, any training should focus on skills, rather than tools. 
+	This will enable those being taught to learn the necessary tools in their own time, 
+	gaining the skill necessary to learn new ones as they are released. 
 \appendix
 	\label{ch:Appendix}
 	\listoftables
 		\phantomsection
 		\addcontentsline{toc}{chapter}{List of Tables}
-	\bibliographystyle{plain}
-	\bibliography{program}
 \end{document}
