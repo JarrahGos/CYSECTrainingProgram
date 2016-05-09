@@ -27,6 +27,28 @@
 \usepackage{lmodern}
 \usepackage{fancyvrb} %Allow bold in verbatim text.
 \usepackage[section]{placeins} %Deal with floats being in the wrong place. 
+
+\newcommand\frontmatter{%
+    \cleardoublepage
+  %\@mainmatterfalse
+  \pagenumbering{roman}}
+
+\newcommand\mainmatter{%
+    \cleardoublepage
+ % \@mainmattertrue
+  \pagenumbering{arabic}}
+\newenvironment{multipleabstract}[1]
+  {\renewcommand{\abstractname}{#1}\newpage\begin{abstract}\thispagestyle{plain}}
+  {\end{abstract}}
+
+\makeatletter
+\renewenvironment{abstract}{%
+    \begin{center}%
+      {\bfseries \abstractname\vspace{.5em}\vspace{\z@}}%
+    \end{center}%
+    %\quotation
+}
+
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -95,9 +117,21 @@
 \makeatother
 \usepackage{hyperref}
 \begin{document}
+\frontmatter
 \maketitle
 \tableofcontents
-\begin{abstract}
+	\listoftables
+		\addcontentsline{toc}{chapter}{List of Tables}
+	\listoffigures
+		\addcontentsline{toc}{chapter}{List of Figures}
+	{\setstretch{2}
+	 \renewcommand{\figurename}{Code Example}
+	     \listof{code}{List of Code Examples}
+	 }
+		 \addcontentsline{toc}{chapter}{List of Code Examples}
+
+\begin{multipleabstract}{Introduction}
+	\addcontentsline{toc}{chapter}{Introduction}
 	This document was written as a one year introductory course to the field of Cyber Security. 
 	Within it, is much of the Computer Science and technical information that one requires to start learning in the field. 
 	However, this comes with a legal penalty. 
@@ -115,7 +149,8 @@
 
 	With this in mind, please continue through the pages of this book. 
 	I hope you get as much from reading it as I did from writing it. 
-\end{abstract}
+\end{multipleabstract}
+\mainmatter
 \chapter{Computer Operations}
 	\label{ch:ComputerOperations}
 	A computer can be thought of in terms of the systems which make it up, and the layers of those systems.
@@ -4782,8 +4817,13 @@ Dump of assembler code for function main:
 				\item[Run Level] This is the level to which the system boots. 
 					These can also be known as targets on newer systems. 
 					They can be single user, multi-user, CLI only or graphical. 
+				\item[Access Control] The standard means of specifying who can access what on a Linux system. 
+					Generally, this is done using discretionary access control. 
+					However, some systems such as Grsecurity and SELinux use Mandatory access control, which is an external enforcer on who can access files on the system. 
 			\end{description}
 		\subsection{History}
+			The history of Linux is an interesting one with deep roots in early computer science and operating systems. 
+			To understand why Linux was built the way it is, you must first understand UNIX and some of the computer designs that were common at the time. 
 			\subsubsection{UNIX}
 				No section on Linux would be complete with out at least a small section on UNIX. 
 				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large. 
@@ -4842,11 +4882,286 @@ Dump of assembler code for function main:
 				This is not to say that you cannot learn the system, distros such as Gentoo and Linux From Scratch will give you that opportunity. 
 
 
-		\subsection{File Systems}
-			\subsubsection{Mounting}
+		\subsection{Linux Commands}
+			Linux commands are the basis for interacting with the system. 
+			One can think of them as a way to speak to the computer without going through the interpreter that is the GUI. 
+			The difference between these two is that the GUI was made to make simple things easy, the CLI makes complex things possible. 
+			Thus, using the CLI to ``speak'' to the computer allows you to interact with the system. 
 
-			\subsubsection{File Permissions}
+			The CLI can be broken down into parts. 
+			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
+					\hline
+					\multicolumn{1}{|c|}{\textbf{Command}} & \multicolumn{2}{| c |}{\textbf{Arguments}}  & \multicolumn{1}{|c|}{\textbf{Other}}
+					\\ \hline
+					& \multicolumn{1}{|c|}{\textbf{Flags}} & \multicolumn{1}{|c|}{\textbf{Data}} & \\ \hline
+					The name or location of the command to run & 
+					Switches that change the way the program will work & 
+					Data which the program operates on. This can be dispersed within multiple flags &
+					Other content such as pipes and redirection. 
+					Any commands passed here follow the same format \\ \hline
+				\end{tabular}
+				\label{tab:CLIParts}
+				\caption{Parts of a CLI Command}
+			\end{table} 
+
+			Further to this, understanding how the shell that you are using works can make using it far more efficient. 
+			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
+			%TODO: This is linking to the wrong table
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| p{3cm} | p{7cm} |} 
+					\hline
+					\textbf{Key \mbox{Combination}} & \textbf{Function} \\ \hline
+					\keys{\ctrl + A} & Move cursor to the beginning of the line. \\ \hline
+					\keys{\ctrl + C} & End a running program and return to the prompt. \\ \hline
+					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\ \hline
+					\keys{\ctrl + E} & Move the cursor to the end of the line. \\ \hline
+					\keys{\ctrl + H} & Generate a backspace character. \\ \hline
+					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline 
+					\keys{\ctrl + R} & Search command history. \\ \hline
+					\keys{\ctrl + Z} & Suspend a program. \\ \hline
+					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\ \hline
+					\keys{\arrowkeyup} or \keys{\arrowkeydown} & Browse command history. \\ \hline
+					\keys{\shift + Page Up} or \keys{\shift + Page Down} & Browse terminal buffer (See text that has been scrolled off screen. 
+					\\ \hline
+					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\ \hline
+					\keys{\tab + \tab} & Show options for completion. \\ \hline
+				\end{tabular}
+				\label{tab:BashKeyShortcuts}
+				\caption{Keyboard Shortcuts for the Bourne Again Shell}
+			\end{table}
+
+			Commands are also altered by a set of variables called the environment. 
+			These variables are inherited from the calling program, and can give instructions as to where to find things or how to act. 
+			For example, when you load up your favorite shell, it reads from the ``PATH'' variable to determine where to find programs to run. 
+			You can see the values of these variables by running the command ``echo \$<name>'' at the prompt. 
+			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
+
+			A summary of the most common Linux command can be found in table \ref{tab:LinuxCommandsSummary}.
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | p{7cm} |}
+					\hline
+					\textbf{Command} & \textbf{Use} \\ \hline
+					cat & Send the content of a file to STDOUT. 
+							Multiple files will be appended to each other. \\ \hline
+					cd <directory> & Enter directory \\ \hline
+					chgrp & Change the group ownership of a file. \\ \hline
+					chmod <mode> <file> & Change permissions of files to <mode>. \\ \hline
+					chown <owner>[:<group>] <file> & Change owner or group owner of file. \\ \hline
+					cp <src> <dest> & Copy src to dest. \\ \hline
+					df & Reports disk usage. \\ \hline
+					echo <string> & Print string to STDOUT. \\ \hline
+					export & A bash internal that adds to environmental variables. \\ \hline 
+					file & Determine the type of a file. \\ \hline 
+					find <path> <expression> & find files within the file system. \\ \hline
+					grep <pattern> [file] & Print only lines which match pattern. 
+											If file given, search it, otherwise search STDIN \\ \hline. 
+					head <file> & Print the top of file. \\ \hline 
+					id & Prints real and effective user names and IDs. \\ \hline. 
+					info <command> & Basic documentation about a command. \\ \hline
+					less [file] & View a file or STDIN with a pager. \\ \hline
+					ln <target> <name> & create a link to target named name. 
+										use ``-s'' for simlink. \\ \hline. 
+					locate <string> & Search the file database for string. \\ \hline
+					ls & Prints directory content. \\ \hline. 
+					man <command> & Use the system pager to read the manual for command. \\ \hline
+					mkdir <name> & Make a new directory named name. \\ \hline
+					mv <src> <dest> & Move src to dest. \\ \hline
+					newgrp <name> & Log into a new group. \\ \hline
+					pwd & Print the current working directory. \\ \hline. 
+					quota & Show disk usage and limits. \\ \hline
+					rm <file> & Delete files or directories. 
+								Directories will only be deleted with the ``-r flag''. \\ \hline
+					tail [file] & Print the end of file or STDIN. \\ \hline
+					umask & show or change new file creation permission mode. \\ \hline
+					wc [file] & Counts lines, words and characters in file or STDIN. \\ \hline
+					which <command> & shows the full path to command. \\ \hline
+				\end{tabular}
+				\label{tab:LinuxCommandsSummary}
+				\caption{Basic Command Reference for Linux}
+			\end{table}
+
+			Further to this, there are a number of special characters which can give powerful actions. 
+			Table \ref{tab:SpecialCommands} shows the special characters that can be used on the bash commandline. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{| l | p{7cm} |}
+					\hline
+					\textbf{Character} & \textbf{Use} \\ \hline
+					\$(<command>) & Run command and replace the block with it's output. \\ \hline
+					\verb+`+<command>\verb+`+  & As for \$ \\ \hline 
+					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\ \hline 
+					<command> > <file> & Send STDOUT of command to file. \\ \hline
+					<command> < <file> & Send file to command as STDIN. \\ \hline 
+				\end{tabular}
+				\label{tab:SpecialCommands}
+				\caption{Linux Commandline Special Characters}
+			\end{table}
+
+			\FloatBarrier
+		\subsection{Man Pages}
+			The information found here is simply an introduction. 
+			It is a small subsection of the information that exists on Linux and it's systems. 
+			Most of this information can be found in its most raw technical form in the Linux man pages. 
+
+			These documents are the basis for working with Linux programming, as well as programming on Linux. 
+			It is broken down into chapters---each having an overarching topic---then further broken into commands or functions. 
+			A condensed table of contents for man pages is below:
+			\begin{enumerate}
+				\item User Commands
+				\item System Calls
+				\item Library Functions
+				\item Special Files
+				\item File Formats
+				\item Games
+				\item Conventions and Miscellany
+				\item Administration and Privileged Commands
+				\item[L.] Math Library Functions
+				\item[N.] TCL Functions
+			\end{enumerate}
+
+			The individual pages within these documents are also broken into standard sections. 
+			These sections are:
+			\begin{enumerate}
+				\item Name of the command and ID of section.
+				\item Name of command and a short description. 
+					This description is seachable using the ``apropos'' command. 
+				\item Synopsis of the command with full technical notation. 
+					Generally this will give all basic options. 
+					Optional arguments are within [ ] brackets.
+				\item A longer Description
+				\item Options with descriptions listed. 
+				\item Environmental Variables that effect the command or function. 
+				\item Command or function specific sections. 
+				\item See Also references to other man pages. 
+				\item Author of the given page. 
+				\item Known bugs. 
+			\end{enumerate}
+
+			These pages can be navigated in the same way as the system pager, which on most modern systems is less. 
+			For simpler descriptions, the ``info'' command works in a similar way. 
+
+		\subsection{File Systems}
+			On Linux, everything is a file. 
+			If it's not a file, it's a process, and there is a file for that too. 
+
+			Thus, on Linux, understanding the file system is one of the most useful parts of understanding the system. 
+			This is because many files that are available in Linux are more than just files. 
+			There are a number of different items which look and act like files, but allow you to do more complex things. 
+
+			\subsubsection{Types of Files} 
+				The common files that you have been working with are generally termed ``regular files''. 
+				Other files that you will come across are:
+				\begin{description}
+					\item[Directories] Files that list other files within them.
+						Listed as ``d'' in file permissions. 
+					\item[Special Files] Files used for IO. Most are stored within ``/dev''. 
+						See the terminology section for more information. 
+						Listed as ``c'' in file permissions.
+					\item[Links] Files that make the same file visible in more than one part of the directory structure. 
+						Listed as ``l'' in file permissions. 
+					\item[Sockets] Similar to TCP/IP sockets. 
+						These allow inter-process networking under the filesystems access control. 
+						Listed as ``s'' in file permissions.
+					\item[Named Pipes] Similar to sockets, but simpler to use without explicitly programming for them. 
+						Listed as ``p'' in file permissions. 
+				\end{description}
+
+
+			\subsubsection{Mounting}
+				Linux filesystems are usually broken down into partitions. 
+				These partitions are used to allocate a given amount of space to a given part of the OS. 
+				However, they also have a number of security purposes, as well as simple data loss prevention. 
+
+				To see the filesystems on your computer, the commands ``lsblk'' or ``df -h'' will show what systems are available, where they are mounted and what storage is available on them. 
+				Without any user interaction, this will be the same as the contents of the filesystem table found at ``/etc/fstab''. 
+				An example of the content of one of these files can be found in table \ref{tab:fstab}. 
+				The contents of this table, when formatted correctly and placed on the correct system will work. 
 				\begin{table}[htb]
+					\centering
+					\begin{tabular}{| l | l | l | l | l | l |}
+						\hline
+						\textbf{File System} & \textbf{Directory} & \textbf{Type} & \textbf{options} & \textbf{dump} & \textbf{pass} \\ \hline
+						/dev/sda1 & / & btrfs & rw,noatime & 0 & 0 \\ \hline
+						%UUID=aeb6cbbf-f40c-4659-9d81-605e84467349 & / & btrfs & rw,relatime & 0 & 0 \\ \hline
+						/media/store & /srv/nfs4/store & none & bind & 0 & 0 \\ \hline
+					\end{tabular}
+					\label{tab:fstab}
+					\caption{A standard Linux fstab}
+				\end{table}
+				The filesystems stated in table \ref{tab:fstab} will mount automatically at boot, or when the command ``mount <file system>'' is given. 
+				However, to mount filesystems that are not constant within the system, you must use the mount\footnote{\href{http://linux.die.net/man/8/mount}{man 8 mount}} command specifically.
+				\begin{quote}
+					mount -o <option>,<option> -t <type> <file system> <directory> 
+				\end{quote}
+				The same options and data will work here as in the fstab, however, the format it different as it is expressed at the CLI. 
+
+			\subsubsection{File System Structure}
+			\begin{quote}%TODO: This is horrid. Find a better way. 
+				\begin{quote}
+				This section is an in-depth discussion on how a Linux filesystem works.
+				Feel free to skip it, as it has little use in working with Linux. 
+				However, it can become important when trying to diagnose issues with it.
+				\end{quote}
+			\end{quote}
+				
+				The Linux file structure is commonly through of as a tree. 
+				This makes sense when dealing with the way that users interact with it. 
+				Every directory that exists follows some branch from the ``root'' directory, with files being the ``leaves'' at the end. 
+				However, this understanding only works when one is dealing with the system at the basic user level. 
+				One should understand the concept of inodes and the other building blocks of the structure if they are to administer the system. 
+				
+				Each partition on the computer has it's own filesystem. 
+				This can be thought of in the same way as the whole Linux structure, having it's own root. 
+				However, this only becomes important when looking at how the devices are specified. 
+				Each file system has a list of inodes that are created when the system is initialised. 
+				This is a limited list (usually 1 or 2 per 8KB) of information about files. 
+				The information contained is as follows:
+				\begin{itemize}
+					\item Owner and group of the file.
+					\item File type.
+					\item Permissions of the file.
+					\item Date and time of creation. 
+					\item Last read and change.
+					\item Date and time of inode information changes. 
+					\item Number of links to the file. 
+					\item File size.
+					\item Address defining the actual location of the data. 
+				\end{itemize}
+
+				As you can see, the file name and it's directory is not given in this list. 
+				This is because files in Linux do not by nature have either. 
+				They are created through directories---special files in themselves---that contain lists of files and names. 
+				This is why directories will show up as files with permissions when running ``ls -l''. 
+				It is also why you can see files that you do not have read permissions for, assuming you can read the directory. 
+
+				Understanding these inodes, and the information held within them can be exceptionally useful for understanding issues with the filesystem. 
+				For example, if you have a large number of small files, you may run out of inodes on the system. 
+				This will lead to commands such as ``du -h'' and ``df -h'' telling you that there is space available, while you get ``filesystem full'' errors when creating files. 
+				In this instance, the command ``df -i'' will tell you how many inodes are available. 
+
+				Further to this, understanding what is stored in inodes means that you can think about how that will impact access speeds and disk failure. 
+				SSDs for example, have a limited number of writes. 
+				Writing to the disk each time a file is read (the atime stored in inodes) creates significant wear on the disk. 
+				Mounting with the ``noatime'' option will resolve this and cause the drive to last significantly longer. 
+
+				A direct implication of inodes is the way that linking works on Linux. 
+				Hard links on the system are files with the same inode as each other. 
+				For all intents and purposes, these are the same file. 
+				However, these cannot work over multiple file systems, as each will have a different file at the same inode. 
+				Due to this, simlinks were created. 
+				These perform the same action as hard links, but have two different inodes. 
+				The first inode---that of the original file---contains the files data. 
+				The second---that of the link---contains the data of the link and the address to the data of the original file. 
+				This means that the links can span over multiple file systems with no issues. 
+
+				
+			\subsubsection{File Permissions}
+				\begin{table}[H]
 					\centering
 					\begin{tabular}{| l | l | l |}
 						\hline
@@ -4880,102 +5195,6 @@ Dump of assembler code for function main:
 						o & Other Permissions \\ \hline
 					\end{tabular}
 				\end{center}
-		\subsection{Linux Commands}
-			Linux commands are the basis for interacting with the system. 
-			One can think of them as a way to speak to the computer without going through the interpreter that is the GUI. 
-			The difference between these two is that the GUI was made to make simple things easy, the CLI makes complex things possible. 
-			Thus, using the CLI to ``speak'' to the computer allows you to interact with the system. 
-
-			The CLI can be broken down into parts. 
-			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
-			\begin{table}[htb]
-				\centering
-				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
-					\hline
-					\textbf{Command} & \multicolumn{2}{| c |}{Arguments}  & Other \\ \hline
-					& \textbf{Flags} & \textbf{Data} & \\ \hline
-					The name or location of the command to run & 
-					Switches that change the way the program will work & 
-					Data which the program operates on. This can be dispersed within multiple flags &
-					Other content such as pipes and redirection. 
-					Any commands passed here follow the same format \\ \hline
-				\end{tabular}
-				\label{tab:CLIParts}
-				\caption{Parts of a CLI Command}
-			\end{table}
-
-			Further to this, understanding how the shell that you are using works can make using it far more efficient. 
-			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
-			\begin{table}[htb]
-				\centering
-				\begin{tabular}{| p{3cm} | p{7cm} |} 
-					\hline
-					\textbf{Key Combination} & \textbf{Function} \\ \hline
-					\keys{\ctrl + A} & Move cursor to the beginning of the line. \\ \hline
-					\keys{\ctrl + C} & End a running program and return to the prompt. \\ \hline
-					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\ \hline
-					\keys{\ctrl + E} & Move the cursor to the end of the line. \\ \hline
-					\keys{\ctrl + H} & Generate a backspace character. \\ \hline
-					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline 
-					\keys{\ctrl + R} & Search command history. \\ \hline
-					\keys{\ctrl + Z} & Suspend a program. \\ \hline
-					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\ \hline
-					\keys{\arrowkeyup} or \keys{\arrowkeydown} & Browse command history. \\ \hline
-					\keys{\shift + Page Up} or \keys{\shift + Page Down} & Browse terminal buffer (See text that has been scrolled off screen. \\ \hline
-					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\ \hline
-					\keys{\tab + \tab} & Show options for completion. \\ \hline
-				\end{tabular}
-				\label{tab:BashKeyShortcuts}
-				\caption{Keyboard Shortcuts for the Bourne Again Shell}
-			\end{table}
-
-			Commands are also altered by a set of variables called the environment. 
-			These variables are inherited from the calling program, and can give instructions as to where to find things or how to act. 
-			For example, when you load up your favorite shell, it reads from the ``PATH'' variable to determine where to find programs to run. 
-			You can see the values of these variables by running the command ``echo \$<name>'' at the prompt. 
-			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
-		\subsection{Man Pages}
-			The information found here is simply an introduction. 
-			It is a small subsection of the information that exists on Linux and it's systems. 
-			Most of this information can be found in its most raw technical form in the Linux man pages. 
-
-			These documents are the basis for working with Linux programming, as well as programming on Linux. 
-			It is broken down into chapters---each having an overarching topic---then further broken into commands or functions. 
-			A condensed table of contents for man pages is below:
-			\begin{enumerate}
-				\item User Commands
-				\item System Calls
-				\item Library Functions
-				\item Special Files
-				\item File Formats
-				\item Games
-				\item Conventions and Miscellany
-				\item Administration and Privileged Commands
-				\item[L.] Math Library Functions
-				\item[N.] TCL Functions
-			\end{enumerate}
-
-			The individual pages within these documents are also broken into standard sections. 
-			These sections are:
-			\begin{enumerate}
-				\item Name of the command and ID of section.
-				\item Name of command and a short description. 
-					This description is seachable using the ``apropos'' command. 
-				\item Synopsis of the command with full technical notation. 
-					Generally this will give all basic options. 
-					Optional arguments are within \[\] brackets.
-				\item A longer Description
-				\item Options with descriptions listed. 
-				\item Environmental Variables that effect the command or function. 
-				\item Command or function specific sections. 
-				\item See Also references to other man pages. 
-				\item Author of the given page. 
-				\item Known bugs. 
-			\end{enumerate}
-
-			These pages can be navigated in the same way as the system pager, which on most modern systems is less. 
-			For simpler descriptions, the ``info'' command works in a similar way. 
-
 	\section{The CVE System}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
 		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
@@ -5015,18 +5234,6 @@ Dump of assembler code for function main:
 			\end{description}
 \appendix
 	\label{ch:Appendix}
-	\listoftables
-		\phantomsection
-		\addcontentsline{toc}{chapter}{List of Tables}
-	\listoffigures
-		\phantomsection
-		\addcontentsline{toc}{chapter}{List of Figures}
-	{\setstretch{2}
-	 \renewcommand{\figurename}{Code Example}
-	     \listof{code}{List of Code Examples}
-	 }
-		 \phantomsection
-		 \addcontentsline{toc}{chapter}{List of Code Examples}
 	\bibliographystyle{plain}
 	\bibliography{program}
 \end{document}
