@@ -420,11 +420,15 @@
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
 		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
 		There is then a weighting section which conveys how important a given section is to completing the whole challenge. 
-		\begin{table}[htb]
-			\centering
-			\begin{tabular}{| l | l | l |}
+		\begin{center}
+			\begin{longtable}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\endhead
+				\multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+				\endfoot
+				\endlastfoot
+				%---------------------------------------------------------------
 				\textbf{Programming} & \textbf{7} & \textbf{1} \\ \hline
 				\quad JavaScript & 1 & \\ \hline 
 				\quad Obfuscation & 1 & \\ \hline
@@ -472,10 +476,11 @@
 				\quad HTTP & 1 & \\ \hline 
 				\textbf{Linux CLI} & \textbf{1} &\textbf{0.6} \\ \hline
 				\quad Command Injection & 1 & \\ \hline 
-			\end{tabular}
-			\caption{Breakdown of CySCA Topics}
-			\label{tab:CySCABreakdown}
-		\end{table}
+				\noalign{\vskip 0.5cm}
+				\caption{\label{tab:CySCABreakdown}Breakdown of CySCA Topics}
+				\vspace{-1.3cm}
+			\end{longtable}
+		\end{center}
 		Using both the weighting and the count, one can determine the most useful content to place into a training program. 
 		While all of this content will be added, it will be ordered in the same way as it is here and weighted for importance. 
 
@@ -628,9 +633,7 @@
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
 		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
 		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
-		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
-		This will be used in determining how much depth will be entered into when writing the training program. 	
-		\begin{table}[htb]
+		\begin{table}[H]
 			\centering
 			\begin{tabular}{| l | l | l |}
 				\hline
@@ -667,6 +670,8 @@
 			\caption{Breakdown of Boston Key Party CTF Topics}
 			\label{tab:BCTFBreakdown}
 		\end{table}
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program. 	
 \chapter{Plaid CTF 2015}
 	\section{Overview of Challenge}
 		Plaid CTF\footnote{\url{https://play.plaidctf.com/}} is the annual CTF run by the \href{http://pwning.net/}{``Plaid Parliament of Pwning''}.
@@ -823,14 +828,16 @@
 	 	The following is a breakdown of how many times a particular area was used in the challenge. 
 		These areas are broken into Major Categories (in bold) and minor categories, with a count for how many times each arose. 
 		There is a weighting section which conveys how important a given section is to completing the whole CTF event. 
-		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
-		This will be used in determining how much depth will be entered into when writing the training program.
 
-		\begin{table}[htb]
-			\centering
-			\begin{tabular}{| l | l | l |}
+		\begin{center}
+			\begin{longtable}{| l | l | l |}
 				\hline
 				\textbf{Category} & \textbf{Number} & \textbf{Weight} \\ \hline 
+				\endhead
+				\multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+				\endfoot
+				\endlastfoot
+				%---------------------------------------------------------------
 				\textbf{General} & \textbf{6} & \textbf{0.5} \\ \hline
 				\quad Data Representation & 1 & \\ \hline
 				\quad ELF Files & 1 & \\ \hline
@@ -865,10 +872,13 @@
 				\quad Radare2 & 1 & \\ \hline
 				\quad IDA 64 & 1 & \\ \hline 
 				\textbf{Programming} & \textbf{2} & \textbf{1} \\ \hline
-			\end{tabular}
-			\caption{Breakdown of PlaidCTF Topics}
-			\label{tab:PlaidCTF Breakdown}
-		\end{table}
+				\noalign{\vskip 0.5cm}
+				\caption{B\label{tab:PlaidCTF Breakdown}Breakdown of PlaidCTF Topics}
+				\vspace{-1.3cm}
+			\end{longtable}
+		\end{center}
+		Using both the weighting and the count columns, one can determine the most useful content to place into the training program. 
+		This will be used in determining how much depth will be entered into when writing the training program.
 
 \chapter{Summary}
 	These CTFs cover a wide range of topics due to their differing goals. 
@@ -979,7 +989,9 @@
 					\quad HTTP & 1 & \\ \hline 
 					\textbf{Linux CLI} & \textbf{1} &\textbf{0.6} \\ \hline
 					\quad Command Injection & 1 & \\ \hline 
+					\noalign{\vskip 0.5cm}
 					\caption{\label{tab:summary}Summary of CTF Skills}
+					\vspace{-1.3cm}
 				\end{longtable}
 			\end{center}
 	
