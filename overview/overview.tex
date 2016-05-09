@@ -55,7 +55,7 @@
 		\addcontentsline{toc}{chapter}{List of Tables}
 \begin{multipleabstract}{Introduction}
 	\addcontentsline{toc}{chapter}{Introduction}
-	This document is the initial research for a cyber security training program. 
+	This document is the initial research for a cyber security training program for the CYSEC VECC---A small group of cyber security students at UNSW Canberra. 
 	The proposed program will focus on the skills needed to be able to enter the field professionally.
 	However, it's specific focus will be on those needed to compete in CTFs (cyber security ``capture the flag'' competitions), 
 	which are the main testing activity of students studying in the field. 
@@ -192,7 +192,7 @@
 			Each of these is given in more detail below. 
 			\begin{description}
 				\item[STIX Reporting]
-					Structured Threat Information Expression is a standard (XML based) reporting scheme for cyber security incidents. 
+					Structured Threat Information Expression\footnote{\url{http://stixproject.github.io/}} is a standard (XML based) reporting scheme for cyber security incidents. 
 					It is commonly used to communicate these events between organisations.
 				\item[Network Forensics]
 					When writing reports on attacks, one must be able to understand how the attack occurred. 
@@ -201,8 +201,8 @@
 					This it the act of gathering information from captured malware. 
 					It usually takes both static reverse engineering and sandboxed dynamic analysis. 
 					One should also create hash based signatures so the malware can be found elsewhere. 
-				\item[Snort]
-					This is a network IPS that is used to ensure all traffic on the network follows a known set of rules. 
+				\item[Snort] 
+					This is a network IPS\footnote{\url{https://www.snort.org/}} that is used to ensure all traffic on the network follows a known set of rules. 
 					Understanding how to configure these tools is a core part of network defence. 
 				\item[Netflow]
 					Netflow is a tool used to gather basic data on communications. 
@@ -881,14 +881,14 @@
 		This will be used in determining how much depth will be entered into when writing the training program.
 
 \chapter{Summary}
-	These CTFs cover a wide range of topics due to their differing goals. 
+	\textit{CySCA}, \textit{the Boston Key Party} and \textit{PlaidCTF} cover a wide range of topics due to their differing goals. 
 	CySCA covers the broadest range, but at the lowest level. 
-	This makes it a good main goal for the CYSEC VECC at the current time due to the low overall level of skill. 
-	However, CTFs such as the Boston Key Party and Plaid CTF have been added as good eventual goals for the VECC. 
-	These two, in the order that they have been broken down would be good CTFs for the VECC to start working to next year when there are a number of members who have some experience with the activity. 
+	This makes it well suited as the goal of the CYSEC VECC at the current time due to the low overall level of skill. 
+	However, CTFs such as the Boston Key Party and Plaid CTF have also been analysed for use when the VECC gains a higher level of skill. 
+	These two, in the order that they have been broken down are good higher level challenges for next year, when there are a number of members who have some experience with the activity. 
 
 	Included in table \ref{tab:summary} is the summary breakdown of all of these events. 
-	This shows the skills required to complete all of the tasks required for all of these CTFs, as well as the number of times a particular skill comes up and the weighting given to the main category. 
+	This shows the skills required to complete all of the tasks required for all of these CTFs, as well as the number of times a particular skill comes up and the weighting given to the main category based on it's overall importance to completing the challenge. 
 
 			\begin{center}
 				\begin{longtable}{| l | l | l |}
@@ -910,6 +910,7 @@
 					\quad HTTP Redirect Attacks & 1 & \\ \hline 
 					\quad Network Listeners & 1 & \\ \hline 
 					\quad SQLi through Character Encoding & 1 & \\ \hline 
+					\newpage
 					\textbf{Programming} & \textbf{13} & \textbf{1} \\ \hline
 					\quad Python & 3 & \\ \hline 
 						\qquad Shellcode & 1 & \\ \hline 
@@ -946,6 +947,7 @@
 					\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
 					\quad Cryptographic Flaws & 1 & \\ \hline 
 					\quad Encoding & 1 & \\ \hline 
+					\newpage
 					\textbf{Forensics} & \textbf{11} & \textbf{0.7}\\ \hline
 					\quad PCAP & 2 & \\ \hline
 					\quad File Types & 1 & \\ \hline
@@ -984,6 +986,7 @@
 					\textbf{Network Defence} & \textbf{3} & \textbf{0.6} \\ \hline
 					\quad STIX Reporting & 2 & \\ \hline
 					\quad Snort & 1 & \\ \hline
+					\newpage
 					\textbf{Networking} & \textbf{2} & \textbf{0.8}\\ \hline
 					\quad DNS Enumeration and Zone Transfer & 1 & \\ \hline 
 					\quad HTTP & 1 & \\ \hline 
@@ -1007,4 +1010,17 @@
 	Due to this, any training should focus on skills, rather than tools. 
 	This will enable those being taught to learn the necessary tools in their own time, 
 	gaining the skill necessary to learn new ones as they are released. 
+
+	It is also worth noting that while these CTFs are a good source of skills information, and a good means of testing, 
+	they have little worth as a first principles teaching tool. 
+	This occurs due to the nature of CTFs. 
+	They are designed to test the highest levels of students in the field of cyber security, ensuring that they cover as many aspects of the field as possible. 
+	Furthermore, for the same reason, they are often pitched far higher than a new student would be able to understand. 
+
+	However, while these challenges are not useful for teaching in themselves, it is evident that the excel at testing one's skill in the area. 
+	This is the reason that they are commonly used for recruiting---the main purpose of CySCA---they quickly separate those with skills in the field from those who do not have them. 
+
+	From this document, the contents of a training program can be created. 
+	Each row of table \ref{tab:summary} will become a section within the program with an overview of content as well as links to other resources available. 
+	This will be used to form the instructors notes for weekly lessons on these skills, stepping students through their use and giving them the tools to explore it themselves. 
 \end{document}
