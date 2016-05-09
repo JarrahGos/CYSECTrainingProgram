@@ -22,6 +22,7 @@
 \fancyfoot[C]{\thepage}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{longtable}
 \usepackage{setspace}
 \usepackage{multicol}
 \usepackage{microtype}
@@ -100,7 +101,7 @@
 }
 %Sorting code floats. 
 \usepackage{float}
-\floatstyle{plain}
+\floatstyle{ruled}
 \newfloat{code}{htb}{loc}[chapter]
 \floatname{code}{Code Example}
 \renewcommand{\abstractname}{Introduction}
@@ -666,67 +667,9 @@
 
 			When accessing a remote cache, the DNS query may look somewhat like that seen below:
 			%TODO: Why is the following not indenting as shown in the source
-			\begin{verbatim}
-Flags: 0x0120 Standard query
-	0... .... .... .... = Response: Message is a query
-	.000 0... .... .... = Opcode: Standard query (0)
-	.... ..0. .... .... = Truncated: Message is not truncated
-	.... ...1 .... .... = Recursion desired: Do query recursively
-	.... .... .0.. .... = Z: reserved (0)
-	.... .... ..1. .... = AD bit: Set
-	.... .... ...0 .... = Non-authenticated data: Unacceptable
-	Questions: 1
-	Answer RRs: 0
-	Authority RRs: 0
-	Additional RRs: 1
-Queries	
-	xkcd.com: type A, class IN
-	Name: xkcd.com
-	[Name Length: 8]
-	[Label Count: 2]
-	Type: A (Host Address) (1)
-	Class: IN (0x0001)
-			\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/DNSQuery.out}
 			The corresponding response may look as follows:
-			\begin{verbatim}
-Flags: 0x8180 Standard query response, No error
-	1... .... .... .... = Response: Message is a response
-	.000 0... .... .... = Opcode: Standard query (0)
-	.... .0.. .... .... = Authoritative: Server is not an authority for domain
-	.... ..0. .... .... = Truncated: Message is not truncated
-	.... ...1 .... .... = Recursion desired: Do query recursively
-	.... .... 1... .... = Recursion available: Server can do recursive queries
-	.... .... .0.. .... = Z: reserved (0)
-	.... .... ..0. .... = Answer authenticated: Answer/authority portion was not authenticated by the server
-	.... .... ...0 .... = Non-authenticated data: Unacceptable
-	.... .... .... 0000 = Reply code: No error (0)	
-	Questions: 1
-	Answer RRs: 4
-	Authority RRs: 0
-	Additional RRs: 1
-Queries
-	xkcd.com: type A, class IN
-	Name: xkcd.com
-	[Name Length: 8]
-	[Label Count: 2]
-	Type: A (Host Address) (1)
-	Class: IN (0x0001)
-Answers
-	xkcd.com: type A, class IN, addr 23.235.37.67
-		Name: xkcd.com
-		Type: A (Host Address) (1)
-		Class: IN (0x0001)
-		Time to live: 5
-		Data length: 4
-		Address: 23.235.37.67
-	xkcd.com: type A, class IN, addr 104.156.81.67
-		Name: xkcd.com
-		Type: A (Host Address) (1)
-		Class: IN (0x0001)	
-		Time to live: 5
-		Data length: 4
-		Address: 104.156.81.67
-			\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/DNSResponce.out}
 			
 			This caching process has been implemented into the DNS structure though the use of Time To Live (TTL) values. 
 			This allows the server administrator to set the duration for which a cache can store the address to domain mapping of their server. 
@@ -831,20 +774,10 @@ Answers
 				The interfaces that you will be using for this need to be configured for the setup that you will be using. 
 				This can be done through ``netctl'' and the following configuration files:
 				File at /etc/netctl/extern0-profile should contain:
-				\begin{verbatim}
-Description='Public Interface.'
-Interface=<extern0>
-Connection=ethernet
-IP='dhcp
-				\end{verbatim}
-				file at /etc/netctl/intern0-profile should contain:
-				\begin{verbatim}
-Description='Private Interface'
-Interface=<intern0>
-Connection=ethernet
-IP='static'
-Address=('10.0.0.1/24')
-				\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/extern0-profile}
+				File at /etc/netctl/intern0-profile should contain:
+				\lstinputlisting[numbers=none]{./shellOut/intern0-profile}
+				
 				
 				You will then want to bring these interfaces up using the following commands:
 				\begin{quote}
@@ -857,24 +790,12 @@ Address=('10.0.0.1/24')
 				The former of these allows your internal machines to communicate with external name servers. 
 				The latter allows your router to provide IP addresses to the internal machines. 
 				Add the following to the top of ``/etc/dnsmasq.conf'':
-				\begin{verbatim}
-interface=<intern0>
-expand-hosts    
-domain=local    
-bind-interfaces
-dhcp-range=<intern0>,10.0.0.2,10.0.0.255,255.255.255.0,1h
-dhcp-option=option:router,10.0.0.1
-				\end{verbatim}
-
+				\lstinputlisting[numbers=none]{./shellOut/dnsmasq.conf}
 			\subsection{Set up NAT}
 				Network Address Translation is the key utility that allows you to communicate through the router. 
 				This will allow you to send and receive data through it, and with some configuration, receive incoming connections. 
 				In order to set this up, run the following commands in order: 
-				\begin{verbatim}
-iptables -t nat -A POSTROUTING -o <extern0> -j MASQUERADE
-iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
-				\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/iptablesNat.in}
 				I recommend putting these commands into a script file and running that. 
 				That way, if you have to make any changes to them or add any new rules, you can put them in the correct place and run the file. 
 				Use the command ``iptables -F'' to clear the table before running the script. 
@@ -893,14 +814,7 @@ iptables -A FORWARD -i <extern0> -o <intern0> -j ACCEPT
 				This can be tested by plugging another machine into the internal interface and attempting to access the WAN. 
 
 				Furthermore, you can continue to configure the router. 
-				The following is a list of topics that you may wish to look at:
-				\begin{itemize}
-					\item Firewalls.\footnote{\url{https://wiki.archlinux.org/index.php/Simple\_stateful\_firewall}}
-					\item Content filtering. 
-					\item Further interfaces. 
-					\item Port forwarding.\footnote{\url{https://wiki.archlinux.org/index.php/iptables}}
-					\item Wireless routing.\footnote{\url{https://wiki.archlinux.org/index.php/Software\_access\_point}}
-				\end{itemize}
+				You may wish to look into firewalls, content filtering, port forwarding, wireless interfaces, packet inspection and SSL offloading in a further attempt to create a secure router and a Cyber Security Operation Center (CSOC) like environment. 
 				
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
@@ -4894,12 +4808,12 @@ Dump of assembler code for function main:
 
 			The CLI can be broken down into parts. 
 			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
-			\begin{table}[htb]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
 					\hline
-					\multicolumn{1}{|c|}{\textbf{Command}} & \multicolumn{2}{| c |}{\textbf{Arguments}}  & \multicolumn{1}{|c|}{\textbf{Other}}
-					\\ \hline
+					\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Command}}} & \multicolumn{2}{| c |}{\textbf{Arguments}}  & \multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Other}}}
+					\\ \cline{2-3}
 					& \multicolumn{1}{|c|}{\textbf{Flags}} & \multicolumn{1}{|c|}{\textbf{Data}} & \\ \hline
 					The name or location of the command to run & 
 					Switches that change the way the program will work & 
@@ -4914,7 +4828,7 @@ Dump of assembler code for function main:
 			Further to this, understanding how the shell that you are using works can make using it far more efficient. 
 			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
 			%TODO: This is linking to the wrong table
-			\begin{table}[htb]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{| p{3cm} | p{7cm} |} 
 					\hline
@@ -4945,11 +4859,14 @@ Dump of assembler code for function main:
 			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
 
 			A summary of the most common Linux command can be found in table \ref{tab:LinuxCommandsSummary}.
-			\begin{table}[htb]
-				\centering
-				\begin{tabular}{| l | p{7cm} |}
+			\begin{center}
+				\begin{longtable}{| l | p{7cm} |}
 					\hline
 					\textbf{Command} & \textbf{Use} \\ \hline
+					\endhead
+					\multicolumn{2}{|r|}{{Continued on next page}} \\ \hline
+					\endfoot
+					\endlastfoot
 					cat & Send the content of a file to STDOUT. 
 							Multiple files will be appended to each other. \\ \hline
 					cd <directory> & Enter directory \\ \hline
@@ -4984,14 +4901,15 @@ Dump of assembler code for function main:
 					umask & show or change new file creation permission mode. \\ \hline
 					wc [file] & Counts lines, words and characters in file or STDIN. \\ \hline
 					which <command> & shows the full path to command. \\ \hline
-				\end{tabular}
-				\label{tab:LinuxCommandsSummary}
-				\caption{Basic Command Reference for Linux}
-			\end{table}
+					\noalign{\vskip 0.5cm}
+					\caption{\label{tab:LinuxCommandsSummary}Basic Command Reference for Linux}
+					\vspace{-1.3cm}
+				\end{longtable}
+			\end{center}
 
 			Further to this, there are a number of special characters which can give powerful actions. 
 			Table \ref{tab:SpecialCommands} shows the special characters that can be used on the bash commandline. 
-			\begin{table}[htb]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{| l | p{7cm} |}
 					\hline
