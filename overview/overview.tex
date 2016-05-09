@@ -4,19 +4,11 @@
 \usepackage{longtable}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
 \renewcommand{\chaptermark}[1]{%
-	        \markright{\thechapter\ #1}}
-\fancyhf{}  % delete current header and footer
-\fancyhead[L,RO]{\bfseries\thepage}
-\fancyhead[LO]{\bfseries\rightmark}
-\fancyhead[RE]{\bfseries\leftmark}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0pt}
-\addtolength{\headheight}{2pt} % space for the rule
-\fancypagestyle{plain}{%
-	   \fancyhead{} % get rid of headers on plain pages
-	      \renewcommand{\headrulewidth}{0pt} % and the line
-	  }
+	        \markboth{\thechapter\ #1}{}}
+
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{microtype}
@@ -93,7 +85,7 @@
 	It is this final table which will be used in determining the content of the final training program. 
 \end{multipleabstract}
 \mainmatter
-\chapter{CySCA}
+\chapter{CySCA 2016}
 	\section{Overview of Challenge}
 		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
 		and sponsored by multiple IT, communication and finance companies. 
@@ -487,7 +479,7 @@
 		Using both the weighting and the count, one can determine the most useful content to place into a training program. 
 		While all of this content will be added, it will be ordered in the same way as it is here and weighted for importance. 
 
-\chapter{Boston Key Party}
+\chapter{Boston Key Party 2016}
 	\section{Overview of Challenge}
 		The Boston Key Party is a well known CTF that is run early in the year. 
 		This CTF is set at a moderate level, requiring a large amount of background, but not being overly difficult. 
