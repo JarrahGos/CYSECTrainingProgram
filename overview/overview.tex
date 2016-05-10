@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{report}
+\documentclass[twoside,a4paper,11pt]{report}
 \author{Jarrah Gosbell}
 \title{Cyber Security Skill Development Overview}
 \usepackage{longtable}
@@ -7,7 +7,7 @@
 \renewcommand{\subsectionmark}[1]{\markright{#1}}
 \renewcommand{\sectionmark}[1]{\markright{#1}}
 \renewcommand{\chaptermark}[1]{%
-	        \markboth{\thechapter\ #1}{}}
+	        \markboth{\thechapter.\ #1}{}}
 
 \usepackage{graphicx}
 \usepackage{setspace}
@@ -55,7 +55,7 @@
 		\addcontentsline{toc}{chapter}{List of Tables}
 \begin{multipleabstract}{Introduction}
 	\addcontentsline{toc}{chapter}{Introduction}
-	This document is the initial research for a cyber security training program for the CYSEC VECC---A small group of cyber security students at UNSW Canberra. 
+	This document is the initial research for a cyber security training program for the CYSEC VECC---a small group of cyber security students at UNSW Canberra. 
 	The proposed program will focus on the skills needed to be able to enter the field professionally.
 	However, it's specific focus will be on those needed to compete in CTFs (cyber security ``capture the flag'' competitions), 
 	which are the main testing activity of students studying in the field. 
@@ -90,7 +90,7 @@
 		The Cyber Security Challenge Australia (CySCA)\footnote{\url{https://cyberchallenge.com.au/}} is a national university level competition set by the Australian Signals Directorate 
 		and sponsored by multiple IT, communication and finance companies. 
 		In the 2015 competition, there were 64 teams that competed, each from Australian higher education institutions. 
-		This competition has been increasing in both complexity and competing teams each year since it's start in 2013. 
+		This competition has been increasing in both complexity and the number of competing teams each year since it's start in 2013. 
 		The challenge has the goal of ``finding the next generation of Australian Cyber Security talent''.
 		This makes this challenge a good starting point for compiling the requirements for a Cyber Security training program. 
 	\section{Main Areas of Focus}
@@ -99,12 +99,12 @@
 		\begin{itemize}
 			\item Corporate Network Penetration Test.
 			\item Web Application Penetration Test. 
-			\item Detect and Defend
-			\item Forensics
-			\item Hash Cracking and Cryptography
-			\item Programming
-			\item Reverse Engineering
-			\item Python Exploitation
+			\item Detect and Defend.
+			\item Forensics.
+			\item Hash Cracking and Cryptography.
+			\item Programming.
+			\item Reverse Engineering.
+			\item Python Exploitation.
 			\item Hack the Box. 
 		\end{itemize}
 		These sections were the areas of focus the competition, and correspond with some of the major areas of cyber security.
@@ -138,7 +138,7 @@
 					Taking a program written and compiled into C\# and determining what it is trying to do and how. 
 					This gives significant information on the system that was originally hidden. 
 					However, this is a specific area of a larger topic. 
-					An understanding of Reverse Engineering would be more appropriate to a training program. 
+					An understanding of Reverse Engineering would be more appropriate to a training program as information about the specifics of C\# can be gathered during a CTF or attack. 
 				\item[Hash Cracking]
 					Taking the output of a one way algorithm and finding the original data. 
 			\end{description}
@@ -855,7 +855,7 @@
 				\textbf{Cryptography} & \textbf{5} & \textbf{0.8} \\ \hline
 				\quad RSA Encryption & 3 & \\ \hline
 				\qquad \{N : e : c\} Format & 1 & \\ \hline
-				\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
+				\qquad Requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
 				\quad Server Authentication & 1 & \\ \hline
 				\quad Merkle-Hallman Knapsack Cryptosystem & 1 & \\ \hline
 				\textbf{Web Exploitation} & \textbf{4} & \textbf{1} \\ \hline
@@ -884,8 +884,8 @@
 	\textit{CySCA}, \textit{the Boston Key Party} and \textit{PlaidCTF} cover a wide range of topics due to their differing goals. 
 	CySCA covers the broadest range, but at the lowest level. 
 	This makes it well suited as the goal of the CYSEC VECC at the current time due to the low overall level of skill. 
-	However, CTFs such as the Boston Key Party and Plaid CTF have also been analysed for use when the VECC gains a higher level of skill. 
-	These two, in the order that they have been broken down are good higher level challenges for next year, when there are a number of members who have some experience with the activity. 
+	However, CTFs such as the Boston Key Party and PlaidCTF have also been analysed for use when the VECC gains a higher level of skill. 
+	These two CTFs, in the order that they are presented, are good higher level challenges for next year, when there are a number of members who have some experience with the activity. 
 
 	Included in table \ref{tab:summary} is the summary breakdown of all of these events. 
 	This shows the skills required to complete all of the tasks required for all of these CTFs, as well as the number of times a particular skill comes up and the weighting given to the main category based on it's overall importance to completing the challenge. 
@@ -935,7 +935,7 @@
 					\textbf{Cryptography} & \textbf{12} & \textbf{0.8} \\ \hline 
 					\quad RSA Encryption & 3 & \\ \hline
 						\qquad \{N : e : c\} Format & 1 & \\ \hline
-						\qquad Common requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
+						\qquad Requirements for ``e'' and ``d'' in RSA & 1 & \\ \hline
 						\qquad Common RSA Attacks & 1 & \\ \hline 
 					\quad Hash Cracking & 2 & \\ \hline
 						\qquad SHA & 1 & \\ \hline 
@@ -1002,7 +1002,7 @@
 	However, these events are not the only part of the industry. 
 	These skills have been weighted to bring out the necessity of the skill not only to the CTF competitions listed here, 
 	but also to a member entering the industry. 
-	Thus, when compiling the training program, one should take thees weightings into account. 
+	Thus, when compiling the training program, one should take these weightings into account. 
 	Items weighted higher should be taught with more depth and focus, while items weighted lower should have less focus and time. 
 
 	The skills outlined here also include a number of specific tools. 
@@ -1011,7 +1011,7 @@
 	This will enable those being taught to learn the necessary tools in their own time, 
 	gaining the skill necessary to learn new ones as they are released. 
 
-	It is also worth noting that while these CTFs are a good source of skills information, and a good means of testing, 
+	It is also worth noting that while these CTFs are a good source of skills information and a good means of testing, 
 	they have little worth as a first principles teaching tool. 
 	This occurs due to the nature of CTFs. 
 	They are designed to test the highest levels of students in the field of cyber security, ensuring that they cover as many aspects of the field as possible. 
