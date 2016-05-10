@@ -1,0 +1,38 @@
+The corresponding response may look as follows:
+Flags: 0x8180 Standard query response, No error
+1... .... .... .... = Response: Message is a response
+.000 0... .... .... = Opcode: Standard query (0)
+.... .0.. .... .... = Authoritative: Server is not an authority for domain
+.... ..0. .... .... = Truncated: Message is not truncated
+.... ...1 .... .... = Recursion desired: Do query recursively
+.... .... 1... .... = Recursion available: Server can do recursive queries
+.... .... .0.. .... = Z: reserved (0)
+.... .... ..0. .... = Answer authenticated: Answer/authority portion was not authenticated by the server
+.... .... ...0 .... = Non-authenticated data: Unacceptable
+.... .... .... 0000 = Reply code: No error (0)
+Questions: 1
+Answer RRs: 4
+Authority RRs: 0
+Additional RRs: 1
+Queries
+xkcd.com: type A, class IN
+Name: xkcd.com
+[Name Length: 8]
+[Label Count: 2]
+Type: A (Host Address) (1)
+Class: IN (0x0001)
+Answers
+xkcd.com: type A, class IN, addr 23.235.37.67
+Name: xkcd.com
+Type: A (Host Address) (1)
+Class: IN (0x0001)
+Time to live: 5
+Data length: 4
+Address: 23.235.37.67
+xkcd.com: type A, class IN, addr 104.156.81.67
+Name: xkcd.com
+Type: A (Host Address) (1)
+Class: IN (0x0001)
+Time to live: 5
+Data length: 4
+Address: 104.156.81.67

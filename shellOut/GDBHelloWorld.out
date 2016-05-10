@@ -1,0 +1,38 @@
+
+$gdb -q a.out
+Reading symbols from a.out...
+Reading symbols from
+~/src/a.out.dSYM/Contents/Resources/DWARF/a.out...done.
+done.
+gdb-peda$ break main
+Breakpoint 1 at 0x100000eff: file a.c, line 5.
+gdb-peda$ run
+Starting program: /Users/Jarrah/src/a.out
+Warning: not running or target is remote
+Breakpoint 1, main () at a.c:5
+5 int i = 0;
+gdb-peda$ i r
+rax            0x100000ef0 0x100000ef0
+rbx            0x0 0x0
+rcx            0x7fff5fbffc80 0x7fff5fbffc80
+rdx            0x7fff5fbffbb8 0x7fff5fbffbb8
+rsi            0x7fff5fbffba8 0x7fff5fbffba8
+rdi            0x1 0x1
+rbp            0x7fff5fbffb80 0x7fff5fbffb80
+rsp            0x7fff5fbffb70 0x7fff5fbffb70
+r8 0x0 0x0
+r9             0x7fff785350c8 0x7fff785350c8
+r10            0xffffffff 0xffffffff
+r11            0xffffffff0X00 0xffffffff00000000
+r12 0x0 0x0
+r13 0x0 0x0
+r14 0x0 0x0
+r15 0x0 0x0
+rip            0x100000eff 0x100000eff <main+15>
+eflags 0x202[IF] 
+cs 0x2b 0x2b
+ss <unavailable> 
+ds <unavailable> 
+es <unavailable> 
+fs 0x0 0x0
+gs 0x0 0x0

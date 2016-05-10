@@ -20,9 +20,7 @@
 *.maf
 *.mtc
 *.mtc1
-*.out
 *.synctex.gz
-makefile
 *.pdf
 .DS_Store
 .gdb_history

