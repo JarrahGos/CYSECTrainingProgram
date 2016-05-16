@@ -1186,6 +1186,16 @@
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
+	\subsection{Unsecured DNS Server}
+		The DNS server at ``ns.cysec'' has a number of known vulnerabilities in it. 
+		It is running a version of bind that is no longer supported. 
+		Target it first using the ``version'' command in a DNS query. 
+		This will give you the information that you will require to search for a vulnerability in it and gain access to the system. 
+
+		\subsubsection{DNS Poisoning}
+			
+		\subsection{DNS Zone Transfer}
+
 		\subsection{Unsecured FTP to Shell}
 		% Expect tutorial for setting this up. http://web.archive.org/web/20041010121409/http://www.raycosoft.com/rayco/support/expect_tutor.html
 			This section is an initial walk through for getting access to a system with an unsecured FTP server. 
@@ -2124,6 +2134,45 @@ fi
 alias ls="ls --color=auto"
 			\end{lstlisting}
 	\section{Introduction to Python}
+		Python is the first, easiest and most useful language that will be introduced in this book. 
+		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
+		However, this couldn't be further from the truth. 
+		Due to it's integration with the Open Source community, python has grown beyond the basic language that it would initially seem. 
+		This has occurred through the introduction of modules and tools such as pypi, which allow you to find new modules based on their description. 
+		\subsection{Setup}
+			To use this section, you will have to have installed python 3 on your system. 
+			On a Linux system, this can usually be done by running your package manager. 
+			On any other system, it is recommended that you find the package on \url{python.org}.
+
+			Once this is installed, the python interpreter can be run by calling ``python'' from the command line. 
+			You can call this interpreter with a file name as an argument to have it interpret and run that file. 
+
+		\subsection{Your First Program}
+			The below program is an example of a ``Hello World'' program in C. 
+			These are generally the basic program that is used as the first that a new programmer will write in a language. 
+			Because python is a high level language that focuses on being accurate and concise, this program can be expressed in the following line. 
+			\begin{quote}
+				print("Hello World");
+			\end{quote}
+
+		\subsection{Mathematics}
+			While programming does not require high level mathematics, it is heavily based on basic arithmetic. 
+			Table \ref{tab:pythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{|l|l|l|l|}
+					\hline
+					\textbf{Python Command} & \textbf{Mathematical Operator} & \textbf{Example} & \textbf{Returns} \\ \hline
+					+ & $+$ & 1 + 5 & 6 \\ \hline
+					- & $-$ & 5 - 1 & 4 \\ \hline
+					* & $\times$ & 4*3 & 12 \\ \hline
+					/ & $\div$ & 4/2 & 2 \\ \hline
+					%\% & $\mod$ & 5 \% 4 & 1 \\ \hline 
+					= & $=$ & x = 7 & x holds the value 7 \\ \hline 
+				\end{tabular}
+				\caption{Python Arithmetic operators}
+				\label{tab:PythonMaths}
+			\end{table}
 	\section{Introducton to JavaScript}
 		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
