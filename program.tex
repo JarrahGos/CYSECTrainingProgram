@@ -388,6 +388,7 @@
 		An example of this type of lock can be seen in figure \ref{fig:PinTumblerLock}.\footnote{\url{https://commons.wikimedia.org/wiki/File:Pin\_and\_tumbler\_lock\_picking.PNG}}
 		Furthermore, the ideas used in this section will be added to in later chapters, notably in chapter \ref{ch:WirelessAttacks} where we will clone NFC access cards. 
 		\begin{figure}[htb]
+			\centering
 			\includegraphics[scale=0.6]{./PinTumblerLock.png}
 			\caption{Example of Picking a Pin and Tumbler Lock}
 			\label{fig:PinTumblerLock}
@@ -1183,6 +1184,38 @@
 				giving you a far better shot of getting in without being noticed. 
 			%TODO: Finish zone transfer and this section.
 
+		\subsection{DNS Poisoning}
+			DNS poisoning, similar to ARP Poisoning, is the act of telling other computers on the network that you are someone you aren't in order to gain further access to a system. 
+			There are two ways of doing this:
+			\begin{enumerate}
+				\item Request Interception.
+				\item Cache Poisoning. 
+			\end{enumerate}
+			The former works by using ARP poisoning to steal the requests then responding to them with fake answers. 
+			The latter works after gaining access to an authoritative DNS server or cache. 
+
+			\subsubsection{DNS Poisoning Through ARP}
+				As explained in the above section on ARP Poisoning, ettercap should be setup to redirect traffic from the target machine bound for the name servers to itself. 
+				You will then need to alter the file found at ``/usr/share/ettercap/etter.dns'' with the data of the names and IP addresses that you would like to poison. 
+				An example of this configuration can be seen below:
+				\lstinputlisting[numbers=none]{./shellOut/etter.dns}
+				You must then enable the ``dns\_spoof'' plugin. 
+
+				Once this has been setup, all DNS queries sent from the target machine will be intercepted and poisoned. 
+				This can be tested by attempting to resolve the poisoned name from the target machine. 
+				You may then go on with the attacks explained in social engineering to steal passwords or attack computers. 
+			\subsubsection{DNS Poisoning Through Server Attacks}
+				The alternative to setting up ARP Poisoning is to attack the server itself. 
+				This section assumes that you have both successfully exploited the name server and found it's configuration. 
+				It also assumes that the name server is running bind9 on a UNIX-like system. 
+
+				Within the ``options'' section of the servers configuration, there should be a line starting with ``directory''. 
+				This line designates where the servers DNS cache is stored. 
+				Navigate to the cache directory and edit the files within to set them to your specifications. 
+				An example configuration can be seen below:
+				\lstinputlisting[numbers=none]{./shellOut/bind.conf}
+	\section{Social Engineering}
+		
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
@@ -1551,9 +1584,11 @@
 		\subsection{Cyclic Redundancy Codes}
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
-	\section{x86 Assembly}
+	\section{Assembly}
+		\subsection{x86 Assembly}
+
 		%TODO: Decide whether this goes here or in programming. 
-	\section{ARM Assembly}
+		\subsection{ARM Assembly}
 	\section{Radare2}
 		Radare2 is a set of tools for working with binary files. 
 		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
@@ -1598,7 +1633,7 @@
 			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
 			I recommend starting with the sprint speed. 
 			%TODO: Should there be more than this section here?
-		\section{Side Channel Attacks}
+	\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
 		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
 		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
@@ -2157,7 +2192,7 @@ alias ls="ls --color=auto"
 
 		\subsection{Mathematics}
 			While programming does not require high level mathematics, it is heavily based on basic arithmetic. 
-			Table \ref{tab:pythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
+			Table \ref{tab:PythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
 			\begin{table}[htb]
 				\centering
 				\begin{tabular}{|l|l|l|l|}

@@ -1,0 +1,5 @@
+www.google.com A 192.168.1.12
+google.com A 192.168.1.12
+
+www.google.com PTR 192.168.1.12
+www.google.co.in PTR 192.168.1.12
