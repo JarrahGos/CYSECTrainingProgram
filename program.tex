@@ -1473,6 +1473,27 @@
 				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
 		\subsection{Character Encoding}
 	\section{File Uploads}
+		Allowing the user to upload a file to a webserver is one of the more dangerous features enabled on a number of systems. 
+		These files will have to be stored somewhere accessible on the filesystem, as well as being one of the more common features. 
+
+		Allowing file upload means that any user of a site can upload files, within given restrictions. 
+		However, many of these restrictions can be altered, allowing for executable files to be uploaded to the server. 
+
+		The following will step you through creating a PHP payload to upload to a server. 
+		\begin{enumerate}
+			\item Search for a php payload using the command ``msfvenom -l payloads | grep php''. 
+			\item Create the file using the command ``msfvenom -p <payload> port=<port> > index.php''.
+				You may also set any of the other variables that could be set from metasploit in the same way port is set.
+			\item check that the code generated in ``index.php'' is correct. 
+		\end{enumerate}
+
+		Exploitation is now a simple matter of setting up a listener in metasploit using the ``exploits/multi/handler'' exploit, uploading the file and running it.
+
+		More secure web sites will block the upload of certain types of content in order to stop these vulnerabilities. 
+		The most basic form of this is based on file extension, allowing only ``.jpg'' extensions or some other set. 
+		However, this is often blocked on the client side, rather than on the server. 
+		Thus, by running traffic through a proxy such as burp suite, 
+		one can edit traffic on the way out, setting the extension back to the preferred ``.php''. 
 	\section{File Inclusion}
 	\section{HTTP Directory Traversal}
 		\subsection{Directory Creation}
