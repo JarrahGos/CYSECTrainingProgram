@@ -1215,7 +1215,35 @@
 				An example configuration can be seen below:
 				\lstinputlisting[numbers=none]{./shellOut/bind.conf}
 	\section{Social Engineering}
-		
+		Accessing a computer network need not always be done through targeted attacks on vulnerable software. 
+		Often, targeting the wetware through the far too common PEBKAC error is more fruitful. 
+		Thus, the following sections discuss the different ways of convincing the user to tell you information that they shouldn't. 
+		Sometimes, this will give you direct access to their computer, or that of another part of the organization. 
+		However, it is more than likely that with a large enough spread, you will at least catch one users password being sent to the wrong service. 
+
+		\subsection{Fake Websites}
+			Fake websites are one of the easiest social engineering attacks available.
+			This is especially so when you have already set up DNS poisoning as shown in the above section. 
+
+			Such an attack will allow you to serve a page that looks exactly like the one the user is requesting, but will retain their password for you before sending it off to the legitimate service. 
+			With little effort, this can be done on any site. 
+			However, it takes significantly more to make the site have the correct TLS certificates and encryption. 
+			
+			The tool used to conduct such an attack is ``weeman''. 
+			This tool allows you to scrape a web page from the Internet and serve it from your own machine, capturing any information transmitted to it. 
+
+			To start weeman, run the command ``weeman <site to scrape>''. 
+			This will scrape the site and start a server serving it. 
+			It will also begin reading POST requests, looking for passwords and other information. 
+
+			If you have set this up correctly, browsing to ``localhost'' should show you the fake website. 
+			However, on the targeted machines, browsing to the name of the site you have scraped should send you to weemans fake version. 
+
+			At this point, weeman should output any usernames or passwords that are sent to it, redirecting those users to the correct site. 
+			\subsubsection{Weeman with TLS}
+		\subsection{Email}
+		\subsection{Social Engineering Toolkit}
+		\subsection{Malicious PDF}
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
@@ -1354,8 +1382,9 @@
 
 				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
 				This shell will give you persistence options as well as the ability to control the whole system. 
-			\subsection{Evading Anti-XSS}
-			\subsection{Content Security Policy}
+		\subsection{``AutoPWN''}
+		\subsection{Evading Anti-XSS}
+		\subsection{Content Security Policy}
 	\section{SQL Injection}
 		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
 		This allows you to have direct access to the database, giving you the ability to ensure it logs you in or to gather information about other accounts within it. 
