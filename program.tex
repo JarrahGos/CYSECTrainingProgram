@@ -1244,6 +1244,22 @@
 		\subsection{Email}
 		\subsection{Social Engineering Toolkit}
 		\subsection{Malicious PDF}
+			This section will discuss the creation of a client side exploit, stored in a PDF, through the use of Metasploit\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/client-side-exploits/}}.
+			This is usually used for targeted social engineering attacks, where you know a significant amount about the user in order to ensure they will open the file. 
+
+			This attack will be completed through the Metasploit Framework, and find an exploit which will work. 
+			For demonstration here, the Adobe Reader ``util.printf()'' vulnerability will be used. 
+			However, you should target your attack to what you know of the system. 
+
+			Using this exploit, you will need to set a number of options within Metasploit, such as the file name, payload and connection options. 
+			Once this has been set, the run command will give you the PDF ready to be sent to the target. 
+
+			To properly stage the payload, you will then need to set up a listener. 
+			This should be done using the ``exploit/multi/handler'' exploit and an appropriate payload. 
+			Once this is running, you should send the PDF to the machine that you are targeting. 
+
+			On opening the PDF, a connection should be made between the Metasploit handler and the PDF, giving you Meterpreter access to the machine. 
+			From here, you can migrate to another process and use the machine as your own. 
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
 	% 
@@ -1311,6 +1327,7 @@
 			Try any shell command that you know, most will work. 
 			
 			At this point, navigate to the file at ``/etc/flag'' and tell me the flag that you find. 
+			
 \chapter{Web Penetration}
 	\label{ch:WebPenetration}
 	\section{XSS}
