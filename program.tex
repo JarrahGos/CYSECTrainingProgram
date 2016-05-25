@@ -244,6 +244,7 @@
 						These are usually used by other CPU instructions, rather than directly accessed.
 						The use for each CFLAGS bit can be found in table \ref{tab:CFLAGSBits} 
 						\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 							\centering
 							\begin{tabular}{| l | l | l |}
 								\hline
@@ -266,6 +267,7 @@
 								20  &   VIP  &   Virtual interrupt pending flag \\ \hline
 								21  &   ID   &   ID flag \\ \hline
 						\end{tabular}
+					\end{adjustbox}
 						\caption{CFLAGS bit uses}
 						\label{tab:CFLAGSBits}
 					\end{table}
@@ -499,6 +501,7 @@
 
 		The layers of the TCP/IP Model can be found in Table \ref{tab:TCPIPModel}
 		\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 			\centering
 			\begin{tabular}{| l | l |}
 				\hline
@@ -509,6 +512,7 @@
 				Data Link & Individual link delivery\\ \hline
 				Physical & Physical make up of the network\\ \hline
 			\end{tabular}
+		\end{adjustbox}
 			\caption{TCP/IP Networking Model}
 			\label{tab:TCPIPModel}
 		\end{table}
@@ -1077,6 +1081,7 @@
 		This command sets up a TCP forwarding rule on the machine, allowing you to interact with the local network as if you were working from the machine itself. 
 		The options for ``portfwd'' can be found in table \ref{tab:portfwdFlags}.
 		\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 			\centering
 			\begin{tabular}{| l | l |}
 				\hline
@@ -1089,6 +1094,7 @@
 				List & List all forwarding ports. \\ \hline
 				Flush & Delete all rules. \\ \hline
 			\end{tabular}
+		\end{adjustbox}
 			\caption{Portfwd Flags}
 			\label{tab:portfwdFlags}
 		\end{table}
@@ -1532,6 +1538,7 @@
 			However, the most simple way to manually file carve is to know the common headers and footers and search for them. 
 			Table \ref{tab:FileCarvingHeaders} contains a list of common headers and footers.\footnote{\url{http://www.garykessler.net/library/file\_sigs.html}} 
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | l | l |}
 					\hline
@@ -1551,6 +1558,7 @@
 					Office XML & 50 4B 03 04 14 00 06 00 & none \\ \hline
 					JPG & FF D8 FF E0 xx xx 4A 46	& 49 46 00 \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\caption{Common File Headers and Footers}
 				\label{tab:FileCarvingHeaders}
 			\end{table}
@@ -2198,7 +2206,22 @@ fi
 			However, the two most common are echo for simple output and printf for formatted strings. 
 			Both of these commands are simple, with echo simply outputting a string to STDOUT and printf working exactly the same as in C. 
 			In both of these cases, if you want to change the input the ``<'' operator will allow you to. 
-			For changing output, use either the ``>'', ``>{}>'' or ``>\&n'' operators, where n is a file descriptor (0: STDIN, 1: STDOUT, 2: STDERROR).
+			For changing output, use either the ``>'', ``>{}>'' or ``>\&n'' operators, where n is a file descriptor, such as the standard ones found in table \ref{tab:stdFileDescriptors}
+			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
+				\centering
+				\begin{tabular}{|l|l|l|}
+					\hline
+					\textbf{Number} & \textbf{Name} & \textbf{Description} \\ \hline
+					0 & STDIN & Standard input for a program. Usually text entry at the commandline. \\ \hline 
+					1 & STDOUT & Standard output for a program. Usually text output at the commandline. \\ \hline
+					2 & STDERR & Standard error output for a program. Usually also the commandline. \\ \hline
+				\end{tabular}
+				\end{adjustbox}
+				\caption{Standard File Descriptors}
+				\label{tab:stdFileDescriptors}
+			\end{table}
+					
 		\subsection{Compound Commands}
 			These are commands or syntax elements which allow you to alter the scope or operation of the script you are writing. 
 			Each of these work slightly differently, but when used together and properly, they allow for a properly written program using scope and functions. 
@@ -2261,6 +2284,7 @@ alias ls="ls --color=auto"
 			While programming does not require high level mathematics, it is heavily based on basic arithmetic. 
 			Table \ref{tab:PythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{|l|l|l|l|}
 					\hline
@@ -2272,6 +2296,7 @@ alias ls="ls --color=auto"
 					%\% & $\mod$ & 5 \% 4 & 1 \\ \hline 
 					= & $=$ & x = 7 & x holds the value 7 \\ \hline 
 				\end{tabular}
+				\end{adjustbox}
 				\caption{Python Arithmetic operators}
 				\label{tab:PythonMaths}
 			\end{table}
@@ -2710,6 +2735,7 @@ list = ['one', 'two', 'three'];
 
 			A list of the format strings can be found in \ref{tab:StringFormatCodes}
 				\begin{table}[htb]
+					\begin{adjustbox}{width=1\textwidth}
 					\centering
 					\begin{tabular}{| l | l |}
 						\hline
@@ -2723,6 +2749,7 @@ list = ['one', 'two', 'three'];
 						\verb+%n+ & Write number of chars printed to int pointer. \\ \hline
 						\verb+%d+ & Int \\ \hline
 					\end{tabular}
+					\end{adjustbox}
 					\caption{Types of Format String Codes}
 					\label{tab:StringFormatCodes}
 				\end{table}
@@ -2739,6 +2766,7 @@ list = ['one', 'two', 'three'];
 			Thus, you will have to understand the differences between the different types and where they are best used. 
 			Table \ref{tab:CVariableTypes} contains a list of the most common variable types. 
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | p{8cm} |}
 					\hline
@@ -2753,6 +2781,7 @@ list = ['one', 'two', 'three'];
 					long double & An extended precision floating point number. 
 					May be the same as a double if the extended precision is not supported. \\ \hline
 				\end{tabular}
+				\end{adjustbox}
 				\caption{C Variable Types}
 				\label{tab:CVariableTypes}
 			\end{table}
@@ -2908,6 +2937,7 @@ list = ['one', 'two', 'three'];
 			Found in table \ref{tab:PointerLexicon} is an explanation of the different terms of using pointers. 
 			
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | p{8cm} |}
 					\hline
@@ -2919,6 +2949,7 @@ list = ['one', 'two', 'three'];
 					type *ptr = \&thing & Create a pointer of type named ptr pointing at the address of thing. \\ \hline
 					ptr++ & Increment where ptr points. \\ \hline
 				\end{tabular}
+				\end{adjustbox}
 				\caption{Pointer Lexicon}
 				\label{tab:PointerLexicon}
 			\end{table}
@@ -3314,6 +3345,7 @@ list = ['one', 'two', 'three'];
 				Numbers can be encoded as decimals, or in a higher base such as 16 or 64. 
 				Table \ref{tab:Encodings} contains a list of the names and look of many common encodings. 
 				\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 					\centering
 					\begin{tabular}{| l | l |}
 						\hline
@@ -3322,6 +3354,7 @@ list = ['one', 'two', 'three'];
 						Hexadecimal, base 16 & DEADBEEF, 46DEAC46BC \\ \hline
 						Base 64 & YW55IGNhcm5hbCBwbGVhcw== \\ \hline
 					\end{tabular}
+				\end{adjustbox}
 					\caption{Common Encoding Examples}
 					\label{tab:Encodings}
 				\end{table}
@@ -3394,6 +3427,7 @@ list = ['one', 'two', 'three'];
 				
 				When using this mode, for each position within the password, we need to create a mask using either the character sets outlined in table \ref{tab:HashcatMaskCharSets} or a custom character set defined before starting. 
 				\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 					\centering
 					\begin{tabular}{| l | l |}
 						\hline
@@ -3405,6 +3439,7 @@ list = ['one', 'two', 'three'];
 						?a & \verb+?l?u?d?s+ \\ \hline
 						?b & 0x00 - 0xff \\ \hline
 					\end{tabular}
+				\end{adjustbox}
 					\caption{Hashcat Mask Mode Built in Character Sets}
 					\label{tab:HashcatMaskCharSets}
 				\end{table}
@@ -3500,6 +3535,7 @@ list = ['one', 'two', 'three'];
 
 			Table \ref{tab:HashCollisions} contains the maximum number of hash values for common hash types.
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | l |}
 					\hline
@@ -3509,6 +3545,7 @@ list = ['one', 'two', 'three'];
 					SHA1   & $6.4\times10^{64}$ \\ \hline
 					MD5	   & $2.28\times10^{52}$ \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\label{tab:HashCollisions}
 				\caption{Number of Possible Hashes for Different Algorithms}
 			\end{table} 
@@ -3602,6 +3639,7 @@ list = ['one', 'two', 'three'];
 			\end{description}
 			A basic guide for what common filesystems can be mounted with which options can be found in table \ref{tab:mountOptions}, use these within the file ``/etc/fstab''.
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | l | l | l |}
 					\hline
@@ -3612,6 +3650,7 @@ list = ['one', 'two', 'three'];
 					/tmp &		yes &	yes &	breaks compiling packages \\ \hline
 					/boot &		yes &	yes &	yes \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\caption{Common filesystem restrictions}
 				\label{tab:mountOptions}
 			\end{table}
@@ -4435,6 +4474,7 @@ list = ['one', 'two', 'three'];
 			Further to this, the NOP sleds that are commonly used within shellcode are quite obvious to an IDS as they are rarely if ever used in the normal world. 
 			However, table \ref{tab:NOPAlternatives} shows a list of instructions, their hex values and their ASCII interpretations that can be used instead. 
 			\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | c | l |}
 					\hline
@@ -4448,6 +4488,7 @@ list = ['one', 'two', 'three'];
 					dec ecx & 0x49 & I \\ \hline
 					dec edx & 0x4A & J \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\caption{NOP Sled alternatives}
 				\label{tab:NOPAlternatives}
 			\end{table}
@@ -4831,6 +4872,7 @@ list = ['one', 'two', 'three'];
 			The CLI can be broken down into parts. 
 			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
 			\begin{table}[H]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
 					\hline
@@ -4843,6 +4885,7 @@ list = ['one', 'two', 'three'];
 					Other content such as pipes and redirection. 
 					Any commands passed here follow the same format \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\label{tab:CLIParts}
 				\caption{Parts of a CLI Command}
 			\end{table} 
@@ -4851,6 +4894,7 @@ list = ['one', 'two', 'three'];
 			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
 			%TODO: This is linking to the wrong table
 			\begin{table}[H]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| p{3cm} | p{7cm} |} 
 					\hline
@@ -4870,6 +4914,7 @@ list = ['one', 'two', 'three'];
 					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\ \hline
 					\keys{\tab + \tab} & Show options for completion. \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\label{tab:BashKeyShortcuts}
 				\caption{Keyboard Shortcuts for the Bourne Again Shell}
 			\end{table}
@@ -4932,6 +4977,7 @@ list = ['one', 'two', 'three'];
 			Further to this, there are a number of special characters which can give powerful actions. 
 			Table \ref{tab:SpecialCommands} shows the special characters that can be used on the bash commandline. 
 			\begin{table}[H]
+				\begin{adjustbox}{width=1\textwidth}
 				\centering
 				\begin{tabular}{| l | p{7cm} |}
 					\hline
@@ -4942,6 +4988,7 @@ list = ['one', 'two', 'three'];
 					<command> > <file> & Send STDOUT of command to file. \\ \hline
 					<command> < <file> & Send file to command as STDIN. \\ \hline
 				\end{tabular}
+			\end{adjustbox}
 				\label{tab:SpecialCommands}
 				\caption{Linux Commandline Special Characters}
 			\end{table}
@@ -5026,6 +5073,7 @@ list = ['one', 'two', 'three'];
 				An example of the content of one of these files can be found in table \ref{tab:fstab}. 
 				The contents of this table, when formatted correctly and placed on the correct system will work. 
 				\begin{table}[htb]
+				\begin{adjustbox}{width=1\textwidth}
 					\centering
 					\begin{tabular}{| l | l | l | l | l | l |}
 						\hline
@@ -5034,6 +5082,7 @@ list = ['one', 'two', 'three'];
 						%UUID=aeb6cbbf-f40c-4659-9d81-605e84467349 & / & btrfs & rw,relatime & 0 & 0 \\ \hline
 						/media/store & /srv/nfs4/store & none & bind & 0 & 0 \\ \hline
 					\end{tabular}
+				\end{adjustbox}
 					\label{tab:fstab}
 					\caption{A standard Linux fstab}
 				\end{table}
@@ -5107,6 +5156,7 @@ list = ['one', 'two', 'three'];
 				
 			\subsubsection{File Permissions}
 				\begin{table}[H]
+				\begin{adjustbox}{width=1\textwidth}
 					\centering
 					\begin{tabular}{| l | l | l |}
 						\hline
@@ -5116,6 +5166,7 @@ list = ['one', 'two', 'three'];
 						w & 2 & Write access is granted in this position \\ \hline
 						x & 1 & Execute access is granted in this position \\ \hline
 					\end{tabular}
+				\end{adjustbox}
 					\caption{UNIX File Permissions Keys}
 					\label{tab:UNIXPermissionKeys}
 				\end{table}
@@ -5155,7 +5206,6 @@ list = ['one', 'two', 'three'];
 		This is also the case with tools such as Nessus, which gives all relevant CVEs for any of its scan responses. 
 
 		
-	\section{Binary Logic}
 	\section{QR Codes}
 	\section{Regex}
 	\section{Boolean Mathematics}
