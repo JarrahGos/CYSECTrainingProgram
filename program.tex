@@ -1406,6 +1406,27 @@
 				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
 				This shell will give you persistence options as well as the ability to control the whole system. 
 		\subsection{``AutoPWN''}
+			The ``AutoPWN'' exploit in Metasploit allows you to automatically target a computer accessing a website. 
+			As we have seen, using XSS, we can force a user to access a site of your choosing. 
+			Through this, we can attack a browser, gain shell access to a machine and create a persistent back door automatically. 
+
+			This module will detect the version of both the browser and any relevant plugins. 
+			It will then launch any relevant attacks against that system. 
+
+			To use the module, the following steps are necessary:
+			\begin{enumerate}
+				\item Set the HTMLContent option. 
+					This will start the server with a page of your choosing. 
+					You should specify this as ``file://<file>''.
+					The site should be something simple, but not something that will tip off the user. 
+				\item Set the ``EXCLUDE\_PATTERN'' and ``INCLUDE\_PATTERN'' to add or remove specific exploit types. 
+				\item Set the ``MaxExploitCount'' to the number of exploits you would like to try. 
+					More will give you more chance of getting in, but will be more obvious and likely to crash the browser. 
+				\item Set the ``AllowedAddresses'' option to target only certain addresses with the attack. 
+				\item Run the exploit. 
+			\end{enumerate}
+
+			Assuming that you have followed the steps above, place the ``BrowserAutoPwn URL'' given my Metasploit into your XSS and wait for a user to connect. 
 		\subsection{Evading Anti-XSS}
 		\subsection{Content Security Policy}
 	\section{SQL Injection}
