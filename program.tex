@@ -373,7 +373,7 @@
 			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
 			
 	\section{Executable File Formats}
-\chapter{Scoping and Mind set}
+\chapter{Scoping and Mindset}
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
 		One must understand the difference between attempting to beat down a stone wall with a battering ram and simply finding the key. 
@@ -422,6 +422,128 @@
 
 	\section{Research}
 	\section{Problem Solving}
+\chapter{The Cyber Range}
+	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune. 
+	A ``Cyber Range'' is an area---completely disconnected from all target networks---in which you can work on your skills safely.  
+	It allows you to try attacks that you would not otherwise be able to do and create scenarios that could not be done on a single computer. 
+	
+	These ranges can become a full time occupation in themselves, servicing a whole university. 
+	However, the range outlined in this chapter will be confined to one or two computers, avoiding most of the complexity of these larger ranges, 
+	while still giving you the benefits of multiple machines. 
+	\section{Your Workstation}
+		The setup for your computer in itself can be anything that you can run. 
+		For example, my two main systems are an OS X laptop and an Arch Linux desktop. 
+		These systems, while both UNIX in nature, are significantly different in their running. 
+		However, they both have the basic requirements for creating a Cyber Range workstation: virtualization and high end hardware. 
+
+		\subsection{Hardware}
+			You will need to build a system that can run multiple operating systems at the same time. 
+			This is because many of the attacks outlined in this book cannot be done against one's own computer, 
+			but for security should not be done against another machine. 
+
+			Generally, the basic hardware requirements are as follows:
+			\begin{description}
+				\item[Quad Core CPU] Having a Quad Core CPU or better allows the system to run multiple processes at the same time. 
+					This means that we can use virtualization to run a number of different systems simultaneously. 
+					More here will be better. However, a Quad core CPU with Hyperthreading can easily run 3-4 Virtual Machines at any one time. 
+				\item[8GB Memory] Having at least 8GB of memory available will mean that more than just the main OS will be able to loaded into memory at one time. 
+					However, This is an absolute minimum requirement. 
+					Having at least 16GB will make the system far more usable. 
+				\item[Large Fast Storage] Running VMs is a task that needs both large amounts of storage and quick access to it. 
+					Due to this, it is recommended that you install an SSD which can store the main OS and main VMs. 
+					However, if you are dealing with a large set of target VMs, it would also be worthwhile adding a large rotational storage device for their storage. 
+			\end{description}
+
+			This level of hardware is easily available on both modern laptops and desktops. 
+			Thus, you should be able to create a physical workstation that is more than capable of keeping up with your work. 
+			
+		\subsection{Virtualization}
+			To enable you to run multiple operating systems and networks on one computer, you will need a well setup virtualization environment. 
+			There are two competing products in this field, VMware's Workstation (or Fusion on OS X) and Oracle's VirtualBox. 
+			While generally, these products will both do the same thing, there are some differences that make VMware's solution better. 
+			Specifically, it's environment and integration with vSphere, VMware's hypervisor allows one to create far more powerful networks and systems. 
+			
+			However, if your goal is to set up a range on a budget, using VirtualBox will serve you best. 
+			It has an open source version, which can be accessed for free, but has limitations on USB pass-through and other features. 
+			Furthermore, the closed source version is also available free for non-commercial use. 
+
+			The VMware alternative to this is VMware player. 
+			However, you are far better off using either VirtualBox or VMware Workstation, rather than taking the middle ground and using player. 
+			It is missing a significant number of features, making it a poor choice for creating a Cyber Range. 
+
+			This document will use VMware Workstation/Fusion and VMware ESXi as the virtualization environment. 
+			This is to standardize with the environment it was written in more than any other reason. 
+			If the above leads to you choosing VirtualBox, most of the content discussed in this chapter will still work. 
+		
+		\subsection{Recommended VMs}
+			This section will discuss the VMs that are commonly used for the creation of a virtual network for practising these skills. 
+			\begin{description}
+				\item[Kali Linux] Kali\footnote{\url{http://www.kali.org/}} is the main OS for Penetration testing. 
+					It is a Linux distribution that was designed to have most of the common tools used in network penetration built in. 
+					Due to this, this OS the VM that most of your attacks come from. 
+				\item[DVWA] The Damn Vulnerable Web App\footnote{\url{http://dvwa.co.uk/}} is one of the better web penetration learning platforms available. 
+					It will allow the user to set the level of difficulty in a range of attacks that are similar, if not the same as those commonly found in the real world. 
+				\item[Metasploitable] Metasploitable\footnote{\url{https://information.rapid7.com/metasploitable-download.html}} is a server setup to be exceptionally vulnerable. 
+					It can be used to learn to attack through both web and network, making it a foundational system for creating a range. 
+			\end{description}
+
+			Further to these, the website \href{vulnhub.com}{volunhub} lists a number of community created VMs that can be stood up on your own machine as a target. 
+			Many of these are built as a CTF, meaning that they have a number of vulnerabilities and challenges within them. 
+
+	\section{Attack Environment}
+	\section{Building Targets}
+		While the basic targets found on the Internet are a good starting point, one must move beyond this if they are to learn properly how to gain access to real systems. 
+		Thus, this section will explain how to build your own targets. 
+		These targets may be easier or harder based on your goals, but they will be based on real, production software. 
+
+		\subsection{Operating Systems}
+			The first step in creating a vulnerable target is finding an OS to base it on. 
+			This requires significant thought, requiring answers to the following questions:
+			\begin{itemize}
+				\item What type of attack do I want to practise?
+					Practising domain attacks on most Linux systems will not be useful. 
+					Similarly, Bind, a common DNS server, will not run on windows. 
+				\item Does the attack require old software?
+					If you need old versions of software, you may have to find their sources online. 
+					However, some Linux distributions leave repositories for old software available online. 
+					For example, debian 5's repository is still running on \url{archive.debian.org}.
+				\item Is the attack configuration based?
+					If this is the case, you can use any supporting OS, as you can mis-configure the software on any system. 
+				\item Does the system I want to use have the required supporting libraries?
+					DVWA for example, requires PHP 5.5, mysql and Apache. 
+					If the system you are basing off doesn't have access to these packages, it will be far harder to set up the target. 
+			\end{itemize}
+		\subsection{Setup}
+			Setting up a target system should be little different from setting up a production system. 
+			However, there are two types of targets: specifically vulnerable and generally vulnerable:
+			\begin{description}
+				\item[Specifically Vulernable]
+					These systems have been created to show a specific vulnerability, rather than generally be vulnerable. 
+					Creating a system like this means that the attacker will have to undertake a specific set of research
+					and attack through the medium that you designed. 
+					The main purpose of these systems is to teach a specific type of attack or demonstrate a given vulnerability. 
+				\item[Generally Vulnerable]
+					These systems are the more common type of target system. 
+					They can be useful for teaching a number of different types of vulnerability, meaning that they can be reused for many different lessons. 
+					Targets such as Metasploitable fall into this category, as they have a number of vulnerabilities that the attacker could choose to exploit. 
+			\end{description}
+
+			The setup for these types of target however, is quite similar. 
+			The only differing requirements are that specific targets need more planning, and general targets need the same process to be completed for multiple services. 
+
+			The first step to creating a target, given that the OS has been installed and configured is to install the relevant packages for the vulnerability that you require. 
+			If this can be found in the repositories of the distribution or system that you are using, download them from here. 
+			Otherwise, vulnerable versions of software can be found on \href{https://www.exploit-db.com/remote/?order\_by=application&order=desc&pg=1}{exploit-db.com}.
+
+			From here, the software should be configured as per it's manual or online guides. 
+			However, there will be a number of places that it is evident will have an impact on security. 
+			If the software has not been chosen for an explicit vulnerability found within it, you should research theses settings and configure them to provide the level of exposure and ease of access that you desire. 
+
+			After configuring the software and starting the relevant services, you should scan the VM as if you were about to attack it. 
+			This will tell you if there was anything that you missed from your initial design or any components that could be improved. 
+
+	\section{Target Environment}
+
 \chapter{Network Operations}
 	\label{ch:NetworkOperations}
 	By using a common language and being able to write it down, the human race has been able to move from hunter gather to large scale society. 
@@ -5248,6 +5370,7 @@ list = ['one', 'two', 'three'];
 				\item[XOR] Either one or the other must be true. However, both cannot be. 
 				This will be shown as either \verb+^+ (bitwise) or $\oplus$ (Mathematical).
 			\end{description}
+	
 \appendix
 	\label{ch:Appendix}
 	\bibliographystyle{plain}
