@@ -99,6 +99,20 @@
   morestring=[b]',
   morestring=[b]"
 }
+\lstdefinelanguage{bind}{
+  keywords={options, directory, allow-transfer, allow-recursion, logging, channel, file, severity, print-severity, print-time, category, default, zone, type, allow-update, TTL, IN, SOA, A, NS, CNAME, MX, PTR}
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{;},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
 %Sorting code floats. 
 \usepackage{float}
 \floatstyle{ruled}
@@ -125,10 +139,10 @@
 \frontmatter
 \maketitle
 \tableofcontents
-	\listoftables
-		\addcontentsline{toc}{chapter}{List of Tables}
 	\listoffigures
 		\addcontentsline{toc}{chapter}{List of Figures}
+	\listoftables
+		\addcontentsline{toc}{chapter}{List of Tables}
 	{\setstretch{2}
 	 \renewcommand{\figurename}{Code Example}
 	     \listof{code}{List of Code Examples}
@@ -423,7 +437,7 @@
 	\section{Research}
 	\section{Problem Solving}
 \chapter{The Cyber Range}
-	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune. 
+	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune\cite{pentestingLabs}
 	A ``Cyber Range'' is an area---completely disconnected from all target networks---in which you can work on your skills safely.  
 	It allows you to try attacks that you would not otherwise be able to do and create scenarios that could not be done on a single computer. 
 	
@@ -543,6 +557,59 @@
 			This will tell you if there was anything that you missed from your initial design or any components that could be improved. 
 
 	\section{Target Environment}
+		This section serves as an overview of an example target environment. 
+		This environment was designed to cover as wide a range of scenarios as possible, but is still far from extensive\cite{CTFBlueprints}.
+
+		The information provided here is a setup guide for these VMs, explaining how the example target network was created. 
+		\subsection{Debian Name Server}
+			This VM is one of the core systems on the network. 
+			It provides name services for the whole network, under the ``.cysec'' top level domain (TLD).
+
+			Thus, the main configuration item on this system is bind. 
+			\subsubsection{bind}
+				Running the DNS services on this server is bind9. 
+				While this is the current major release of bind, it is a version from 2012. 
+				Furthermore, this version has a number of configuration errors within it, making it vulnerable to zone transfers amongst a multitude of other issues. 
+
+				The bind configuration is as follows:
+				\lstinputlisting[language=bind]{./shellOut/named.conf}
+
+				This then links to the following two configuration files:
+				The master cache:
+				\lstinputlisting[language=bind]{./shellOut/master.db}
+				The reverse cache:
+				\lstinputlisting[language=bind]{./shellOut/10.1.1.rev}
+
+				Look through these files. 
+				They have opened the system to a number of vulnerabilities, enabling an attacker to both retrieve and poison DNS for the whole network. 
+
+			\subsubsection{Nmap}
+				The following is an nmap scan of the name server:
+				\lstinputlisting{./shellOut/ns.cysec.nmap}
+		\subsection{Debian Wordpress Blog}
+			This VM is the main web server on the network. 
+			It provides a blog, with a number of vulnerabilities, as well as a poorly secured services such as mail and telnet. 
+
+			\subsubsection{Vulnerabilities}
+				This section will go over the vulnerabilities on the system based on their type and location. 
+				While not every vulnerability has a flag directly attached to it, they can all be used to gain better access to the system, leading the attacker to have more chance of finding flags. 
+				\paragraph{Wordpress}
+					The Wordpress blog on this site has a number of vulnerabilities:
+						\begin{itemize}
+							\item Version is out of date.
+							\item Jetpack plugin is vulnerable to SQL injection\footnote{\url{https://www.exploit-db.com/exploits/18126/}}.
+							\item Mobile Detector plugin is vulnerable to arbitrary file uploads\footnote{\url{https://www.exploit-db.com/exploits/39891/}}.
+							\item Simple Backup plugin is vulnerable to arbitrary file downloads\footnote{\url{https://www.exploit-db.com/exploits/39883/}}.
+							\item Ghost Export plugin is vulnerable to unrestricted export downloads\footnote{\url{https://www.exploit-db.com/exploits/39752/}}.
+							\item Import CSV plugin vulnerable to directory traversal\footnote{\url{https://www.exploit-db.com/exploits/39576/}}.
+							\item ABtest plugin is vulnerable to local file inclusion\footnote{\url{https://www.exploit-db.com/exploits/39577/}}.
+						\end{itemize}
+					
+			\subsubsection{Nmap}
+				The following is an nmap scan of the web server:
+				\lstinputlisting{./shellOut/ns.cysec.nmap}
+
+
 
 \chapter{Network Operations}
 	\label{ch:NetworkOperations}
@@ -1665,6 +1732,17 @@
 		\subsection{Directory Creation}
 	\section{HTTP Man in the Middle}
 	\section{Session Hijacking}
+		Session Hijacking is the act of stealing an authorised connection to a service from a legitimate user. 
+		Generally, this comes in the form of stealing a cookie and crafting it to be used by your browser. 
+		This section will discuss the act of using a retrieved cookie rather than the initial act of retrieving it, 
+		as this can be done using tools such as XSS or Ettercap which are covered in this and \href{ch:NetworkPenetration}{the previous} chapters respectively. 
+
+		Once you have the relevant cookie, you should be able to open a cookie editor such as Firebug for Firefox to create a new cookie for the details of the stolen session. 
+		At this point, assuming that you have also deleted your cookies for the site, you should be able to access the site with the user account of the user that you have stolen the session from. 
+
+		Depending on the means used for running this hijack, you may or may not be able to do this on encrypted sites.
+		If you have used XSS to gain access to the users session, you will not be hindered by encryption, as the user will be sending you the credentials directly. 
+		However, if you have used ARP poisoning through a switched network, you will not be able to read the encrypted data without attempting to MitM the session itself and creating a fake certificate. 
 	\section{URL Injection}
 	\section{HTTP Redirect Attacks}
 \chapter{Forensics}

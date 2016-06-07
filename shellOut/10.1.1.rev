@@ -1,0 +1,14 @@
+$TTL   2d
+; $ORIGIN .cysec
+@       IN      SOA     ns.cysec. admin.cysec. (
+                                3       ; Serial
+                                12h     ; Refresh
+                                15m     ; Update Entry
+                                3w      ; Expiry
+                                3h)      ; Minimum
+        IN      NS      ns.
+129     IN      PTR     ns.cysec.
+128     IN      PTR     hackThisSite.cysec.
+131     IN      PTR     win10Target.winTargets.cysec
+132     IN      PTR     winTargets.cysec.
+133     IN      PTR     win7Target.winTargets.cysec

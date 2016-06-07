@@ -1,0 +1,21 @@
+Starting Nmap 7.12 ( https://nmap.org ) at 2016-06-06 03:26 EDT
+Nmap scan report for 10.1.1.129
+Host is up (0.00019s latency).
+Not shown: 65522 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+53/tcp    open  domain
+110/tcp   open  pop3
+111/tcp   open  rpcbind
+139/tcp   open  netbios-ssn
+143/tcp   open  imap
+445/tcp   open  microsoft-ds
+901/tcp   open  samba-swat
+993/tcp   open  imaps
+2049/tcp  open  nfs
+44871/tcp open  unknown
+45887/tcp open  unknown
+47652/tcp open  unknown
+MAC Address: 00:0C:29:35:FE:63 (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 15.03 seconds
