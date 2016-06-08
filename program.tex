@@ -42,17 +42,6 @@
     \cleardoublepage
  % \@mainmattertrue
   \pagenumbering{arabic}}
-\newenvironment{multipleabstract}[1]
-  {\renewcommand{\abstractname}{#1}\newpage\begin{abstract}\thispagestyle{plain}}
-  {\end{abstract}}
-
-\makeatletter
-\renewenvironment{abstract}{%
-    \begin{center}%
-      {\bfseries \abstractname\vspace{.5em}\vspace{\z@}}%
-    \end{center}%
-    %\quotation
-}
 
 \usepackage{color}
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -189,9 +178,7 @@
 	     \listof{code}{List of Code Examples}
 	 }
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
-
-\begin{multipleabstract}{Introduction}
-	\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction}
 	This document was written as a one year introductory course to the field of Cyber Security. 
 	Within it, is much of the Computer Science and technical information that one requires to start learning in the field. 
 	However, this comes with a legal penalty. 
@@ -209,7 +196,25 @@
 
 	With this in mind, please continue through the pages of this book. 
 	I hope you get as much from reading it as I did from writing it. 
-\end{multipleabstract}
+
+	\section{Conventions}
+		This book uses a number of conventions to convey it's content. 
+		These allow for the code shown to be generic, or for commands to work on any computer available. 
+		Table \ref{tab:BookConventions} explains the main conventions used herein. 
+		\begin{table}[htb]
+			\centering
+			\begin{tabular}{|l|p{7cm}|}
+				\hline
+				\textbf{Convention} & \textbf{Meaning} \\ \hline
+				<variable> & Replace with your version of variable. 
+								Remove the <> from the code. \\ \hline
+				\$ command & Command that can be run as a normal user. \\ \hline
+				\# command & Command that must be run as Superuser. \\ \hline
+			\end{tabular}
+			\caption{List of Conventions Used Herein}
+			\label{tab:BookConventions}
+		\end{table}
+
 \mainmatter
 \chapter{Computer Operations}
 	\label{ch:ComputerOperations}
@@ -1769,7 +1774,46 @@
 		Thus, by running traffic through a proxy such as burp suite, 
 		one can edit traffic on the way out, setting the extension back to the preferred ``.php''. 
 	\section{File Inclusion}
+		File inclusion is common in PHP\footnote{\url{https://www.owasp.org/index.php/PHP\_File\_Inclusion}}
+		However, it should never be exposed to the user, allowing them to submit a request for an arbitrary page. 
+		It's main use is the execution of arbitrary code on the server, allowing for an easy way to gain access. 
+
+		These vulnerabilities may allow for local or remote inclusion, giving the attacker the ability to either send a file over the network or use a file already placed on the system (though a previous file upload vulnerability). 
+		These files can then be run using file inclusion, executing any code supplied by the attacker. 
+
+		Generally, this would make use of tools such as MSFVenom, which will generate a PHP reverse shell payload to upload to the server. 
+		The attacker would then set up a handler to listen for the returning shell, allowing the system to be exploited. 
+		However, generic modules exist within metasploit to allow for automated file inclusion and payload 
+		execition\footnote{\url{https://www.rapid7.com/db/modules/exploit/unix/webapp/php\_include}}.
+		
+
 	\section{HTTP Directory Traversal}
+		Directory traversal is a basic attack on a poorly configured web server or application\footnote{\url{https://www.owasp.org/index.php/Path\_Traversal}}. 
+		This works by asking the site for a page or file that is outside of the expected web directory. 
+		Such requests can lead to signifficant information disclosure, and could also be a means of ingress if files such as ``/etc/shadow'' or a users ssh keys can be stolen. 
+
+		The key to the attack is the use of the pointer directory within file systems. 
+		This directory ``..'', points the user to the directory before the current. 
+		However, when serving websites or file shares, it is a security risk to present the whole filesystem. 
+		Thus, these systems use a ``web root'', which is usually ``/var/www/'' or ``/srv/www'' as the root directory. 
+
+		By specifying a directory such as ``../../../../.../../.../../etc/passwd'' it is likely that the system will traverse back out of the web root and allow reading files in other directories. 
+		However, may sites filter the `.' character in URLs. 
+		To allow these sites to be traversed, the following codes may suffice:
+		\begin{itemize}
+			\item \%2e\%2e\%2f
+			\item \%2e\%2e/
+			\item \%2e\%2e\textbackslash
+			\item \%cl\%lc for unicode
+			\item \%c0\%af for unicode
+		\end{itemize}
+
+		This process can also be automated through the use of the metasploit generic HTTP directory traversal 
+		utility\footnote{\url{https://www.rapid7.com/db/modules/auxiliary/scanner/http/http_traversal}} 
+		(``auxiliary/scanner/http/http\_traversal'').
+		This tool will automatically determine whether a traversal vulnerability exists. 
+		It can also be set to download a given file or download source code. 
+		Furthermore, it can be used to attempt to write files in directories accross the system. 
 		\subsection{Directory Creation}
 	\section{HTTP Man in the Middle}
 	\section{Session Hijacking}
