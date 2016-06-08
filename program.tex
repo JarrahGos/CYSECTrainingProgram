@@ -382,6 +382,29 @@
 						When the function returns, its frame is popped from the stack and the stack pointer is raised to the last frame. 
 						Unlike the heap, the stack starts at high memory locations and grows down towards the heap. 
 						This can be used for overflows into heap variables. 
+					\subsection{Program Memory}
+						All of these components build together to form a programs memory. 
+						This is the same, whether the program was written by hand in assembly or interpreted from python. 
+						Figure \ref{fig:ProgramMemory} shows the layout and growth of memory. 
+						\begin{figure}[htb]
+							\centering
+							\begin{tabular}{|c|}
+								\hline
+								 \textbf{Higher Addresses}\enspace\arrowkeyup \\ \hline
+								 Argc \\ \hline
+								 env pointer \\ \hline
+								 Stack (Grows \arrowkeydown\,) \\ \hline
+								 Unused Space (hopefully) \\ \hline
+								 Heap (Grows \arrowkeyup\,) \\ \hline
+								 .bss/.data \\ \hline
+								 .code/.text \\ \hline
+								 Shared Libraries \\ \hline
+								 \textbf{Lower Addresses}\enspace\arrowkeydown \\ \hline
+							 \end{tabular}
+							 \caption{Memory Segmentation}
+							 \label{fig:ProgramMemory}
+						 \end{figure}
+
 
 	\section{Assembly And Binary}
 		While we may find it easier to interact with computers using high level programming languages or even pre-written programs and graphics, an understanding of how a computer works at the low level is required to properly exploit its process. 
