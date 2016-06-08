@@ -799,6 +799,18 @@
 
 			To test this, set up the \href{https://github.com/CySCA/CySCA2014/blob/master/misc-server/programming/prog01/server.py}{jumbled word server} from \href{https://cyberchallenge.com.au/}{CYSCA 2014} and attempt to write a python script which will run through the challenge response sequence for this server. 
 
+		\subsection{Hidden Services}
+			Some services either remain hidden, or refuse to answer until a given task has been completed. 
+			The main example of this is port knocking, which forces a user to attempt to connect to a number of ports before the correct one will open. 
+			This was created as a means of avoiding port scans, as the ports that are to be used for communications will be closed during the scan. 
+			However, it requires either that a process is monitoring the firewall logs, or that the firewall itself is changing based on traffic. 
+
+			This is commonly implemented on ports such as 22 (SSH), which is often a target for brute forcing. 
+			The user will set the required ports before enabling the service, opening the SSH port only when the correct sequence has been contacted. 
+
+			Generally, there is no way to determine the sequence required. 
+			However, if you are able to read the code being run on the server, you should be able to reverse engineer this sequence and gain access. 
+
 	\section{Domain Name System}
 		The Domain Name System (DNS) is the method that is used to translate between domain names such as ``example.org'' to IP addresses such as ``93.184.216.34'' (IPv4) or ``2606:2800:220:1:248:1893:25c8:1946'' (IPv6).
 		Without this system, the Internet would be significantly more difficult to navigate, with the dynamic allocation of IP addresses making it impossible to find the same website after reallocation. 
@@ -3859,7 +3871,7 @@ list = ['one', 'two', 'three'];
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
 			The word-list for this challenge can be found by using the following command on kali linux:
 			\begin{lstlisting}[style=CLI]
-				$ head -n 20 /usr/share/wordlists/rockyou.txt
+				$ head -n 20	/usr/share/wordlists/rockyou.txt
 			\end{lstlisting}
 			The password, hashed in MD5 and SHA256 can be found below. 
 			\lstinputlisting[numbers=none,firstline=1,lastline=4]{./shellOut/hashChallenges.data}
