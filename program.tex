@@ -2354,13 +2354,17 @@
 		\subsection{Conditional Blocks}
 			The if statement in bash works in much the same way as the ``\&\&'' conditional in that it will run it's block if the command that was given to it succeeds.\footnote{\url{http://mywiki.wooledge.org/BashGuide/Patterns}} 
 			The syntax for the if command is as follows:
-			\begin{lstlisting}[language={bash},numbers={none}]
+			\begin{code}
+			\begin{lstlisting}[language={bash}]
 if <Conditional commands>; then 
 	<if block commands> 
 else 
 	<else block commands> 
 fi
 			\end{lstlisting}
+			\label{code:BashConditionalBlocks}
+			\caption{Conditional Blocks in Bash}
+			\end{code}
 			While the if conditional commands can be anything, bash has a specific ``test'' command which can be used for conditionals. 
 			This command is run either by calling ``test'' or by opening a ``['' bracket. 
 			Within this, you can run any conditional statement that you would be able to run in a normal programming language. 
@@ -2430,13 +2434,17 @@ fi
 			This is used to check a variable against a number of options in a similar manner to the switch construct of most programming languages. 
 			It can be used with wildcards, allowing you to check for similar items. 
 			The syntax of this command can be found below:
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 case <variable> in
 	<option 1>) <command> ;;
 	<option 2) <command> ;;
 	*) <else command> ;;
 esac
 			\end{lstlisting}
+			\label{code:SwitchConditionalBlock}
+			\caption{Switch Conditional Blocks in Bash}
+			\end{code}
 		\subsection{Loops}
 			There are a number of loops which can be used within bash. 
 			These range from simple while and for loops, to until  and for each loops. 
@@ -2446,38 +2454,54 @@ esac
 			The while loop will continue until its condition is met. 
 			This is much the same as while loops in normal programming languages, allowing you to repeat the code until the change you are searching for has occurred. 
 			The syntax for these loops is:
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 while <conditional> do
 	<Commands to be looped>
 done
 			\end{lstlisting}
+			\label{code:WhileBashLoops}
+			\caption{While Loops in Bash}
+			\end{code}
 			A variant of this type of loop is the until loop. 
 			This variant will simply reverse the conditional check on the while loop. 
 			The syntax for the until look is:
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 until <conditional> do
 	<commands to be looped>
 done
 			\end{lstlisting}
+			\label{code:BashLoopsUntil}
+			\caption{Until Loop in Bash}
+			\end{code}
 
 			The for loop works much the same as those in a normal programming language. 
 			At the start, it will execute the first block of its arguments and check the conditional in its second. 
 			After this, it will execute the code within its bounds before running the third block and checking the conditional again. 
 			The syntax for the for loop is:
-			\begin{lstlisting}[language=bash,numbers=none]
+
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 for (( <Setup>; <condition>; <change> )) do
 	<Commands to be looped>
 done
 			\end{lstlisting}
-
+			\label{code:ForLoopBash}
+			\caption{For Loops in Bash}
+			\end{code}
 			The for each loop works in a similar manner to that of python. 
 			This loop creates a variable which can be used within its bounds and is filled with the output from its second block. 
 			The syntax for this loop can be seen below. 
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 for <variable> in <command> do
 	<commands to be looped>
 done
 			\end{lstlisting}
+			\label{code:ForEachBash}
+			\caption{For Each Loops in Bash}
+			\end{code}
 			This loop often catches people out due to bash splitting the words within the output of <command>, making them meaningless. 
 			This can be resolved by telling bash that you are working with a list of files or the like. 
 			Rather than putting a command such as ls in the <command> section, it is better to use a pattern matching command such as ``*.mp3''. 
@@ -2490,19 +2514,27 @@ done
 			These are similar in concept, but different int syntax to the arrays of most programming languages. 
 			They should be used any time that a list of something is produced, rather than placing the list in a string and attempting to delimit each item. 
 			The syntax for creating an array is as follows, each line designating another method of creation. 
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 <name>=(<first> <second>) #create an array containing <first> and <second>
 <name>=([0]=<first> [23]=<second> [n]=<nth>) #create an array, placing items in specific positions. 
 <name>=(*.png) # create an array containing the filenames of every .png file in the current directory. 
 			\end{lstlisting}
+			\label{code:ArrayCreationBash}
+			\caption{Array Creation in bash}
+			\end{code}
 
 			Arrays are used in much the same manner, with a few instances of syntactic sugar to make them easier. 
 			To iterate through an array, the following for loop will extract each element and run a command using it. 
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 for <var> in "${<array>[@]}"; do
 	<command using <var>>
 done
 			\end{lstlisting} 
+			\label{code:ForEachArrayAccess}
+			\caption{Accessing Arrays using For Each in Bash}
+			\end{code}
 			This will iterate through the array, item by item and run <command> using <var> as an arguement. 
 			The quates around ``\$<array>[@]'' ensure that bash doesn't attempt to wordsplit the items within the array before they are placed in <var>.
 			This expansion can be implemented anywhere that having multiple of the arrays items would work, such as within a cp command to copy all the items within the array into another folder. 
@@ -2512,13 +2544,17 @@ done
 			To use this method, use the same syntax used to access the array within the for loop, replacing the ``@'' with either an integer or an integer variable. 
 			In a similar manner, the \** symbol can be used as the index to concatenate every element in the array into one string. 
 
-			More recent versions of bash also have a dictionary like array tipe called associative arrays. 
-			These allow you to map one string to another, and are created and accesed in the following manner. 
-			\begin{lstlisting}[language=bash,numbers=none]
+			More recent versions of bash also have a dictionary like array type called associative arrays. 
+			These allow you to map one string to another, and are created and accessed in the following manner. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 declare -A <name>
 	<name>=( [<map>]=<value> )
 <command> ${<name>[<map>]}
 			\end{lstlisting}
+			\label{code:DeclareAssociativeArrayBash}
+			\caption{Declaring Associative Arrays in Bash}
+			\end{code}
 
 		\subsection{Input and Output}
 			There are a number of different places in which IO can occur within a bash script. 
@@ -2538,7 +2574,8 @@ declare -A <name>
 			These will contain useful items such as the binary paths of the system and the language that the user wants to use. 
 			An example of this, is checking whether the computer is being used with an X display manager and whether the user has set their preferred terminal.  
 			This can be done with the following code:
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 if [[ $DISPLAY ]]; then
 	if [[ $TERM_PROGRAM ]]
 		<Command to run in preferred terminal>
@@ -2549,6 +2586,9 @@ else
 	<Command to run in CLI>
 fi
 			\end{lstlisting}
+			\label{code:checkingEnvironmentalVariables}
+			\caption{Acting based on environmental variables}
+			\end{code}
 			Finally, environmental variables can be used as output to any programs that you invoke within your script. 
 			This can be done by using the export command, with the same syntax as assigning a variable after it. 
 			
@@ -2597,20 +2637,29 @@ fi
 			Functions also limit the scope of the script within them. 
 			Variables created within them will not be accessible outside the function. 
 			Functions are defined and called in the following manner:
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 <Function Name>() {
 	<commands>
 }
 <Function Name> <Parameters>
 			\end{lstlisting}
+			\label{code:bashFunctions}
+			\caption{Functions in Bash}
+			\end{code}
+
 		
 			Aliases are the final compound command. 
 			These allow you to create or change a name for either an altered command or a string of commands. 
 			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the alias' command. 
 			An example of creating an alias for ls to ensure it outputs in colour is shown below. 
-			\begin{lstlisting}[language=bash,numbers=none]
+			\begin{code}
+			\begin{lstlisting}[language=bash]
 alias ls="ls --color=auto"
 			\end{lstlisting}
+			\label{code:bashAlias}
+			\caption{Aliasing in Bash}
+			\end{code}
 	\section{Introduction to Python}
 		Python is the first, easiest and most useful language that will be introduced in this book.\cite{PythonBoringStuff} 
 		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
