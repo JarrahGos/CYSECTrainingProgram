@@ -656,9 +656,20 @@
 			\subsubsection{Nmap}
 				The following is an nmap scan of the name server:
 				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
+		%---------------CTF Answers--------------
+		% Zone transfer: flag-ZoneTransfersAreFun-flag.cysec.
+		% Reverse Gateway: flag-checkTheGateway-flag.cysec.
+		%------------End CTF Answers-------------
 		\subsection{Debian Wordpress Blog}
 			This VM is the main web server on the network. 
 			It provides a blog, with a number of vulnerabilities, as well as a poorly secured services such as mail and telnet. 
+
+			%--------CTF Answers----------------
+			% www-data email: flag_{He sees you when you're sleeping, he knows when you're awake, he's copied on /var/spool/mail/target, so be good for goodness' sake.}
+			% root(target) email: flag_{So you can take hints}
+			% WP User Password: cerecita % found in head -n 100000 rockyou.txt
+			% WP Draft: Flag_{Wordpress_Security}
+			%------End CTF Answers---------------
 
 			\subsubsection{Vulnerabilities}
 				This section will go over the vulnerabilities on the system based on their type and location. 
