@@ -457,6 +457,93 @@
 			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
 			
 	\section{Executable File Formats}
+		There are specific details about the files that your computers runs that allow it to work in a certain way. 
+		These formats are specific to the OS that is running on the computer, 
+		and interact differently based on this. 
+		This section will discuss these differences, as well as the way that different OS's link executable files together. 
+
+		\subsection{Linux and ELFs}
+			Linux uses the Executable and Linkable Format (ELF)\footnote{\href{http://linux.die.net/man/5/elf}{man 5 ELF}}. 
+			This format is designed to standardise executables, object code, shared libraries and core dumps. 
+			It was originally released with System V 4, quickly becoming the standard across UNIX and UNIX-like systems. 
+
+			An ELF file, seen in figure \ref{fig:ELF}, has a number of structures which make allow it to link to various places on the system. 
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.2]{./ELF.png}
+				\label{fig:ELF}
+				\caption{ELF Structures and Internal Linking}
+			\end{figure}
+			\begin{description}
+				\item[Program Header Table:] This is a description and mapping of memory segments used in the program. 
+					These could either be different modules of the program, or simply a divider for code and data. 
+				\item[Section Header Table:] Describes the programs sections (such as .code or .data).
+				\item[The Data Referred to by these Tables:] This is either the code or data itself which is described 
+					and pointed to by thee above tables. 
+			\end{description}
+
+			These files are then linked to libraries, which are installed on the system to provide a given function to multiple programs\footnote{\url{http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html}}.
+			These libraries mean that program ELF files can be small, as they do not have to contain the code required to conduct all tasks. 
+			However, it also means that there is another attack point and a dependency on the system.
+
+			Libraries are usually found in ``/usr/lib/'', and named libxxx.so. 
+			These files contain the code for core functions which are often used by a number of programs. 
+			When programming, once the expected header file has been included, using a library is as simple as calling a method as if you had written it in your code. 
+
+			For these cases, when the program is compiled, a separate program known as a ``linker'' will create the required pointers within the ELF output, allowing the program to call libraries on any system it is placed on. 
+			This system means that the header sections of ELF files often refer to files and functions which do not exist within the ELF itself\footnote{\url{http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html}}. 
+
+			There are a number of tools which have been written to help working with ELF files:
+			\begin{description}
+				\item[readelf] Information gathering for ELF files. 
+					Similar, but more detailed than objdump. 
+				\item[objdump] Provides information and disassembly for object (and ELF) files. 
+				\item[file] Attempt to determine type and information about a given file. 
+					This will give some data on how the program was compiled. 
+			\end{description}
+
+		\subsection{Mach-O}
+			Mach Object (or Mach-O) is the executable file format used on OS X, NeXTSTEP (which OS X was based on) and iOS. 
+			As with ELF files, these are used for object code, shared libraries, linked code and core dumps\footnote{\url{https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html}}.
+
+			The file is made up of the header, followed by load commands which provide the system with the files and data that must be loaded for the system to be able to execute the code found within. 
+			This is followed by a number of sections, similar to those of ELF files. 
+
+			These files can also be formed into one binary that is able to be executed on multiple architectures. 
+			This is useful on systems such as iOS, which must have 4 different versions of the ARM architecture to run on all devices. 
+
+			As with ELF above, these files are dynamically linked, requiring the relevant ``.dylib'' files to exist on the system. 
+			
+			While the same tools as with Linux will work, otool specific to Mach-O files\footnote{\url{https://www.objc.io/issues/6-build-tools/mach-o-executables/}}.
+			It is an object file displaying tool that works in a similar way to objdump, but can be told to just give header information. 
+
+		\subsection{Windows Portable Executable}
+			Portable Executable (PE) is the Windows executable format. 
+			It is based on the older UNIX COFF format, which was eventually replaced with ELF. 
+			These files are commonly found within ``.exe'' and ``.DLL'' files on windows, as these are the executable 
+			package and dynamically linked libraries on this system. 
+			\begin{figure}[t]
+				\centering
+				\includegraphics[scale=0.06]{./PE.png}
+				\label{fig:PortableExecutable}
+				\caption{Layout of Windows Portable Executable Files}
+			\end{figure}
+
+			This format retains some legacy DOS support in that a DOS header is placed at the top of the file. 
+			This header can either contain a full DOS version of the program, or simply a stub informing the user that the program is not DOS compatible. 
+
+			The format for these files can be seen in figure \ref{fig:PortableExecutable}. 
+			The headers within this file describe to the linker how to map the file and it's required libraries into memory. 
+			It also specifies execute and read permissions for that memory, for example, code is usually executable and read only, while data is usually non-executable but read/write. 
+			
+			A lookup table is also implemented in the import table. 
+			This table allows the PE file to call on shared libraries found on the system. 
+			It is also a good point of attack as we can change the files or locations pointed to by this table. 
+
+			It is also worth noting that the PE format does not implement position independent code. 
+			This means that addresses within the file must be recalculated each time the code is loaded,
+			in contrast with ELF files, which usually implement fully position independent code. 
+			
 \chapter{Scoping and Mindset}
 	\label{ch:ScopingMindset}
 		No matter how good one gets at the technical aspects of hacking, they will never be good at it if they do not understand how to think about their target and attack. 
