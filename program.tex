@@ -2103,6 +2103,47 @@
 		\subsection{Common Conversion issues}
 		% DOS -> UNIX (CRLF -> LF) conversion
 		\subsection{Cyclic Redundancy Codes}
+	\section{Malicious Website Analysis}
+		After receiving a phishing email or another type of malicious link, it can be interesting and enlightening to look over how the exploit would have worked. 
+		This process can be done in a relatively safe manner through the use of certain tools and sandboxes. 
+
+		\subsection{Initial Analysis}
+			When you first receive the email or link, you should analyse it's content for external resources or identifying marks.
+			This allows you to determine what parts of the link you should remove to ensure that your analysis cannot be traced back to you. 
+			Furthermore, it allows you to determine if they have a method of tracking whether the email was opened, such as requesting an image from a remote source. 
+
+			Once you have altered these tracing elements, you should be able to use the link provided to conduct an analysis. 
+			However, at this point, under no circumstances should you enter the URL into your browser. 
+
+		\subsection{Site Analysis}
+			You should first send the link through a scanner such as \href{virustotal.com}{Virus Total}. 
+			This will tell you whether the site is loading anything commonly known to be malicious. 
+			However, passing this does not mean the site is clean. 
+			There may be content that has been created for this exploit which would not be picked up by the virus scanners the site runs. 
+
+			The next step would be to use a site like \href{shrinktheweb.com}{Shrink the web} to view the site. 
+			This allows you to view the content of the page without directly browsing to it, 
+			saving you from risking your machine by accessing the page directly. 
+
+			You may also want to look at domain registry records (whois records) to determine whether the site has recently been stolen or taken over. 
+			This will give you detail on who owns the site and where it is located. 
+
+			If neither of these actions work, it may be worthwhile continuing to the final phase. 
+
+		\subsection{Direct Analysis}
+			This should only be done if the previous actions did not lead to a useable solution. 
+			Before conducting this, you should create an instance of a VM such as Kali that can be burnt after you have finished. 
+			This process will likely infect the machine, so you should turn off all communication with the host system before beginning. 
+
+			You should load a proxy such as burp suite, passing all traffic through this to check what is being sent. 
+			It may also be worth loading Wireshark to allow you to track all packets sent during the session. 
+
+			At this point, take the anonymised link and enter it into your browser. 
+			This should begin the exploit, which you will be able to watch in both burp and Wireshark. 
+
+			Check the traffic being sent for file downloads or javascript. 
+			These will likely be the files that are run to start the malicious program. 
+			From here, the process moves from analysis of a site to malware analysis, which will be covered in part in chapter \ref{ch:ReverseEngineering}.
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
 	\section{Assembly}
@@ -2800,7 +2841,7 @@ alias ls="ls --color=auto"
 		Javascript is the programming language of the Internet. 
 		It was originally built in 1995 to allow for programming on a web page. 
 		% Dave flanagan's definitive guide to javascript. 
-		It is also worth noting that Javascript is a functional language\cite{JSProgrammingLanguage}
+		It is also worth noting that Javascript is a functional language\cite{JSProgrammingLanguage}.
 		It is based on creating functions which are then extended upon in functions which then call those. 
 
 		\subsection{Origins}
