@@ -1,0 +1,86 @@
+\chapter{Reverse Engineering}
+	\label{ch:ReverseEngineering}
+	\section{Assembly}
+		\subsection{x86 Assembly}
+
+		%TODO: Decide whether this goes here or in programming. 
+		\subsection{ARM Assembly}
+	\section{Radare2}
+		Radare2 is a set of tools for working with binary files. 
+		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
+		While the Radare2 suite has a number of stand alone programs within it, this section will cover only the main program. 
+		This program allows for the searching, altering and disassembly of binary programs in multiple modes, making it a great tool for challenges such as Pwn Adventure in the next section.
+		For a more detailed guide, read through the Radare2 book.\cite{Radare2}
+
+		\subsection{Getting Started}
+			The learning curve at the start of using Radare2 is quite steep. 
+			However, if you have any experience with other command line tools such as Vim and GDB, many of the commands and shortcuts should come easily. 
+			Before going any further, it is worthwhile to note that you can get the help information for any command by appending a ``?'' to it. 
+
+			Navigation within Radare2 is done through the following commands:
+			\begin{description}
+				\item[Seek]
+					or ``s'' will move you to the address that you specify after the command. 
+					The address can either be an explicit memory location, or a mathematical statement based on the current location or a label within the binary. 
+					An example of this is ``s 0x00001c80''.
+				\item[is]
+					or information symbols will get you a list of the different symbols which are still in the binary. 
+					These can be functions, objects, strings or any other symbol that survives the compilation process. 
+					This is useful to find the functions which the program uses, and will become the main way of navigating in the Pwn Adventure Challenge. 
+				\item[Visual mode]
+					Like Vim, Radare2 has a visual mode which allows for direct reading and writing of assembly or hex. 
+					In this mode, you can move using the same key bindings as Vim, with ``i'' being used as replace and ``p'' being used to change visual mode. 
+					Furthermore, to get a cursor which can be used for these insert functions, use ``c''.
+					This mode allows for the editing of the disassembled binary without having to reassemble it. 
+				\item[Hex View]
+					In visual hex view, hold shift while moving to highlight a byte range. 
+					Tab will switch from the Hex pane to the ASCII pane. 
+				\item[\~{}]
+					This is the internal grep function. 
+					When it is placed after a command, anything after it will be used to filter the results. 
+					Furthermore, output can be filtered by column using the syntax ``[x]'' or by row using ``:x'' after the grep search.
+			\end{description}
+			Beyond this, you will want to start the program with the ``-w'' flag in order to write to the file. 
+			Finally, any CLI program---or syntax such as pipes and redirection---installed on your computer can be accessed through the Radare2 prompt. 
+			This is useful for actions such as greping through the output of ``is''. 
+
+			At this point you should have enough of an understanding of Radare2 to be able to use it. 
+			The next section contains spoilers to the challenges presented by Pwn Adventure 3. 
+			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
+			I recommend starting with the sprint speed. 
+			%TODO: Should there be more than this section here?
+	\section{Side Channel Attacks}
+	\section{Java Reverse Engineering}
+		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
+		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
+		Thus, Java reverse engineering is simply a matter of choosing the best program to use in decompilation. 
+
+		The current recommendation for Java Decompilers is Procyon\footnote{\url{https://bitbucket.org/mstrobel/procyon}}
+		This is due to the fact that it is the most up to date and well maintained decompiler available.\footnote{You may hear of others such as jad. This is old and unmaintained.} 
+		
+		Procyon is quite easy to use. 
+		All that is required is having Java installed on the system that you are working on and running the provided JAR package. 
+		You will give it both the class files that you wish to decompile, as well as an output directory. 
+		An example of this can be found below:
+		\begin{lstlisting}[style=CLI]
+			$ ./procyon.jar *.class -o src
+		\end{lstlisting}
+
+		Furthermore, Procyon will allow you to decompile a JAR file in it's entirety. 
+		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
+
+		The reason that Java Reverse engineering is seen as easy is the fact that you now have the full source code of the program. 
+		At worse, the programmer may have obfuscated the code, making it harder to determine what the methods and variables mean. 
+		This would mean that you will have to manually determine this from the usage of the variables and the content of the methods.
+
+		Once this decompilation has been completed, you can use tools such as yFiles to get an overview of the classes or data structures. 
+		Other than this, it is simply a matter of finding the logic within the program that is used to calculate the value that you are reverse engineering for. 
+	
+		%TODO: Revise this section
+	\section{C\# Reverse Engineering}
+	\section{Pwn Adventure}
+	\section{IDA 64}
+	\section{Other Tools}
+		\subsection{Strings}
+		\subsection{Ltrace}
+		\subsection{Strace}

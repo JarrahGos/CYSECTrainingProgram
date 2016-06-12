@@ -1,0 +1,288 @@
+\chapter{Web Penetration}
+	\label{ch:WebPenetration}
+	\section{XSS}
+		XSS is one of the main attack vectors for modern viruses and attacks. 
+		It is commonly used as the first access to the system, delivering a more stable connection to the system later. 
+		XSS will allow you to gain preliminary access to the system, creating a vector for your control of it. 
+		Furthermore, with a tool such a BeEF, you are able to control a significant amount of the victims computer purely through XSS. 
+		XSS will allow you to inject malicious code into an otherwise trusted website, making it exceptionally powerful. 
+		This occurs because a browser has no way to know that a script should not be trusted and thus will generally always run them. 
+		This script can then access any cookies, session data or other sensitive data stored within the browser. 
+		A good hook could even give access to the whole system. 
+		XSS comes in two forms, reflected and stored. 
+		We will be discussing both in depth. 
+		\subsection{Reflected}
+			This type of attack is easier to pull off but often easier to spot. 
+			The attacker will send a link to a vulnerable website with a script within it. 
+			The website will then echo back the script, having the users browser run it. 
+			This script will then open a connection to another site, which will host the hook. 
+
+			An example of this is the following URL:
+			\begin{quote}
+				https://example.com/page?var=<script>alert('xss')</script>
+			\end{quote}
+
+			The issue with this type of attack is that it requires that you can get the victim to click on the link.
+			This is also the main reason it is recommended that you check links before clicking them.
+		\subsection{Stored}
+			Stored XSS works by finding a website that will retain your script for you and run it every time someone accesses the page. 
+			Usually, these are found in comment or post boxes, but they can be anywhere that the user can input text which will be displayed for another user. 
+			The benefit to these pages is that the link you send to them will not look dodgy and the script will hook anyone who attempts to access the page. 
+		\subsection{BeEF}
+			BeEF is the tool that makes this these attacks interesting. 	
+			While previously, you could run arbitrary code on the remote computer, now you can run dynamic code. 
+			The former is more powerful if you know how to write code, but BeEF will give you mostly the same outcome with far less work. 
+			Similarly, like all good Linux tools, BeEF comes with both a CLI and GUI version. 
+			We will be working with the GUI, as it does most of what we need to do. 
+			However, the CLI version is significantly more powerful and adaptable. 
+			
+			The Default username and password for BeEF is beef:beef.
+			\subsubsection{Hooking}
+				Before you can do anything with BeEF, you will have to hook a browser. 
+				To do this, you will first have to find a vulnerable page such as the guest book on DVWA. 
+				At this point, you will want to embed the BeEF hook script into the page with a command such as the following:
+				\lstinputlisting[numbers=none]{./shellOut/BeefHook.in}
+				If you set this up correctly, the victim will have to do nothing more than access the page to be hooked. 
+				No clicking or other intervention is required. 
+			\subsubsection{Attacking}
+				Once your hook is set, you should see an IP address under ``Online Browsers'' in the BeEF UI. 
+				You can then select this IP for more information and attacks. 
+				
+				Under the details tab you will see the details of the browser and OS. 
+				This can be useful for working out what attacks might work and determining what kind of user you are working with. 
+
+				Under the commands tab, you will see a list of folders. 
+				Each of these folders contains a number of commands which can be run on the remote computer. 
+				\begin{description}
+					\item[Browser] Information and attacks on the browser directly. 
+						These can be used to get session cookies and other information. 
+					\item[Chrome Extensions] Chrome specific attacks. 
+					\item[Exploits] Direct browser or OS exploits. 
+					\item[Host] Information gathering on the host machine. 
+						This can be used to get items such as registry keys on a windows system. 
+					\item[IPEC] Can be used to get shell access to the machine. 
+					\item[Network] Network scanning and pivoting operations. 
+					\item[Persistance] Retain access to the BeEF hook. 
+					\item[Social Engineering] Attempt to convince the user that you are legit. 
+						Gather user names and passwords for use on a specific site. 
+				\end{description}
+
+				Furthermore, BeEF can be connected to Metasploit to gain access to a Meterpreter shell. 
+				This shell will give you persistence options as well as the ability to control the whole system. 
+		\subsection{XSS Without BeEF}
+			While BeEF is a useful tool, it can often get in the way of a simple attack, or cause more trouble than it is worth. 
+			Thus, one should remember that when they are working with XSS, they have a whole programming language to use, as seen is chapter \ref{ch:Programming}.
+			This means that you should be able to write a short script that will enact the same result that you would have elicited using BeEF. 
+			The following sectinos will show you tools which can be used to attack using XSS without using BeEF. 
+
+			\subsubsection{``AutoPWN''}
+				The ``AutoPWN'' exploit in Metasploit allows you to automatically target a computer accessing a website. 
+				As we have seen, using XSS, we can force a user to access a site of your choosing. 
+				Through this, we can attack a browser, gain shell access to a machine and create a persistent back door automatically. 
+	
+				This module will detect the version of both the browser and any relevant plugins. 
+				It will then launch any relevant attacks against that system. 
+	
+				To use the module, the following steps are necessary:
+				\begin{enumerate}
+					\item Set the HTMLContent option. 
+						This will start the server with a page of your choosing. 
+						You should specify this as ``file://<file>''.
+						The site should be something simple, but not something that will tip off the user. 
+					\item Set the ``EXCLUDE\_PATTERN'' and ``INCLUDE\_PATTERN'' to add or remove specific exploit types. 
+					\item Set the ``MaxExploitCount'' to the number of exploits you would like to try. 
+						More will give you more chance of getting in, but will be more obvious and likely to crash the browser. 
+					\item Set the ``AllowedAddresses'' option to target only certain addresses with the attack. 
+					\item Run the exploit. 
+				\end{enumerate}
+
+				Assuming that you have followed the steps above, place the ``BrowserAutoPwn URL'' given my Metasploit into your XSS and wait for a user to connect. 
+
+			\subsubsection{Manual JavaScript}
+				As previously stated, XSS uses JavaScript and HTML to execute arbitrary code on a system. 
+				By virtue of being a Turing complete programming language, JavaScript allows us to write code that will do anything to the remote computer, given enough time and resources. 
+				Thus, this section will guide you through the crafting of two different payloads, one a manual session hijacking attack and another a generated reverse shell. 
+
+				The first of these uses code written manually into the XSS vulnerable program. 
+				However, first you should setup a listener on your system on a given port so you can read the incomming connection. 
+				\begin{lstlisting}[style=CLI]
+					$ nc -l -p <port number>
+				\end{lstlisting}
+
+				At this point, you are ready to begin the XSS attack. 
+				The code in example \ref{code:XSSCookieStealing} will read the cookie for the user on the current site and transmit it to the specified IP address and port. 
+				\begin{code}
+					\centering
+					\lstinputlisting[language=JavaScript]{./XSSCookieSteal.js}
+					\label{code:XSSCookieStealing}
+					\caption{Stealing a cookie with XSS}
+				\end{code}
+					
+		\subsection{Evading Anti-XSS}
+		\subsection{Content Security Policy}
+	\section{SQL Injection}
+		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
+		This allows you to have direct access to the database, giving you the ability to ensure it logs you in or to gather information about other accounts within it. 
+		SQLi is a pertinent issue as the majority of websites use some form of SQL backing, which can be exploited to gather user data. 
+		Furthermore, most sites that store credit card information also store these in the same database as the user data. 
+		Without proper protection and standards compliance, it would be quite easy to gather this data for malicious purposes. 
+
+		SQLi takes two main forms, normal and blind. 
+		Both of these take a similar approach in code, but blind SQLi requires you to use other means to ensure that the code is being executed. 
+		\subsubsection{Attack Types}
+			There are a number of different types of SQLi attacks. 
+			The simpler ones are described below:
+			\begin{description}
+				\item[OR 1=1] will ensure that the outcome of the SQL code will always be true. 
+					When the code is run, the database will return all possible entries, rather than just the one that was expected. 
+					This can be used to map the user accounts or other details stored within a database. 
+				\item[; <statement>] This will end the current statement, which will likely end in an error then run <statement>.
+					This means that you have arbitrary SQL execution on the database, allowing you to run any code. 
+					Thus, you could print the whole database, or delete it. 
+					This is a limitless approach. 
+					You may want to end the new statement with ``;--'' which ends your statement and comments out any remaining code. 
+				\item[UNION] This allows you to give a whole new select command to the database to be returned with your own. 
+					Thus, you could use this to get a print out of the whole database within a filed that would only give you user names. 
+
+			\end{description}
+		\subsubsection{Attack Examples}
+			
+		\subsubsection{SQLmap}
+			This tutorial assumes that you have already found a possibly vulnerable site or server which has either a database which has easy access or is receiving data through HTTP GET or POST commands. 
+			You may not know that it is vulnerable, but the URL or other information about it makes you want to test it. 
+			SQLmap will automate this process for you. 
+
+			SQLmap will allow you to use the following techniques:
+			\begin{description}
+				\item[Boolean-Based Blind] This is where there is a difference between the page when the SQL is found to be true or false. 
+					SQLmap will search the headers automatically, or the page for a regex string which will tell it it was successful. 
+					With this, eventually SQLmap should be able to determine the output of the command. 
+				\item[Time-Based Blind] SQLmap run a query which would put the database on hold for a given number of seconds. 
+					By counting the time between running and returning, SQLmap can determine whether the command was run. 
+					Further, using this the output can eventually be determined. 
+				\item[Error-Based] This will force a specific error message to be presented. 
+					This can be used to map what type of database is being run. 
+					It will also report the output of the SQL statement, giving you insight into the data held within the database. 
+				\item[Union Query Based] This will append a ``UNION ALL SELECT'' command to the current statement. 
+					This causes the database to output everything requested in your select statement, allowing you to see all requested data. 
+				\item[Stacked Queries] This mode will attempt to end the current command and append another to it using the ``;'' to end the current statement. 
+					Like UNION, this can be used to map out all data stored within the database. 
+					However, it can be used to run statements other than ``SELECT''. 
+					It can further lead to filesystem manipulation and command execution. 
+			\end{description}
+			\paragraph{Direct Connection to a Database}
+				This option (``-d'') will connect directly do a database which is running on the server. 
+				This gives you significantly more power than connecting through an injectable web site, but it can only be done after you have found the credentials through other means. 
+				SQLmap will accept a connection string in either of the following forms:
+				\lstinputlisting[numbers=none]{./shellOut/SQLmapDBConnection.in}
+				For example, the following command will output the DBMS banner, all databases and all DBMS users as well as fingerprinting the database. 
+				\begin{lstlisting}[style=CLI]
+					$ sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
+				\end{lstlisting}
+
+			\paragraph{Web Based Attack}
+				This is the more common attack, as it will work through a vulnerable form or request on a website. 
+				For this case, you have to specify the URL as well as what you want from it. 
+				An example of a command for this attack is as follows:
+				\begin{lstlisting}[style=CLI]
+					$ sqlmap.py -u "http://www.target.com/vuln.php?id=1" -f --banner --dbs --users
+				\end{lstlisting}
+
+				The syntax for this attack is much simpler, requiring only that you provide the URL and what you would like. 
+				However, it can be extended upon by using the ``-l'' flag along with a burp suite log to attempt injection on all requests proxied through burp. 
+
+			\paragraph{Other Attack types}
+				These are less common, but useful means of attacking or scanning multiple sites. 
+				\begin{description}
+					\item[Sitemaps] Using the ``-m <URL>'' flag, you can have SQLmap scan a whole website. 
+						This will report possible vulnerabilities based on that map. 
+					\item[Textual Scan] Using the ``-m <FILE>'' flag will have SQLmap scan every URL within the file for the given data requests. 
+					\item[HTTP Request] The ``-r <FILE>'' flag will load a raw HTTP request from the file and attempt to target it. 
+						This means that you do not have to specify POSTs or cookies. 
+					\item[Configuration] The ``-c <FILE> flag will load the configuration found within the file. 
+						An example of this can be seen in ``sqlmap.conf''. 
+					\item[Command Line Access] the ``--os-cmd'' or ``--os-shell'' commands will have SQLmap upload a library and gain shell access to the system. 
+					\item[Meterpreter] the ``--os-pwn'' flag will attempt to upload and run the Metasploit shellcode. 
+						This will return a Meterpreter shell which will give you access to many high level OS functions as well as the Meterpreter framework. 
+				\end{description}
+				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
+		\subsection{Character Encoding}
+	\section{File Uploads}
+		Allowing the user to upload a file to a webserver is one of the more dangerous features enabled on a number of systems. 
+		These files will have to be stored somewhere accessible on the filesystem, as well as being one of the more common features. 
+
+		Allowing file upload means that any user of a site can upload files, within given restrictions. 
+		However, many of these restrictions can be altered, allowing for executable files to be uploaded to the server. 
+
+		The following will step you through creating a PHP payload to upload to a server. 
+		\begin{enumerate}
+			\item Search for a php payload using the command ``msfvenom -l payloads | grep php''. 
+			\item Create the file using the command ``msfvenom -p <payload> port=<port> > index.php''.
+				You may also set any of the other variables that could be set from metasploit in the same way port is set.
+			\item check that the code generated in ``index.php'' is correct. 
+		\end{enumerate}
+
+		Exploitation is now a simple matter of setting up a listener in metasploit using the ``exploits/multi/handler'' exploit, uploading the file and running it.
+
+		More secure web sites will block the upload of certain types of content in order to stop these vulnerabilities. 
+		The most basic form of this is based on file extension, allowing only ``.jpg'' extensions or some other set. 
+		However, this is often blocked on the client side, rather than on the server. 
+		Thus, by running traffic through a proxy such as burp suite, 
+		one can edit traffic on the way out, setting the extension back to the preferred ``.php''. 
+	\section{File Inclusion}
+		File inclusion is common in PHP\footnote{\url{https://www.owasp.org/index.php/PHP\_File\_Inclusion}}
+		However, it should never be exposed to the user, allowing them to submit a request for an arbitrary page. 
+		It's main use is the execution of arbitrary code on the server, allowing for an easy way to gain access. 
+
+		These vulnerabilities may allow for local or remote inclusion, giving the attacker the ability to either send a file over the network or use a file already placed on the system (though a previous file upload vulnerability). 
+		These files can then be run using file inclusion, executing any code supplied by the attacker. 
+
+		Generally, this would make use of tools such as MSFVenom, which will generate a PHP reverse shell payload to upload to the server. 
+		The attacker would then set up a handler to listen for the returning shell, allowing the system to be exploited. 
+		However, generic modules exist within metasploit to allow for automated file inclusion and payload 
+		execition\footnote{\url{https://www.rapid7.com/db/modules/exploit/unix/webapp/php\_include}}.
+		
+
+	\section{HTTP Directory Traversal}
+		Directory traversal is a basic attack on a poorly configured web server or application\footnote{\url{https://www.owasp.org/index.php/Path\_Traversal}}. 
+		This works by asking the site for a page or file that is outside of the expected web directory. 
+		Such requests can lead to signifficant information disclosure, and could also be a means of ingress if files such as ``/etc/shadow'' or a users ssh keys can be stolen. 
+
+		The key to the attack is the use of the pointer directory within file systems. 
+		This directory ``..'', points the user to the directory before the current. 
+		However, when serving websites or file shares, it is a security risk to present the whole filesystem. 
+		Thus, these systems use a ``web root'', which is usually ``/var/www/'' or ``/srv/www'' as the root directory. 
+
+		By specifying a directory such as ``../../../../.../../.../../etc/passwd'' it is likely that the system will traverse back out of the web root and allow reading files in other directories. 
+		However, may sites filter the `.' character in URLs. 
+		To allow these sites to be traversed, the following codes may suffice:
+		\begin{itemize}
+			\item \%2e\%2e\%2f
+			\item \%2e\%2e/
+			\item \%2e\%2e\textbackslash
+			\item \%cl\%lc for unicode
+			\item \%c0\%af for unicode
+		\end{itemize}
+
+		This process can also be automated through the use of the metasploit generic HTTP directory traversal 
+		utility\footnote{\url{https://www.rapid7.com/db/modules/auxiliary/scanner/http/http_traversal}} 
+		(``auxiliary/scanner/http/http\_traversal'').
+		This tool will automatically determine whether a traversal vulnerability exists. 
+		It can also be set to download a given file or download source code. 
+		Furthermore, it can be used to attempt to write files in directories accross the system. 
+		\subsection{Directory Creation}
+	\section{HTTP Man in the Middle}
+	\section{Session Hijacking}
+		Session Hijacking is the act of stealing an authorised connection to a service from a legitimate user. 
+		Generally, this comes in the form of stealing a cookie and crafting it to be used by your browser. 
+		This section will discuss the act of using a retrieved cookie rather than the initial act of retrieving it, 
+		as this can be done using tools such as XSS or Ettercap which are covered in this and \href{ch:NetworkPenetration}{the previous} chapters respectively. 
+
+		Once you have the relevant cookie, you should be able to open a cookie editor such as Firebug for Firefox to create a new cookie for the details of the stolen session. 
+		At this point, assuming that you have also deleted your cookies for the site, you should be able to access the site with the user account of the user that you have stolen the session from. 
+
+		Depending on the means used for running this hijack, you may or may not be able to do this on encrypted sites.
+		If you have used XSS to gain access to the users session, you will not be hindered by encryption, as the user will be sending you the credentials directly. 
+		However, if you have used ARP poisoning through a switched network, you will not be able to read the encrypted data without attempting to MitM the session itself and creating a fake certificate. 
+	\section{URL Injection}
+	\section{HTTP Redirect Attacks}

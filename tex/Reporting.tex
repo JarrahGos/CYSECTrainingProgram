@@ -1,0 +1,76 @@
+\chapter{Reporting}
+	\label{ch:Reporting}
+	\section{Report Writing}
+		While far from being the most glamerous or interesting part, writing the report is one of the most important parts of a penetration test\cite{playbook}. 
+		It is the part of the test that will ensure vulnerabilities are removed and your work will continue. 
+		Furthermore, it is a statement of your own skill in expressing what you did and how it effects the network being attacked.
+
+		The easy solution here is to simply repackage the vulnerability scans tat were conducted. 
+		This will give a report listing potential vulnerabilities in the network and their potential serverity. 
+		However, this tells the reader nothing about the data that could be accessed through the vulnerabilities, 
+		nor anything about the process and difficulty of exploiting them. 
+		Thus, such a report seems cheap and useless to the customer, making them less likely to implement anything you advise. 
+
+		Alternatively, a report could be detailed in how the exploit was discovered, exploited and what was exfiltrated. 
+		However, there is a point where this becomes too much, necessitating creating a report that is split between 
+		``technical'' and ``non-technical'' readers. 
+		Such a report is likely to have more sway with both the companies executive staff and their system administrators. 
+		Vulnerabilities that have been found, exploited and used to exfiltrate data will be fixed over those with no evidence behind them. 
+
+		The general rules for report writing are as follows:
+		\begin{itemize}
+			\item Under no circumstances submit a reformatted vulnerability scanner report. 
+				This gives no information useful to the company that they couldn't have used the scanner for, making your role as a penetration tester redundant. 
+			\item Rate vulnerabilities consistantly, both by their natural severity and the data possible to exfiltrate using them. 
+			\item Explain the effects of a given vulnerability on the CIA Triad. 
+			\item Use vulnerabilty scanner output for determining serverty, but do not rely on it. 
+			\item Discuss exploits that you have successfully tested differently to those that you have not. 
+			\item For each finding that you discover, provide a solution to it. 
+				At a minimum, provide a mitigation strategy. 
+			\item Validate that findings provided by scanners are not based purely on versions, but rather are expoitable on the given machine. 
+			\item Create a standard template (such as a \LaTeX{} template and class) and follow it for all reports. 
+				This will ensure both formatting and content is consistent accross reports. 
+		\end{itemize}
+
+		As a guide line, the following is a section guide for a basic report:
+		\begin{enumerate}
+			\item \textbf{Introduction:} The overview and top level description of the document. 
+				This section should contain an executive summary and 
+				(if you are splitting the document for techinical and non-technical readers)
+				a reading guide outlining which sections should be read by whome. 
+			\item \textbf{Scope:} This section details what limitations were given, what was tested and why. 
+				It should give IP ranges, names and URLs of major targets, as well as the objective of hitting those targets. 
+			\item \textbf{Changes to requirements:} An overview of changes to the original test paramiters given, if any. 
+			\item \textbf{Methodology:} How you went about information gathering, targeting, exploitation and post-exploitation. 
+			\item \textbf{Significant findings:} Critical findings only here, with a basic outline of why it is severe 
+				and what it gives access to. 
+				Expect this to be read by executives rather than technical workers. 
+			\item \textbf{Posative Observations:} This is the parts of security that the organisation did well. 
+				It should be used to provide a posative note in a report that may otherwise be negative and overbearing. 
+				Furthermore, it should be used to reward good practices, as they may only exist on a short teather. 
+			\item \textbf{Findings Summary:} An overview of all vulnerabilities found based on severity and exploitability. 
+				Break it further into the following sections:
+				\begin{itemize}
+					\item Practical Exploits: vulnerabilities that you have been able to take through the whole exploitation cycle and exfiltrate data from. 
+					\item Theoratical Exploits: vulnerabilities that you have not been able to use in the test. 
+				\end{itemize}
+				Again, this section should be an overview for the more studious exeuctives and IT managers, rather than detailed content written for sysadmins or security professionals. 
+			\item \textbf{Detailed Findings:} Following the same structure as above, go into detail about what each vulnerability
+				is, how it was expoited and why it was given the severity it was. 
+				This is the place to go into technical detail, explaining exactly what was done and how to fix it. 
+				This is also the section in which you should place relevant short logs, captured data and other details. 
+			\item \textbf{Appendix:} This would have scans, exfiltrated data and any aditional information that the reader doesn't want to sift through in the main document. 
+				However, if you put it in here, it must be referenced within the main text, 
+				this section is not a dumping ground to make the document look bigger. 
+		\end{enumerate}
+		
+		In addition to this, you may want to report on Open Source Intelligence that was used to enumerate the location and 
+		data of the organisation. 
+		This will be usefull if they are attempting to reduce their online presence, or simply to know where attacks are more likely to hit. 
+		Furthermore, you should provide a means of checking whether mitigations they may put in place were successful. 
+		This may be through offering your services in a limited fashion to test again. 
+		However, you may also write scripts which can be executed in a specified environment to test the vulnerabilty automatically. 
+
+	\section{STIX Model}
+		\url{http://stixproject.github.io/}
+\newpage

@@ -1,0 +1,1406 @@
+\chapter{Programming}
+	\label{ch:Programming}
+	\section{Introduction to the CLI}
+		The command line is the tool for direct interaction with your computer. 
+		It is like the baby brother to programming yourself, though with scripting it can become just as complex. 
+		The command line will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
+		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
+		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
+		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\cite{CLICrashCourse}
+		What follows is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
+		\begin{description}
+			\item[pwd]
+				Where am I?
+				Whenever you are lost, this will show you where you are in the filesystem. 
+				It is similar to the URL bar in a browser or file manager. 
+			\item[hostname]
+				What machine am I on?
+				This will allow you to determine what machine your current session is running on. 
+				It can be useful when you think you have opened a shell to another computer but aren't sure. 
+			\item[mkdir]
+				Like selecting new folder, but four steps in one. 
+				Run it as ``mkdir <folder name>'' to create one folder or run it with the ``-p'' argument to create a whole branch of directories, separate each folder name with ``/''. 
+			\item[ls]
+				List the contents of a directory.
+				This will give you the contents of the directory you are in, or the one you have given as an argument. 
+				The following are useful flags for ls:
+				\begin{itemize}
+					\item -l long, gives you sizes, permissions change times and other information. 
+					\item -h gives you data in a human readable formate. 
+					\item -a all, gives you all files, including hidden files (also known as dotfiles)
+					\item -S sort size, gives you all files in the directory sorted by size. 
+				\end{itemize}
+			\item[cd]
+				Tell the computer where you want to go. 
+				cd will take you to the location within the filesystem that you give as an argument. 
+				Furthermore, it takes advantage of special characters within \**nix systems such as ``.'' and ``..'' which mean current and previous directory along the current branch of the filesystem. 
+			\item[rm]
+				I want this file gone. I want it burned. 
+				When using this command, you will lose the file, either understand the wildcards you are using, or get good at file recovery. 
+				Alone, this command will delete files, using the ``-r'' flag will allow it to recurse through directories. 
+				Furthermore, some systems have added the flag ``--no-preserve-root'', which will stop you deleting your entire system. However, the existence of this flag should not be trusted. 
+				For example, it does not exist on Mac OS X. 
+			\item[touch]
+				Create a file here, I don't care about type or content. 
+			\item[cp]
+				Copy and paste. Used as ``cp src dest''.
+			\item[mv]
+				Cut and paste. Used exactly the same as cp. 
+			\item[less]
+				Read a file which would cause your terminal to scroll. 
+				Use page up and down or the arrow keys to navigate. 
+				Use ``/'' to search.
+				Quit by pressing q.
+			\item[cat]
+				Stream a file to your STDOUT. 
+				This can be useful for small files, checking that a change occurred properly or piping a file into another command. 
+				It is little known, but this command stands for concatenate. 
+				Thus it can be used to merge a number of small files into a large one using ``cat file1 file2 file3 > bigFile''.
+			\item[Pipes]
+				The pipe, ``|'' is used to send the output of one command to another. 
+				This would be useful for example to edit a file by streaming it from cat into sed. 
+			\item[Output Redirecton]
+				This is useful to force a program to read or write to or from a file. 
+				It works in the following manner:
+				\begin{itemize}
+					\item ``> <outfile>'' Write output to a given file.
+					\item ``< <infile>'' Read the given file as input.
+					\item ``>{}> <outfile>'' Append the programs output to the given file. 
+				\end{itemize}
+			\item[\** wildcard]
+				This is the most simple wildcard. 
+				It is used to match anything which follows the form given to it. 
+				For example the command ``cat /etc/\**.conf'' would print to STDOUT every ``.conf'' file in ``/etc''.
+			\item[locate]
+				Database search for the whole filesystem. 
+				If you need it, and it exists, locate knows where it is. 
+				However, you may need to run updatedb first. 
+				Use this command as ``locate <pattern to search for>''
+			\item[find]
+				When locate is not installed (such as with most Mac OS X installs) find will do the same job. 
+				However, find has to run through the filesystem each time the command is run, making it far slower for large searches. 
+				This command works the same as locate. 
+			\item[grep]
+				Search for a given pattern within a pipe or stream. 
+				This will also work for redirects and can be used on an individual file. 
+				Used as ``grep pattern'', and can use flags such as ``-i'' to ignore case. 
+			\item[man\footnote{\url{http://linux.die.net/man/}}]
+				When you're inevitably told to RTFM, this is where you go. 
+				Used as ``man <command>'', this program will give you the manual entry for the given command, spelling out all of the flags and usages which you may want. 
+				An alternative to this is using ``<command> \verb+--+help'' or ``<command> -h'' which may show a shortened version. 
+			\item[dd]
+				A low level copy of the given partition or disk. 
+				This command ignores filesystem and just writes the bits read from the input device to the output. 
+				It is used as ``dd if=<input file> of=<output file>''.
+				Be wary that if this command is entered wrong, you will loose data. 
+				It can also be combined with other commands, such as ``dd if=<in> | pv -s <size>G | dd of=<out>''.
+			\item[vim]
+				The editor war will likely never end, and each side will tell you to use their preferred. 
+				Vim is a powerful editor which I am using to write this. 
+				However, it can have a steep learning curve, and thus must have time dedicated to it's usage. 
+				Following the tutorial provided by the command ``vimtutor'' will give you the basics that you need to begin using vim properly. 
+				However, if you do not wish to learn a fully featured editor, the likes of ``nano'' and ``ed'' will serve you well. 
+		\end{description}
+		While there are many other commands\footnote{\url{https://github.com/jlevy/the-art-of-command-line}} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
+
+	\section{Introduction to Powershell}
+		%ktiploit.com
+		% https://github.com/mattifestation?tab=repositories
+		% http://colesec.inventedtheinternet.com/hacking-with-powershell-powersploit-and-invoke-shellcode/
+		Powershell is the scripting and command line environment of Windows.\cite{EffectivePS} 
+		It allows a similar level of access to that of Bash on Unix and Linux. 
+		However, the conceptual level of powershell of significantly different. 
+		Powershell is based on the .Net object system, which gives it a completely different manner of interacting with IO of the programs. 
+		Rather than output being given as a string, which can be directed around to different programs, the output is a powershell object which can be interpreted by the command that it is given to. 
+		This gives a number of new ways to interact with the IO of the programs that you are using. 
+		The issues which you will find in the Bash scripting section below are far less problematic due to this change. 
+		It is recommended that prior to starting this guide you run the command ``update-help''. 
+		This will give you access to the manual pages for all commands, which are not installed by default. 
+		\subsection{Four Basic Commands}
+			These commands are the ones that will get you out of problems. 
+			Together, they work in a similar way to the Unix ``-h'' option and ``man'' command. 
+			These commands have a large amount of expandability through their arguments, and should be used on each other to gather more information. 
+
+			The cmdlet ``get-command'' is used to gather information about all commands, cmdlets and scripts which are available on the current system. 
+			In it's basic form it will simply output a list of all of these items, with little further information.
+			Furthermore, when using this command with the exact name of a module which has not yet been imported, get-command will automatically import the module for you, allowing you to use it immediately. 
+			It is also worth noting that all information available to get-command is found within the source code of the command you are searching for. 
+			No external resources are used.
+			When using this to search for commands, you can also use the ``-CommandType'' parameter to specify the type of command that you wish to find. 
+			Further information can be found by using the commands explained in the below paragraph. 
+			However, for the most part, it can be though of as similar to the Unix ``which'' command with a significant amount of extra functionally. 
+
+			While basic information about cmdlets and other powershell programs is useful, one will regularly desire manual access for these commands. 
+			The cmdlet ``get-help'' will facilitate this. 
+			It its most basic form, get-help will output its own help file, giving you detail on how to use it. 
+			However, there are a number of other options such as using it with a wildcard argument which will output a basic synopsis of all commands or giving it a command as an argument which will output the help (similar to a man page) for that command. 
+			Furthermore, there are flags which are useful for getting more information about the options for a command. 
+			Using the flag ``-Detailed'' will give you an explanation of every flag for the given command.
+
+			A further command which will allow you to better understand and interact with the powershell object system is the ``get-member'' command. 
+			This command is used for gathering information on the objects which will be passed from one command to another through systems such as pipes. 
+			For example, when you pipe the output of get-command on a specific cmdlet from above into get-member you will see both the object type and the methods which can be called on it. 
+			This should be used to determine what further information and actions can be done using both that objects methods, and the classes static methods. 
+
+			Finally, we must understand the filesystem and drive access. 
+			This can be done through the use of the command ``get-psdrive'', which will show the drives attached to the system that are available to powershell. 
+			These drives are of different types, such as Filesystems and registries which can be manipulated using the cmdlets found by running ``get-command *-Item*''. 
+
+			Using these commands, you should be able to find your way around the system, albeit slowly until you learn the commands which you will be using. 
+			These commands will be explained in the next section. 
+
+		\subsection{Differences and similarities to Bash}
+			This section will discuss the differences and similarities that need to be understood when moving from Bash to PowerShell. 
+			These are in part due to basing PowerShell on earlier shell implementations, but are also largely influenced by the C\# and .NET object system which PowerShell is based on. 
+
+			The first of these is pipes and redirection. 
+			These are much the same as in bash, where the ``>'' operator will redirect output to a file or another file descriptor. 
+			However, one must understand that this will direct the object which was output to that file, rather than the direct text which would have been printed. 
+			This is due to the underlying .NET object system which PowerShell is based on. 
+			This can be seen by capturing the output of a cmdlet in a variable (``\$<var> = <cmdlet>) and calling ``.GetType().Fullname'' on this variable.
+			For bash, or any other text based shell, this would not work as you are working on a text variable. 
+			However, in powershell, this will be an object of a specific type, possibly even a string object. 
+			If you would like to capture the text, piping the result into the cmdlet ``out-string'' will render it as it would be on screen and store a ``System.String'' object. 
+
+			It is also worth noting that functions within PowerShell have a number of quirks which must be accounted for for those coming from a programming background. 
+			The first of these is the notion that cmdlets and strings that you use within the function may also add to the return of the function. 
+			When the return function is called, all output which would normally be written to STDOUT is returned, each being given the next available place in the output array. 
+			To avoid this with strings, use the command ``Write-Host''. 
+			Alternatively, redirect output to either \$null or [void]. 
+			Note also that the return keyword is just used to end the function at a given point. 
+			It is not necessary to have the output returned. 
+
+			Null will also cause some issues when using powershell. 
+			This is due to the interaction between powershell cmdlets and .NET functions. 
+			The former, being built for CLI scripting will gracefully ignore null. 
+			The latter, however, will often crash on null references, causing the script as a whole to grind to a halt. 
+			Thus, when using powershell, you must be wary of both what may be null, and what may be called on a null. 
+			
+		\subsection{Conclusion}
+			While powershell may look similar to many other shells, it works on a very different paradigm. 
+			When working with powershell, one needs to understand the underlying .NET object system and it's impact. 
+			While it may be possible to treat Powershell as a normal text based shell, doing so will create a far less efficient and far harder to understand script. 
+			Thus, it is recommended that you use the four cmdlets outlined above alongside the information in the last section to determine how best to interact with the objects you are given. 
+			This is a far more powerful and efficient way to interact with PowerShell. 
+	\section{Introduction to Scripting}
+	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
+		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
+		This language however, is one that you should now be used to. 
+		Its commands are exactly the same as the commands that you use on the normal command line in its interactive mode. 
+		However, in the non-interactive mode that we will be using in this section, there are a number of new quirks and language features which do not make sense in interactive mode. 
+		This section will discuss these differences, as well as the control structures and variables which are required to create a working script. 
+		\subsection{Setting up your script}
+			Unlike the command line, you will need to do some set up before you can use your script. 
+			This is because you are now creating a file which the system needs to be told how to read and what it is allowed to do with it. 
+			The first of these is the interpreter instruction, also known as the shebang or crunchbang. 
+			This line, designated by the symbol ``\#!'' followed by the location of your shell executable tells the prompt what to use to read the file with. 
+			Without this, the prompt will read the file as a generic text file, having been told no action to take. 
+
+			Next, you will need to set the permissions to executable using the command ``\verb|chmod +x <File.sh>|''
+			This will write the permissions of the file allowing the OS to run it as a program using the interpreter given at the crunchbang. 
+			Finally, you can execute the program by running ``\verb+.\<File.sh>+''. 
+		\subsection{Variables}
+			Variables in bash scripting act the same way as those in most other programming languages, however, internally they act slightly differently. 
+			These are known as bash parameters, and they come in three different types: Positional, Special and Shell Variables. 
+			Shell variables are the most common, and act almost exactly the same as those of most other programming languages, while the others are slightly different and have their own uses. 
+
+			Shell variables are much like the variables of python. 
+			They do not have a specific type and can be named and assigned at any time using the ``='' operator with no spaces.
+			However, when referencing them, the \$ prefix should be used to tell bash that you are referring to the variable rather than the name of a program.
+			This \$ symbol is the designator for expansion. 
+			This means that the result of whatever is after it is placed into the script at that point. 
+			This can also be used for getting the output of another program, such as ``gdb \$(which bash)'' which will run the GNU debugger on the result of ``which bash''. 
+			In addition to this, when you need to ensure that the words are split in the correct place, you can use \{ and \} around the variable name with \$ at the front. 
+
+			Also like in other programming languages, there are environmental variables which are set outside the shell and can be accessed for system information. 
+			Generally, unless you require a specific feature of environmental variables or are getting system information, shell variables should be used. 
+			Environmental variables are passed on by the parent process, but alterations are one way, only the new children will get a new environmental variable. 
+			This makes them useful for creating variables which the processes you are starting will require, but cannot be passed on as arguments. 
+			Most of the time, these variables will be mentioned in the man pages of the program you are calling. 
+			This should be your reference when creating new environmental variables. 
+
+			The final type of variable is the positional parameter, which acts in a similar way to the argument variable of most programming languages. 
+			These parameters are referenced in the same way as shell variables, but are pre-named using integer values counting from one. 
+			Thus, if you wish to use the first parameter that your script was called with, the variable \$1 will contain it. 
+			Also similarly to most programming languages, there is a zeroth argument, which will contain the command used to start the current process. 
+			It is also worth noting that these parameters are read only. 
+
+
+		\subsection{Conditionals}
+			Like any programming language, bash scripts allow the use of conditional structures. 
+			These structures allow for executing code based on the environment it finds itself in. 
+			In bash, there are a number of these conditionals which we can use. 
+
+			Exit code checking is one of the most basic conditional checks in bash. 
+			This uses the ``||'' operator after a command. 
+			If the command were to return a non-zero exit code, the statement after the ``||'' operator would be run. 
+			Due to this, it can be thought of in a similar way to the logical ``||'' operator in most programming languages. 
+			This is mainly useful for writing error or exception checking messages. 
+
+			The inverse operation in bash is the ``\&\&'' operator. 
+			This will cause bash to move on to executing the next command only if the first exits with code 0. 
+			This is useful if you are running a command which relies on something set up by the previous one. 
+
+			When using the above two conditionals, we may occasionally desire the exit code to be negated. 
+			Such as searching for files which do not contain a word with grep, which does not have a ``not containing'' option. 
+			In this case, the ``!'' operator will tell bash to negate the exit code, causing ``\&\&'' to work if the program fails and ``||'' to work if the program succeeds. 
+			While this may be confusing to think about, it becomes far easier to read when well implemented. 
+
+			A further note when using these conditionals is that bash will carry the exit code of one program through to the end of the string of conditionals. 
+			This means that if you have three commands separated by ``\&\&'' conditionals and a ``||'' conditional at the end, any of the three commands failing will trigger the final command. 
+			This can be controlled by using the grouping braces ``\{'' and ``\}''. 
+			These will ensure that bash will count the group as a whole against the exit status, but the exit status of items outside the group will not effect the status within. 
+			You will also need to end the statement before closing the final brace. 
+			Do this with a semicolon or a new line. 
+
+		\subsection{Conditional Blocks}
+			The if statement in bash works in much the same way as the ``\&\&'' conditional in that it will run it's block if the command that was given to it succeeds.\footnote{\url{http://mywiki.wooledge.org/BashGuide/Patterns}} 
+			The syntax for the if command is as follows:
+			\begin{code}
+			\begin{lstlisting}[language={bash}]
+if <Conditional commands>; then 
+	<if block commands> 
+else 
+	<else block commands> 
+fi
+			\end{lstlisting}
+			\label{code:BashConditionalBlocks}
+			\caption{Conditional Blocks in Bash}
+			\end{code}
+			While the if conditional commands can be anything, bash has a specific ``test'' command which can be used for conditionals. 
+			This command is run either by calling ``test'' or by opening a ``['' bracket. 
+			Within this, you can run any conditional statement that you would be able to run in a normal programming language. 
+			Signs such as ``='', ``-ne'', ``-gt'' and ``-lt'', as well as combinations of them can be used to create the conditional. 
+			In addition to this, there is the ``[['' command, which is a more powerful version of ``[''.
+			This command allows for a number of new features, outlined in the following list:
+			\begin{description}
+				\item[Pattern Matching]
+					Using wild cards, one can match a given pattern, such as ``*.pdf''. 
+					This can be used when you don't know the exact name of the file that you are searching for. 
+				\item[elif]
+					Else if, allows you to have more than two options for what to do. 
+					This is given with a conditional after it, allowing for another specified option before getting to the catch all else statement. 
+				\item[-e <file>]
+					True if <file> exists.
+				\item[-f <file>]
+					True if <file> is a regular file. 
+				\item[-d <file>]
+					True if <file> is a directory. 
+				\item[-h <file>]
+					True if <file> is a symlink.
+				\item[-p <pipe>]
+					True if <pipe> exists.
+				\item[-r <file>]
+					True if <file> is readable by the current user. 
+				\item[-s <file>]
+					True if <file> exists and is not empty. 
+				\item[-t <FD>] 
+					True if <FD> is open on a terminal. 
+				\item[-w <file>]
+					True if <file> is writable by the current user. 
+				\item[-x <file]
+					True if <file> is executable by the current user. 
+				\item[-O <file>]
+					True if <file> is effectively owned by the current user. 
+				\item[<file> -nt <other file>]
+					True if <file> is newer than <other file>.
+				\item[<file> -ot <other file]
+					True if <file> is older than <other file>.
+				\item[-z <string>]
+					True if <string> is empty. 
+				\item[-n <string>]
+					True if <string> is not empty. 
+				\item[-a]
+					Logical and used between other expressions.
+				\item[-o]
+					Logical or used between other expressions. 
+				\item[!]
+					Negates the expression it is given before. 
+				\item[-eq]
+					True if both sides are equal. 
+				\item[-ne]
+					True if both are not equal. 
+				\item[-lt]
+					True if first is less than the second. 
+				\item[-gt]
+					True if first is grater than the second. 
+				\item[-le]
+					True if first is less than or equal to the second. 
+				\item[-ge]
+					True if first is greater than or equal to the second. 
+				\item[<String> ~= <REGEX>]
+					True if <string> is matched by <REGEX>
+			\end{description}
+
+			Another option for these is to use the case command. 
+			This is used to check a variable against a number of options in a similar manner to the switch construct of most programming languages. 
+			It can be used with wildcards, allowing you to check for similar items. 
+			The syntax of this command can be found below:
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+case <variable> in
+	<option 1>) <command> ;;
+	<option 2) <command> ;;
+	*) <else command> ;;
+esac
+			\end{lstlisting}
+			\label{code:SwitchConditionalBlock}
+			\caption{Switch Conditional Blocks in Bash}
+			\end{code}
+		\subsection{Loops}
+			There are a number of loops which can be used within bash. 
+			These range from simple while and for loops, to until  and for each loops. 
+			Each of these loops has a code block which starts with the keyword ``do'' and ends with ``done''. 
+			The specific syntax and quirks of each of these will be explained in this section. 
+
+			The while loop will continue until its condition is met. 
+			This is much the same as while loops in normal programming languages, allowing you to repeat the code until the change you are searching for has occurred. 
+			The syntax for these loops is:
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+while <conditional> do
+	<Commands to be looped>
+done
+			\end{lstlisting}
+			\label{code:WhileBashLoops}
+			\caption{While Loops in Bash}
+			\end{code}
+			A variant of this type of loop is the until loop. 
+			This variant will simply reverse the conditional check on the while loop. 
+			The syntax for the until look is:
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+until <conditional> do
+	<commands to be looped>
+done
+			\end{lstlisting}
+			\label{code:BashLoopsUntil}
+			\caption{Until Loop in Bash}
+			\end{code}
+
+			The for loop works much the same as those in a normal programming language. 
+			At the start, it will execute the first block of its arguments and check the conditional in its second. 
+			After this, it will execute the code within its bounds before running the third block and checking the conditional again. 
+			The syntax for the for loop is:
+
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+for (( <Setup>; <condition>; <change> )) do
+	<Commands to be looped>
+done
+			\end{lstlisting}
+			\label{code:ForLoopBash}
+			\caption{For Loops in Bash}
+			\end{code}
+			The for each loop works in a similar manner to that of python. 
+			This loop creates a variable which can be used within its bounds and is filled with the output from its second block. 
+			The syntax for this loop can be seen below. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+for <variable> in <command> do
+	<commands to be looped>
+done
+			\end{lstlisting}
+			\label{code:ForEachBash}
+			\caption{For Each Loops in Bash}
+			\end{code}
+			This loop often catches people out due to bash splitting the words within the output of <command>, making them meaningless. 
+			This can be resolved by telling bash that you are working with a list of files or the like. 
+			Rather than putting a command such as ls in the <command> section, it is better to use a pattern matching command such as ``*.mp3''. 
+			This will tell bash that you are working with files and stop it splitting all spaces in the file name into individual words. 
+
+			With all of these loops, the command continue will skip to the next iteration of the loop and the break command will end the loops iteration without the conditional having to be set to false. 
+
+		\subsection{Arrays}
+			Arrays are another part of bash. 
+			These are similar in concept, but different int syntax to the arrays of most programming languages. 
+			They should be used any time that a list of something is produced, rather than placing the list in a string and attempting to delimit each item. 
+			The syntax for creating an array is as follows, each line designating another method of creation. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+<name>=(<first> <second>) #create an array containing <first> and <second>
+<name>=([0]=<first> [23]=<second> [n]=<nth>) #create an array, placing items in specific positions. 
+<name>=(*.png) # create an array containing the filenames of every .png file in the current directory. 
+			\end{lstlisting}
+			\label{code:ArrayCreationBash}
+			\caption{Array Creation in bash}
+			\end{code}
+
+			Arrays are used in much the same manner, with a few instances of syntactic sugar to make them easier. 
+			To iterate through an array, the following for loop will extract each element and run a command using it. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+for <var> in "${<array>[@]}"; do
+	<command using <var>>
+done
+			\end{lstlisting} 
+			\label{code:ForEachArrayAccess}
+			\caption{Accessing Arrays using For Each in Bash}
+			\end{code}
+			This will iterate through the array, item by item and run <command> using <var> as an arguement. 
+			The quates around ``\$<array>[@]'' ensure that bash doesn't attempt to wordsplit the items within the array before they are placed in <var>.
+			This expansion can be implemented anywhere that having multiple of the arrays items would work, such as within a cp command to copy all the items within the array into another folder. 
+
+			Another method of accessing an array is using a singular index. 
+			This, like those of most programming languages is a zero based method of getting one item out of the array. 
+			To use this method, use the same syntax used to access the array within the for loop, replacing the ``@'' with either an integer or an integer variable. 
+			In a similar manner, the \** symbol can be used as the index to concatenate every element in the array into one string. 
+
+			More recent versions of bash also have a dictionary like array type called associative arrays. 
+			These allow you to map one string to another, and are created and accessed in the following manner. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+declare -A <name>
+	<name>=( [<map>]=<value> )
+<command> ${<name>[<map>]}
+			\end{lstlisting}
+			\label{code:DeclareAssociativeArrayBash}
+			\caption{Declaring Associative Arrays in Bash}
+			\end{code}
+
+		\subsection{Input and Output}
+			There are a number of different places in which IO can occur within a bash script. 
+			These range from the normal, such as command line arguments and files, to the unusual, such as environmental variables and pipes. 
+			This section will enable you to understand how mast types of bash IO work and implement them in your scripts. 
+
+			The most simple means of allowing input to your script is by using command line arguments. 
+			This can be done by using the positional parameters which are shown in the variables section above. 
+			Using these, each argument given will be placed into its respective parameter, starting from 0 being the command used to call the script. 
+			These can be called like any variable within your script: ``\$n''.
+			In addition to this, you can call the array of all positional variables using ``"\$@"''. 
+			This will expand all arguments which were given to the script. 
+			A final method, known as ``shift'', will push the arguments forward, popping the contents of ``\$1'' off the stack and moving ``\$2'' up into its place. 
+			This is useful within loops, as you can use ``\$1'' as a variable representing all arguments one at a time. 
+
+			Another means of input to your script is the environmental variables which it inherits from the invoking bash environment. 
+			These will contain useful items such as the binary paths of the system and the language that the user wants to use. 
+			An example of this, is checking whether the computer is being used with an X display manager and whether the user has set their preferred terminal.  
+			This can be done with the following code:
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+if [[ $DISPLAY ]]; then
+	if [[ $TERM_PROGRAM ]]
+		<Command to run in preferred terminal>
+	else
+		<Command to run in xterm>
+	fi
+else
+	<Command to run in CLI>
+fi
+			\end{lstlisting}
+			\label{code:checkingEnvironmentalVariables}
+			\caption{Acting based on environmental variables}
+			\end{code}
+			Finally, environmental variables can be used as output to any programs that you invoke within your script. 
+			This can be done by using the export command, with the same syntax as assigning a variable after it. 
+			
+			Once the script has been invoked, IO can be done by the same means as most CLI programs. 
+			Reading from STDIN is done by using the command read -p, which takes a string to display and the name of a variable to place the input into. 
+			This will work in exactly the same manner as python's raw input, writing the line to the CLI and storing every input before the new line in the variable you give it. 
+			Output can be done using a number of commands. 
+			However, the two most common are echo for simple output and printf for formatted strings. 
+			Both of these commands are simple, with echo simply outputting a string to STDOUT and printf working exactly the same as in C. 
+			In both of these cases, if you want to change the input the ``<'' operator will allow you to. 
+			For changing output, use either the ``>'', ``>{}>'' or ``>\&n'' operators, where n is a file descriptor, such as the standard ones found in table \ref{tab:stdFileDescriptors}
+			\begin{table}[htb]
+				\centering
+				\begin{adjustbox}{max width=1\textwidth}
+				\begin{tabular}{|l|l|l|}
+					\hline
+					\textbf{Number} & \textbf{Name} & \textbf{Description} \\ \hline
+					0 & STDIN & Standard input for a program. Usually text entry at the commandline. \\ \hline 
+					1 & STDOUT & Standard output for a program. Usually text output at the commandline. \\ \hline
+					2 & STDERR & Standard error output for a program. Usually also the commandline. \\ \hline
+				\end{tabular}
+				\end{adjustbox}
+				\caption{Standard File Descriptors}
+				\label{tab:stdFileDescriptors}
+			\end{table}
+					
+		\subsection{Compound Commands}
+			These are commands or syntax elements which allow you to alter the scope or operation of the script you are writing. 
+			Each of these work slightly differently, but when used together and properly, they allow for a properly written program using scope and functions. 
+
+			Subshells similar to creating a child process, but with slightly more inherited. 
+			They are commonly created through the use of syntax such as pipes, but can be manually called using parenthesis. 
+			This allows us to create a part of the script which will not effect other parts. 
+			Commands within a subshell can fail and will only exit the current subshell. 
+			Furthermore, commands which change the current environment of the shell such as ``cd'' will not retain their changes outside the subshell. 
+
+			A similar notion with respect to redirection and flow exists in command grouping. 
+			This is done using the braces ``\{'' and ``\}'' around the commands that you wish to group, and will cause all redirection at the end of the braces to apply to everything within them. 
+			While these may seem like a subshell, the commands within this grouping are executed within the same shell as the commands around them. 
+			Thus, changes are retained when exiting the group. 
+
+			Functions within a bash script can be thought of as mini scripts. 
+			These execute in the same shell, but can be given arguments and be called whenever needed from within the script. 
+			Parameters within the function can be called in the same means as parameters to the whole script, however, these are not the same parameters as the script originally received. 
+			The main use for a function is to pull a commonly repeated block of code out, causing it to be written only once and simply called from each location it is required from. 
+			Functions also limit the scope of the script within them. 
+			Variables created within them will not be accessible outside the function. 
+			Functions are defined and called in the following manner:
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+<Function Name>() {
+	<commands>
+}
+<Function Name> <Parameters>
+			\end{lstlisting}
+			\label{code:bashFunctions}
+			\caption{Functions in Bash}
+			\end{code}
+
+		
+			Aliases are the final compound command. 
+			These allow you to create or change a name for either an altered command or a string of commands. 
+			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the alias' command. 
+			An example of creating an alias for ls to ensure it outputs in colour is shown below. 
+			\begin{code}
+			\begin{lstlisting}[language=bash]
+alias ls="ls --color=auto"
+			\end{lstlisting}
+			\label{code:bashAlias}
+			\caption{Aliasing in Bash}
+			\end{code}
+	\section{Introduction to Python}
+		Python is the first, easiest and most useful language that will be introduced in this book.\cite{PythonBoringStuff} 
+		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
+		However, this couldn't be further from the truth. 
+		Due to it's integration with the Open Source community, python has grown beyond the basic language that it would initially seem. 
+		This has occurred through the introduction of modules and tools such as pypi, which allow you to find new modules based on their description. 
+		\subsection{Setup}
+			To use this section, you will have to have installed python 3 on your system. 
+			On a Linux system, this can usually be done by running your package manager. 
+			On any other system, it is recommended that you find the package on \url{python.org}.
+
+			Once this is installed, the python interpreter can be run by calling ``python'' from the command line. 
+			You can call this interpreter with a file name as an argument to have it interpret and run that file. 
+
+		\subsection{Your First Program}
+			The below program is an example of a ``Hello World'' program in C. 
+			These are generally the basic program that is used as the first that a new programmer will write in a language. 
+			Because python is a high level language that focuses on being accurate and concise, this program can be expressed in the following line. 
+			\begin{quote}
+				print("Hello World");
+			\end{quote}
+
+		\subsection{Mathematics}
+			While programming does not require high level mathematics, it is heavily based on basic arithmetic. 
+			Table \ref{tab:PythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
+			\begin{table}[htb]
+				\centering
+				\begin{adjustbox}{max width=1\textwidth}
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					\textbf{Python Command} & \textbf{Mathematical Operator} & \textbf{Example} & \textbf{Returns} \\ \hline
+					+ & $+$ & 1 + 5 & 6 \\ \hline
+					- & $-$ & 5 - 1 & 4 \\ \hline
+					* & $\times$ & 4*3 & 12 \\ \hline
+					/ & $\div$ & 4/2 & 2 \\ \hline
+					%\% & $\mod$ & 5 \% 4 & 1 \\ \hline 
+					= & $=$ & x = 7 & x holds the value 7 \\ \hline 
+				\end{tabular}
+				\end{adjustbox}
+				\caption{Python Arithmetic operators}
+				\label{tab:PythonMaths}
+			\end{table}
+	\section{Introducton to JavaScript}
+		%TODO: Clean up this section. 
+		Javascript is the programming language of the Internet. 
+		It was originally built in 1995 to allow for programming on a web page. 
+		% Dave flanagan's definitive guide to javascript. 
+		It is also worth noting that Javascript is a functional language\cite{JSProgrammingLanguage}.
+		It is based on creating functions which are then extended upon in functions which then call those. 
+
+		\subsection{Origins}
+			Javascript started as Livescript, a language started by Netscape in order to write programs for the web. 
+			It's main goal was to be able to write cross platform programs which could be written and used on the web. 
+			This was done in order to allow non-Microsoft OS's to run programs. 
+
+			Netscape then joined with Sun Microsystems to make Javascript. 
+			This was then made into a standard in order to stop other companies from altering the program. 
+			However, a number of problems were implemented into this standard and continue to this date. 
+		\subsection{Key Differences}
+			\begin{description}
+				\item[Load and go delivery:] Programs are delivered as source code. 
+					This is because it was intended to be embedded into web pages. 
+				\item[Loose Typing:] This allows better expression of ideas,
+					but is not as strict, making it less likely that a compiler will find errors. 
+				\item[Objects as Containers:] This is the unification of objects and hash tables.
+					This allows new methods and members to be added at any time. 
+				\item[Prototypal Inheritance:] Objects inherit directly from other classes. 
+					This can be difficult when coming from traditional Object Oriented languages, but can be powerful. 
+				\item[Lambda:] This is a functional notion that allows functions to be used as first class objects. 
+				\item[Linkage through Global Variables:] Due to the load and go model there is no linker. 
+					This means that compilation variables are created with a global scope. 
+					This is horrid for security. 
+			\end{description}
+		\subsection{Types}
+			Javascript has a number of types which are similar to those in other languages. 
+			However, as this is a loosely typed language, they need not be specified. 
+			\begin{itemize}
+				\item Numbers
+				\item Strings
+				\item Boolean
+				\item Objects
+				\item Null
+				\item Undefined
+			\end{itemize}
+			There are no different types of numbers. 
+			Instead, this is purely a double precision floating number. 
+			This must be taken into account when programming. 
+			For example, division between two integers can produce a non-integer number. 
+
+			There is also a special type known as NaN or Not a Number. 
+			This is a type of undefined and will continue through any arithmetic that is done on it. 
+			This means that a NaN anywhere through the expression will end in NaN. 
+			NaN is also not equal to anything. 
+			Thus $NaN \ne NaN$. 
+			
+			Strings can be turned into a number using the ``Number'' Function. 
+			However, if this cannot be done, it will return NaN. 
+			Similarly, there is a parseInt function which can be used. 
+			However, this should always be used with a radix. 
+			Otherwise it will try to determine the radix itself and can fail in interesting ways. 
+
+			Strings are always encoded in the 16 bit UCS-2. 
+			This is because Javascript was created before UTF-16 became mature. 
+			This is usually not a problem, but can be if you need the extra characters. 
+
+			Strings are immutable in Javascript. 
+			This means that the strings cannot be modified but rather have to be recreated. 
+			However, concatenation will do this automatically. 
+
+			Similar strings are equal with ``==''. 
+			Furthermore string literals can be created with either single quotes ('String') or double quotes ("String"). 
+			Strings also have a length variable which contains the number of 16 bit characters stored within it. 
+
+			The string function can be used to turn a number into a string. 
+			Strings are objects and thus have a number of methods for substrings or other functions. 
+
+			Boolean can either be true of false. 
+			There are also functions which can be used to determine whither something is near true or false. 
+			Values similar to false are:
+			\begin{itemize}
+				\item False
+				\item Null
+				\item ""
+				\item Undefined. 
+				\item 0
+				\item NaN
+			\end{itemize}
+			All other values are true. 
+			However, ensure that you check you aren't checking for the string ``0'' or the string ``false''. 
+
+			Null means no value. 
+			Undefined is the default value for a variable. 
+			This is also the value given when you try to extract a member that doesn't exist from an object. 
+			
+			It is also worth noting that any variable can receive any type of value. 
+			This includes parameters an return values. 
+			
+			All key words are lower case and case sensitive. 
+		\subsection{Objects}
+			Objects in Javascript are dynamic. 
+			This is due to the fact that the ``new'' command produces an empty container of name-value pairs.
+			In this, the name can be any string and the value can be anything other than undefined. 
+			At this point, members can be added. 
+			
+			Object members can be accessed through the traditional `` . '' notation. 
+			These members can also be accessed through a subscript notation as follows:
+			\begin{quote}
+				object[key]
+			\end{quote}
+			Furthermore, the ``\{\}'' braces are used to create a new empty object. 
+			Alternatively, you can use the ``new Object()'' command or 
+			use the object function as ``object(Object.prototype)''
+
+			Objects are created with a number of key-value pairs stored within them. 
+			This is done by having a key (which can be, but doesn't have to be a string) followed by a value. 
+			For example:
+			\begin{quote}
+				KVP : "This is a key-value pair"
+			\end{quote}
+			 
+			Objects can also be created using object literals. 
+			This allows you to create an object in place and work with it.
+			For example:
+			\begin{code}
+				\lstinputlisting[language=JavaScript]{./ObjectLiteral.js}
+				\caption{A basic Javascript Object Literal}
+				\label{code:JSObjectLiteral}
+			\end{code}
+			It is also worth noting that this is the same format used in JSON. 
+			These can be used anywhere that a on object could be used. 
+			These can be used for creating named parameters in functions. 
+
+			Objects can also be augmented at any time. 
+			This means that you can assign a new key-value pair to the object. 
+			If the key did not previously exist, it will be created. 
+
+			Inheritance works by creating a link between the main object and the one it inherited from. 
+			If an attempt to access a key within an object fails, it will run down this inheritance chain. 
+			Only if no object down this chain has a key with the same name will it return undefined. 
+			
+			Objects are always passed by reference, rather than value. 
+			Thus, the ``==='' operator will tell you whether the references are the same. 
+
+			You can also delete a key from an object. 
+			This is done using the delete command as ``delete theObject[key];''. 
+			This will change the keys value to undefined. 
+		\subsection{Arrays}
+			In Javascript, arrays will inherit from objects. 
+			This means that the arrays are key-value pairs. 
+			Thus, Javascript arrays are only efficient for sparse arrays, but not for most normal arrays. 
+
+			Arrays have a length member which will give you 1 more than the highest integer subscript. 
+			This may be the same as the length of the array, but may not be. 
+
+			Array literals can be written in a similar manner to the object literal. 
+			These look as follows:
+			\begin{verbatim}
+list = ['one', 'two', 'three'];
+			\end{verbatim}
+			Furthermore, arrays can be appended at any time as they do not have normal bounds. 
+
+			Arrays have the following members:
+			\begin{itemize}
+				\item concat
+				\item join
+				\item pop
+				\item push 
+				\item slice
+				\item sort
+				\item splice
+			\end{itemize}
+
+			Members are deleted in the same way as for objects. 
+			However, this will leave a hole in the array. 
+			Thus, the splice method should be used to move the values down to fill the hole. 
+
+			Because objects and arrays are similar, it can be hard to decide between them. 
+			Thus, use objects when you need a key-value pair. 
+			Use arrays when you need sequential ordering. 
+
+			You can also assign new methods to an array. 
+			This can be done on an array by array basis, or by assigning them to array.prototype, 
+			which will assign them to all arrays. 
+		\subsection{Syntax}
+			Javascript follows the basic syntax rules of C. 
+			This means that the basic brace rules, as well as loops and statements follow the same rules as C. 
+			However, there are a number of differences, mainly due to the functional nature of Javascript. 
+			This is most evident in it's allowance of functions to be values. 
+
+			Everything except for constructors should start with a lower case letter by convention. 
+			The initial underscore should be reserved for implementations. 
+			These are usually used for internal variables. 
+			The \$ is used for macros in the standard. 
+			However, this is not always adhered to within the community. 
+
+			Reserved words are as follows:
+			\begin{multicols}{3}
+				\begin{itemize}
+					\item abstract
+					\item boolean
+					\item \textbf{break}
+					\item byte
+					\item debugger
+					\item \textbf{default}
+					\item \textbf{delete}
+					\item \textbf{do}
+					\item double
+					\item \textbf{else}
+					\item enum
+					\item export
+					\item export
+					\item extends
+					\item \textbf{false}
+					\item final
+					\item \textbf{finally}
+					\item float
+					\item \textbf{for}
+					\item \textbf{function}
+					\item goto
+					\item \textbf{if}
+					\item implements
+					\item import
+					\item \textbf{in}
+					\item \textbf{instanceof}
+					\item int
+					\item interface
+					\item long
+					\item native 
+					\item \textbf{new}
+					\item \textbf{null}
+					\item package
+					\item private
+					\item protected
+					\item public
+					\item \textbf{return} 
+					\item short
+					\item static 
+					\item super
+					\item \textbf{switch}
+					\item synchronized
+					\item \textbf{this}
+					\item \textbf{throw}
+					\item throws
+					\item transient
+					\item \textbf{true}
+					\item \textbf{try}
+					\item \textbf{typeof}
+					\item \textbf{var} 
+					\item volatile
+					\item \textbf{void}
+					\item \textbf{while}
+					\item \textbf{with}
+				\end{itemize}
+			\end{multicols}
+			Reserved words that are used within the language are highlighted in bold. 
+			However, most of this list was created to avoid confusion when coming from other C-like languages. 
+
+			Commenting works in the normal C style. 
+			As do most operators. 
+			The plus sign is used for both addition and concatenation. 
+			This can be the cause of a number of issues due to the loosely typed nature of the language. 
+			The plus sign will also convert a string into a number. 
+
+			The ``$==$'' and ``$!=$'' work mostly as expected but will do type cohesion. 
+			For exact equality, use the ``$===$'' or ``$!==$''. 
+
+			The logical and operator works differently to those in other languages. 
+			If the first operand would evaluate to true, it will return the second.
+			Otherwise, it will return the first. 
+			This can be used to avoid null references. 
+
+			Conversely, the OR operator will return the first operand if it evaluates to true. 
+			Otherwise it will return the second. 
+
+			Bitwise operators exist. 
+			They convert the number from float to int, then conduct the operation. 
+			However, this means that they are far slower for operations that don't need a bitwise operation. 
+
+			Javascript also has the ability to create a labeled break. 
+			This means that if you have a number of nested loops, you can break out of all of them, or just the first two. 
+			This is done by putting a label at the end of the loop that you wish to break out of. 
+
+			While the for loop can be used in the normal manner, 
+			there is also another for construct which allows you to iterate through the members of objects. 
+			In this case, the loop will be constructed giving a name and an object. 
+			In each iteration of the loop, name will be equal to one of the keys for the given object. 
+			However, this will also go through all keys of all objects that the given object inherits from. 
+			To solve this, at the start of the loop check that the object you gave has the property given by name. 
+			%TODO: Add in code here. 
+
+			The switch statement can work with strings, allowing you fork based on string input. 
+			Furthermore, the case statements can test against variables rather than the usual constant requirement. 
+			Remember that you still have to break at each statement. 
+
+			Unlike C, Javascript has exceptions. 
+			These can be created by creating a new exception, or by creating one in place. 
+			%TODO: more detail. 
+			These exceptions can be caught within a try-catch block. 
+			However, because there are no classes, there can only be one catch block. 
+			This means that the single catch block must determine what type of exception was thrown and how to act with it. 
+
+			There is also a function statement used for declaring a function. 
+			This, as with most other languages expects a name, a set of parameters and the code block for the function to execute. 
+			This is quite similar to the ``def'' statement in Python. 
+
+			There is also the var statement, which is used to declare a variable. 
+			This is used instead of the type in languages like C. 
+			Types will be determined based on the values given to the variable.
+			However, if a value is not given, Javascript will initialise it to ``undefined''. 
+
+			Unlike most C-like languages, blocks do not have scope. 
+			Thus, only functions have scope. 
+			This means that creating a variable within a code block such as a loop will create it for the whole function. 
+			Furthermore, creating the same variable twice within a scope will not raise an error. 
+
+			Further to this, Javascript has implied globals. 
+			This means that if you forget to declare a variable, then use it, 
+			rather than raising an error, Javascript will simply use it as a global variable. 
+
+			Every function will return something. 
+			Functions that do not explicitly return something will return undefined. 
+			Constructors will always return the newly created object. 
+
+		\subsection{Functions}
+			The function operator is used to created a new function. 
+			However, this can be used in any location within the program. 
+			This means that you can pass a function to another function as an argument. 
+			Furthermore, this means that you can store a function in a variable.
+			The function statement is simply a shorthand which creates a variable named with the same name as the function. 
+			Furthermore, functions can be defined within other functions. 
+
+			Scope is defined based on functions. 
+			This means that the inner function will have access to the variables of the outer function. 
+			Thus, functions are commonly used to limit scope within the program. 
+
+			It is also worth noting that functions are objects, meaning that they can contain key-value pairs. 
+			Similarly, objects can contain functions. 
+
+			Rules when invoking functions:
+			\begin{itemize}
+				\item If a function is called with too many arguments, the extra ones are ignored. 
+				\item If a function is called with too few arguments, the missing values will be undefined. 
+				\item There is no implicit type checking. 
+			\end{itemize}
+			
+			There are numerous ways to call a function:
+			\begin{enumerate}
+				\item Method form: This is a function within an object. 
+					It is called as ``object.method''. 
+					This will also allow the function access to the object that it was called from. 
+				\item Function form: This will call a function directly. 
+					It will bind ``this'' to the global object variable. 
+				\item Constructor form: The new operator assigns the new object to this. 
+			\end{enumerate}
+
+			Functions are further given an object called arguments. 
+			This will contain the arguments given to the function, no matter whether they were expected or not. 
+			This provides a manner for giving a variable set of arguments. 
+
+			The ``eval'' function is a common cause of security flaws. 
+			This was created in order to allow the browser to execute arbitrary scripts from external sources. 
+			For this exact reason, ``eval'' should be avoided. 
+	\section{Introduction to C}
+		To many people, C is a scary language that causes Segmentation Faults and allows numerous mistakes. 
+		However, C is not the cause of this. Simply the tool that allows programmers to make these mistakes. 
+		Thus, understanding and correctly using C is about knowing how the computer itself works and ensuring that you work within that. 
+		C will allow you to go past memory bounds. 
+		C will allow you to write code that will crash on every call. 
+		It C, it is your job to ensure that this doesn't happen. 
+		This is all because C is little more than one step above assembly. 
+		It refuses to hide what is actually going on with the computer. 
+
+		\subsection{Setup}
+			To use this section you will have to set your computer up to write and compile code. 
+			I suggest that you find and learn a proper text editor such as VIM (which is explained in the above section on the CLI).
+			This will allow you to write C, but also compile and run it from within your editor. 
+			However, I recommend that you do not use an IDE when first learning. 
+			This will create poor habits such as relying on code completion and highlighting rather than understanding and paying attention to your writing. 
+
+			Furthermore, you will have to install make and GCC or the relevant compiler for your OS. 
+			I will leave these details to you, as each system has a slightly different implementation of these tools. 
+
+		\subsection{Your First C Program}
+			Code example \ref{code:FirstProgramC} is an example of a ``Hello World'' program in C. 
+			This is the most basic form of C programming, as it only uses the main function and one standard library. 
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./first.c}
+				\caption{A Simple Hello World Program in C}
+				\label{code:FirstProgramC}
+			\end{code}
+			This program will now be explained line by line. 
+			\begin{enumerate}
+				\item Preprocessor declaration to include the standard IO library in the file. 
+				\item Blank line for formatting. 
+				\item Main function declaration. 
+					This creates the entry point for the program as well as creating the argument counter and argument value variables. 
+					These will be explained later. 
+				\item Opening brace to set the bounds of the main function. 
+				\item Printf statement, calling the C STDIO library printf function to print to the console. 
+				\item Return statement, telling the program to exit the main function with a value of 0. 
+					The meaning of this will be explained later. 
+				\item Closing brace for the main function. 
+			\end{enumerate}
+		\subsection{Compiling}
+			C requires that it is compiled before use. 
+			Thus, one must learn both the language and the complier that is used for it. 
+			Furthermore, in C, a tool known as make is used to run numerous or complex compiler functions. 
+			Code example \ref{code:Makefile} contains a complex setup for compiling moderate sized C programs. 
+			It will have to be altered for the specific program structure, but it will be a good starting point. 
+			For smaller programs, use the makefile in code example \ref{code:BasicMakefile}.
+
+			\begin{code}
+				\lstinputlisting[language={[gnu]make}]{./makefile}
+				\caption{A Basic Makefile}
+				\label{code:BasicMakefile}
+			\end{code}
+
+			\begin{code}
+				\lstinputlisting[language={[gnu]make}]{./make}
+				\caption{A Complex Makefile}
+				\label{code:Makefile}
+			\end{code}
+
+
+			Go through the settings within this. 
+			It is far more complex than the simple make files that you will need for this section. 
+			However, it gives you an insight into what is required for creating a Makefile for a large project.
+			\FloatBarrier
+		\subsection{Printing}
+			There are a number of ways to print to the commandline within C. 
+			However, the most common one is to use the ``printf'' function from STDIO. 
+			This function takes a string and a variable number of arguments to substitute into the string. 
+			This allows for inserting variables into the string to be output to the user. 
+			Sadly, this can be abused, allowing the user to insert their own commands into the strings as seen in \ref{ch:BinaryExploitation}
+
+			A list of the format strings can be found in \ref{tab:StringFormatCodes}
+				\begin{table}[htb]
+					\centering
+					\begin{adjustbox}{max width=1\textwidth}
+					\begin{tabular}{| l | l |}
+						\hline
+						\verb+%d+ & Int \\ \hline
+						\verb+%f+ & Floating point number. \\ \hline
+						\verb+%X+ & Hex. \\ \hline
+						\verb+%o+ & Octal. \\ \hline
+						\verb+%s+ & Null terminated string. \\ \hline
+						\verb+%c+ & Character \\ \hline
+						\verb+%p+ & Void Pointer \\ \hline
+						\verb+%n+ & Write number of chars printed to int pointer. \\ \hline
+						\verb+%d+ & Int \\ \hline
+					\end{tabular}
+					\end{adjustbox}
+					\caption{Types of Format String Codes}
+					\label{tab:StringFormatCodes}
+				\end{table}
+			For more information on this, see \href{http://linux.die.net/man/3/printf}{man 3 printf.}
+		\subsection{Memory Testing with Valgrind}
+			Unlike Python or Java, C does not have the same memory constraints or bounds checking. 
+			Thus, a program known as Valgrind has been created in order to check programs for memory leaks and the like. 
+			It works by running the program within itself, checking for memory allocation and deallocations and ensuring that all memory is correctly handled. 
+
+			This is not the be all and end all of writing memory leak free C code, but it is a good start. 
+		\subsection{Variables and Types}
+			While Python has types, you as the programmer don't get to use them. 
+			C on the other hand, likes to give everything to the programmer, and thus requires you to choose the type that you would like for each variable. 
+			Thus, you will have to understand the differences between the different types and where they are best used. 
+			Table \ref{tab:CVariableTypes} contains a list of the most common variable types. 
+			\begin{table}[htb]
+				\centering
+				\begin{adjustbox}{max width=1\textwidth}
+				\begin{tabular}{| l | p{8cm} |}
+					\hline
+					\textbf{Type} & \textbf{Explanation} \\ \hline
+					char & A single byte used to store an ASCII character \\ \hline\hline
+					short & An integer at least 16 bits in size. \\ \hline
+					int & An integer at least 16 bits in size. \\ \hline
+					long & An integer of at least 32 bits in size. \\ \hline
+					long long & An integer of at least 64 bits in size. \\ \hline\hline
+					float & A precision floating point (decimal) number. \\ \hline
+					double & A double precision floating point number. \\ \hline
+					long double & An extended precision floating point number. 
+					May be the same as a double if the extended precision is not supported. \\ \hline
+				\end{tabular}
+				\end{adjustbox}
+				\caption{C Variable Types}
+				\label{tab:CVariableTypes}
+			\end{table}
+			There also exist other types, such as pointers, structs and unions. 
+			However, these are more advanced and will be covered at a later point. 
+
+			It is also worth noting that these variables can be used in math and other similar operations. 
+			The symbols are much the same as in normal mathematics with the following differences:
+			\begin{description}
+				\item[Equals] is done through the ``=='' operator.
+				\item[Assignment] is done through the ``='' operator.
+				\item[Multiplication] is done using the ``*'' operator.
+				\item[Division] is done using the ``/'' operator. 
+			\end{description}
+
+		\subsection{Arrays}
+			Arrays in C are barer than those of other languages. 
+			For example, unlike in Java, they do not come with a precalculated length variable.
+			Furthermore, if they are being used as a string, they need to be null terminated so that compiler knows where the array ends. 
+			A list of basic array syntax can be found in code example \ref{code:CArrays}.
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./arrays.c}
+				\caption{A List of Different Array Syntax}
+				\label{code:CArrays}
+			\end{code}
+			It is also worth noting that C can have multi-dimensional arrays. 
+			This is done by creating an array of pointers using the syntax ``int *arr[]'' for an integer array. 
+			For another example of this, see the ``*argv[]'' variable in the arguments of every C programs main function. 
+			This creates an array of strings (or char arrays) which hold the arguments given to the program on execution. 
+
+			To find the size of an array, the contents within it must be counted until a null byte is found. 
+			However, you will not be required to do this manually. 
+			C comes with a function known as ``sizeof'' which will do this for you when called on an array. 
+		\subsection{Loops}
+			Just like in Python, C has a number of loops built into it. 
+			These loops will work exactly the same as the basic python versions, but will have a slightly different syntax. 
+			
+			The ``while'' loop is the most basic loop within C. 
+			It is used to check a condition and continue looping while that condition is true. 
+			An example of the syntax of a while loop can be seen in code example \ref{code:CLoops}
+
+			The more complex ``for'' loop is the most common loop in programming. 
+			It is used to iterate through a known set, such as an array. 
+			This loop is far more like the basic for loop in Python, rather than the for each that has recently come into usage. 
+			An example of the syntax of the for loop can be found in code example \ref{code:CLoops}
+			
+			Both of these loops require that the expression given to them can be interpreted with boolean logic. 
+			In C, this means that it will either give an obvious true or false answer, or it will equate to an integer (zero being false, non-zero being true).
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CLoops.c}
+				\caption{Examples of Basic C Loops}
+				\label{code:CLoops}
+			\end{code}
+		\subsection{Conditional Statements}
+			In a similar way to loops, the if statement in C is quite similar to that of python. 
+			It has a condition, a code block and can have else if and else statements under it. 
+			However, the difference comes into the syntax. 
+			If statements in C have their conditionals bound in parenthesis and their blocks bound in braces. 
+			An example of this can be found in code example \ref{code:Cif}.
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./if.c}
+				\caption{Example of the C if statement}
+				\label{code:Cif}
+			\end{code}
+
+			Another conditional within C is the switch statement. 
+			This statement provides a means of writing actions based on a large number of options. 
+			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
+			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
+			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
+			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}
+
+			Another conditional within C is the switch statement. 
+			This statement provides a means of writing actions based on a large number of options. 
+			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
+			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
+			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
+			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}.
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CSwitch.c}
+				\caption{Example of the C Switch Statement}
+				\label{code:CSwitch}
+			\end{code}
+		\subsection{Functions}
+			Functions are a way of repeating the same block of code---possibly with different variables---throughout your code. 
+			They allow you do write an algorithm for doing something specific once, then use the same one everywhere. 
+			This means that with proper naming, your code will be shorter and easier to read, while also having more chance of being bug free as you haven't written multiple different ways to do the same thing. 
+
+			Functions in C are similar to those of most other languages. 
+			However, when compared to languages like python, there are some minor differences, as seen in code example \ref{code:CFunction}.
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CFunction.c}
+				\caption{Example of a C Function}
+				\label{code:CFunction}
+			\end{code}
+			This is a function which will calculate the Fibonacci number sequence to the number of iterations given as an argument on the first line. 
+			It then creates three variables (lines 2-4), initializing the first two (and thus completing the first iteration) while leaving the latter without a value. 
+			We then create a for loop, which will have the function repeat the steps of the Fibonacci algorithm until it has reached the correct number of iterations. 
+			Finally, on line 9, we tell the program to return processing to the function that called it, giving the value stored at fib. 
+			It is worth noting that as we declared this function as an integer, it cannot return another variable type. 
+			If we were to attempt to return a double, or an array of integers, it would not compile. 
+			However, if you compile with no warnings on, some compilers will allow you to return a char, as in C a char is simply a small int that has a specific way of printing to screen. 
+			Thus, you must be careful how you write C to ensure the behaviour is what you expected. 
+
+		\subsection{Pointers}
+			Pointers are the downfall of many programmers. 
+			When used poorly, or when poorly understood, they can be the bane of your existence. 
+			However, pointers are brilliant. 
+			They allow you do do many things that cannot be done as easily in other languages. 
+			They give you direct access to memory in a way that object types and other implementations do not. 
+			Once you have started using pointers properly, you will be begging to have them back if you switch to a language like Java, which doesn't have them. 
+
+			To understand pointers, it is best to understand how C thinks about memory. 
+			To C, the computers memory is simply a huge array of bytes. 
+			However, rather than requiring the programmer to remember the locations of their bytes, C allows you to use variables and types. 
+			This means that each variable you write has a location that is used to retrieve it, and that location can be used to do different things. 
+			For example, if you create an array ``arr'', you could then index it as ``arr[n]'', which will give you then nth value of arr. 
+			However, you could also create a pointer to arr (``int *arr\_ptr = \&arr''). 
+			This pointer it itself is an integer, you can do math on it to calculate different addresses. 
+			However, when used, it can either be used as a reference or a value. 
+			Calling ``arr\_ptr++'' then ``printf("\%d", *arr\_ptr)'' will print the second value stored in arr. 
+
+			Basically, what is being said here is that while an array index (``arr[n]'') is a temporary memory reference, a pointer such as ``arr\_ptr'' is its permanent version. 
+			An example of using a pointer can be found in code example \ref{code:CPTR}. 
+			This example will use a pointer to create the Fibonacci sequence in memory, returning the pointer to the start of the sequence. 
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CPointers.c}
+				\caption{Example of a C Pointers}
+				\label{code:CPTR}
+			\end{code}
+
+			While pointers are exceptionally useful, there should not usually be used over arrays. 
+			Pointers are great for things that arrays aren't, or for when you need raw access to a block of memory. 
+			However, you are more likely to get pointers wrong, and the mistakes that you make will be far less obvious. 
+			The difference between a dereferenced pointer and a reference can be far too subtle to grasp when working with what should be an array. 
+
+			Thus, there are four things that a pointer would be the best choice for:
+			\begin{enumerate}
+				\item Ask the OS for a chunk of memory to work with. 
+				\item Passing large blocks of memory to functions with a pointer rather than passing the whole thing. 
+				\item Taking the address of a function to use it in a call later. 
+				\item Complex scanning of chunks of memory such as parsing a file. 
+			\end{enumerate}
+			You may hear that pointers are faster than arrays. 
+			This is a layover from older compilers. 
+			In the modern world, this is not true, they are largely the same. 
+			However, you may find another reason to use a pointer over an array. 
+			If you think you are right, give it a go, the worst think you'll loose is time. 
+
+			Found in table \ref{tab:PointerLexicon} is an explanation of the different terms of using pointers. 
+			
+			\begin{table}[htb]
+				\centering
+				\begin{adjustbox}{max width=1\textwidth}
+				\begin{tabular}{| l | p{8cm} |}
+					\hline
+					\textbf{Code term} & \textbf{Explanation} \\ \hline
+					type *ptr & Create a pointer of name ptr. \\ \hline
+					*ptr & The value of whatever ptr is pointing at. \\ \hline
+					*(ptr + i) & The value of whatever ptr is pointed at plus i. \\ \hline
+					\&thing & The address of thing. \\ \hline
+					type *ptr = \&thing & Create a pointer of type named ptr pointing at the address of thing. \\ \hline
+					ptr++ & Increment where ptr points. \\ \hline
+				\end{tabular}
+				\end{adjustbox}
+				\caption{Pointer Lexicon}
+				\label{tab:PointerLexicon}
+			\end{table}
+		\subsection{Structs}
+			Unlike Python or other Object Oriented languages, C does not have a concept of a class or object. 
+			However, it still does have a means of grouping variables together. 
+			These are known as structs, which are memory structures created within raw memory.
+
+			Structs are defined as a group of variables. 
+			These variables can be of any type, including pointers and arrays. 
+			However, when you initialize these variables, you use a new syntax of ``<Struct Name>-><Variable Name> = <value>''. 
+			This ``->'' syntax is used for referring to structs through a pointer to them. 
+			If you are dealing with the struct variable itself, replace it with ``.''. 
+			An example of this syntax can be found in code example \ref{code:CStructs}	
+			To make life easier, you can use the ``typedef'' command to make a new variable type out of the struct. 
+			Once this is done, you can call the struct as the type that you defined, rather than as ``struct <name>''. 
+
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CStructs.c}
+				\caption{Example of a C Struct}
+				\label{code:CStructs}
+			\end{code}
+		\subsection{Heap and Stack Memory}
+			You will remember from the \hyperref[ch:ComputerOperations]{Computer Operations Chapter} that memory is divided into the heap and stack memory. 
+			In C, these different memory types are allocated and utilized quite differently. 
+			The stack is the normal variable definitions that you have been using for most of this section. 
+			However, in the struct section, you saw the command ``malloc''. 
+			This command will allocate memory on the heap of the size given for it and return a pointer to the start of the allocated memory. 
+			
+			Heap memory is slightly more complex than general stack memory. 
+			C will sort your stack memory for you, removing it as the functions are called and returned. 
+			However, memory on the heap will remain forever, even if you lose your pointer to it. 
+			That is, unless you explicitly free it using the ``free'' command. 
+			This is the reason that C, in the hands of poor programmers will have significant memory leak issues. 
+			This is also the reason for the existence of programs such as Valgrind, which will find these leaks for you rather than requiring you to find them manually. 
+			
+			However, you cannot cheat an place all memory on the stack. 
+			This is due to the relatively small size of the stack and its growth patterns. 
+			Placing too much, lie a large array or struct will cause the stack to overflow. 
+			Furthermore, if you have a pointer to a variable on the stack and return the pointer at the end of the function that created the variable, 
+			you will have a segmentation fault due tot he fact that the memory location the pointer is pointing at will not be allocated to the programs stack. 
+			It will have been ``poped'' off and destroyed. 
+
+		\subsection{Pointers to Functions}
+			As with all other things in C, functions exist at a memory location which can be pointed to. 
+			This can be used to pass a function to another function, such as when you need to choose a comparator for a sorting function. 
+			The code used to do this can be quite difficult to understand and remember. 
+			Due to this, I recommend creating a typedef which will be used to use the pointer as an argument to another function. 
+			An example of this being done can be found in code example \ref{code:CFunctionPTR}	
+			\begin{code}
+				\lstinputlisting[language={[ANSI]C}]{./CFunctionPTR.c}
+				\caption{Example of a C Function Pointers}
+				\label{code:CFunctionPTR}
+			\end{code}
+	\section{Introduction to Code Obfuscation}
+	\section{Debugging with GDB and Peda}
+		The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
+		It can be used either with or without debugging symbols, 
+		however having these makes debugging and reverse engineering easier as you have the working code. 
+		While the common purpose of GDB is debugging C and C++ programs, it can be used on any language, as well as for reverse engineering and exploit development. 
+		The following will be an introduction to the tool, as well as a cheat sheet on the commands that can be used for it. 
+			
+		The first thing to know about GDB, is how to compile your program to use GDB fully. 
+		This means that you will have to make your compiler write out the source code symbols when compiling. 
+		This can be done in GCC with the ``-g'' flag, which will create a symbols file that gdb will automatically load. 
+
+		Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB. 
+		The first step is to run GDB on the program like so:
+		\begin{lstlisting}[style=CLI]
+			$ gdb <program>
+		\end{lstlisting}
+		This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program. 
+
+		\paragraph{List}
+		At this point, you may wish to see the code for the program. 
+		If you have enabled debugging symbols, this can be done using the command ``list''. 
+		Furthermore, you can get a specific output by telling GBB that you want a listing of a particular function or line number. 
+		This will output the 10 lines after the point you specified. 
+		However, subsequent runs of ``list'' will output the next 10 lines. 
+
+		\paragraph{Break}
+		Now that you can see the code, you will likely want to setup breakpoints within it. 
+		This can be done using the ``break'' command along with a line number or function name. 
+		This will insert a breakpoint at which the program will stop executing and allow you to investigate. 
+			
+		\paragraph{Run}
+		Now that you have set your breakpoints, you will likely want to run the program up to the first break point. 
+		This can be done with the ``run'' command.
+		This will run the program with any arguments that you give after it, 
+		as if you were runnig the program directly from the command line. 
+		As outlined earlier, this will also stop execution and allow you to investigate at any break point. 
+
+		\paragraph{Show}
+		Now that you have the program running and it has stopped at a break point, 
+		you are able to investigate the current state of the program. 
+		This is done using the ``show'' command, which with the correct arguments will give you an outline of memory and variables. 
+		The following is a list of common ``show'' arguments and their uses:
+		\begin{description}
+			\item[args] Show the current values of the arguments that were sent to the function that is currently running. 
+			\item[backtrace] Show the backtrace. This can be made more specific by giving a specific variable. 
+			\item[breakpoint] Show the current breakpoints. 
+		\end{description}
+
+		\paragraph{Info}
+		Similar to show is the ``info'' command. 
+		This command will give you information about a given area of the program or computer. 
+		This is generally more helpful in debugging, as it is more focused on execution rather than environment. 
+		The following is a list of common ``info'' arguments and their uses:
+		\begin{description}
+			\item[All-registers] List all registers and their contents. 
+			\item[Args] Argument variables of the current stack frame. 
+			\item[Breakpoints] Much like ``show breakpoints''. Gives the status of current breakpoints. 
+			\item[Float] Show the status of the floating point unit. 
+			\item[Frame] Data about the current stack frame. 
+			\item[Functions] The names of all functions in the current program. 
+			\item[Locals] The names and values of all current stack local variables. 
+			\item[Program] Execution status of the program
+			\item[Registers] Information about the registers at the current time. 
+			\item[Scope] List the variables and their values within the current scope. 
+			\item[Stack] Backtrace the stack.
+			\item[Threads] Display the currently known threads within the program. 
+			\item[Variables] Show the names and values of all global or static variables. 
+		\end{description}
+
+		\paragraph{Backtrace}
+		This will show you an output of what has happened in the program up to the current time. 
+		This is mainly useful for viewing the reasons a program crashed. 
+
+		\paragraph{Step}
+		This will allow us to step through the program, instruction or line by line. 
+		Each ``step''command will execute the next line the stop, allowing you to inspect the program. 
+		Similarly, the ``next'' command will work the same, but will not enter functions. 
+		Furthermore, the ``until'' command will continue to step until it reaches a given line number. 
+
+		\paragraph{delete}
+		This will delete all breakpoints in the current program. 
+		Rather than delete all, 
+		you can use the clear command with the same argument you used to set the breakpoint to remove that specific point. 
+
+		\paragraph{Continue}
+		This will continue execution as normal until the next breakpoint. 
+		This is the most common way of stepping through a program to be debugged. 
+			
+		\paragraph{Kill}
+		This will stop the current program. 
+		Furthermore, the ``quit'' command will allow you to exit GDB. 
+
+%TODO: Explain reverse engineering with GDB 
+%TODO: Explain PEDA. 
+	\section{Programming Challenges}

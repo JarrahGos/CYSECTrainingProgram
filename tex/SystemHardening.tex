@@ -1,0 +1,622 @@
+\chapter{System Hardening}
+	\label{ch:SystemHardening}
+	Securing one's own operating system and the software within can be a daunting task. 
+	One must way up the needs of security against the usability of the system, or face months of instability or system management on a broken system. 
+	Thus, for each recommendation below, decide how the computer needs to work for you and implement it to that level.\\ 
+	If the newly secured system does not work for you, simply roll it back until it does. 
+	When implementing this, remember that the biggest threat will always be the user of the system. 
+	Thus, security must be implemented in layers, each of which is able to stop attacks which may have breached the outer layers. However, no matter how secure the system is made, if it is on, it is vulnerable. 
+	Each section within this will be referenced in the footnotes. See those references for information on the implementation of these notions. 
+	\section{Linux Hardening}
+		Due to the varied nature of Linux distributions, it is difficult to provide an exact guide to securing an arbitrary Linux install. 
+		However, this section will discuss the protections which will work on the general system.\footnote{\url{http://www.asd.gov.au/publications/protect/top\_4\_mitigations\_linux.htm}} 
+		For distribution specific guides, look to your distribution's guides\cite{FedoraSecGuide}or wiki.\footnote{\url{https://wiki.archlinux.org/index.php/Security}}
+		\subsection{Passwords} 
+			Your password are the key to having a secure system. 
+			Especially once disk encryption and password managers are in use, they can be the downfall of one's entire computing presence. 
+			Thus, passwords should be created and managed in a secure way:
+			\begin{itemize}
+				\item Not containing personal information.
+				\item Not dictionary words or common substitutions (such as 1337Speak)
+				\item Not having all numbers or symbols at the start or end. 
+				\item Not a common short phrase. 
+				\item Using an uncommon or nonsensical phrase such as ``Correct horse battery staple''\footnote{\url{https://xkcd.com/936/}}
+				\item using multiple numbers, letters and symbols. 
+				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
+				\item Longer than 12 characters. 
+			\end{itemize}
+		\subsection{Password Hashing}
+			Linux stores hashed passwords in ``/etc/shadow''. 
+			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
+			\begin{quote}
+				password required pam\_unix.so $\textbf{sha512}$ shadow $\textbf{rounds=65536}$
+			\end{quote}
+		\subsection{Disk Encryption}
+			is the process of automatically cryptographically protecting a part or all of a storage device.
+			\footnote{\url{https://wiki.archlinux.org/index.php/Disk\_encryption}}
+			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
+			However, the system will still be vulnerable to remote attacks, cold boot attacks and coercion (though this can be mitigated through plausible deniability)
+			The following is a description of the types of encryption and their effects on security"
+			\begin{description}
+				\item[Data Encryption] Encrypting nothing more than the data. 
+					This is useful for privacy concerns and is the easiest to implement. 
+					However, date encryption will not protect from OS tampering such as installing key loggers as well as cache attacks, taking advantage of data cached in locations such as ``/tmp''.
+				\item[System Encryption] Encrypting the whole OS and all user data. 
+					This prevents the two downfalls of data encryption by ensuring that any tampering will cause a garbled output on the OS disk and that call caches are encrypted. 
+					However, this requires that the boot system be aware of the encryption and that a password is entered before boot. 
+			\end{description}
+			In order to achieve this, there are two types of encryption which may be utilized:
+			\begin{description}
+				\item[Stacked Filesystem Encryption] A designated folder within the filesystem which encrypts files before they are written to the disk. 
+					This means that the files will be visible from the encrypted filesystem, but the names and data will be encrypted until unlocked. 
+					This is a simple means of Data Encryption. 
+				\item[Block Device Encryption] Operates below the filesystem, encrypting the filesystem and the files contained within it. 
+					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
+			\end{description}
+		\subsection{Mount options}
+			When setting up a secure environment, one should take care to give the least permission required to conduct a task. 
+			Thus, when mounting file systems, it is best to limit what can be done with the data on the system.
+			There are three restrictions which can be placed on a mounted filesystem:
+			\begin{description}
+				\item[nodev] Do not interpret character or block special devices on the filesystem
+				\item[nosuid] Do not allow set-user-identifier or set-group-identifier bits to take effect
+				\item[noexec] Do not allow execution of binaries or other files found in the filesystem. 
+			\end{description}
+			A basic guide for what common filesystems can be mounted with which options can be found in table \ref{tab:mountOptions}, use these within the file ``/etc/fstab''.
+			\begin{table}[htb]
+				\centering
+				\begin{adjustbox}{max width=1\textwidth}
+				\begin{tabular}{| l | l | l | l |}
+					\hline
+					$\textbf{Partition}$ & $\textbf{nodev}$ & $\textbf{nosuid}$ & $\textbf{noexec}$ \\ \hline
+					/var  &		yes &	yes &	yes \\ \hline
+					/home &		yes &	yes &	if you do not code or use wine \\ \hline
+					/dev/shm &	yes &	yes &	yes \\ \hline
+					/tmp &		yes &	yes &	breaks compiling packages \\ \hline
+					/boot &		yes &	yes &	yes \\ \hline
+				\end{tabular}
+			\end{adjustbox}
+				\caption{Common filesystem restrictions}
+				\label{tab:mountOptions}
+			\end{table}
+			\subsection{File Permissions}
+				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
+				This means that if any user is compromised, most files on the system can be stolen. 
+				Furthermore, it means that the attacker can use the systems configuration files to determine likely privilege escalation or pivot points. 
+				To solve this, important configuration files permissions should be set to 700 and the default umask should be set to 077. 
+				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
+				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
+			\subsection{Users}
+				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
+				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
+				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{\url{http://linux.die.net/man/8/pam\_tally}} system.
+				This system will ensure that if a user attempts to access the system with an incorrect password, they will be locked out, either for a given time, or until unlocked by the root user. 
+				This avoids an opportunistic malicious user attempting to guess the password. \\
+				Another means of securing users is to limit the number of processes which can be spawned by an individual user. 
+				This will limit the effect of a user account being used to run a denial of service (DoS) attack on the system. 
+				Furthermore, it will disallow actions such as fork bombs from bringing the whole system down. 
+				This can usually be achieved by adding the following lines to ``/etc/security/limits.conf''
+				\begin{quote}
+					\begin{flushleft}
+						\** soft nproc 100 \\
+						\** hard nproc 200 \\
+					\end{flushleft}
+				\end{quote}
+				
+				In addition to this, services which are particularly vulnerable
+				---such as any Internet facing services---
+				should be run from an additional restricted user account. 
+				This will ensure that if these services are targeted, it is more difficult to escalate to a privilege or root account. 
+				Furthermore, by implementing this alongside the other recommendations specified here, 
+				it becomes difficult for an attacker to take data, due to the fact that they cannot see most of the filesystem.
+
+			\subsection{Restricting use of root}
+				\begin{itemize}
+					\item The sudo command should be used rather than su due to the following reasons:
+						\begin{itemize}
+							\item It logs commands and the users which invoked them
+							\item Root password is held secure. 
+							\item Prevents accidental execution. 
+							\item Individual commands may be enabled for users or group through the sudoers file. 
+						\end{itemize}
+					\item sudoedit or sudo -e should be used rather than running an editor as root. 
+						To do this, add ``SUDO\_EDITOR=<editor>'' to your environmental variables.
+					\item Restrict root login both locally and via SSH. 
+				\end{itemize}
+			\subsection{Mandatory Access Control}
+				MAC, as opposed to the Discretionary Access Control (DAC) used on most Linux systems is a rule set which designates which actions can be taken on which files and directories. 
+				This rule set is created by the root user and unlike DAC cannot be altered by the users of the system. 
+				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
+				Furthermore, on the desktop, due to the wide variety of tasks which are completed, a poorly setup MAC will either be far too permissive or far too restrictive. 
+				%TODO: Think about writing out the types here. Think about linking the implementations. 
+				MAC can also be utilized as a means of creating application white listing.
+				While difficult to create a strong policy, it is one of the best methods for running application white listing on Linux, 
+				due to the fact that there is no pre-built white listing tool. 
+			\subsection{Kernel Hardening}
+				The following are the common steps used to harden the Linux Kernel. 
+				\begin{description}
+					\item[Restricting access to kernel logs]
+						These logs contain information which may be useful to an attacker, such as the software currently running and sensitive memory addresses. 
+						To restrict access to these logs, add the line ``kernel.kptr\_restrict = 1'' to the file ``/etc/sysctl.d/50-kptr-restrict.conf''
+					\item[Hidepid] 
+						The kernel will hide the pid of processes owned by other users if this is enabled. This is done by mounting the ``/proc'' filesystem with the option ``hidepid=1''. 
+					\item[Grsecurity\footnote{\url{https://en.wikibooks.org/wiki/Grsecurity}}]
+						is a kernel which has been patched with multiple security enhancements. 
+						Both the kernel and userspace are hardened against common memory corruption vulnerabilities along with the addition of PaX integration and a role based MAC system. This is the easiest way to secure the kernel itself against exploitation. 
+					\item[PaX] PaX is a Kernel patch which implements a number of security countermeasures. 
+						It will lock down which parts of memory contain code and which contain data, ensuring that the latter cannot be executed by the CPU. 
+						Furthermore, it will randomize the memory layout of the computer, making it far more difficult to determine what part of memory is being operated on and thus far harder to exploit a program successfully. 
+				\end{description}
+				\subsection{Sandboxing with firejail}
+					Sandboxing is an important part of running a secure system. 
+					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
+					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
+					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
+					For greater security, the following command will block the program from writing to disk, effectively blocking all permanent changes
+					\begin{lstlisting}[style=CLI]
+						$ firejail --seccomp --private <program>
+					\end{lstlisting}
+					While this does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
+					However, it also means that nothing can be saved from within the program, making it far harder to use. 
+				\subsection{Firewall} 
+					A firewall is a system designed to prevent unauthorized access to a system by only allowing a specific set of packets to be transmitted through to the network.\footnote{\url{https://wiki.archlinux.org/index.php/Firewalls}}
+					While they can be in either hardware or software, this section will focus on the software implementation, as this is the implementation which can be setup on all Linux systems. 
+
+					On Linux, the most common tool used for creating a firewall is ``iptables''.\footnote{\url{linux.die.net/man/8/iptables}}
+					This tool is used to inspect, forward, redirect or drop IPv4 packets, based on a set of rules written by its user. 
+					It is built into the Linux kernel, along with a set of basic rules, which will not be sufficient for any level of security. 
+					These rules consist of a predate---the potential matches for the rule---and an action which will be enacted when the predicate is true. 
+					These rules are then read in a chain, which allows iptables to select the correct action based on the rules it was given.\footnote{\url{https://www.frozentux.net/iptables-tutorial/images/tables\_traverse.jpg}}
+					Within this, there are a number of tables.
+					These tables are split into a number of chains, which when linked together will give the order in which the rules are looked at. 
+					For the purpose of creating a firewall, only the filter table will be referred to within this section. 
+					
+					\subsubsection{Simple Firewall}
+						This section is a basic guide on the creation of a simple firewall.\footnote{\url{https://wiki.archlinux.org/index.php/Simple\_stateful\_firewall}}
+						It is not a full security implementation, but rather an exercise in creating the iptables rules which are required. 
+						Note that this, when done on a remote machine will lock you out. 
+						Please either conduct these steps locally or have another means of getting into the system. 
+						Also before starting, please ensure that there are no iptables rules on your system. 
+						These can be removed by running the command:
+						\begin{lstlisting}[style=CLI]
+							# iptables-restore < /etc/iptables/empty.rules
+						\end{lstlisting}
+
+						The first step in this is to set up the necessary chains with the commands:
+						\begin{lstlisting}[style=CLI]
+							# iptables -N TCP 
+							# iptables -N UDP  
+						\end{lstlisting}
+						Then we should set the FORWARD chain which is usually used in routers and NAT to DROP with:
+						\begin{lstlisting}[style=CLI]
+							# iptables -P FORWARD DROP
+						\end{lstlisting}
+						For the next part, we will be telling the firewall to allow all outgoing connections. 
+						This is generally a bad idea, but setting up the correct firewall settings is beyond the scope of this. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -P OUTPUT ACCEPT
+						\end{lstlisting}
+						We will now start setting up the incoming rules. 
+						The default rules for this is do drop the packets, meaning that they will not be accepted and no response will be sent. 
+						However, we will then add other rules on top of this to ensure that communication is not lost. 
+						The following rule will allow ICMP messages which have are related to an existing connection to be passed through the firewall. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+						\end{lstlisting}
+						The second rule will allow all connections on the loopback address, which is designed to allow software on one machine to communicate. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -i lo -j ACCEPT
+						\end{lstlisting}
+						This next rule will drop all packets which are not valid. 
+						This means that something about the packets does not make sense, such as a corrupted header or an incorrect checksum. 
+						These packets will be dropped with no response as they are often used in network scanning. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+						\end{lstlisting}
+
+						To allow packets coming through this chain to be attached to our new TCP and UDP chains, use the following commands:
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP 
+							# iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP 
+						\end{lstlisting}
+						These next commands will drop all failed UDP and TCP connections. 
+						This is done for security, as a common network mapping technique uses the fact that by protocol, failed TCP packets should reply with an RST packet and failed UDP should reply with an ICMP port unreachable. 
+						The following commands will stop both of these behaviors. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -p udp -j DROP
+							# iptables -A INPUT -p tcp -j DROP
+						\end{lstlisting}
+						Finally, we will drop all other protocols in case anything else was attempted. 
+						\begin{lstlisting}[style=CLI]
+							# iptables -A INPUT -j DROP
+						\end{lstlisting}
+						You may also want to open up a number of application specific ports such as port 22 for SSH. 
+						This can be done using the following command:
+						\begin{lstlisting}[style=CLI]
+							# iptables -A <Protocol> -p <Protocol> --dport <port> -j ACCEPT
+						\end{lstlisting}
+						Finally, this whole setup can be saved using the command ``iptables-save''. 
+
+		
+				\subsection{Physical security}
+					Given enough time and resources, physical access is root access. 
+					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
+					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgeable or determined. 
+					\begin{itemize}
+						\item Implement a BIOS/UEFI password. 
+							Though these are not completely secure, they ensure that the opportunistic attacker will be unable to alter the boot devices of the computer, forcing them to use your secured OS. 
+							However, these can be worked around on most systems by wiping the CMOS. 
+						\item Boot loader security should be implemented by either disabling editing of boot devices or adding a password to the boot loader. 
+							This will stop the ``init=/bin/sh'' attack amongst others. 
+						\item Deny root login from the console. 
+							This would mean that the attacker would need both a user name and password to access the system. 
+						\item Set an automatic logout or use the lock features of the DE/WM that you use. 
+					\end{itemize}
+	\section{OS X Hardening}
+		Hardening an OS X install\footnote{\url{https://github.com/drduh/OS-X-Security-and-Privacy-Guide}}, while similar in concept to Linux, is different due to the configuration system used by OS X. 
+		Since it was derived from NeXTSTEP, it's configuration is written into binary plist files, which must be edited. 
+		This guide will use the provided ``defaults'' program to edit specific parts of these files. 
+		However, if you would like to edit them manually or learn more about the structure of these files, I recommend a text editor such as ``TextWrangler'' which can convert these files to and from binary. 
+
+		\subsection{Full Disk Encryption}
+			The built in FileVault utility makes full disk encryption on OS X easy. 
+			This means that unless you need to access your hard drive from another computer for a good reason, FileVault should be enabled. 
+			Furthermore, with more recent systems, FileVault will encrypt in hardware, ensuring that minimal performance losses are noticed. 
+			As the initial encryption is based on the OS X PRNG, it is recommended that you use your system for a little while before enabling FileVault. 
+
+			To enable FileVault, open the ``Security and Privacy'' settings and select enable. 
+			This will then ask you to set a password, which will be used to encrypt your files.\footnote{\url{https://eprint.iacr.org/2012/374.pdf}} 
+			Furthermore, it will generate a recovery key, which you should store in a secure place, as it is your only means of recovering data if you lose your password. 
+			FileVault will offer to store this key with Apple, if you do this, you are removing any security you achieve by encrypting in the first place, so decline this offer. 
+			At this point, you should alter some of the default key storage behaviors of OS X such as erasing the key from memory on sleep an enforcing hibernation. 
+			This will mean that you do not have to manually turn off the computer for the encryption to be secure---the system need only be hibernating. 
+			To do this, use the following commands:
+			\begin{lstlisting}[style=CLI]
+				# pmset -a destroyfvkeyonstandby 1
+				# pmset -a hibernatemode 25
+			\end{lstlisting}
+		\subsection{Firmware password}
+			Unlike windows and Linux systems where the UEFI or BIOS are transparent to the user, Apple Mac computers attempt to hide this utility. 
+			While it is not easy to access to the unaware, this is no means of security. 
+			Thus, it is recommended that a password be placed on this utility. 
+			This can be done through the following steps:
+			\begin{enumerate}
+				\item Holding the keys \keys{\cmd + R} on boot to enter OS X Recovery mode.
+				\item Choose ``Firmware Password Utility''
+				\item Choose `` Turn On Firmware Password''
+				\item Enter your password and quit the utility. 
+				\item Hold the \Alt{} key during the next boot.
+			\end{enumerate}
+		\subsection{Firewall}
+			The default OS X firewall is a good start for a blocking firewall. 
+			However, it will not allow you to monitor connections, nor block outgoing connections.
+			To enable it, use the command:
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf globalstate -bool true
+			\end{lstlisting}
+			To enable logging of blocked connections:
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
+			\end{lstlisting}
+			To drop ICMP ping requests and TCP/UDP traffic on closed ports:
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf stealthenabled -bool true
+			\end{lstlisting}
+			See chapter \ref{ch:NetworkPenetration} for why this would be a good idea. 
+
+			Finally, to prompt you for every application which attempts to receive an incoming connection, rather than allowing signed applications to receive this by default, run:
+			\begin{lstlisting}[style=CLI]
+				# defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool false
+			\end{lstlisting}
+
+			At this point, you may wish to overcome the inability of the standard firewall for monitoring and out bound connections. 
+			This can be done through either third party firewalls or the kernel firewall, ``pfctl''. 
+			While I recommend the latter as it is built in, I recommend that you do more reading before enabling it. 
+
+			\subsection{Services}
+				OS X comes with a number of services which most people will not use. 
+				Furthermore, many of these services phone home to apple or another organization, either for monitoring or content purposes. 
+				Use the following commands to gather information\footnote{\url{http://cirrusj.github.io/Yosemite-Stop-Launch/}} about the services currently running on your system:
+				\begin{description}
+					\item[launchctl list]
+						view running user agents. 
+						These programs were started by your user and are running in the background. 
+					\item[sudo launchctl list]
+						as above, but includes running system daemons.
+					\item[launchctl list <Agent Name>]
+						examine an agent or daemon.
+					\item[defaults read <Agent.plist>]
+						examine the job called by the agent. 
+				\end{description}
+				After using these tools, use tools such as the Unix manual and a web search to determine what the services do. 
+				When reading a ``.plist'' file, look for ``Program'' or ``ProgramArguments'' to determine what the file runs, then search for the program. 
+				To disable a service, use the following command:
+				\begin{lstlisting}[style=CLI]
+					# launchctl unload -w /System/Library/LaunchDaemons/com.apple.apsd.plist
+				\end{lstlisting}
+				Noting that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
+				To check which services have been disabled, run the following command:
+				\begin{lstlisting}[style=CLI]
+					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
+				\end{lstlisting}
+			\subsection{Spotlight}
+				Spotlight is an exceptionally useful tool. 
+				It is by far the quickest way to get information and launch programs on an OS X system. 
+				However, in order to do this, is will often send data to both Apple and Microsoft. 
+				To disable this, open Spotlight Preferences and uncheck ``Bing Web Searches'' and ``Allow Spotlight Suggestions in Spotlight and Look up''. 
+				You may also need to disable this in Safari Preferences under ``Search''. 
+				This will stop Spotlight from phoning home on every search. 
+			\subsection{Homebrew}
+				Many of the user land tools installed with OS X or the xcode package are vastly out of date BSD versions. 
+				This can be resolved through the use of the Homebrew package manager. 
+				This package manager uses TLS to pull down install scripts from it's git hub repository on Github.com, meaning that it is mostly secure so long as you trust the repository. 
+				Nonetheless, it is recommended that you read through these scripts before running them, otherwise it is no different to running any arbitrary code on your system. 
+				See the \href{https://github.com/Homebrew/homebrew}{Homebrew Github repository} for more information and installation instructions. 
+				This will be used in further parts of this guide.
+			\subsection{OS X Command Line Tools}
+				The versions of many of the tools released with OS X are exceptionally out of date. 
+				For example, at the time of writing, the version of the common version control system ``git'' was vulnerable to an arbitrary code execution vulnerability. 
+				Often, Apple does not update these in a timely manner, meaning that you are left running vulnerable software for an extended amount of time. 
+				Further pressing this issue is the fact that Apple has limited the access of the root user, stopping them from overwriting or symlinking the binary to one for a newer version. 
+
+				However, this can be overcome.
+				The first step is to disable System Integrity Protection. This should not be left permanently however, as it is a good security feature in itself. 
+				In order to do this, reboot while holding \keys{\cmd + \shift + R} and open a terminal. The following command will disable SIP:
+				\begin{lstlisting}[style=CLI]
+					$ csrutil disable
+				\end{lstlisting}
+				The reverse operation will re-enable SIP when you are done. 
+
+				Now you should install ``coreutils'' from Homebrew or another trusted source and link all relevant binaries in /bin to their Homebrew coreutils equivalent. 
+				This will keep you up to date with the package that you have chosen, rather than waiting for Apple to update the system for you. 
+			\subsection{DNS}
+				DNS leaks are the most common way for a computer to leak the locations they are accessing. 
+				There are two steps to securing DNS requests, caching and encryption, both of which will be covered in this section. 
+
+				Caching can be done with the dnsmasq program, which will store the results of requests rather than forcing you to request the address on every boot. 
+				Furthermore, this program hooks into dnscrypt to encrypt your DNS traffic. 
+				To install and configure both of these programs, run the following Homebrew script and commands:
+				\begin{lstlisting}[style=CLI]
+					$ brew install dnsmasq --with-dnssec 
+					$ mkdir -p /usr/local/etc 
+					$ cp /usr/local/opt/dnsmasq/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf 
+				\end{lstlisting} %TODO: This gets hyphenated. 
+				At this point, you should configure both dnsmasq and dnssec to your preferences.\footnote{\url{https://wiki.gentoo.org/wiki/Dnsmasq}}	
+				The configuration file is well commented, read through this as it should tell you what you need to enable. 
+
+				Once configured, the following commands will properly install and launch the program. 
+				\begin{lstlisting}[style=CLI]
+					# cp -fv /usr/local/opt/dnsmasq/*.plist /Library/LaunchDaemons 
+					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist 
+					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist 
+				\end{lstlisting}
+				Then enable the local DNS server in the preferences for your network and any VPN that you are using. 
+
+				In order to encrypt this traffic, you will now need to install dnscrypt. 
+				\begin{lstlisting}[style=CLI]
+					$ brew install dnscrypt-proxy 
+					# cp -fv /usr/local/opt/dnscrypt-proxy/*.plist /Library/LaunchDaemons 
+					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist 
+				\end{lstlisting}
+				Then add the following line to ``/Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist'':
+				\begin{quote}
+					<string>\verb+--+local-address=127.0.0.1:5355</string>
+				\end{quote}
+				Below the line:
+				\begin{quote}
+					<string>/usr/local/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
+				\end{quote}
+				Then change the resolvers list string in the same file so that it doesn't break on update:
+				\begin{quote}
+					<string>\verb+--+resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+				\end{quote}
+				Finally, the program can be started with:
+				\begin{lstlisting}[style=CLI]
+					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
+				\end{lstlisting}
+
+				This should leave you with a working, cached, validated and encrypted DNS setup. 
+				Ensure that the DNS servers that you are using support this by checking with the website of the provider that you use or 
+				selecting a new one from \href{https://www.opendns.com/}{OpenDNS}.
+				
+			\subsection{Captive Portal}
+				When OS X connects to a new network it probes the network and launches a Captive Portal assistant if it cannot access the Internet. 
+				This will load up an arbitrary website provided by the network, possibly serving malware with no user intervention. 
+				This feature can be disabled with the following command:
+				\begin{lstlisting}[style=CLI]
+					# defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
+				\end{lstlisting}
+
+			\subsection{OpenSSL}
+				The OpenSSL version shipped with OS X is vastly out of date, not supporting many newer encryption technologies and causing significant security risks. 
+				Though it may cause issues building some software, it is recommended that you switch to the Homebrew package and deal with these issues as they arise by utilizing the OS X binary temporarily.
+				This version can be installed and linked using the following commands:
+				\begin{lstlisting}[style=CLI]
+					$ brew install openssl 
+					$ brew link openssl --force
+				\end{lstlisting}
+				Similar issues appear in many of the OS X command line utilities. 
+				You should search them out online. 
+	\section{Windows Hardening}
+		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
+		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
+		These software packages do things such as mitigate data execution or attempt to recognize malicious code. 
+		You would then remove all packages that are not used, reducing the surface area for attacks in the same way that you would for Linux or OS X. 
+		While these mitigations are a significant improvement from a default windows install, it is far more expensive to secure a home windows install than to secure a Mac OS X or Linux install. 
+		\subsection{Antivirus}
+			The first and easiest means of securing a Windows system is to install an antivirus software package. 
+			The most basic of these will run a signature check on every file within the filesystem, checking for known malware which has not been obfuscated. 
+			While this is a good first step, it is trivial for malicious programmers to write code which will not be picked up by these systems. 
+			Furthermore, they do not find new malware.
+			The modern method is to run a heuristic scan on these files, attempting to determine what they do. 
+			While this is still not reliable in finding malicious software, it is a significant improvement over signature only scanning. 
+			Currently, the most renowned antivirus which runs heuristic scans is malwarebytes.\footnote{\url{https://www.malwarebytes.org/}}
+
+		\subsection{Antiexploit}
+			An extension to antivirus is the antiexploit suite. 
+			This software purports to harden certain programs against attacks which are common to them. 
+			It is designed to mitigate common attack vectors such as the browser or PDF reader. 
+			This software works in much the same way as grsecurity and PAX on Linux, but targets individual programs, rather than the OS as a whole. 
+			Malwarebytes again makes a well known antiexploit software\footnote{\url{https://www.malwarebytes.org/antiexploit/}} for windows. 
+		\subsection{Data Execution Prevention}
+			As you will find in Chapter \ref{ch:BinaryExploitation}, 
+			one of the most common exploits is to alter a return address and execute code placed into the data of a program. 
+			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
+			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
+			This will enable the protection for all software installed. 
+		\subsection{Application White listing}
+			AppLocker is the main means of providing application white listing in the windows environment. 
+			However, it is only available on Ultimate or Enterprise editions of windows. 
+			If you have either of these, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/dd759113.aspx}} on configuring it. 
+			It is recommended that the configuration allow only those listed applications,
+			ensuring that new or maliciously installed applications are not allowed to run. 
+		\subsection{Disk Encryption}
+			As above, Microsoft's bitlocker is available on the Ultimate and Enterprise versions of it's windows OS.
+			In order to use this, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/cc732774.aspx}}. 
+			If you do not have the required versions of windows, software such as VeraCrypt\footnote{\url{https://veracrypt.codeplex.com/}} will allow you to run full disk encryption. 
+			This software was forked from the discontinued TrueCrypt project. 
+			TrueCrypt passed its most recent audit, but a number of issues were raised.
+			VeraCrypt purports to have resolved these issues, but still uses the same code base. 
+			If you do not wish to utilize VeraCrypt or upgrade to a higher version of windows, the alternative is to employ file or partition encryption. 
+			This will encrypt only the data you have stored within the encrypted volume, rather than the OS itself. 
+			While still secure for your data, this will leave the system open to offline manipulation,
+			making it possible to install malware to read the data when it is next unlocked. 
+		\subsection{Removal of Superfluous Software}
+			The Windows OS comes with a number of pre-installed items that have no use to the average user and will do little more than provide another means of entry to an attacker. 
+			These take two forms, services that run in the background and perform a task, and superfluous programs that you don't use. 
+
+			In the former case, you will have to manually disable them. 
+			Open ``services.msc'' for a list of these services then open PowerShell and run the command ``sc delete <service>. 
+			This will remove the service from the system, ensuring that it cannot be automatically started. 
+			However, doing this to the wrong service may make your computer unusable. 
+			Know what it is that you are deleting before you remove it. 
+
+			In the latter case, you will want to go through a number of lists. 
+			The first of these is the Apps and Features list, which will give you the option to uninstall many of the programs that came with windows. 
+			The second, which will give you more powerful options, is the ``Turn Windows features on or off'' option under programs and features. 
+			This option will not allow you to uninstall the feature, but it will completely disable it. 
+			For these options, turn anything that you do not use off. 
+			However, as above, be sure that you do not use it. 
+			Otherwise parts of your system may end up broken. 
+	\section{Browser Hardening}
+		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
+		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
+		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
+		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
+		\subsection{$\mu{}$Block Origin}
+			$\mu$Block Origin is a tool which will block elements on every page which is loaded. 
+			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
+			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
+			While this tool will not give you security against more complex attacks, it will filter out the majority of opportunistic attacks through elements such as advertisements and frames to known bad websites. 
+			Once installed, run through the following check list: 
+			\begin{itemize}
+				\item select all three privacy options.
+				\item select the filters which are useful to you. 
+					Most of the filters down to regions are useful. However, many overlap. 
+			\end{itemize}
+		\subsection{Disconnect}
+			Disconnect is designed to make the Internet faster and more private by blocking tracking found on most websites. 
+			There is no setup for this plugin. Simply install it and allow it to do its thing. 
+			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
+		\subsection{Flash Control}
+			Flash Control blocks both flash and HTML 5 elements which could contain malicious code. 
+			The plugin is mainly useful for the flash blocking behavior, as flash is one of the most broken and commonly vulnerable pieces of web technology. 
+			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
+			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
+			You may also wish to add any sites that you know are good to the whitelist. 
+			However, I prefer to simply allow Flash Control to block all flash elements. 
+		\subsection{NoScript}
+			NoScript is one of two script blocking plugins I recommend. 
+			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
+			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
+			However, it also means that the majority of websites will be broken until they are allowed to run scripts. 
+			I recommend running NoScript due to it's other features, such as:
+			\begin{itemize}
+				\item embedded element blocking (Java, Flash, Silverlight) 
+				\item XSS blocking
+				\item Application Boundaries Enforcer. 
+				\item Clear Click. 
+			\end{itemize}
+			These are features which should be turned on in the settings of NoScript. 
+		\subsection{Privacy Badger}
+			Privacy Badger is another set and forget advertisement and tracking blocker. 
+			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
+			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
+		\subsection{$\mu{}$Matrix}
+			$\mu$Matrix is the second script blocking tool I recommend. 
+			$\mu{}$Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
+			The following are the settings which I use, these will ensure that security is held at a high level:
+			\begin{itemize}
+				\item Delete blocked cookies
+				\item Delete local storage content set by blocked hostnames. 
+				\item Clear browser cache every 60 minutes. 
+				\item Spoof HTTP referrer. 
+				\item Strict HTTPS.
+				\item Block all hyperlink Auditing. 
+				\item Spoof User-Agent. 
+				\item All host files. 
+			\end{itemize}
+			Once this is setup, you will need to begin unblocking elements of websites by clicking on the $\mu{}$Matrix icon and selecting the top of the element to be unblocked. 
+			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
+		\subsection{Sandboxing}
+			Sandboxing is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
+			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
+			Follow the steps outlined in the above chapter for your operating system to properly sandbox your browser. 
+		\subsection{Browser Settings}
+			The following chapter will be focused on Firefox and it's derivatives. 
+			However, most of the settings will work for other browsers. 
+			\begin{itemize}
+				\item Settings under privacy:
+					\begin{itemize}
+						\item Request that sites not track you. 
+						\item Use Tracking Protection in Private Windows. 
+						\item Firefox will: Use custom settings for history. 
+						\item Always use private browsing mode. (This will break all history and cached files) 
+						\item Accept third-party cookies (Either from visited or never)
+					\end{itemize}
+				\item Settings under security:
+					\begin{itemize}
+						\item warn me when sites try to install add-ons
+						\item Block reported attack sites
+						\item Block reported web forgeries. 
+					\end{itemize}
+				\item Disable all sync. 
+				\item Settings under Advanced:
+					\begin{itemize}
+						\item Data choices: Disable all.
+						\item Update: Either Automatically or manual install. 
+					\end{itemize}
+			\end{itemize}
+			%TODO: Add about:config chapter. 
+		\subsection{Search}
+			Google is one of the worst violators of user's privacy on the Internet. Second only to Facebook. 
+			However, there are other options for search. \par 
+			If you would like to retain the results that Google gives, but remove the tracking, Start page is your option. 
+			Start page will act as a proxy between yourself and Google, allowing you to use the search features of Google as you normally would, but without the tracking. 
+			This is a significant improvement to the current tracking which follows you across the Internet. \par 
+			Another option is DuckDuckGo which was built from the ground up to ensure that the privacy of it's users is maintained. 
+			This search engine has no contact with Google, but it also comes with a set of new features which can become useful once learned. 
+			The issue with this search engine is that on occasion, the results will not be to the same standard. 
+			Occasionally, someone will tell you to Google something, stating that the result is on the first page, but it will not be a result on DuckDuckGo. 
+		\subsection{Multiple Browsers}
+			When setting up browsers for web access, one must decide what needs a secure connection and what can be let connect with the other pages used. 
+			This is due to the fact that no matter how good internal sandboxing gets, an attacker could find a way to pivot from one tab to another. 
+			This becomes far more difficult when attempting to pivot from one browser to another as the original browser will not know that the second is running. 
+			Thus when logging into sites that you deem require security, open a completely different browser and use that to log in. 
+		\subsection{Password Management}
+			For a long time, this was the domain of the web browser. 
+			This allowed the user to forget all of their passwords, having the browser autofil them when the site loaded.
+			However, the password managers on modern browsers were not built for security. 
+			Thus, the stand alone password manager was created. 
+			These allow the user to create a database of passwords and their sites, whilst encrypting the data. 
+			When looking for a password manager, look for the following features:
+			\begin{itemize}
+				\item Open source (the code can be easily audited)
+				\item Encrypted Storage. 
+				\item End to end encryption if passwords transmitted.
+				\item Password generation. 
+				\item Trusted by the community. 
+			\end{itemize}
+			Once the password manager is set up, use it to generate strong passwords for every website you access. 
+			This allows you to use a different password for every website, employing characters which one would not be able to remember. 
+
