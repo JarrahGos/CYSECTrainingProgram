@@ -493,6 +493,60 @@
 		Similarly, some messages to and from government agents during this time were encrypted using one-time pads. 
 		However, it is unlikely to be used in anything but the most secure, low bandwidth communication channels. 
 		Thus, the absolute security of the one-time pad becomes a thing of dreams again. 
+	\section{Digital Signatures}
+		Signatures on documents have been used in some form since ancient times. 
+		They were used to ensure that the person you expect wrote or agrees with the document. 
+		Furthermore, they were expected to be unforgeable, unmovable and irrefutable. 
+		However, in practice, none of these things have been found to be true. 
+
+		This is further exacerbated by computing. 
+		An image of a signature inserted into a document is trivial to lift from that document and place anywhere else. 
+		Furthermore, it is generally easy to edit a document after it has been signed. 
+		Thus, a means of cryptographically signing the document must be created if authenticity and irrefutability are to be retained. 
+
+		\subsection{Symmetric Signing with an Arbitrator}
+			One way to authentically sign a document to give to another person or computer is to use an arbitrator. 
+			In the physical world, this is similar to using a witness. 
+			However, unlike in the real world, this arbitrator must be permanently trusted with the document. 
+
+			Before starting, Alice and Bob need to be given permanent secret keys by Trent (The arbitrator). 
+			These keys will be referred to as $K_A$ and $K_B$ respectively. 
+			The process for signing is as follows:
+			\begin{enumerate}
+				\item Alice encrypts mer message to Bob with $K_A$ and sends it to Trent. 
+				\item Trent decrypts the message with $K_A$. 
+				\item Trent takes the decrypted message, adds a statement that he has recieved this message from Alice, encrypts the new message with $K_B$.
+				\item Trent sends the encrypted message to Bob. 
+				\item Bob decrypts the message with $K_B$. He now reads the message and the certification that Alice was the sender.
+			\end{enumerate}
+
+			This system works. 
+			It removes the issues described above with physical signatures, while working on a computer network. 
+			However, it is time consuming for the arbitrator, and requires that each user have a key that is permanently stored and reused. 
+			Furthermore, creating a trusted middleman in all communications creates a single point of failure, both in security and in function. 
+
+		\subsection{Public Key Signatures}
+			To solve these problems, public key signatures were created. 
+			These work using an algorithm such as RSA in the reverse manner to it's creation:
+			\begin{enumerate}
+				\item Alice encrypts the document with her \emph{private key}.
+				\item Alice sends the document to Bob. 
+				\item Bob decrypts the document with Alice's \emph{public key}. 
+					This verifies that the document was sent by Alice. 
+			\end{enumerate}
+
+			This protocol removes a number of the previous issues. 
+			While Trent is still necessary to verify that the correct public key for Alice is being used, he is not needed for communication or dispute resolution. 
+			This reduces stress on the network, and removes most of the large single point of failure from the previous model. 
+
+			There is however, a significant issue here. 
+			Bob can choose to replay the message sent to him to anyone else on the network. 
+			This isn't a problem if the message is a contract. 
+			However, if the message is a digital cheque or other means of payment, Bob can now replay this message, stealing money from Alice. 
+			Due to this, a public key signature will often contain a timestamp of the signing which is appended to the message. 
+			An institution using the signed information would take note of the timestamp and check whether the same stamp had been used previously. 
+			Thus, these messages can only be used once. 
+			
 	\section{Merkle-Hallman Knapsack Cryptosystem}
 	\section{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
