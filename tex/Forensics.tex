@@ -57,6 +57,18 @@
 
 
 	\section{Steganography}
+		Steganography serves to hide messages in another, more inocuous message, such that the hidden messages' existance is concealed. 
+		Generally, this is done by first writing a plain message which can be publicly read (such as a letter or an image), 
+		then adding small details to this for the intended recipient. 
+		Historically, this was done by using invisible inks, inflections in handwritten characters or punctures on selected characters. 
+
+		However, this has recently been done by altering the least signifficant bit in the subpixels of images. 
+		This works because almost all modern graphics standards show signifficantly more detail than the eye can determine.
+		Thus, altering the least signifficant bit for each coloured subpixel will not be evident to anyone viewing the image. 
+		This is a good way of hiding messages, as a 64-bit message can be conveyed in a 1024x1024 greyscale image. 
+
+		However, cryptographically, this is quite insecure as it requires that the algorithm used to hide the data be hidden, rather than just the key. 
+		Thus, if you use a common method of stegenography, or a freely available program to do it, the only thing keeping the message secure is the fact that it cannot be seen to be there. 
 	\section{Wireshark}
 		Wireshark is a packet sniffing and inspection suite which is used to intercept and view traffic which is being transmitted along your network.\cite{WSUG} 
 		It is used in a number of fields, such as network interception, Bluetooth and WiFi attacks and attack recognition. 
