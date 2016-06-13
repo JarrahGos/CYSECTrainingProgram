@@ -30,3 +30,5 @@
 *.snm
 *.fls
 *latexmk
+m.sh
+mon.sh
