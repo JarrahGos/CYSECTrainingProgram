@@ -1,18 +1,22 @@
 \chapter{Cryptography}
 	\label{ch:Cryptography}
-	\section{Introduction to Cryptography}
 		%Resource: http://www.thegeekstuff.com/2012/07/cryptography-basics/
 		%Resource: http://www.pgpi.org/doc/pgpintro/
 		%Resource: http://cacr.uwaterloo.ca/hac/
-		Cryptography is the only means of securely transmitting data across a network. 
+		Cryptography is the closest means of securely transmitting data across a network that is currently available. 
 		It is also the only means of ensuring that data cannot be read by any individual who has access to a storage medium. 
 		Thus, it is one of the more important concepts in computational security. 
 		Without cryptography, nothing can be confirmed and nothing is secure. 
-		However, even with it, it is easy to get wrong. 
+		However, cryptography is something that is easy to get wrong.
+		It can be hard to ensure all minor steps are followed, but missing only one will lead to significant weaknesses. 
 		This section will discuss the basic ideas of cryptography without the mathematical background or the algorithmic understanding. 
 		It will provide an overview on the requirements for a secure transmission. 
 		The technical details of this will be presented in the later sections of this chapter. 
 		These details for the specific standards that are used later in this chapter can be found in the FIPS released by NIST.\footnote{\url{http://csrc.nist.gov/groups/STM/cmvp/index.html}}
+		Furthermore, if you wish to understand the mathematical background, I suggest further reading such as Schnier's \textit{Applied Cryptography}\cite{ACrypto}.
+	\section{Introduction to Cryptography}
+		This section will outline the basic ideas that one must understand before they can delve into deeper cryptography. 
+		It will first discuss the terminology that is used in the area, followed by a basic outline of cryptographical types and early implementations. 
 		\subsection{Key Terms}
 			There are a number of terms within Cryptography that you will need to understand before you will understand the field.
 			These terms are used to explain the goal or use of a particular part of cryptography\footnote{\url{http://www.thegeekstuff.com/2012/07/cryptography-basics/}}
@@ -23,6 +27,12 @@
 				\item[Ciphertext]
 					This is the cryptographically ``secure'' form of the plaintext above. 
 					This means that the plaintext has gone through a cryptographical algorithm and is now enciphered within this text. 
+				\item[Code] A substitution of words to generate a ciphertext. 
+					This was (and still often is) used in military communications to throw off the enemy. 
+					It could replace a phrase such as ``attack at dawn'' with ``Ocelot'', leading to confusion without the code. 
+				\item[Cipher] A means of cryptography which unlike the code above is general. 
+					This means that it can be used on any word or phrase without first creating a codebook. 
+					This is the means of cryptography this chapter will discuss.
 				\item[Encryption]
 					Conversion from a readable plaintext into an unreadable ciphertext. 
 					This is mainly used to gain privacy in either storage or transmission. 
@@ -48,12 +58,42 @@
 					This is a ``one way'' algorithm that takes a message an converts in into another form. 
 					The basis of this is that there should be no way to reverse the algorithm given the output hash. 
 					Furthermore, there should be minimal collisions with other messages. 
+				\item[Algorithm] Also known as a cipher, is the mathematical function used for encryption and decryption. 
+					If the security of the algorithm is based on it's secrecy, it is known as a restricted algorithm. 
+					However, most modern algorithms are open standards as knowing the algorithm does not help without the key. 
+				\item[Key] The string or data used by a non-restricted algorithm to encrypt or decrypt. 
+					This is the part of the process that must be held secure in modern cryptography. 
+				\item[Symmetric Algorithm] The same key is used for both encryption and decryption. 
+					Generally, this is faster, but has the problem of key transmission. 
+					This will be covered in greater depth later in this section. 
+				\item[Asymmetric Algorithm] Two different keys are used in the encryption and decryption process. 
+					Each user is given their partners public key, which is used for encryption. 
+					The receiving partner can then decrypt using their private key. 
+					This will be further explained later in this section. 
+				\item[Cryptanalysis] The process of reverse engineering a cryptographical solution in an attempt to attack the ciphertext to gain the plaintext. 
+					In this, it is generally assumed that the analyst has access to the full algorithm, but not the key. 
+					There are four types of cryptanalysis: 
+					\begin{enumerate}
+						\item \textbf{Ciphertext only:} The attacker has the ciphertext of several messages using the same algorithm. 
+							This is an attempt to deduce the plain text or key used. 
+						\item \textbf{Known Plaintext:} The attacker has access to both ciphertext and plaintext. 
+							The goal here is to deduce the key given a cipher-plain text pair. 
+						\item \textbf{Chosen plaintext:} The attacker is creating a custom plaintext. 
+							This is useful as some plaintext blocks provide more information about the key than others. 
+							For example, in a simple XOR algorithm, null plain text will reveal the key. 
+							The goal is to deduce the key used in the encryption process. 
+						\item \textbf{Chosen Ciphertext:} The attacker has a device that will decrypt messages. 
+							This device can be used to decrypt previously encrypted messages which the attacker can used to deduce the key used. 
+							This is similar to the process used to break Enigma during WWII. 
+						\item \textbf{Rubber Hose:} This is the simplest to execute, being written into law in a number of nations.
+							The analyst threatens, blackmails or tortures the sender or receiver until the key is given\footnote{\url{https://www.xkcd.com/538/}}
+					\end{enumerate}
 				\item[Keyspace] The maximum number of possible keys that a cryptographical algorithm could use. 
 			\end{description}
 		\subsection{Types of Cryptography}
 			This section will discuss the three main types of cryptography: secret key, public key and hashing. 
-			\subsubsection{Secret Key Cryptograhpy}
-				This form uses a single key that all accessing parties must have. 
+			\subsubsection{Secret Key Cryptography}
+				This form, also known as symmetric key cryptography,  uses a single key that all accessing parties must have. 
 				The keys complexity---along with the strength of the algorithm---determines the strength of the encryption.
 				Due to the use of the same key at either side of the process, this is also commonly known as ``symmetric key encryption. 
 				While this type of encryption is usually faster, is poses the problem of getting the key to the other user. 
@@ -65,10 +105,60 @@
 					\caption{Symmetric Key Cryptography Process}
 					\label{fig:SymmetricKey}
 				\end{figure}
+				The following steps are involved in communicating with this type of cryptography:
+				\begin{enumerate}
+					\item Alice and Bob agree on a Cryptosystem. 
+					\item Alice ad Bob agreed on a key. 
+					\item Alice encrypts the plaintext message. 
+					\item Alice Sends the ciphertext to Bob. 
+					\item Bob Decrypts and reads the message.
+				\end{enumerate}
+
+				Eve, an attacker against this system could attack at step 4, requiring a ciphertext-only attack. 
+				However, this would likely not work as current cryptography standards are resilient to this given modern compute power. 
+				Rather than hope a poor method of encryption was used, Eve would attack steps 1 and 2, 
+				attempting to gain the same information about the key and algorithm as Bob has. 
+				With this information, Eve would simply have to capture and decrypt the message as Bob would normally. 
+
+				This presents the main problem with symmetric key encryption, \emph{key distribution}. 
+				There are solutions to this, such as meeting face-to-face to pass the key from Alice to Bob or 
+				using public key cryptography, as explained later in this chapter. 
+
+				There are also further issues when you account for an active attacker, Mallory. 
+				Mallory could simply block communications, or could replay communications in an attempt to illicit a reaction. 
+				Further, Mallory could capture the key as explained above and impersonate Alice, passing malicious messages that would seem to come from her. 
+				In these cases, there is no way for Bob to know that the messages are coming from Mallory rather than Alice. 
+
+				Finally, there are some impracticalities with this system. 
+				If a different key is used between every pair of members on the network, the number of keys grows rapidly. 
+				A network of $n$ users requires $\frac{n(n-1)}{2}$ keys. 
+				For a network of only 100 users, there would be 4950 keys. 
+			\subsection{One Way Functions}
+				One way functions are the foundation of public key cryptography, explained in the following section. 
+				The functions have not been mathematically proven, but computationally have been found to exist. 
+				The premise is that they are easy to compute it one direction, but hard to return from. 
+				That is, given $x$ it is easy to compute $f(x)$, 
+				however, given $f(x)$ it is hard to the point of infeasibility to compute $x$. 
+
+				An example of this, left to the reader to conduct is that of a message written on a plate:
+				\begin{enumerate}
+					\item Write a message, $x$ on a plate. 
+					\item Throw the plate as hard as you can on a hard surface, shattering it. 
+						This acts as $f(x)$. 
+					\item Give the plate to a friend, asking them to tell you the message, $x$. 
+				\end{enumerate}
+
+				A simple one way function is not useful for public key cryptography, 
+				something more, known as a trapdoor function is needed. 
+				These functions are a special type of one way function that can be computed in reverse easily. 
+				However, this process only works if given an extra piece of information. 
+				These are fundamental to public key cryptography. 
+
 			\subsubsection{Public Key Cryptography}
 				Unlike symmetric key cryptography, public key cryptography uses two keys, one stored at each party. 
 				These two keys are completely different. 
 				They are designed in such a way that given one of them, you should not be able to determine the other. 
+
 				These two keys each have a name and a set of properties. 
 				The key used to encrypt the data is known as the public key. 
 				It can be read by anyone, as it will not give them access to the data. 
@@ -82,6 +172,53 @@
 					\caption{Public Key Cryptography Process}
 					\label{fig:PublicKey}
 				\end{figure}
+
+				This process is similar to having a locked mailbox. 
+				Anyone can place mail in the box (encrypting it and sending it to you). 
+				However, it is exceptionally difficult given the mail slot alone to open the box and access the mail. 
+
+				Mathematically, this is based on the trapdoor one-way function discussed above. 
+				Encrypting the message is the easy direction, meaning that anyone with the public key can encrypt and send messages.
+				Decryption however, is in the hard direction. 
+				The secret here is the private key. 
+				Using this, one can decrypt the message easily. 
+				Without it, the message remains a secret. 
+
+				The process involved in public key cryptography is as follows:
+				\begin{enumerate}
+					\item Alice and Bob agree on a public key cryptosystem. 
+					\item Bob sends Alice his public key. 
+					\item Alice encrypts her message using Bob's public key and sends it to Bob. 
+					\item Bob Decrypts Alice's message using his private key. 
+				\end{enumerate}
+
+				This process resolves the problem of key distribution seen above in secret key cryptography. 
+				While Bob must in step 2 send his public key in plaintext, Eve cannot read any messages using this key. 
+
+				There are however still problems with this system. 
+				Public key algorithms are significantly slower than symmetric key algorithms, often at least 1000 times slower. 
+				This places strain on the bandwidth which can be processed by a computer. 
+
+				Furthermore, these system are more vulnerable to chosen-plaintext attacks. 
+				As the encryption key is known, an attacker can encrypt all possible plaintexts in a similar way to rainbow tables as explained below under hash cracking. 
+				While this attack will not show the key, it makes it trivial to use deduce any plaintext from any ciphertext. 
+
+			\subsubsection{Hybird Cryptosystems}
+				These systems were built to use the better of both symmetric and public key cryptography in any given circumstance.
+				They will choose the necessary system to use their advantages but minimize their disadvantages. 
+
+				The main example of this is the exchange and use of session keys. 
+				In this scenario, public key encryption is used to transport a randomly generated session key. 
+				From this point on, symmetric key encryption is used as it is faster and less vulnerable to attacks. 
+				In this example, the process for communication is as follows:
+				\begin{enumerate}
+					\item Alice and Bob agree on a public key cryptosystem and a symmetric key cryptosystem. 
+					\item Bob sends Alice his public key. 
+					\item Alice generates a random session key, encrypts it using Bob's public key and sends it to Bob. 
+					\item Bob decrypts this key using his private key, recovering the session key. 
+					\item Both Alice and Bob begin communicating over a symmetric cryptosystem using the shared session key. 
+				\end{enumerate}
+				
 			\subsubsection{Hashing}
 				Hashing does not involve a key, though it may use a salt to ensure the uniqueness of the hash. 
 				This process creates a fixed length hash value which represents the plain text message. 
@@ -99,7 +236,34 @@
 					\label{fig:HashingProcess}
 				\end{figure}
 
+				The security of a hashing function is found in the one-wayness. 
+				This means that it cannot be used to compute the original value. 
+				Furthermore, a hash function that is collision-free is far more secure that one for which it is easy to compute two values that output the same hash. 
 
+			\subsubsection{Algorithmic Security}
+				The algorithm used to conduct cryptography is the modern world should be considered accessible to anyone. 
+				This is due to the simple fact that the program used to implement the algorithm can be reverse engineered by any significantly motivated party. 
+				Once the program is reverse engineered, the algorithm is freely known to that party. 
+
+				Due to this, one must remember not to trust any hidden algorithm. 
+				These are likely to be un-reviewed, leaving large holes in their implementation unnoticed. 
+				Furthermore, any security provided by hiding the algorithm will be undone purely through the use of reverse engineering. 
+				As such, private algorithms should be considered snake oil until they are publicised and reviewed. 
+
+				Further to this, the security of any algorithm should be considered before implementation. 
+				For example, if your data is not exceptionally important, it will likely be secure with a lesser algorithm purely because the cost of breaking it outweighs the value of the data. 
+				Furthermore, if the data is only sensitive for a short time, the data is secure as long as it takes longer than this time to break the algorithm for your current key. 
+
+				It is also worth noting that there are two different types of security in algorithms:
+				\begin{enumerate}
+					\item Unconditionally secure: No matter how much of the ciphertext the attacker has, they will not be able to deduce any keys or plaintext. 
+						The only system which meets this requirement is the one-time pad, which will be explained later in this chapter. 
+					\item Computationally secure: The algorithm is computational infeasible to break. 
+						This means that it requires far too much compute power or time to break, making the plaintext either less valuable or outdated by the time it can be retrieved. 
+				\end{enumerate}
+				In the former case, the algorithm is secure unless a cryptographical flaw can be found. 
+				However, in the latter case, the algorithm is only secure given the current state of compute power. 
+				If this were to increase substantially---which it currently is---the algorithm may no longer be secure in the given time frame. 
 
 		\subsection{Basic Cryptography}
 			Cryptography has been around since ancient times. 
@@ -110,7 +274,57 @@
 			Basic encryption should not be used in the modern world. 
 			It is not the type of encryption that would survive seconds against a well programmed computer. 
 			Rather, it is the type of encryption that worked well for the Romans on the battlefield, well before the other commanders had heard of such techniques. 
+			Many of the implementations seen in this area were based on characters within the text, 
+			rather than the current workings which act on the binary of the message. 
+			However, the same ideas form the foundations of modern cryptography in a more complex implementation. 
+			If you would like to read further into these older forms of cryptography, I suggest Singh's \textit{The Code Book}\cite{CodeBook}.
+			
+			This section will first discuss the basic types of encryption that have been used---and still form the basis of modern cryptography. 
+			It will then discuss some simple examples of old or defunct cryptographic standards.
 
+			\subsubsection{Substitution Ciphers}
+				This is an algorithm in which each acharacter in the plaintext is substituted with a corresponding one in the ciphertext. 
+				The receiver then inverts this process when attempting to decrypt to plaintext. 
+				There are a number of basic types of substitution cipher:
+				\begin{description}
+					\item[Simple] Each character is replaced with a corresponding character of ciphertext. 
+					\item[Homophonic] Similar to Simple Ciphers, except a single plaintext character could correspond to multiple ciphertext characters. 
+						For example, `a' could correspond to `15', `6' or `23'. 
+					\item[Polygram] Blocks of characters are encrypted in groups. 
+						For example, ``ARA'' could correspond to ``RLT''. 
+					\item[Polyalphabetic] Made up of multiple simple substitution ciphers. 
+						There may be multiple runs with different ciphers, or a different cipher may be used based on character position. 
+				\end{description}
+
+				Examples of these such as the Caesar's cipher are discussed below. 
+				However, these are not commonly used today, outside areas such as hiding solutions to puzzles or spoilers in UNIX chat rooms. 
+
+				The main vulnerability of this type of cipher is it's inability to hide the frequency of letters used in the plaintext. 
+				Generally, this is exploited by statistically analysing the frequencies of characters used in the text. 
+				It is likely that the most common characters will correspond to vowels, while the most common will correspond to `E'. 
+				Such an analysis done on plaintext can be seen in figure \ref{fig:LetterFreq}
+				\begin{figure}[htb]
+					\centering
+					\includegraphics[scale=0.2]{./letterFreq.png}
+					\caption{Frequency Analysis of Letters used in English Plaintext}
+					\label{fig:LetterFreq}
+				\end{figure}
+
+				Due to this, the Homophonic Substitution Cipher was created. 
+				This cipher effectively combats the issue of frequency analysis by allowing one character to map to many. 
+				Thus, looking for the most common characters in the ciphertext will not lead you to the most common character in the plaintext. 
+				However, this cipher is still exceptionally vulnerable to known plaintext attacks due to the ease of mapping character positions. 
+				Furthermore, a ciphertext only attack can still be done using the correct algorithm in seconds on a computer. 
+			\subsubsection{Transportation Ciphers}
+				In this cipher, the plain text remains the same, but the location of the characters within it are changed. 
+				An example of this is the simple columnar transportation cipher discussed below. 
+
+				When analysing this type of cipher, the most obvious result that you will get is that the frequency analysis will be the same as a standard English text. 
+				This is because none of the characters are changed, resulting in the same frequency but garbled text. 
+				Once this is known, analysis and algorithmic attacks are generally quickly successful. 
+
+				This type of cipher is far less common in modern cryptography as it requires large amounts of memory
+				and sometimes requires that the messages be of a specified length, resulting in padding or split messages. 
 			\subsubsection{Caesar's Cipher}
 				This is the first algorithm that we will discuss. 
 				It has little current use, as it's keyspace is 25, however, it serves as a good learning tool. 
@@ -125,10 +339,37 @@
 					\caption{The Method used for a substitution cipher}
 					\label{fig:CaesarsCipher}
 				\end{figure}
-			\subsection{XOR Cryptography}
+			\subsubsection{Columnar Transportation Cipher}
+				This cipher simply moves the characters found within the plaintext to another location. 
+				Specifically, the columnar transportation cipher uses a number as the key, which defines the number of rows to count.
+				The plain text is then written out in rows of the length given by the key. 
+				Plaintext will be written out horizontally, ciphertext will be read vertically. 
+				This process can be seen in figure \ref{fig:ColumnarTransportation}.
+
+				\begin{figure}[htb]
+					\centering
+					\begin{tabular}{|c|}
+						\hline
+						\textbf{Plaintext:}  WE ARE DISCOVERED. FLEE AT ONCE \\ 
+						\texttt{W\,E\,A\,R\,E\,D} \\
+						\texttt{I\,S\,C\,O\,V\,E} \\
+						\texttt{R\,E\,D\,F\,L\,E} \\
+						\texttt{E\,A\,T\,O\,N\,C} \\
+						\texttt{E\thinspace\hphantom{A\,T\,O\,N\,C}}	\\
+						\textbf{Ciphertext:} EVLNA CDTES EAROF ODEEC WIREE \\ 
+						\hline
+					\end{tabular}
+					\caption{Example of Colunmar Transportation Cipher}
+					\label{fig:ColumnarTransportation}
+				\end{figure}
+
+			\subsubsection{XOR Cryptography}
 				In the same light as the Caesar's cipher, XOR should not be used when you are looking for security. 
 				However, it is a stronger algorithm than the substitution cipher shown above. 
 				This is due to the fact that the key which can be used for XOR can be as long as the plain text. 
+
+				XOR is actually just a binary form of a Vign\`{e}re polyalphabetic cipher. 
+				However, it is prevalent in a number of software packages and can be useful in hiding data from systems such as anti-virus. 
 
 				While stronger than a substitution cipher, XOR still has a number of issues. 
 				Foremost is the fact that it is easily reversible. 
@@ -145,18 +386,29 @@
 				over each bit within the plain text and key. 
 				The key is looped around, such that each time it gets to the end it links back to the start. 
 
-			\begin{figure}[htb]
-				\centering
-				\begin{tabular}{| l | l | l |}
-					\hline
-					\textbf{Plaintext} & \textbf{Key} & \textbf{Ciphertext} \\ \hline
-					10101011101010 & 10101110 & 00000100111101 \\ \hline
-					00000000000000 & 10101110 & 10101110101011 \\ \hline
-					10101011101010 & 00000000 & 10101011101010 \\ \hline
-				\end{tabular}
-				\caption{XOR Cryptography Example}
-				\label{fig:XORExample}
-			\end{figure}
+				\begin{figure}[htb]
+					\centering
+					\begin{tabular}{| l | l | l |}
+						\hline
+						\textbf{Plaintext} & \textbf{Key} & \textbf{Ciphertext} \\ \hline
+						10101011101010 & 10101110 & 00000100111101 \\ \hline
+						00000000000000 & 10101110 & 10101110101011 \\ \hline
+						10101011101010 & 00000000 & 10101011101010 \\ \hline
+					\end{tabular}
+					\caption{XOR Cryptography Example}
+					\label{fig:XORExample}
+				\end{figure}
+				The process to break XOR is as follows:
+				\begin{enumerate}
+					\item Use ``counting coincidences'' to find the key length. 
+						This is done by XORing the ciphertext against itself shifted by various numbers and counting the bytes which are equal. 
+						If the displacement is a multiple of the key length, more than 6\% of the bytes will be equal, assuming ASCII plaintext. 
+						This is called the \emph{index of coincidence}, the smallest of which is the key length. 
+					\item Shift the ciphertext by the index of coincidence and XOR it with itself. 
+						This removes the key from the ciphertext, leaving the plaintext XORed wit the plaintext shifted by the length of the key. 
+						Using general cryptanalysis after this point will retrieve the plaintext. 
+				\end{enumerate}
+
 			\subsubsection{Encodings}
 				Many people confuse encoding for encryption. 
 				This confusion can lead to information being leaked, as encoding will not provide any protection. 
@@ -197,6 +449,50 @@
 		\subsection{\{N : e : c \} Format}
 		\subsection{Common Flaws}
 		\subsection{Key Recovery}
+	\section{One Time Pad}
+		As discussed above, this is the only perfect cryptographical implementation we have found to date. 
+		This algorithm---discovery of a fatal flaw permitting---cannot be cracked by any computer in any amount of time. 
+
+		The one time pad works by creating a sequence of random data as long as the message for the key. 
+		This same key must be sent to the receiver so the message can be decrypted. 
+
+		Using this, the sender will encrypt one plaintext character with one key character in the following manner:
+		$$ (P + K) \bmod{26} = C $$  
+		Where:
+		\begin{description}
+			\item[P] is the plaintext character. 
+			\item[K] is the key character.
+			\item[C] is the ciphertext character.
+		\end{description}
+
+		Assuming the key is sent with no way to intercept it, this system is perfectly secure. 
+		That is, a given ciphertext message is equally likely to correspond to any plaintext. 
+		This is because the key is random, non-repeating and replaced at every character. 
+		Thus, any attempt to analyse the ciphertext will lead to the realisation that no information about the plaintext is provided.
+
+		However, no matter how secure the algorithm itself it, if the input is not valid, it can be broken. 
+		The largest flaw in this system is that it requires the key to be generated randomly, which is difficult to do on a deterministic computer. 
+		
+		Furthermore, the key cannot be reused. 
+		If it is, breaking the cipher becomes a matter of sliding a pair of ciphertexts along one-another until the proportion of matches jumps suddenly. 
+		At this point, breaking the cipher becomes similar to the XOR function discussed above. 
+		One need only work with two ``periods'' rather than the previous incidence of coincidence. 
+
+		This same solution works with binary on a computer. 
+		A plaintext is generated and converted to binary, as is a random key.  
+		The two are then XORed together, creating a random ciphertext. 
+		The security of this system remains exactly the same, with both the same absolute security and possible flaws. 
+
+		There is another large issue with this system. 
+		It requires that both the sender and receiver have the same random key, at the exact length of the message. 
+		This is fine for small messages, but becomes impossible for large ones. 
+		For example, downloading a multi-gigabyte file using this would require the transfer of multi-gigabyte keys first. 
+
+		These issues mean that one-time pads are not commonly used for civil computing. 
+		It has been rumored that devices such as the cold war hotline between the US and USSR was encrypted using this. 
+		Similarly, some messages to and from government agents during this time were encrypted using one-time pads. 
+		However, it is unlikely to be used in anything but the most secure, low bandwidth communication channels. 
+		Thus, the absolute security of the one-time pad becomes a thing of dreams again. 
 	\section{Merkle-Hallman Knapsack Cryptosystem}
 	\section{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
