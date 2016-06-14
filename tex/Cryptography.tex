@@ -63,6 +63,9 @@
 					However, most modern algorithms are open standards as knowing the algorithm does not help without the key. 
 				\item[Key] The string or data used by a non-restricted algorithm to encrypt or decrypt. 
 					This is the part of the process that must be held secure in modern cryptography. 
+				\item[KDC] Key Distribution Centre. 
+					This is the place that public keys are stored for later access by other parties. 
+					It is used to ensure that the correct public key is released by signing for the authenticity of each key. 
 				\item[Symmetric Algorithm] The same key is used for both encryption and decryption. 
 					Generally, this is faster, but has the problem of key transmission. 
 					This will be covered in greater depth later in this section. 
@@ -581,6 +584,21 @@
 	\section{Merkle-Hallman Knapsack Cryptosystem}
 	\section{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
+		Getting assured access to other peoples public keys is not an easy task. 
+		If they were to send it to you in plain text, it may be intercepted and altered. 
+		Furthermore, in this scenario, signatures are pointless as anyone can impersonate another party by sending you a public key and telling you who they want to be. 
+
+		This is solved by having a key distribution centre (KDC). 
+		Such a system works by creating a public database of keys stored by a trusted party.
+		This database contains both the public keys and names of individuals on the network. 
+		Each public key is signed by the KDC, assuring the end user that it is a valid key. 
+
+		Again however, this begs the question of how did Alice gain access to the KDC's public key?
+		If Mallory could send Alice a false public key, they could act as the KDC themselves. 
+		Similarly, Mallory could attack the large central target that is the KDC, giving them access to create a false key for anyone. 
+
+		This system relies on trust and making this harder than it is worth. 
+		It is still far better than physical signatures and with a well secured KDC, it can be exceptionally difficult to break. 
 	\section{Server Authentication}
 	\section{Rotational Algorithms}
 	\section{Utilizing Cryptography in Python}
