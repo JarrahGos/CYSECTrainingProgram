@@ -546,7 +546,38 @@
 			Due to this, a public key signature will often contain a timestamp of the signing which is appended to the message. 
 			An institution using the signed information would take note of the timestamp and check whether the same stamp had been used previously. 
 			Thus, these messages can only be used once. 
+
+			In practice, these signatures can be large and slow to generate. 
+			To resolve this, we use a one-way hashing function on the document and sign the hash. 
+			This means that the receiver need not store both the document and a signature at the same size. 
+			Rather, they can store a 256-bit hash signature and the document. 
+			Not only is this faster, it is also easier to store and just as accurate. 
 			
+		\subsection{Resend Attacks}
+			Some systems will both sign and encrypt a message using the same keys and algorithms (RSA for example will do both). 
+			Generally, this is useful, as it provides both security and authenticity. 
+			However, when these systems implement receipts, they can become a security flaw. 
+			Take the following example:
+			\begin{enumerate}
+				\item Alice signs a message with her private key, encrypts it with Bob's public key and sends it to Bob. 
+				\item Mallory records this message in transit. 
+				\item Mallory resends this message to Bob, claiming that it came from him. 
+				\item Bob decrypts the message and attempts to verify it with Mallory's public key. 
+					This results in pure gibberish. 
+				\item Bob encrypts and signs the message and returns a receipt to Mallory. 
+				\item Mallory then follows the following steps to gain the message:
+					\begin{enumerate}
+						\item Decrypt the message with his private key. 
+						\item Encrypt the message with Bob's public key. 
+						\item Decrypt the message with his private key. 
+						\item Encrypt the message with Alice's public key. 
+						\item Read the now plaintext message. 
+					\end{enumerate}
+			\end{enumerate}
+
+			The solution to this, is first to check what the message is before sending a receipt, but also to use different keys or algorithms for signatures and encryption. 
+			Alternatively, using digital signatures based on hash functions, rather than the whole document will solve this as the signing process is only done on the hash. 
+
 	\section{Merkle-Hallman Knapsack Cryptosystem}
 	\section{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
