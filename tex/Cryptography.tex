@@ -599,8 +599,69 @@
 
 		This system relies on trust and making this harder than it is worth. 
 		It is still far better than physical signatures and with a well secured KDC, it can be exceptionally difficult to break. 
-	\section{Server Authentication}
-	\section{Rotational Algorithms}
+
+		\subsection{MitM}
+			This exchange process is vulnerable to Man-in-the-Middle attacks. 
+			For this to occur, an attacker ``Mallory'' must intercept the initial key transfers:
+			\begin{enumerate}
+				\item Alice sends her public key to Bob. This is intercepted by Mallory, who passes their public key to Bob. 
+				\item Bob sends his public key to Alice. This is intercepted by Mallory, again passing their public key on. 
+				\item When Alice sends, the message is encrypted with Mallory's key. 
+					Mallory intercepts it and sends it on encrypted with Bob's key. 
+				\item When Bob sends, the message is again intercepted by Mallory, again resending it with the correct key. 
+			\end{enumerate}
+
+			In this instance, neither party knows that their communication is being intercepted. 
+			The messages seem to have been secured, and are going between the correct parties. 
+			This would also not be solved by using signatures, as Alice and Bob each have Mallory's public key. 
+			This key would validate the traffic as if it were being sent by the correct user. 
+
+		\subsection{Key Exchange with Digital Signatures}
+			This is a mechanism designed to solve the above issues with MitM attacks. 
+			It works by having a trusted third party certify a given public key, identifying it's owner. 
+			This is the process used in the modern world for secure communications. 
+			A server is given a certificate for the domain name it is assigned, the client then checks that this is the correct key for the name it sees. 
+
+			This system presents a problem for the Mallory, who is attempting to intercept the traffic. 
+			They cannot simply substitute their public key for another parties, as that will identify them, rather than the correct party. 
+			Similarly, they cannot decrypt traffic as they do not have access to the public keys. 
+
+			The only issue here is the security of Trent's (the certifying authority) keys.
+			If Trent's private key were to be released, Mallory could create any key they want and sign it as any member of the network. 
+			This means that neither Alice or Bob could tell that they are being intercepted again. 
+			However, with a strong KDC, it is unlikely that Trent's key will be released, meaning that this system is far better than the previous. 
+
+			This is also the same system as used on the current Internet, with some minor alterations. 
+			A key is signed, and a certificate is released for a given domain. 
+			However, this domain can then sign any domains beneath it, with a chain of trust heading back up to Trent. 
+			Furthermore, Trent can delegate another person as a trust agent. 
+			This means that they can sign keys for others. 
+
+			In practice, there are numerous ``Trents'' on the Internet. 
+			These organisations have been trusted with only signing keys for the correct domain, 
+			and form the basis of secure communications. 
+	\section{Authentication}
+		Generally, when a user is trying to log into a computer---be that through a terminal, or a website---they provide a username and password. 
+		The computer then checks this password against the one in it's database and allows access if they match. 
+
+		One-way hashing algorithms are used to ensure that these passwords cannot be accessed by a malicious actor that breaks into the system. 
+		This can be done as the hash of a password will always be the same. 
+		Thus, someone attempting to retrieve passwords would be given a list of hashes, useful, but not directly. 
+
+		The vulnerability here occurs when the attacker starts hashing. 
+		For example, Mallory could compile a list of the top million most common passwords and hash them in the same way as the database. 
+		This would mean that any password within that list has now been compromised. 
+
+		This process is known as a dictionary attack. 
+		Specifically, gathering a dictionary of password hash pairs is known as a rainbow table. 
+		Such tables take up significant amounts of space, requiring storage of both the password and the (often longer) hash. 
+		Thus, the creation of rainbow tables is a matter of compromise, the table will take more space, but it will be faster. 
+		However, one could compute the hashes in real time, requiring no storage space beyond the database of hashes to be cracked.
+
+		This process can be solved in part by adding a salt to the passwords. 
+		Using a new salt for each password means that rainbow tables will not work. 
+		Rather the attacker will need to compute the hash for each individual password/salt combination. 
+		This mean that the attack must be done in real time, as the hashes in the rainbow table will be inaccurate to those in the database. 
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
 		\subsection{DES Weak Keys}
