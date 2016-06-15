@@ -73,6 +73,15 @@
 					Each user is given their partners public key, which is used for encryption. 
 					The receiving partner can then decrypt using their private key. 
 					This will be further explained later in this section. 
+				\item[DES] The Data Encryption Standard was the main encryption standard from it's submission in 1977 until the AES competition in 2001.
+					Cryptographically, this cipher has still not been broken. 
+					However, it's keyspace is sufficiently small that it can be bruteforced within days. 
+				\item[AES] The Advanced Encryption Standard, also known as Rijndael, is the successor to DES. 
+					It was first published in 1998, winning the AES competition in 2001. 
+					This has become the standard for encryption across the world, being the only publicly known algorithm to be approved for Top Secret use by the NSA. 
+				\item[RSA] The most common public key cryptosystem currently. 
+					It was named after it's authors, Ron Rivest, Adi Shamir and Lenard Adleman. 
+					This system uses the difficulty of factorising large numbers for it's security.
 				\item[Cryptanalysis] The process of reverse engineering a cryptographical solution in an attempt to attack the ciphertext to gain the plaintext. 
 					In this, it is generally assumed that the analyst has access to the full algorithm, but not the key. 
 					There are four types of cryptanalysis: 
@@ -448,9 +457,63 @@
 					\label{tab:Encodings}
 				\end{table}
 	\section{RSA}
-		
-		\subsection{\{N : e : c \} Format}
+		RSA is the most common and well regarded public key algorithm at the current time. 
+		This algorithm relies on the use of large prime numbers, and specifically the difficulty of factorising them. 
+		Both the public and private keys used are functions of a pair of large (in the order of $10^{200}$) prime numbers. 
+		It is conjectured, but not proven that recovering the plaintext from a public key and the ciphertext is equivalent to factoring the product of the two primes. 
+
+		\subsection{RSA Encryption Function}
+			In RSA, the following are defined components necessary to complete an encryption/decryption cycle. 
+			\begin{description}
+				\item[Public Key] The key given to anyone, used to encrypt data. 
+					\begin{description}
+						\item[$n$] Product of two primes, $p$ and $q$. These must remain secret. 
+						\item[$e$] Relatively prime to $(p-1)(q-1)$.
+					\end{description}
+				\item[Private Key] The key used for decryption, held secret. 
+					\begin{description}
+						\item[$d$] The private key, given by $e^{-1} \bmod{((p-1)(q-1))}$
+					\end{description}
+			\end{description}
+			This allows us to encrypt using the following function:
+			$$c = m^e \bmod{n}$$ 
+			Further, decryption is done using:
+			$$m = c^d \bmod{n}$$
+
+			To use this, we must first choose our primes. In this instance, we will use small numbers, being $p=47$ and $q=71$.
+			$$\therefore n = pq = 3337$$
+			We must now generate the encryption key, which must have no factors with:
+			$$(p-1)(q-1) = 46 \times 70 = 3220$$
+			E is then randomly chosen as any number that does not factor with 3220. 
+			$$let\>e = 79$$
+			We then calculate the private key, $d$.
+			$$d = 79^{-1}\bmod{3220} = 1019$$
+			Now we have both the public and private keys. 
+			We will publish the public key, allowing anyone to encrypt and send data to us. 
+			However, we will keep the private key secret, so as to stop anyone impersonating us or reading traffic to us. 
+
+			Using this to encrypt data can be seen below, assuming our message is a single `A':
+			$$c = 65^{79}\bmod{3337} = 541$$
+			Decryption is the same process, using $c$ and $d$:
+			$$m = 541^{1019}\bmod{3337} = 65$$
 		\subsection{Common Flaws}
+			This section will discuss the common flaws found in RSA implementations. 
+			It will not go into detail on how to use them, rather providing an initial introduction and leaving the attack as an exercise to the reader. 
+
+			\subsubsection{Common Modulus Attack}
+				In this scenario, all members of a network are given different public and private keys, but have the same modulus.
+				This allows the network to be simpler, but does not work in practise. 
+				Conducting RSA encryption in this way allows an attacker to deduce plaintext without the private key normally required. 
+
+				To show this, let $m$ be the plaintext message, $e_1$ and $e_2$ are the two exponents (private keys). 
+				$$c_1 = m^{e_1}\bmod{n}$$
+				$$c_2 = m^{e_2}\bmod{n}$$
+				Since our attacker knows $n, e_1, e_2, c_1$ and $c_2$, they can recover $m$. 
+				This is done using the extended Euclidean algorithm, which can find values for $r$ and $s$ as follows:
+				$$re_1 + se_2 = 1$$
+				Finally, the following algorithm can be used to calculate $m$:
+				$$(c^{-1}_{1})^{-r} \times c^{s}_{2} = m\bmod{n}$$
+
 		\subsection{Key Recovery}
 	\section{One Time Pad}
 		As discussed above, this is the only perfect cryptographical implementation we have found to date. 
@@ -664,9 +727,97 @@
 		This mean that the attack must be done in real time, as the hashes in the rainbow table will be inaccurate to those in the database. 
 	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
-		\subsection{DES Weak Keys}
-	\section{Eilliptic Curve Encryption}
-		\subsection{Common Attacks}
+		This section will discuss some of the many known issues with cryptography implementations. 
+		These vary in their nature, but generally are caused by a bug within the code or careless implementation. 
+		They provide a vulnerability which allows the attacker to decrypt the message without attacking the cipher directly. 
+		This use of a side channel significantly reduces the requirement of cryptanalysis, making the attack far easier. 
+		\subsection{Key Generation}
+			The security of your cryptographical algorithm---assuming you use a standard algorithm---rests solely in the key. 
+			If the process used to generate this key is weak or predictable, the whole cryptosystem is equally weak. 
+			This means that Eve need not conduct cryptanalysis, the weak key will give it away. 
+			This section will discuss a both the theory, and two poor implementations of key generation. 
+
+			\subsubsection{Theory and Poor DES Implementation}
+				The Data Encryption Standard, replaced by AES in 2001, was the approved standard for encryption from 1977. 
+				While the standard itself has not been broken (but is still outdated due to it's small keyspace), 
+				many of the implementations have. 
+				This is due to their reduction of the available keyspace from 56 general bits to 56 partially predictable bits.
+
+				An example of this is Norton Discrete, which reduced this $10^{16}$-bit keyspace to $8\times10^9$-bit. 
+				To make processing and key storage easier, this program first only allowed ASCII keys. 
+				ASCII, being a 7-bit representation leaves the 8th bit of each byte zeroed. 
+				Thus, one can predict 7 bits of the key simply by knowing this. 
+
+				Furthermore, Discrete then forced all characters to uppercase, no matter how they were entered. 
+				This again makes the key predictable, with the 5th bit of every byte being the inverse of the 6th. 
+				Thus, with the key reduced in this way, this DES implementation is vastly easier to crack. 
+
+			\subsubsection{Debian Weak RNG}
+				In early 2008, it was discovered that the random number generator (RNG) in Debian---one of the most popular Linux distributions---was faulty\footnote{\url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-0166}}.
+				This issue is not with the cryptographical implementation itself, but rather with the RNG that came with it. 
+				This RNG was predictable in it's output, leading to a set of keys being far more common than any others\footnote{\url{https://www.exploit-db.com/exploits/5632/}}.
+
+				Using these keys, one could download a freely available public key and test it against the provided list. 
+				If the public key appears in the list, it's corresponding private key will also be available, giving you the ability to decrypt any traffic sent to the user and sign any document as the user. 
+
+				As discussed above, this is the reason for the use of strong random number generators. 
+				Using a weaker implementation may not be immediately obvious, 
+				however, when it is found, a list of all possible keys can be generated, leading to the outcome seen above. 
+				If this were to occur, all keys generated by the system are considered compromised, all digital signatures invalid, and all traffic encrypted with these keys is compromised\footnote{\url{https://wiki.debian.org/SSLkeys\#Identifying\_Weak\_Keys}}.
+			\subsubsection{Key Choices}
+				When the user is allowed to choose the key, it is likely that they will choose a key which is not secure. 
+				This is because it is easy to predict the most common keys that will be chosen.
+				We can create a dictionary of these keys; words such as ``password'', ``love'' and ``dragon''. 
+				While these passwords are common, if we simply pad them with a few numbers at the start and end, we catch a large proportion of user passwords. 
+
+				This process is known as a dictionary attack. 
+				It allows us to check them against ciphertexts in a known-plaintext attack, or to hash them and test against a password database. 
+				This is generally an offline attack, with the following steps:
+				
+				While this attack may not always work against a single smart user, using it against a database of passwords is likely to be successful. 
+				This is because while the one user may have chosen a strong password, it is likely that one of the users will have a password that is in your dictionary. 
+				Thus, bruteforceing encryption is not the common option in the modern world. 
+				Rather, we simply attack the low-hanging fruit and use a dictionary
+			\subsubsection{DES Weak Keys}
+				Because DES splits the provided key into halves, shifting these independently for each round, certain keys are weaker than others. 
+				If all bits in either half of the key are either 0 or 1, the same key is used for every cycle of the algorithm. 
+				This occurs if the key is any of the values in Table \ref{tab:DESWeakKeys}. 
+				For these keys, the process of encrypting results in what looks like random data. 
+				However, if this data is encrypted again using the same process, it will output the plaintext. 
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{|c|c|}
+						\hline
+						\textbf{Key Value} (8th bits are parity) & \textbf{Hex} \\ \hline
+						\texttt{0101 0101 0101 0101} & \texttt{0000000 0000000} \\ \hline
+						\texttt{1F1F 1F1F 1F1F 1F1F} & \texttt{0000000 FFFFFFF} \\ \hline
+						\texttt{E0E0 E0E0 F1F1 F1F1} & \texttt{FFFFFFF 0000000} \\ \hline
+						\texttt{FEFE FEFE FEFE FEFE} & \texttt{FFFFFFF FFFFFFF} \\ \hline
+					\end{tabular}
+					\caption{DES Weak Keys}
+					\label{tab:DESWeakKeys}
+				\end{table}
+
+				There are also a selection of ``semi-weak'' keys, which encrypt to the same ciphertext no matter which key is used.
+				These keys can be tested by trying to decrypt with the relevant matching key. 
+				This occurs again due to subkey generation, with these keys only generating two subkeys which are used eight times in the encryption process. 
+				The semi-weak keys can be found in table \ref{tab:DESSemiWeakKeys}.
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{|c|c|}
+						\hline
+						\textbf{Key One} & \textbf{Key Two} \\ \hline
+						\texttt{01FE 01FE 01FE 01FE} & \texttt{FE01 FE01 FE01 FE01} \\ \hline
+						\texttt{1FE0 1FE0 0EF1 0EF1} & \texttt{E01F E01F F10E F10E} \\ \hline
+						\texttt{01E0 01E0 01F1 01F1} & \texttt{E001 E001 F101 F101} \\ \hline
+						\texttt{1FFE 1FF5 0EFE 0EFE} & \texttt{FE1F FE1F FE0E FE0E} \\ \hline
+						\texttt{011F 011F 010E 010E} & \texttt{1F01 1F01 0E01 0E01} \\ \hline
+						\texttt{E0FE E0FE F1FE F1FE} & \texttt{FEE0 FEE0 FEF1 FEF1} \\ \hline
+					\end{tabular}
+					\caption{DES Semi-Weak Key Pairs}
+					\label{tab:DESSemiWeakKeys}
+				\end{table}
+				
 	\section{Hash Cracking}
 		Hashes are used in many situations to store passwords. 
 		This is done because the hashing algorithm is a one way action, meaning that there is no easy way to calculate the password from the hash. 
