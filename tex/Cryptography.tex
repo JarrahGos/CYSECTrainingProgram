@@ -9,11 +9,13 @@
 		Without cryptography, nothing can be confirmed and nothing is secure. 
 		However, cryptography is something that is easy to get wrong.
 		It can be hard to ensure all minor steps are followed, but missing only one will lead to significant weaknesses. 
-		This section will discuss the basic ideas of cryptography without the mathematical background or the algorithmic understanding. 
+		The first section will discuss the basic ideas of cryptography without the mathematical background or the algorithmic understanding. 
 		It will provide an overview on the requirements for a secure transmission. 
 		The technical details of this will be presented in the later sections of this chapter. 
 		These details for the specific standards that are used later in this chapter can be found in the FIPS released by NIST.\footnote{\url{http://csrc.nist.gov/groups/STM/cmvp/index.html}}
+		This book will not enter into depth on these details, leaving most of the mathematical background to those more qualified to write of them.
 		Furthermore, if you wish to understand the mathematical background, I suggest further reading such as Schnier's \textit{Applied Cryptography}\cite{ACrypto}.
+
 	\section{Introduction to Cryptography}
 		This section will outline the basic ideas that one must understand before they can delve into deeper cryptography. 
 		It will first discuss the terminology that is used in the area, followed by a basic outline of cryptographical types and early implementations. 
@@ -457,7 +459,7 @@
 					\label{tab:Encodings}
 				\end{table}
 	\section{RSA}
-		RSA is the most common and well regarded public key algorithm at the current time. 
+		RSA is the most common and well regarded public key algorithm at the current time\footnote{\url{http://csrc.nist.gov/publications/fips/fips140-2/fips1402.pdf}}. 
 		This algorithm relies on the use of large prime numbers, and specifically the difficulty of factorising them. 
 		Both the public and private keys used are functions of a pair of large (in the order of $10^{200}$) prime numbers. 
 		It is conjectured, but not proven that recovering the plaintext from a public key and the ciphertext is equivalent to factoring the product of the two primes. 
@@ -499,7 +501,6 @@
 		\subsection{Common Flaws}
 			This section will discuss the common flaws found in RSA implementations. 
 			It will not go into detail on how to use them, rather providing an initial introduction and leaving the attack as an exercise to the reader. 
-
 			\subsubsection{Common Modulus Attack}
 				In this scenario, all members of a network are given different public and private keys, but have the same modulus.
 				This allows the network to be simpler, but does not work in practise. 
@@ -514,7 +515,27 @@
 				Finally, the following algorithm can be used to calculate $m$:
 				$$(c^{-1}_{1})^{-r} \times c^{s}_{2} = m\bmod{n}$$
 
-		\subsection{Key Recovery}
+			\subsubsection{Attacks on Small Exponents}
+				To speed encryption and signature validation time, small values for $e$ are often used. 
+				While this may be useful on devices with low compute power, if poorly implemented, it can be exploited. 
+				Specifically, if the exponent is small and the plaintext is short, the RSA function can be inverted. 
+				Currently, the lowest secure exponent is $2^{16}-1$. 
+
+				This attack works by inverting the function based on the plaintext being the same. 
+				For the general case, with the messages being linearly dependant, you require $\frac{e(e-1)}{2}$ messages. 
+				However, if the messages are identical, this process can be done with $e$ messages.
+				For example, if $e = 3$ and the messages are identical:
+				$$C_1 = m^3\bmod{n_1}$$
+				$$C_2 = m^3\bmod{n_2}$$
+				$$C_3 = m^3\bmod{n_3}$$
+				This means the following is true:
+				$$m < {N_1, N_2, N_3}$$
+				$$M^3 < N_1N_2N_3$$
+				Using the Chinese Remainder Theorem:
+				$$C_1C_2C_3 = m^3\bmod{N_1N_2N_3}$$
+				$$\therefore \sqrt[3]{C_1C_2C_3} = m$$
+
+				It is also worth noting that this can be thwarted by using random padding, as done in PEM and PGP, the most common RSA implementations.  
 	\section{One Time Pad}
 		As discussed above, this is the only perfect cryptographical implementation we have found to date. 
 		This algorithm---discovery of a fatal flaw permitting---cannot be cracked by any computer in any amount of time. 
@@ -644,7 +665,38 @@
 			The solution to this, is first to check what the message is before sending a receipt, but also to use different keys or algorithms for signatures and encryption. 
 			Alternatively, using digital signatures based on hash functions, rather than the whole document will solve this as the signing process is only done on the hash. 
 
-	\section{Merkle-Hallman Knapsack Cryptosystem}
+	\section{Merkle-Hellman Knapsack Cryptosystem}
+		The Merkle-Hellman knapsack cryptosystem is another asymmetric method of encryption. 
+		It is based on the knapsack problem, which when in it's normal form is an NP-complete problem. 
+		The problem is relatively simple, given a set of weights and a total, select which ones will be found in the knapsack. 
+		Mathematically:
+		$$S = b_1m_1 + b_2m_2 +\ldots+ b_nm_n$$
+		Where:
+		\begin{description}
+			\item[S] is the sum.
+			\item[$b_n$] is the binary value of whether a given mass is counted or not. 
+				This also forms the plaintext. 
+			\item[$m_n$] is a given mass. 
+		\end{description}
+
+		The idea here is that a block of plaintext equal in size to the public key would be processed, giving a size. 
+		It is now difficult (NP-complete) to use this size and the public key to gain the plaintext. 
+		However, using the private key and the size it is quite easy. 
+		This is because the public key is a super-increasing knapsack. 
+
+		A super-increasing knapsack is on in which each value is greater than the sum of it's predecessors. 
+		This is important as the plaintext can be easily calculated from it. 
+		The process works by considering the last (and thus largest) weight on the list, if it is larger than the sum, remove it.
+		If it is smaller, subtract it from the sum, place a one in this position in the plaintext and remove it.
+		We now start the process again with the new sum and last item. 
+		When the sum reaches 0, the problem is solved and the plaintext can be read. 
+
+		The key factor of the Merkle-Hellman cryptosystem is the ability to transfer a normal knapsack into a super-increasing one.
+		However, this also comes with the minimum requirement of having at least 250 weights in each knapsack. 
+
+		An attack exists for this system that can be computed on trivial resources\cite{BrokenKnapsack}. 
+		This attack allows for the computation of the super-increasing knapsack, or private key given only the public key. 
+		A similar attack has been found for most more recent versions of this cryptosystem. 
 	\section{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
 		Getting assured access to other peoples public keys is not an easy task. 
@@ -725,7 +777,6 @@
 		Using a new salt for each password means that rainbow tables will not work. 
 		Rather the attacker will need to compute the hash for each individual password/salt combination. 
 		This mean that the attack must be done in real time, as the hashes in the rainbow table will be inaccurate to those in the database. 
-	\section{Utilizing Cryptography in Python}
 	\section{Poor Cryptography Implementations}
 		This section will discuss some of the many known issues with cryptography implementations. 
 		These vary in their nature, but generally are caused by a bug within the code or careless implementation. 
