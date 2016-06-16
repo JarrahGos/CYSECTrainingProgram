@@ -322,6 +322,45 @@
 		By utilizing this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
 		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
 
+	\section{Hiding Your Initial Attack}
+		When you are attacking a network, it is best not to attack directly from your base machine. 
+		This is because it is trivial to track the address used by an attacker and block it. 
+		However, if you have a number of machines that you can pivot through, it becomes harder. 
+		Furthermore, if those machines can have their address altered, you are able to keep up your attack indefinitely. 
+
+		Thus, the concept of Operational Relay Boxes comes into play.
+		These are machines which you either own or have gained access to which are outside your network. 
+		They can be used in the same way as a pivot point in the network, described above, or they can be setup specifically, as this section will describe. 
+
+		The easiest way to set this up is to use a VPN. 
+		It will use the OpenVPN server and client, for the Kali attack machine\footnote{\url{https://openvpn.net/index.php/open-source/documentation}}.
+		You will need both ``openvpn'' and ``easy-rsa'' on the server, and ``openvpn'' only on the client (attack machine)\footnote{\url{https://wiki.archlinux.org/index.php/Openvpn}}. 
+		
+		The first step is to set up public key infrastructure (see chapter \ref{ch:Cryptography}).
+		This is done using the easy-rsa scripts with the following commands\footnote{\url{https://wiki.archlinux.org/index.php/Easy-rsa}}:
+			\begin{lstlisting}[style=CLI]
+				# ./build-ca
+				# ./build-key-server <name>
+				# ./build-dh
+				# ./build-key <client name>
+				# openvpn --genkey --secret keys/ta.key
+			\end{lstlisting}
+		This will place the keys you will require for the next stage in the ``keys'' folder. 
+		You should then move ``client.crt'', ``client.key'' and ``ta.key'' to the client. 
+
+		The client and server should now be set up. 
+		The server config, found in ``/etc/openvpn/server.conf'' should be as follows:
+		\lstinputlisting[numbers=none]{./shellOut/vpnServer.conf}
+		Client config:
+		\lstinputlisting[numbers=none]{./shellOut/vpnClient.conf}
+		Finally, set up nat at the entrance to the VPN using the following command. 
+			\begin{lstlisting}[style=CLI]
+				# iptables -t nat -A POSTROUTING -s <VPN ip range> -o eth0 -j MASQUERADE
+			\end{lstlisting}
+
+		This will pass all traffic through the server, giving you access to the external Internet from it's address. 
+		This does not mean that there is no way to identify you, simply that blocking your address will not directly block you. 
+
 	\section{ARP Attacks}
 		ARP, or the Address Resolution Protocol resides on layer three of the OSI Model. 
 		This protocol is used to translate layer 3 IP addresses into layer 2 MAC addresses using a table stored within the switch. 
