@@ -1,6 +1,20 @@
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
+	Reverse engineering is the process of taking a fully compiled (and often obfuscated) binary and working out how it works. 
+	This process usually requires understanding programming, algorithms and assembly, but can occasionally be made easier by language constructs such as Java's bytecode, which allows full decompilation. 
+	This chapter will discuss first the language used for the majority of reverse engineering, Assembly. 
+	Next, it will discuss the main tools used in the process. 
+	Finally, corner cases such as Java reverse engineering will be discussed, along with an example project. 
+
 	\section{Assembly}
+		Assembly is the base language of the given computer. 
+		It can be used to write any program, but often is far to inefficient for the programmer to use. 
+		Originally, this was the only way to program a computer. 
+		However, those working in computer science quickly created higher level languages. 
+		Thus, it has been the domain of ``Hackers'' and reverse engineers since the mid-1950's. 
+
+		This section will discuss the basics of both x86 (Intel) and ARM assembly. 
+		These are currently the two most common versions of the code, each being used on PCs and mobile devices respectively. 
 		\subsection{x86 Assembly}
 
 		%TODO: Decide whether this goes here or in programming. 
@@ -49,6 +63,11 @@
 			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
 			I recommend starting with the sprint speed. 
 			%TODO: Should there be more than this section here?
+	\section{IDA 64}
+	\section{Other Tools}
+		\subsection{Strings}
+		\subsection{Ltrace}
+		\subsection{Strace}
 	\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
 		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
@@ -77,10 +96,4 @@
 		Other than this, it is simply a matter of finding the logic within the program that is used to calculate the value that you are reverse engineering for. 
 	
 		%TODO: Revise this section
-	\section{C\# Reverse Engineering}
 	\section{Pwn Adventure}
-	\section{IDA 64}
-	\section{Other Tools}
-		\subsection{Strings}
-		\subsection{Ltrace}
-		\subsection{Strace}

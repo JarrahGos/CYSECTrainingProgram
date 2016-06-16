@@ -1,5 +1,11 @@
 \chapter{Forensics}
 	\label{ch:Forensics}
+	Computer forensics is the process of accessing data either on a computer or it's related networks that one would not normally be able to. 
+	Generally, this is done either locally, by attempting to read memory dumps or deleted or hidden files. 
+	This process is done by reading beyond the normal file, or by accessing traffic that is being sent across the network. 
+	It is usually part of the post attack review done by an organisation, however, it may also be done as an attempt to hide data or exfiltrate it from a network. 
+	This chapter will discuss the common methods for gathering this data and analysing it. 
+	
 	\section{File Carving}
 		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's meta data as would normally be done using a file manager. 
 		This is done because it is possible to hide a file within another---placing it after the EOF line of the first file---or delete a file from disk without overwriting it, avoiding it being accessible by normal means. 
@@ -69,6 +75,42 @@
 
 		However, cryptographically, this is quite insecure as it requires that the algorithm used to hide the data be hidden, rather than just the key. 
 		Thus, if you use a common method of stegenography, or a freely available program to do it, the only thing keeping the message secure is the fact that it cannot be seen to be there. 
+	\section{DoXXing}
+		DoXXing is the act of attempting to find out the physical location and real identity of an individual or Internet facing machine. 
+		There are a number of ways that this can be done. 
+		The focus of this section will be on doXXing a remote server. 
+		This is because it can be a useful tool in determining where a compromised system is hosted as well as who may have compromised it. 
+		\subsection{Traceroute}
+			Traceroute one of the better ways to gain this information. 
+			This is because while the domain name of the server that you are attempting to access may not give you the information that you require, those that you must go through to get to it usually will. 
+			You will see every server that responds to ping between you and the server, thus giving you a readout of where the connection had to go through to get to the final destination. 
+
+			The key points to look for here is where the packet leaves your country, if it does. 
+			This will be the key indicator for traffic outside your own nation and can be seen through items such as ``telstraglobal'' for Australia. 
+			Furthermore, the country code TLDs that you receive back will tell you which nation you are connecting to. 
+			The final one of these TLDs will give you the most likely nation that you are connecting to. 
+			Finally, the hosts that are near it may tell you which ISP the server is connected with or which hosting company the server is hosted on. 
+
+		\subsection{Whois}
+			Whois records are created when the domain is registered. 
+			While there are ways to hide these, such as registering through an anonomizer or in another nation, generally these will contain detail about who registered the domain. 
+			You will usually get the following information:
+			\begin{itemize}
+				\item Registrant: Which person or organisation registered the Domain. 
+				\item The name, ID and email for the contact for the domain. 
+				\item The name, ID and email for the technical contact for the domain.
+				\item The name servers for the domain.
+				\item The registrar used to register the name. 
+			\end{itemize}
+			These details are exactly what you need when doXXing an organisation. 
+			They will allow you to search for the physical location of the organisation, as well as the contact details of a number of members within it. 
+			Furthermore, the registrar name will often tell you which nation the server is hosted in. 
+		%TODO: More on server doXXing and some on personal doXXing.  
+	\section{Disk and Memory Analysis}
+		\subsection{File Types}
+		\subsection{Common Conversion issues}
+		% DOS -> UNIX (CRLF -> LF) conversion
+		\subsection{Cyclic Redundancy Codes}
 	\section{Wireshark}
 		Wireshark is a packet sniffing and inspection suite which is used to intercept and view traffic which is being transmitted along your network.\cite{WSUG} 
 		It is used in a number of fields, such as network interception, Bluetooth and WiFi attacks and attack recognition. 
@@ -107,42 +149,6 @@
 			\end{description}
 			
 	\section{Netflow}
-	\section{DoXXing}
-		DoXXing is the act of attempting to find out the physical location and real identity of an individual or Internet facing machine. 
-		There are a number of ways that this can be done. 
-		The focus of this section will be on doXXing a remote server. 
-		This is because it can be a useful tool in determining where a compromised system is hosted as well as who may have compromised it. 
-		\subsection{Traceroute}
-			Traceroute one of the better ways to gain this information. 
-			This is because while the domain name of the server that you are attempting to access may not give you the information that you require, those that you must go through to get to it usually will. 
-			You will see every server that responds to ping between you and the server, thus giving you a readout of where the connection had to go through to get to the final destination. 
-
-			The key points to look for here is where the packet leaves your country, if it does. 
-			This will be the key indicator for traffic outside your own nation and can be seen through items such as ``telstraglobal'' for Australia. 
-			Furthermore, the country code TLDs that you receive back will tell you which nation you are connecting to. 
-			The final one of these TLDs will give you the most likely nation that you are connecting to. 
-			Finally, the hosts that are near it may tell you which ISP the server is connected with or which hosting company the server is hosted on. 
-
-		\subsection{Whois}
-			Whois records are created when the domain is registered. 
-			While there are ways to hide these, such as registering through an anonomizer or in another nation, generally these will contain detail about who registered the domain. 
-			You will usually get the following information:
-			\begin{itemize}
-				\item Registrant: Which person or organisation registered the Domain. 
-				\item The name, ID and email for the contact for the domain. 
-				\item The name, ID and email for the technical contact for the domain.
-				\item The name servers for the domain.
-				\item The registrar used to register the name. 
-			\end{itemize}
-			These details are exactly what you need when doXXing an organisation. 
-			They will allow you to search for the physical location of the organisation, as well as the contact details of a number of members within it. 
-			Furthermore, the registrar name will often tell you which nation the server is hosted in. 
-		%TODO: More on server doXXing and some on personal doXXing.  
-	\section{Disk and Memory Analysis}
-		\subsection{File Types}
-		\subsection{Common Conversion issues}
-		% DOS -> UNIX (CRLF -> LF) conversion
-		\subsection{Cyclic Redundancy Codes}
 	\section{Malicious Website Analysis}
 		After receiving a phishing email or another type of malicious link, it can be interesting and enlightening to look over how the exploit would have worked. 
 		This process can be done in a relatively safe manner through the use of certain tools and sandboxes. 
