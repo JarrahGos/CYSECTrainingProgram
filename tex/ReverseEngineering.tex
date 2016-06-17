@@ -15,10 +15,214 @@
 
 		This section will discuss the basics of both x86 (Intel) and ARM assembly. 
 		These are currently the two most common versions of the code, each being used on PCs and mobile devices respectively. 
+		It is worth noting that there are a number of similarities between these. 
+		This mainly occurs due to the nature of the machine, which can still only interpret binary. 
+		Thus, both ARM and X86 must be assembled into this machine code. 
 		\subsection{x86 Assembly}
 
 		%TODO: Decide whether this goes here or in programming. 
 		\subsection{ARM Assembly}
+			The world of IT is becoming increasingly mobile, with ARM processors dominating that area. 
+			Thus, to reverse engineer in the modern world, knowing x86 is no longer enough. 
+			Furthermore, ARM being a RISC processor, it has a smaller and easier to understand instruction set. 
+			This makes learning Assembly with an arm processor easier than doing the same with x86\footnote{\url{http://www.davespace.co.uk/arm/introduction-to-arm/barrel-shifter.html}}. 
+
+			\subsection{Registers}
+			%rewrite the names of these in a better format. This looks like shit. 
+				The registers of an ARM processor are generally referred to as ``r0'' to ``r15''. 
+				However, there are also aliases, ``a1'' to ``a4'', ``v1'' to ``v6'', ``sb'', ``sl'', ``fp'', ``sp'', ``lr'' and ``pc'' which map respectively to the normal names. 
+				With the below notable exceptions, these registers are all thought of as general purpose. 
+				\begin{description}
+					\item[r13/sp] Stack pointer.
+					\item[r14/lr] Link register which holds the callers return address. 
+					\item[r15/pc] Program counter. 
+				\end{description}
+				For this reason, I will refer to the general registers by their number (eg ``r0'') and the specific registers by their alias. 
+				There is also a flags register, CSPR, which stands for current program status register and holds the results of arithmetic and logical operations. 
+				
+				Arm also does not allow operations to work on data in memory. 
+				Thus, the data must be loaded into a register, operated on, then returned to memory. 
+
+				Furthermore, depending on the arm implementation in use, these registers may be 16, 32 or 64-bit. 
+				
+			\subsection{Instructions}
+				Instructions are given in the following syntax:
+				\begin{quote}
+					<operation>\{condition\}\{flags\} Rd, Rn, Operand
+				\end{quote}
+				Where:
+				\begin{description}
+					\item[operation] is the three letter mnemonic for the desired instruction, such as MOV or ADD. 
+					\item[condition] is an optional two letter condition code such as EQ or CS. 
+					\item[flags] is an optional additional flag such as S.
+					\item[Rd] is the destination Register.
+					\item[Rn] is the source register. 
+					\item[Operand] is a flexible second operand.
+				\end{description}
+
+				These instructions generally compute in a single cycle, allowing simple prediction of timing. 
+
+				Table \ref{tab:ARMInstructions} lists common instructions, their description and an example of their use. 
+				\begin{table}[htb]
+					\centering 
+					\begin{tabular}{|l|p{6cm}|p{3cm}|}
+						\hline
+						\textbf{Instruction} & \textbf{Description} & \textbf{Example} \\ \hline
+						MOV & Move from source register to destination. & MOV r0, \#42\, MOV r3, R5 \\ \hline
+						ADD & Add source register to operand and place in source & ADD r0, r1, r2 \\ \hline
+						SUB & Subtract source register from operand and place in source & SUB r0, r1, \#5 \\ \hline
+						AND & Logical and Rn and Operand placed in Rd & AND r8, r7, r2 \\ \hline 
+						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\ \hline
+						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\ \hline 
+						CMP AND & Logical AND Rn and Operand placed in Rd & AND r8, r7, r2 \\ \hline 
+						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\ \hline
+						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\ \hline 
+						CMP & Flag set to result of Rn - Operand & CMP r0, \#42 \\ \hline
+						TST & Flag set to result of Rn AND Operand & TST R11 \#1 \\ \hline
+						TEQ & Flag set to result of Rn XOR Operand & TEQ r8, r9 \\ \hline
+					\end{tabular}
+					\caption{Common Arm Instructions}
+					\label{tab:ARMInstructions}
+				\end{table}
+
+			\subsection{Multiplication and Division}
+				Multiplication and Division are implemented as a function of the \emph{barrel shifter} in ARM assembly. 
+				This works by applying a logical shift or rotate to the operand before using it in an operation. 
+				The following explains the types of shift available:
+				\begin{description}
+					\item[LSL] The Logical Shift Left will shift left by the given number, padding with 0.
+						It is equivalent to the ``<<'' operator in C.
+					\item[LSR] The Logical Shift Right will shift right by a given number, padding with 0. 
+						It is equivalent to the ``>>'' operator in C. 
+						This is the implementation for unsigned Division by a power of 2.
+					\item[ASR] The Arithmetic Shift Right will again shift right by a given number. 
+						It is equivalent to ``>>'' in C and is used for signed division by a power of 2.  
+					\item[ROR] Bit Rotate by the given number with wrap around.
+				\end{description}
+				While there are many options for the usage of this, the following are basic examples:
+				\begin{description}
+					\item[Multiplication] MOV r0, r0, LSL \#1: Multiply r0 by two. 
+					\item[Division] MOV r2, r2, ASR \#2: Signed division of r2 by four. 
+					\item[MUL] The standard multiplication instruction. 
+						Place the product of Rn and the Operand in the destination register. 
+						Using the same register for Rn and Rd has unpredictable results. 
+				\end{description}
+
+			\subsection{Operand}
+				The operand within ARM assembly makes it work slightly differently to x86. 
+				This value is used instead of the destination in mathematical or logical operations, with the destination acting only as a store.
+				However, it also allows for barrel shifting and usage of constants. 
+				\begin{description}
+					\item[Constant] ORR r1, r1, \#0xFF00 
+					\item[Barrel Shifter] MOV r2, r2, LSR \#1					
+					\item[Registers Shifted] CMP r9, r8 ROR r0
+				\end{description}
+				It is also worth noting that this position can only hold 8-bits. 
+				However, the compiler will convert it into a barrel shifted operation if it is larger than this. 
+
+			\subsection{Branching}
+				In assembly, we need a way to move about within the code. 
+				This is usually done by branching, a similar idea to GOTO. 
+				The following two instructions are used for this purpose, with the latter two used to come back to the calling instruction. 
+				\begin{description}
+					\item[B <address>] Start executing code at the given address or label. 
+						This does not save the old location. 
+					\item[BL <address>] Start executing code at the given address or label. 
+						This also saves the old address in r14. 
+					\item[MOV PC, r14] Begin executing code at the location after BL was called. 
+					\item[BX r14] Begin executing code at the location after BL was called. 
+						This only works on newer architectures. 
+				\end{description}
+
+			\subsection{Conditional Execution}
+				The ARM architecture allows conditionals on every instruction. 
+				This is done by appending either ``EQ'' or ``CC'' to the instruction mnemonic. 
+				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP. 
+				It is also worth noting that normal instructions do not effect these flags, but can be made to by appending `s' to them. 
+				
+				For example, the following code will loop 5 times before exiting:
+				\begin{code}
+					\begin{lstlisting}[language={[Motorola68k]assembler}]
+	MOV r2, #5
+loop
+	SUBS r2, r2, #1
+	BNE loop
+					\end{lstlisting}
+					\caption{Conditional loop in ARM Assembly}
+					\ref{code:ARMConditionalLook}
+				\end{code}
+
+				Table \ref{tab:CSPRConditionCodes} contains a list and explanation of CSPR conditional codes. 
+				\begin{table}[htb]
+					\centering
+					\begin{tabular}{|l|c|l|c|}
+						\hline
+						\textbf{Code} & \textbf{Suffix} & \textbf{Description} & \textbf{Flag} \\ \hline
+						\texttt{0000} & EQ & Equal or Equals Zero & Z \\ \hline
+						\texttt{0001} & NE & Not Equal & !Z \\ \hline
+						\texttt{0010} & CS / HS & Carry Set / Unsigned Higher or Same & C \\ \hline
+						\texttt{0011} & CC / LO & Carry Clear / Unsigned Lower & !C \\ \hline
+						\texttt{0100} & MI & Minus / Negative & N \\ \hline
+						\texttt{0101} & PL & Plus / Positive or Zero & !N \\ \hline
+						\texttt{0110} & VS & Overflow & V \\ \hline
+						\texttt{0111} & VC & No Overflow & !V \\ \hline
+						\texttt{1000} & HI & Unsigned Higher & C and !Z  \\ \hline
+						\texttt{1001} & LS & Unsigned Lower or Same & !C or Z \\ \hline
+						\texttt{1010} & GE & Signed Greater Than or Equal & N == V \\ \hline 
+						\texttt{1011} & LT & Signed Less Than & N != V \\ \hline
+						\texttt{1100} & GT & Signed Greater Than & !Z and (N == V) \\ \hline
+						\texttt{1101} & LE & Signed Less Than or Equal & Z or (N != V) \\ \hline
+						\texttt{1110} & AL & Always (Default) & any \\ \hline
+					\end{tabular}
+					\caption{CSPR Conditional Codes}
+					\label{tab:CSPRConditionCodes}
+				\end{table}
+
+
+			\subsection{Loading Data from Memory}
+				The two commands ``LDR'' and ``STR'' are used to access memory. 
+				The former will retrieve data from memory and place it in the given destination register. 
+				The latter will take the data in the register and place it in the memory address given. 
+
+				These also work with size values, which are outlined below:
+				\begin{description}
+					\item[B] Unsigned Byte. 
+					\item[SB] Signed Byte. 
+					\item[H] Unsigned Half Word.
+					\item[SH] Signed Half Word.
+					\item[default] Word. 
+				\end{description}
+				Using these, we can load data stored in the address pointed to by r1 using the following instruction:
+				\begin{quote}
+					LDR r0, [r1]
+				\end{quote}
+				Similarly, we can return one byte of this data using:
+				\begin{quote}
+					STRB r0, [r1]
+				\end{quote}
+
+				Further to this, to load data from an indexed address, the ``[rx, \#n]'' syntax is used. 
+				Similarly, one could increase the address after the address is used by calling ``[rx], \#n''. 
+
+			\subsection{The Stack}
+				ARM assembly still has access to the stack. 
+				This is done using the ``STMFD'' command to push data onto the stack and the ``LDMFD'' command to pop it back off. 
+				The former of these will take an the stack pointer (r13) and a list of registers to push onto the stack. 
+				It will then push them on in reverse order, such that the first register is at the top of the stack and the first to be poped off. 
+
+				Similarly to this, ``LDMFD'' takes the stack pointer and a list of registers. 
+				However, this instruction will pop the first item into the first register. 
+				Code example \ref{code:ARMStack} shows this process. 
+
+				\begin{code}
+					\begin{lstlisting}[language={[Motorola68k]Assembler}]
+STMFD r13!, {r4-r7}
+LDMFD r13!, {r4-r7}
+					\end{lstlisting}
+					\caption{Pushing to and Popping from the Stack in ARM Assembly.}
+					\label{code:ARMStack}
+				\end{code}
+
 	\section{Radare2}
 		Radare2 is a set of tools for working with binary files. 
 		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
