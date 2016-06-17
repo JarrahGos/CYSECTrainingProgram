@@ -269,9 +269,44 @@ LDMFD r13!, {r4-r7}
 			%TODO: Should there be more than this section here?
 	\section{IDA 64}
 	\section{Other Tools}
+		These tools are less specific to reverse engineering, being a part of the GNU development tools or having other purposes. 
+		However, they give an insight into how the program interacts with the system, allowing you to determine other attack paths. 
+		Furthermore, if the code was not properly obfuscated, they may allow you to see strings and other interesting parts of the code left after it was compiled. 
 		\subsection{Strings}
+			This program reads through the binary of any file and prints any printable character strings greater than 4 characters long\footnote{\href{http://linuxcommand.org/man\_pages/strings1.html}{man strings}}.
+			Generally, it will work well with it's default settings. 
+			However, if you have reason to believe that the encoding was changed when programming, the ``-e'' flag will allow you to set that correctly. 
+			Similarly, the ``-f'' flag will be useful if you are searching through multiple files. 
+
+			This tool is also usually piped into grep, as it will often output a significant amount of useless data. 
 		\subsection{Ltrace}
+			Ltrace runs the program given to it as an argument until it exits\footnote{\href{http://linuxcommand.org/man\_pages/ltrace1.html}{man ltrace}}.
+			It will intercept and record all dynamic library calls created by the program, giving you information on what the program is accessing and attempting to achieve. 
+		
+			While this is a good method for determining what the program is attempting to do, it has a number of limitations, such as only working with 32-bit programs on Linux. 
+			Due to this, it is generally attempted, but not relied on. 
 		\subsection{Strace}
+			Strace is the older and more supported brother to Ltrace. 
+			It works in the same manner, but for system calls (calls for the kernel to conduct an action) rather than library calls. 
+			By default, it will print system calls, their arguments and results to STDERR or the file specified with ``-o''. 
+			An example of this output, gathered from tracing system calls from ``cat /dev/null'' is:
+			\begin{quote}
+				open("/dev/null", O\_RDONLY) = 3
+			\end{quote}
+			It is worth noting that pointers to strings (such as for calls to the write syscall) will print the string, rather than the memory address that was passed to the call. 
+
+			Strace also traces signals to the program. 
+			Thus, it can be used to determine how it will act when a given signal is passed to it, or why a program is closing with no error or user interaction. 
+			
+			The following is a list of arguments which may be useful when reverse engineering:
+			\begin{description}
+				\item[-f] Follow forking of the traced program and report on their calls. 
+				\item[-i] Print the instruction pointer at the time of each system call. 
+				\item[-x] Print non-ASCII strings as Hex. 
+				\item[-e] Restrict the syscalls that are traced.
+				\item[-p] Attached to a given pid and begin tracing the already running process. 
+				\item[-E] Add (using <var>=<val>) or remove (using <var>) a variable from the process' environmental variables.
+			\end{description}
 	\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
 		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
@@ -301,3 +336,14 @@ LDMFD r13!, {r4-r7}
 	
 		%TODO: Revise this section
 	\section{Pwn Adventure}
+		Pwn Adventure is a reverse engineering CTF created to test players ability to both reverse engineer the game and stay focused at the same time.
+		It was written in C++ using the Unity engine, making it fully compiled and relatively difficult to reverse engineer. 
+		However, no client authentication was written into the server, making it trust anything the client tells it it's doing. 
+
+		This means that the player can reverse engineer and modify the client, changing their weapons, character and environment to their will. 
+		More importantly, however, is the fact that the only way to win is to do this.
+		Thus, making this CTF the gamification of reverse engineering. 
+
+		What follows, is a basic introduction to the tools needed to start breaking into the game, and a few hints for where to look first. 
+		It will contain minimal spoilers, so as to allow the game to challenge the reader. 
+		Before you start, I recommend getting a few friends together, setting up the server, and setting aside a week. 
