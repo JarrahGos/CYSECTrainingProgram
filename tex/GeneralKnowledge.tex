@@ -547,3 +547,117 @@
 		
 	\section{QR Codes}
 	\section{Regex}
+		Regular Expressions, hereby shortened to regex, are a means of expressing a variable set of characters succinctly. 
+		Similar to mathematics, where there are a number of symbols with specific meanings, 
+		regex treats each character within it as having a specific meaning and reason\cite{regexTHW}. 
+
+		It is worth noting that while this is exceptionally useful, it does have it's constraints. 
+		Generally, it will be better to create multiple small expressions and programmatically join them together. 
+		The alternative often becomes unmanageable\footnote{\url{http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html}}.
+
+		\subsection{Basic regex}
+			One of the most basic concepts of regex is that of character sets. 
+			If you can order characters, you can create a range out of them to use. 
+			For example, ``[a-z]'' will match all lower case characters. 
+			Similarly, ``[0-1]'' will match binary only.  
+
+			We can make further use of this by adding a length value to these. 
+			This will capture $x$ number of characters found within the range specified. 
+			For example, ``[0-1]\{8\}'' will match exactly one byte of binary. 
+			
+			These sets can also be strung together. 
+			If we knew we wanted a string of 10 characters, uppercase, lowercase or numeric, we could use ``[a-zA-Z0-9]\{10\}''. 
+			One could also use ``\{10,12\}'' to designate between 10 and 12 characters. 
+
+			Finally, you need not use these character sets for everything. 
+			If you know you have a specific string, but not what comes after it, you could use ``string[0-9]\{5\}''. 
+		\subsection{Number of Characters}
+			While so far we have been explicit about the number of characters to match. 
+			However, we will often not know this, or will have a large variance. 
+			Thus, special characters have been implemented to allow for this.
+			Table \ref{tab:numberOfCharacters} contains the symbols used to implement this. 
+
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{|l|l|}
+					\hline
+					\textbf{Character} & \textbf{Description} \\ \hline
+					? & Zero or one of the characters. \\ \hline
+					+ & One or more of the characters. \\ \hline
+					* & Zero or more of the characters. \\ \hline
+				\end{tabular}
+				\caption{Wildcards for Matching Multiple Characters}
+				\label{tab:numberOfCharacters}
+			\end{table}
+			This for example is useful for matching pluralisation such as ``word[s]?''. 
+			Similarly, we could check for questions using ``[?]+''. 
+
+		\subsection{Groups}
+			Groups are used when you have a small piece of variable data near a constant piece that you don't need. 
+			An example of this is a movie time, which is usually shown as ``screening: <time>''. 
+			Using this example, the following regex would return the time: ``screening: ([\textbackslash{}w]*)''.
+		\subsection{Anchors}
+			Anchors are used to ensure that you are matching a string in the correct place\footnote{\url{http://www.rexegg.com/regex-anchors.html}}. 
+			For example, you could want to match only numeric strings which start with a number at the start of the line, 
+			you could use ``\^{}[d]+''.
+			The major anchors are `\^{}' for start of line and `\$' for it's end. 
+			There are other more minor anchors, such as `\textbackslash{}A' and `\textbackslash{}Z' which match the start or end of a string respectively. 
+			These can be exceptionally useful, as they allow you to match an explicit part of the line or string. 
+		\subsection{Shortcuts}
+			Rather than typing full sequences each time, there are a number of shortcuts which can be used. 
+			These generally also help to make the expression more readable, but do not always work (it is based on OS and implementation).
+			The table \ref{tab:regexShortcuts} contains a list of the main shortcuts available in regex. 
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{|l|l|}
+					\hline
+					\textbf{Shortcut} & \textbf{Description} \\ \hline
+					A & Matches upper and lower case alphabet. Same as ``[a-zA-Z]''. \\ \hline
+					S & Matches white-space, including tabs. \\ \hline
+					w & Matches alphanumeric. Same as ``[a-zA-Z0-9]''. \\ \hline
+					W & Matches the opposite of w. \\ \hline 
+					. & Matches any character. \\ \hline
+					d & Matches numbers. Same as ``[0-9]''. \\ \hline
+					D & Matches the opposite of d. \\ \hline
+				\end{tabular}
+				\caption{Shortcut Sequences in Regex}
+				\label{tab:regexShortcuts}
+			\end{table}
+		\subsection{Escaping}
+			Regex is a symbolic language. 
+			This means that some symbols have specific meanings. 
+			However, occasionally, we just want to use them as the symbol they are. 
+			For example, what if we want to find a value in dollars?
+			Using ``\$[d]+'' obviously wouldn't work for this, as it will find numbers after the end of a line. 
+			However, we can escape characters to ensure that regex reads the `\$' as just that:
+			``\textbackslash\$[d]+''\footnote{\url{https://xkcd.com/1638/}}.
+		\subsection{Tools}
+			There are a number of tools that rely on regex to work. 
+			You have quite likely already been using some of them without the regex aspect. 
+			Including it now will give you far more control of the files you are editing with them. 
+
+			\subsection{grep}
+				This is the general string parser for UNIX systems. 
+				To date, you have likely been using it by piping data into it and giving it a search term. 
+				However, it will also search using regex, and can do so for whole files or folders. 
+				For example, in my source for this document, the following will find all displayed equasions:
+				\begin{lstlisting}[style=CLI]
+					$ grep -e $\$\$ tex/*
+				\end{lstlisting}
+			\subsection{sed}
+				Sed is a stream editor, it is designed to take input and apply a rule to it to change the content. 
+				This makes it exceptionally useful for editing files in bulk for similar changes. 
+				Following the examples based on the source code for this book, the following was used in it's early stages to change from using chapters, to using sections (a change that I quickly undid):
+				\begin{lstlisting}[style=CLI]
+					$ sed s:section:subsection:g -i .bac *.tex
+					$ sed s:chapter:section: -i .bac *.tex
+				\end{lstlisting} %TODO: Make this use regex specifically. 
+			\subsection{vim}
+				While I am specifically discussing vim, there most other editors on Linux or BSD will allow you to use regex. 
+				For vim, there are a number of commands which give you interactive access to functions similar to those disucessed above for sed and grep. 
+				For example, grep-like searches of the currently open file can be initiated using ``/''
+				Furthermore, sed like find and replace is done using only slight alterations to the syntax:
+				\begin{lstlisting}[numbers=none]
+:%s:<find>:<replace>:<g for multiple on one line><c to ask first>
+				\end{lstlisting}
+
