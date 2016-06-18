@@ -319,16 +319,15 @@
 			It is an object file displaying tool that works in a similar way to objdump, but can be told to just give header information. 
 
 		\subsection{Windows Portable Executable}
+			\begin{wrapfigure}{I}{0.45\textwidth}
+				\includegraphics[width=0.43\textwidth]{./PE.png}
+				\label{fig:PortableExecutable}
+				\caption{Layout of Windows Portable Executable Files}
+			\end{wrapfigure}
 			Portable Executable (PE) is the Windows executable format. 
 			It is based on the older UNIX COFF format, which was eventually replaced with ELF. 
 			These files are commonly found within ``.exe'' and ``.DLL'' files on windows, as these are the executable 
 			package and dynamically linked libraries on this system. 
-			\begin{figure}[t]
-				\centering
-				\includegraphics[scale=0.06]{./PE.png}
-				\label{fig:PortableExecutable}
-				\caption{Layout of Windows Portable Executable Files}
-			\end{figure}
 
 			This format retains some legacy DOS support in that a DOS header is placed at the top of the file. 
 			This header can either contain a full DOS version of the program, or simply a stub informing the user that the program is not DOS compatible. 
