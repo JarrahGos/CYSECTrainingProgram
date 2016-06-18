@@ -137,7 +137,7 @@
 				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP. 
 				It is also worth noting that normal instructions do not effect these flags, but can be made to by appending `s' to them. 
 				
-				For example, the following code will loop 5 times before exiting:
+				The code in example \ref{code:ARMConditionalLoop} will loop 5 times before exiting:
 				\begin{code}
 					\begin{lstlisting}[language={[ARM]assembler}]
 	MOV r2, #5
@@ -146,7 +146,7 @@ loop
 	BNE loop
 					\end{lstlisting}
 					\caption{Conditional loop in ARM Assembly}
-					\ref{code:ARMConditionalLook}
+					\label{code:ARMConditionalLoop}
 				\end{code}
 
 				Table \ref{tab:CSPRConditionCodes} contains a list and explanation of CSPR conditional codes. 
@@ -274,7 +274,7 @@ LDMFD r13!, {r4-r7}
 						\multicolumn{6}{|>{\centering\arraybackslash}p{6cm}|}{} & AH & AL \\ \hline
 					\end{tabular}
 					\caption{x86-64 Sub Registers for RAX}
-					\label{x86SubRegisters}
+					\label{table:x86SubRegisters}
 				\end{table}
 				%TODO: Fix this table and finish it. 
 
