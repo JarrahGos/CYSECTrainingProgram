@@ -18,16 +18,13 @@
 		It is worth noting that there are a number of similarities between these. 
 		This mainly occurs due to the nature of the machine, which can still only interpret binary. 
 		Thus, both ARM and X86 must be assembled into this machine code. 
-		\subsection{x86 Assembly}
-
-		%TODO: Decide whether this goes here or in programming. 
 		\subsection{ARM Assembly}
 			The world of IT is becoming increasingly mobile, with ARM processors dominating that area. 
 			Thus, to reverse engineer in the modern world, knowing x86 is no longer enough. 
 			Furthermore, ARM being a RISC processor, it has a smaller and easier to understand instruction set. 
 			This makes learning Assembly with an arm processor easier than doing the same with x86\footnote{\url{http://www.davespace.co.uk/arm/introduction-to-arm/barrel-shifter.html}}. 
 
-			\subsection{Registers}
+			\subsubsection{Registers}
 			%rewrite the names of these in a better format. This looks like shit. 
 				The registers of an ARM processor are generally referred to as ``r0'' to ``r15''. 
 				However, there are also aliases, ``a1'' to ``a4'', ``v1'' to ``v6'', ``sb'', ``sl'', ``fp'', ``sp'', ``lr'' and ``pc'' which map respectively to the normal names. 
@@ -45,7 +42,7 @@
 
 				Furthermore, depending on the arm implementation in use, these registers may be 16, 32 or 64-bit. 
 				
-			\subsection{Instructions}
+			\subsubsection{Instructions}
 				Instructions are given in the following syntax:
 				\begin{quote}
 					<operation>\{condition\}\{flags\} Rd, Rn, Operand
@@ -85,7 +82,7 @@
 					\label{tab:ARMInstructions}
 				\end{table}
 
-			\subsection{Multiplication and Division}
+			\subsubsection{Multiplication and Division}
 				Multiplication and Division are implemented as a function of the \emph{barrel shifter} in ARM assembly. 
 				This works by applying a logical shift or rotate to the operand before using it in an operation. 
 				The following explains the types of shift available:
@@ -108,7 +105,7 @@
 						Using the same register for Rn and Rd has unpredictable results. 
 				\end{description}
 
-			\subsection{Operand}
+			\subsubsection{Operand}
 				The operand within ARM assembly makes it work slightly differently to x86. 
 				This value is used instead of the destination in mathematical or logical operations, with the destination acting only as a store.
 				However, it also allows for barrel shifting and usage of constants. 
@@ -120,7 +117,7 @@
 				It is also worth noting that this position can only hold 8-bits. 
 				However, the compiler will convert it into a barrel shifted operation if it is larger than this. 
 
-			\subsection{Branching}
+			\subsubsection{Branching}
 				In assembly, we need a way to move about within the code. 
 				This is usually done by branching, a similar idea to GOTO. 
 				The following two instructions are used for this purpose, with the latter two used to come back to the calling instruction. 
@@ -134,7 +131,7 @@
 						This only works on newer architectures. 
 				\end{description}
 
-			\subsection{Conditional Execution}
+			\subsubsection{Conditional Execution}
 				The ARM architecture allows conditionals on every instruction. 
 				This is done by appending either ``EQ'' or ``CC'' to the instruction mnemonic. 
 				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP. 
@@ -142,7 +139,7 @@
 				
 				For example, the following code will loop 5 times before exiting:
 				\begin{code}
-					\begin{lstlisting}[language={[Motorola68k]assembler}]
+					\begin{lstlisting}[language={[ARM]assembler}]
 	MOV r2, #5
 loop
 	SUBS r2, r2, #1
@@ -179,7 +176,7 @@ loop
 				\end{table}
 
 
-			\subsection{Loading Data from Memory}
+			\subsubsection{Loading Data from Memory}
 				The two commands ``LDR'' and ``STR'' are used to access memory. 
 				The former will retrieve data from memory and place it in the given destination register. 
 				The latter will take the data in the register and place it in the memory address given. 
@@ -204,7 +201,7 @@ loop
 				Further to this, to load data from an indexed address, the ``[rx, \#n]'' syntax is used. 
 				Similarly, one could increase the address after the address is used by calling ``[rx], \#n''. 
 
-			\subsection{The Stack}
+			\subsubsection{The Stack}
 				ARM assembly still has access to the stack. 
 				This is done using the ``STMFD'' command to push data onto the stack and the ``LDMFD'' command to pop it back off. 
 				The former of these will take an the stack pointer (r13) and a list of registers to push onto the stack. 
@@ -215,13 +212,176 @@ loop
 				Code example \ref{code:ARMStack} shows this process. 
 
 				\begin{code}
-					\begin{lstlisting}[language={[Motorola68k]Assembler}]
+					\begin{lstlisting}[language={[ARM]Assembler}]
 STMFD r13!, {r4-r7}
 LDMFD r13!, {r4-r7}
 					\end{lstlisting}
-					\caption{Pushing to and Popping from the Stack in ARM Assembly.}
+					\caption{Using the Stack in ARM Assembly.}
 					\label{code:ARMStack}
 				\end{code}
+
+		\subsection{x86 Assembly}
+			While ARM is becoming more common, x86, or Intel assembly is not becoming any less common. 
+			There are two syntaxes for x86, Intel and AT\&T. 
+			While these will assemble into the same binary, but show slightly differently as code\footnote{\url{http://opensecuritytraining.info/IntroX86.html}}. 
+
+			Furthermore, x86, unlike ARM is a Complex Instruction Set Computer. 
+			This means that the number of instructions can be huge, with some doing exceptionally specific things. 
+			RISC processors will only have a small number of instructions, but can still do the same amount. 
+
+			\subsubsection{Endianness}
+				Intel processors are little endian. 
+				This means that the least significant byte is stored in memory first. 
+				Thus, 0x123456 is stored in memory as ``56, 34, 12''. 
+				However, when stored in the register, it is big endian. 
+
+				In practice, this makes no difference. 
+				However, if you have a dump of RAM or need access it byte by byte, you must take this into account. 
+				Similarly, while the bytes themselves will be ordered in this way, individual bits will not be reordered. 
+
+			\subsubsection{Registers}
+				x86 assembly has far less registers than ARM. 
+				There are 6 completely general purpose registers, 2 specific but accessible registers and an instruction pointer. 
+				The length of these is based on the version of x86 being used. 
+				Thus, x86-64 has 64-bit registers (labeled with R) while x86 has 32-bit registers (labeled with E). 
+
+				The following is a list of the conventions for x86 registers:
+				\begin{description}
+					\item[RAX] Stores function return values, used as an accumulator. Usually used as a general scratch register. 
+					\item[RBX] Stores the base pointer for the data section. Generally just used as a scratch register. 
+					\item[RCX] Counter for string and loop operations. Again, generally used as a scratch register. 
+					\item[RDX] IO Pointer. Commonly used for a scratch register. 
+					\item[RSI] Source pointer for string/array operations. 
+					\item[RDI] Destination pointer for string/array operations. 
+					\item[RSP] Stack pointer. 
+					\item[RBP] Stack frame base pointer. 
+					\item[RIP] Pointer to the next instruction to execute. 
+						Direct control of this instruction is not available, however jump instructions do exist. 
+				\end{description}
+
+				When calling functions in x86 assembly, it must be assumed that RAX, RDX and RCX will be overwritten. 
+				However, the called function must either not use or save the state of RBP, RBX, RSI and RDI. 
+
+				Furthermore, these registers are backwards compatible with older code by having smaller forms of registers. 
+				Table \ref{table:x86SubRegisters} shows how these registers are broken down. 
+				\begin{table}
+					\centering
+					\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|}
+						\hline
+						\multicolumn{8}{|>{\centering\arraybackslash}p{8cm}|}{RAX} \\ \hline
+						\multicolumn{4}{|>{\centering\arraybackslash}p{4cm}|}{} & \multicolumn{4}{|>{\centering\arraybackslash}p{4cm}|}{EAX} \\ \hline
+						\multicolumn{6}{|>{\centering\arraybackslash}p{6cm}|}{} & \multicolumn{2}{|>{\centering\arraybackslash}p{2cm}|}{AX}  \\ \hline
+						\multicolumn{6}{|>{\centering\arraybackslash}p{6cm}|}{} & AH & AL \\ \hline
+					\end{tabular}
+					\caption{x86-64 Sub Registers for RAX}
+					\label{x86SubRegisters}
+				\end{table}
+				%TODO: Fix this table and finish it. 
+
+				Similarly to the ARM CSPR, x86 has an EFLAGS register, which contains the result of comparisons and arithmetic. 
+				The key flags here are:
+				\begin{description}
+					\item[Zero] If the last instruction resulted in 0, this flag will be set. 
+					\item[Sign] Set equal to the most significant bit of the result. 
+						If the result was a signed integer, this will be it's sign. 
+						If the result was not signed, this will be meaningless. 
+				\end{description}
+
+			\subsubsection{The stack}
+				As with ARM assembly, x86 has a concept of a stack. 
+				This again is implemented as a LIFO structure which starts at a relatively high memory address and grows down. 
+				
+				ESP is the pointer to the currently accessible part of the stack. 
+				This is the most recent value that was pushed onto the stack. 
+				Anything at lower memory addresses than this should be random data. 
+				
+				The stack is used to keep track not only of data, but also of function calls and their data. 
+				A stack frame is created with every function call, allowing groups of data to be added or removed. 
+				This also allows for returning to a specific location, stored as the return address on the stack. 
+
+				Accessing this structure is done using two instructions. 
+				The first of these is push, which will push a register, part thereof or an immediate value onto the next free location the stack. 
+				This instruction will work for any register except the instruction pointer and EFLAGS. 
+				It also has the side effect of moving the stack pointer to now point at the new top of the stack. 
+
+				The opposite operation to this is pop. 
+				This will remove the current top of the stack, placing it's value into the specified register. 
+				Furthermore, this will have the side effect of incrementing the stack pointer. 
+
+			\subsubsection{Calling Conventions}
+				There are numerous calling conventions. 
+				This section will cover the C declaration convention, which is commonly used in compiled C code. 
+
+				When a function is called, the parameters are pushed onto the stack right to left. 
+				This means that the first item on the stack will be the first parameter. 
+				It will also save the old stack frame pointer, making it available to be restored before the function exits. 
+				Finally, the most significant half of the returned value is placed in RDX, with the remainder placed in RAX. 
+				If the value does not need to be split, it will be placed in RDX. 
+
+				The ``call'' instruction is used to move to another function. 
+				This is used when you expect to return to the code you are currently executing.
+				It is expected that you have followed the above convention, but it will automatically set up the return address on the stack so the function can return execution to the code that called it. 
+
+				The inverse of this is the ``ret'' instruction. 
+				This does nothing more than popping the return value from the stack into RIP. 
+				Execution will now proceed from the address after the call was made. 
+
+				It is finally worth noting that Windows does not work this way. 
+				It expects that the function will clean up memory, thus requiring that the ret instruction be told how many bytes to remove from the stack. 
+
+			\subsubsection{Basic Instructions}
+				The following list describes some of the more useful basic instructions\footnote{\url{http://www.cs.virginia.edu/~evans/cs216/guides/x86.html}}:
+				\begin{description}
+					\item[MOV] Allows movement from:
+						\begin{itemize}
+							\item Register to register
+							\item Memory to Register
+							\item Immediate to Register
+							\item Immediate to Memory
+						\end{itemize}
+						This is used to move either data or addresses around. 
+					\item[PUSH] Push a register, immediate or memory address to the stack. 
+					\item[POP] Reverse operation of push. 
+					\item[LEA] Load the address specified by the second operand into the first. 
+					\item[ADD] Add the two operands and place the result into the first. 
+					\item[INC/DEC] Increment or decrement the value in the operand. 
+					\item[IMUL] Multiply the two integer operands, placing the result in the first. 
+					\item[IDIV] Divide the two integer operands, placing the result in the first. 
+					\item[AND] Logical AND of the two operands, placing the result in the first. 
+					\item[OR] Logical OR of the two operands, placing the result in the first. 
+					\item[XOR] Logical exclusive OR of the two operands, placing the result in the first. 
+					\item[NOT] Logical negation of an operand. 
+					\item[NEG] Not, but assuming two's compliment notation. 
+					\item[SHL/SHR] Performs a bit shift on the first operand by the number in the second. 
+					\item[J] Used with the following conditions (based on EFLAGS) to jump to a given label or address:
+						\begin{description}
+							\item[JMP] No condition, always jumps. 
+							\item[JE] Jump if equal. 
+							\item[JNE] Jump if not equal. 
+							\item[JZ] Jump if zero. 
+							\item[JG] Jump if greater than.
+							\item[JGE] Jump if greater or equal. 
+							\item[JL] Jump if less than. 
+							\item[JLE] Jump if less than or equal. 
+						\end{description}
+					\item[CALL/RET] Call or return from a function respectively. 
+				\end{description}
+			\subsubsection{Addressing}
+				Data that is known before the program starts (and should be accessible globally) can be included with the ``.data'' directive. 
+				This creates a section of memory of a given size which contains the required data. 
+				This process can be seen in code example \ref{code:x86.data}. 
+				\begin{code}
+					\lstinputlisting[language={[x86masm]Assembler}]{./x86.data}
+					\caption{Using the .data Section of x86 Assembly}
+					\label{code:x86.data}
+				\end{code}
+
+				Manual addressing in x86 is done using the ``[]'' square brackets. 
+				This means to retrieve the value stored at the address given inside. 
+				However, you need not have the exact address, just a way to compute it. 
+				Within these brackets, you can add, multiply or subtract from registers or immediate values to get the address. 
+				For example, the ``[RSI+4*RBX]'' would give you data stored at that location after the calculation has completed. 
+
 
 	\section{Radare2}
 		Radare2 is a set of tools for working with binary files. 
@@ -267,7 +427,8 @@ LDMFD r13!, {r4-r7}
 			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
 			I recommend starting with the sprint speed. 
 			%TODO: Should there be more than this section here?
-	\section{IDA 64}
+%	\section{IDA 64}
+%  TODO: While this section should be in here, I will not be able to get a copy to use. 
 	\section{Other Tools}
 		These tools are less specific to reverse engineering, being a part of the GNU development tools or having other purposes. 
 		However, they give an insight into how the program interacts with the system, allowing you to determine other attack paths. 
