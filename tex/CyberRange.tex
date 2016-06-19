@@ -83,6 +83,30 @@
 			does not come with Kali for licencing reasons. 
 			However, this tool is exceptionally useful when conducting initial vulnerability scans. 
 
+			Because this may be one of your first experiences with Linux, do not customise it further than installing the tools you want at this point. 
+			Rather, when you come across something you wish to try, take a snapshot of the machine and customize it. 
+
+		\subsection{Keep a Windows Machine Handy}
+			Much to my displeasure, windows is exceptionally common in the enterprise world. 
+			This means that attacks you conduct will often involve breaking into a windows machine at one point or another. 
+			Thus, keeping a Windows machine handy will solve numerous problems for you. 
+			
+			This operating system has been built to work with Windows servers, unlike Linux which has a number of tools which allow it to do so. 
+			Using Windows as your base for specific tools such as Cain and Abel or specific attacks like PowerShell remoting gives you the advantage of using the server the way a normal user would. 
+			I also recommend that this machine have access to both Metasploit and PowerSploit. 
+			Both of these tools will be useful for attacking Windows based networks. 
+
+		\subsection{Remote Hash Cracking}
+			So that you do not need to carry around a beefy desktop to every attack, you should setup a system which can be remotely accessed to run hash cracking attacks. 
+			This system should have access to at least one high power graphics card to which you can remotely pass hashes. 
+
+			My recommendation is that this machine sit on a gaming computer or workstation connected to your home network. 
+			This way, you can forward port 22 (ssh) through your router, giving access to the computer from any location. 
+			Once this is setup, either leave the machine running while running an attack, or enable wake on LAN and ensure that your router will pass the packets on. 
+
+			Having a setup like this will save you significant time during a test. 
+			Rather than slowing down your local workstation with the hash cracking process (and generating lots of heat) you can pass the processing off to another machine. 
+
 
 	\section{Building Targets}
 		While the basic targets found on the Internet are a good starting point, one must move beyond this if they are to learn properly how to gain access to real systems. 
@@ -199,5 +223,11 @@
 				The following is an nmap scan of the web server:
 				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
 
+
+
+			
+		\subsection{Windows Server 2008}
+			This machine acts as the central hub for the windows portion of the network. 
+			As such, it provides Web Services, File Sharing, User Accounts and Email. 
 
 
