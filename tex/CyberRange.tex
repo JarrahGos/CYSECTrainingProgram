@@ -67,6 +67,23 @@
 			Many of these are built as a CTF, meaning that they have a number of vulnerabilities and challenges within them. 
 
 	\section{Attack Environment}
+		Everyone will have a slightly different attack environment. 
+		This is because they will have different backgrounds, experiences and preferences for how they work. 
+		The environment discussed here is an attempt to find a middle ground within these. 
+		It should give anyone a place to start, but is far from the environment that you will have designed in just a year. 
+		It is also worth noting that these machines will likely be virtualized on your main machine, rather than being run as separate computers\cite{playbook}.  
+		Due to this, the host itself doesn't matter as much as the software that is running on it. 
+
+		\subsection{Attack Machine}
+			This is your primary means of attack. 
+			Due to this, it should be running Kali Linux, which is the current network penetration testing distribution. 
+			However, you will want to keep it well updated and add tools that do not come with it by standard. 
+
+			For example, Nessus, which will be covered in a chapter \ref{ch:NetworkPenetration}, 
+			does not come with Kali for licencing reasons. 
+			However, this tool is exceptionally useful when conducting initial vulnerability scans. 
+
+
 	\section{Building Targets}
 		While the basic targets found on the Internet are a good starting point, one must move beyond this if they are to learn properly how to gain access to real systems. 
 		Thus, this section will explain how to build your own targets. 

@@ -269,20 +269,21 @@
 			It was originally released with System V 4, quickly becoming the standard across UNIX and UNIX-like systems. 
 
 			An ELF file, seen in figure \ref{fig:ELF}, has a number of structures which make allow it to link to various places on the system. 
-			\begin{figure}
-				\centering
-				\includegraphics[scale=0.2]{./ELF.png}
-				\label{fig:ELF}
-				\caption{ELF Structures and Internal Linking}
-			\end{figure}
 			\begin{description}
 				\item[Program Header Table:] This is a description and mapping of memory segments used in the program. 
 					These could either be different modules of the program, or simply a divider for code and data. 
 				\item[Section Header Table:] Describes the programs sections (such as .code or .data).
-				\item[The Data Referred to by these Tables:] This is either the code or data itself which is described 
+				\item[The Data Referred to Above:] This is either the code or data itself which is described 
 					and pointed to by thee above tables. 
 			\end{description}
 
+			\begin{wrapfigure}{I}{0.5\textwidth}
+				\centering
+				\vspace{-20pt}
+				\includegraphics[width=0.48\textwidth]{./ELF.png}
+				\label{fig:ELF}
+				\caption{ELF Structures and Internal Linking}
+			\end{wrapfigure}
 			These files are then linked to libraries, which are installed on the system to provide a given function to multiple programs\footnote{\url{http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html}}.
 			These libraries mean that program ELF files can be small, as they do not have to contain the code required to conduct all tasks. 
 			However, it also means that there is another attack point and a dependency on the system.
@@ -293,6 +294,7 @@
 
 			For these cases, when the program is compiled, a separate program known as a ``linker'' will create the required pointers within the ELF output, allowing the program to call libraries on any system it is placed on. 
 			This system means that the header sections of ELF files often refer to files and functions which do not exist within the ELF itself\footnote{\url{http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html}}. 
+			\FloatBarrier
 
 			There are a number of tools which have been written to help working with ELF files:
 			\begin{description}
