@@ -6,6 +6,7 @@
 	Finally, a computer is programmed in a language such as C or Python. This gives us the interfaces and systems which we interact with daily. 
 	\section{Hardware}
 		\subsection{CPU} 
+		\index{CPU}
 			The CPU is the microprocessor which forms the heart of the modern computer. 
 			While not the only microprocessor in a modern computer, they are the most major and the one which is commonly programmed for. 
 			This lesson will discuss the current design and implementation of CPUs, and the impact of this on the way that a computer works. 
@@ -40,10 +41,12 @@
 					Contains the circuitry which interprets instructions and creates electrical signals which direct other parts of the CPU to carry out the instructions. 
 					The control unit is also the communicator between the ALU and the Memory.
 				\paragraph{The Arithmetic Logic Unit}
+				\index{ALU}
 					(ALU) is the processor for both integer and bitwise logic. 
 					The inputs for this circuit are the decoded signals from the Control Unit, as well as the Operands (arguments) which were passed with the instruction. 
 					Once the calculation has taken place, the ALU will output to either the register or memory location designated by the instruction. 
 				\paragraph{The Floating Point Unit}
+				\index{FPU}
 					(FPU) is the logic circuit used to calculate floating point (real) numbers. 
 					While these numbers can be computed using only the ALU, it is not optimized to calculate them.
 					Thus to expedite the process an FPU was created. 
@@ -56,6 +59,7 @@
 					In protected mode, the segments used by each program are tracked by the processor to ensure that a program cannot write outside of it's own segment. 
 					This is why we cannot run a buffer overflow into another program, the processor would pick it up and the program would segmentation fault. 
 			\subsubsection{The Registers}
+			\index{Registers}
 				The CPU also contains its own extremely fast memory, known as registers. 
 				These blocks of memory are capable of being used as operands for instructions, and are commonly both the output and the input of a CPU instruction.\\ 
 				There are specific uses for registers in the x86 CPU: \footnote{\url{http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html}}
@@ -128,6 +132,7 @@
 
 
 				\subsection{RAM}
+				\index{RAM}
 					%TODO: Add in chapter on segments of memory and protected mode. 
 					The main memory of a computer, known as Random Access Memory (RAM) is the first storage device of the computer outside that of the processor. 
 					RAM is used because it is fast, however, this comes at the loss of price and volatility. 
@@ -135,18 +140,22 @@
 					The speed at which this occurs forms the basis for cold boot attacks. %TODO: Ref this to forensics. 
 					For our purposes, memory should be thought of in terms of the segments and data structures which make it up. 
 					\subsubsection{The .BSS Section}
+					\index{.BSS}
 						The BSS Section is the section of memory used for static and global variables. 
 						Generally the variables outlined in this chapter are not initialized until the program is running. 
 						A .BSS variable may be a memory location that you wish to store a string in later in the program. 
 					\subsubsection{The .data Section}
+					\index{.data}
 						The data Section is the section for global variables which are to be initialised before the program starts. 
 						This is where you would put the data which is to be accessed by the program, rather than through inputs or environmental variables. 
 					\subsubsection{The .code Section}
+					\index{.code}
 						The code Section is the section which contains the code for the program. 
 						It cannot create new variables, but it can access those created in the .BSS and .data chapters. 
 						This chapter is usually broken through the use of labels and navigated by jump statements. 
 						One should be careful to ensure that these statements do not become hard to follow. 
 					\subsubsection{The Heap}
+					\index{Heap}
 						The Heap is the data structure used to store larger memory items in a high level programming language. 
 						In an object oriented language, items stored on the heap are usually created through the use of the ``new'' command. 
 						In procedural languages, commands such as ``malloc'' are used to allocate memory to the heap. 
@@ -154,6 +163,7 @@
 						Items stored on the heap start at lower memory locations and move to higher as more items are placed on the heap. 
 						This will become important as we move to binary exploitation. 
 					\subsubsection{The Stack}
+					\index{Stack}
 						The Stack is the more widely used Data Structure. 
 						Variables in any language as soon as they are named are stored on the stack frame of the current scope. 
 						Even items stored on the heap have a pointer on the stack. 
@@ -197,6 +207,7 @@
 		We have now left this time behind through the use of compiled languages. 
 		However, an understanding of assembly is still necessary due to the difficulty of returning from binary to source code. 
 		\subsubsection{Binary}
+		\index{Binary}
 			On a computer, binary is everything.
 			Every file, every program, every instruction is binary. 
 			However, this is meaningless without some means of translating the numbers into their useful form. 
@@ -238,6 +249,7 @@
 			Due to this, this document will only discuss assembly for these reasons, such as in the \hyperref[ch:ReverseEngineering]{Reverse Engineering chapter} or the Shellcode section of Chapter \ref{ch:BinaryExploitation}.
 			
 	\section{Boolean Mathematics}
+	\index{Boolean Mathematics}
 		Boolean Mathematics, or Boolean Logic is the basis for most low level operations within a computer. 
 		This is because it is used at all levels, from the circuitry itself, up to high level programming. 
 		Boolean logic deals with evaluations to either \textbf{True} or \textbf{False}, 
@@ -247,12 +259,16 @@
 		These can be linked together, allowing for complex calculations. 
 		The definitions for these statements can be found below:
 			\begin{description}
+					\index{AND}
 				\item[AND] Both inputs must evaluate to true. 
 					This will be shown as either \& (bitwise), \&\& (logical) or $\wedge$ (Mathematical).
+					\index{OR}
 				\item[OR] Either of the inputs must evaluate to true. 
 					This will be shown as either | (bitwise), || (logical) or $\vee$ (Mathematical). 
+					\index{NOT}
 				\item[NOT] This simply negates the output of one expression.
 					This will be shown as either \~ (bitwise), ! (logical) or $\neg$ (Mathematical).
+					\index{XOR}
 				\item[XOR] Either one or the other must be true. However, both cannot be. 
 				This will be shown as either \verb+^+ (bitwise) or $\oplus$ (Mathematical).
 			\end{description}
@@ -264,6 +280,7 @@
 		This section will discuss these differences, as well as the way that different OS's link executable files together. 
 
 		\subsection{Linux and ELFs}
+		\index{ELF}
 			Linux uses the Executable and Linkable Format (ELF)\footnote{\href{http://linux.die.net/man/5/elf}{man 5 ELF}}. 
 			This format is designed to standardise executables, object code, shared libraries and core dumps. 
 			It was originally released with System V 4, quickly becoming the standard across UNIX and UNIX-like systems. 
@@ -304,7 +321,9 @@
 					This will give some data on how the program was compiled. 
 			\end{description}
 
+			
 		\subsection{Mach-O}
+		\index{Mach-O}
 			Mach Object (or Mach-O) is the executable file format used on OS X, NeXTSTEP (which OS X was based on) and iOS. 
 			As with ELF files, these are used for object code, shared libraries, linked code and core dumps\footnote{\url{https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html}}.
 
@@ -320,6 +339,7 @@
 			It is an object file displaying tool that works in a similar way to objdump, but can be told to just give header information. 
 
 		\subsection{Windows Portable Executable}
+		\index{Windows PE}
 			\begin{wrapfigure}{I}{0.45\textwidth}
 				\includegraphics[width=0.43\textwidth]{./PE.png}
 				\label{fig:PortableExecutable}

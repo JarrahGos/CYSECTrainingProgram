@@ -7,6 +7,7 @@
 	This chapter will discuss the common methods for gathering this data and analysing it. 
 	
 	\section{File Carving}
+	\index{File Carving}
 		File carving is the act of pulling a file from another or directly from the disk without the use of the file's or file system's meta data as would normally be done using a file manager. 
 		This is done because it is possible to hide a file within another---placing it after the EOF line of the first file---or delete a file from disk without overwriting it, avoiding it being accessible by normal means. 
 		Before attempting any of these actions on a drive, it is recommended that you attach the drive (preferably with a write blocker) and take a full image of it first. 
@@ -48,6 +49,7 @@
 			Note that some of these files may have more than one image embedded within them. 
 
 		\subsection{Using File Carving tools}
+		\index{Foremost}
 			The same images can be carved almost immediately using a tool such as foremost. 
 			This tool will automatically read through the file looking for file specific headers, footers and data structures,\footnote{\url{http://linux.die.net/man/1/foremost}}
 			enabling it to find most of the files we could using the above technique, and possibly a few more. 
@@ -63,6 +65,7 @@
 
 
 	\section{Steganography}
+	\index{Steganography}
 		Steganography serves to hide messages in another, more inocuous message, such that the hidden messages' existance is concealed. 
 		Generally, this is done by first writing a plain message which can be publicly read (such as a letter or an image), 
 		then adding small details to this for the intended recipient. 
@@ -81,6 +84,7 @@
 		The focus of this section will be on doXXing a remote server. 
 		This is because it can be a useful tool in determining where a compromised system is hosted as well as who may have compromised it. 
 		\subsection{Traceroute}
+		\index{Traceroute}
 			Traceroute one of the better ways to gain this information. 
 			This is because while the domain name of the server that you are attempting to access may not give you the information that you require, those that you must go through to get to it usually will. 
 			You will see every server that responds to ping between you and the server, thus giving you a readout of where the connection had to go through to get to the final destination. 
@@ -92,6 +96,7 @@
 			Finally, the hosts that are near it may tell you which ISP the server is connected with or which hosting company the server is hosted on. 
 
 		\subsection{Whois}
+		\index{Whois}
 			Whois records are created when the domain is registered. 
 			While there are ways to hide these, such as registering through an anonomizer or in another nation, generally these will contain detail about who registered the domain. 
 			You will usually get the following information:
@@ -112,6 +117,7 @@
 		% DOS -> UNIX (CRLF -> LF) conversion
 		\subsection{Cyclic Redundancy Codes}
 	\section{Wireshark}
+	\index{Wireshark}
 		Wireshark is a packet sniffing and inspection suite which is used to intercept and view traffic which is being transmitted along your network.\cite{WSUG} 
 		It is used in a number of fields, such as network interception, Bluetooth and WiFi attacks and attack recognition. 
 		This works in such a way that no packets are transmitted by Wireshark, making it invisible to those down the line of transmission. 
@@ -162,6 +168,7 @@
 			However, at this point, under no circumstances should you enter the URL into your browser. 
 
 		\subsection{Site Analysis}
+		\index{Virus Total}
 			You should first send the link through a scanner such as \href{virustotal.com}{Virus Total}. 
 			This will tell you whether the site is loading anything commonly known to be malicious. 
 			However, passing this does not mean the site is clean. 

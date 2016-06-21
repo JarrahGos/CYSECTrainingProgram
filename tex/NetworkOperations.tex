@@ -7,6 +7,7 @@
 	Networking has become commonplace---many people would find no use in a computer without it---and many of our most used programs depend entirely on it. 
 	However, to understand how to exploit networking, we need to understand how the communication takes place, how the network has been created and how to connect to the services running on other machines in ways they may not have been designed for. 
 	\section{OSI Model}
+	\index{OSI}
 		When computers are communicating, they need to be able to speak in the same language.\cite{HackingAOE} 
 		However, if a programmer needed to implement this every time they required network communication, we would never achieve communication between two systems.\footnote{\url{https://xkcd.com/927/}} 
 		Due to this, the OSI Model was created. 
@@ -14,35 +15,42 @@
 		These standards allow the relevant equipment to focus on the necessary parts of their implementation, while the other parts are taken care of, allowing for easier communication between unlinked programs. 
 		The layers of the OSI Model are as follows:
 		\begin{description}
+				\index{Physical Layer}
 			\item[Physical Layer]
 				Deals with the physical connection between two machines through means such as CAT5 Ethernet. 
 				This is the lowest layer, whose primary role is communicating raw bits, as well as starting maintaining and ending the transmission. 
+				\index{Link Layer}
 			\item[Link Layer]
 				Transfers data between the two points connected by the physical layer. 
 				This layer provides some high level functions which allow for error correction and flow control. 
 				It also provides a means of activating, maintaining and ending the link. 
 				This is the layer that a switch would sit on, 
 				using the MAC addresses of the connected devices to direct traffic to the correct device. 
+				\index{Network Layer}
 			\item[Network Layer]
 				Provides a means of transmitting datagrams from one machine on the network to another. 
 				This is the layer where network addresses (IP) are translated into a physical machine address. 
 				This is the layer that routers work on, allowing them to direct a packet to the correct machine based on IP address. 
 				Due to this, you do not have to specify each hop required for a packet to get to a destination. 
+				\index{Transport Layer}
 			\item[Transport Layer]
 				Provides transparent transfer of data by allowing reliable communication and known protocols. 
 				This layer means that higher layers need not worry about reliability of connection. 
 				This is implemented though means such as TCP and UDP, both of which have different requirements and functions for transport and error checking. 
 				This layer works on maintaining the integrity of individual messages. 
+				\index{Session Layer}
 			\item[Session Layer]
 				Responsible for establishing and maintaining connections between applications. 
 				While the transport layer deals with messages, the session layer works on the ongoing connection between the computers. 
 				This would usually deal with multiple messages, and numerous packets. 
 				Usually this is implemented in a socket by the OS. 
+				\index{Presentation Layer}
 			\item[Presentation Layer]
 				Presents the data to the application which is is being communicated to in a format which is understandable to the application. 
 				This is the layer which allows for encryption and data compression. 
 				This means that the application itself need not be sending encrypted messages to have secure communications. 
 				Instead, it could be wrapping its communication socket in a TLS session which would be securing the communications for it. 
+				\index{Application Layer}
 			\item[Application Layer] 
 				Keeps track of the requirements of the application and allows it to utilize the data which it received. 
 				This is where the data is read into the memory of the program and released to it. 
@@ -61,12 +69,14 @@
 		Due to this, layers above can be removed from the stack if not required. 
 		However, this is a rare situation, occurring only in situations such as ping. 
 
+		\index{Network Architecture}
 		Network architecture is the physical layout of the computers connected using the aforementioned OSI model. 
 		This is done through means of routers, switches and hubs connecting computers. 
 		Each of these components are known as nodes within the network. 
 		Nodes are any item along the way that will receive and either terminate or retransmit data. 
 
 	\section{TCP/IP Model}
+	\index{TCP/IP}
 		Much like the OSI Model, the TCP/IP model was created in order to standardise the way that computers communicate.\cite{ICND1}
 		However, this model was created by the DoD, and has become the model that is used in the modern world. 
 		It follows a similar idea to the OSI Model, and the same terms are often used to discuss the TCP/IP model, even though they aren't a part of the specification. 
@@ -94,6 +104,7 @@
 		\end{table}
 
 		The Layers of the TCP/IP Model cause one of two types of interaction to occur. 
+		\index{TCP/IP Interaction}
 		\begin{description}
 			\item[Same Layer Interaction:] Interaction between machines on the same layer of the TCP/IP Model. 
 				This is used to transmit data between machines. 
@@ -119,6 +130,7 @@
 		reverse engineering the protocol until you have something that works. 
 
 		\subsection{Netcat}
+		\index{Netcat}
 			The first method of doing this is using the tool Netcat or ``ncat''. 
 			This tool will connect you to a port, sending any line that you type and printing anything received. 
 			This will allow you to connect directly to any networked program with an open port.
@@ -146,6 +158,7 @@
 			This was created as a means of avoiding port scans, as the ports that are to be used for communications will be closed during the scan. 
 			However, it requires either that a process is monitoring the firewall logs, or that the firewall itself is changing based on traffic. 
 
+			\index{Port Knocking}
 			This is commonly implemented on ports such as 22 (SSH), which is often a target for brute forcing. 
 			The user will set the required ports before enabling the service, opening the SSH port only when the correct sequence has been contacted. 
 
@@ -153,6 +166,7 @@
 			However, if you are able to read the code being run on the server, you should be able to reverse engineer this sequence and gain access. 
 
 	\section{Domain Name System}
+	\index{DNS}
 		The Domain Name System (DNS) is the method that is used to translate between domain names such as ``example.org'' to IP addresses such as ``93.184.216.34'' (IPv4) or ``2606:2800:220:1:248:1893:25c8:1946'' (IPv6).
 		Without this system, the Internet would be significantly more difficult to navigate, with the dynamic allocation of IP addresses making it impossible to find the same website after reallocation. 
 		DNS on the client side makes it possible to access sites by name, removing the need to remember the address and account for its possible changes. 
@@ -169,10 +183,12 @@
 					\caption{A depiction of DNS for an Internet like network}
 					\label{fig:DNSTree}
 			\end{figure}
+			\index{DNS Zone}
 
 			Within each zone, as indicated by the dashed lines, the top most node is authoritative over the records within that zone. 
 			This means that that particular server is the one that is able to reply with the IP address of the name you are looking for, if said name resides within the zone. 
 		\subsection{Resolving a Name}
+		\index{DNS Resolution}
 			The process to resolve a name involves a number of steps and a number of servers. 
 			Later, we will see that many of these steps can be removed, but it is useful to understand the full system. 
 			The servers that will be used are as follows:
@@ -231,10 +247,12 @@
 			However, when used, they can provide a significant improvement to the system. 
 			One such extension is the DNSSEC extension, which provides some security against DNS cache poisoning and other attacks. 
 
+			\index{DNSSEC}
 			DNSSEC works through authenticating the packets using digital signing to ensure that the packet came from the server that it was reported to come from. 
 			However, this process does not provide any encryption, meaning that DNS packets are readable by anyone sitting between the communicating computers on the network. 
 
 	\section{Hyper Text Transfer Protocol}
+	\index{HTTP}
 		HTTP is a common protocol working on the application layer of the OSI model. 
 		This protocol forms the basis for the section of the Internet known as the ``world wide web''. 
 		Generally, this protocol would work with the following steps:
@@ -267,6 +285,7 @@
 		Furthermore, to allow interacting programs to understand what has happened on the server, 
 		a set of status codes has been created\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}}. 
 		A short list of these is as follows:
+		\index{HTTP Response Codes}
 		\begin{description}
 			\item[2xx] These are the success codes. 
 			\item[200] Request has succeeded. Information returned will depend on method used in request. \\

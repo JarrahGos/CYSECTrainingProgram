@@ -12,6 +12,7 @@
 	And in the case of many of these technologies, it is usually cheaper to release old hardware, such as Mifare classic NFC cards, which have a known vulnerable random number generator backing their encryption. 
 	In these cases and many more, we can exploit these failures, allowing us to connect to and read from these networks and devices, using them for our purposes. 
 	\section{Aircrack-ng}
+	\index{Aircrack-ng}
 		Aircrack-ng\footnote{\url{http://aircrack-ng.org/doku.php?id=newbie\_guide}} is a suite of tools which can be used to attack WiFi networks. 
 		These tools allow you to place hardware in monitor modes and intercept the required packets in order to collect hashes and crack access codes. 
 		Each tool is used for a different goal, but many of them will need to be used for a complete attack. 
@@ -19,6 +20,7 @@
 			Before attacking a WiFi network, you will need to understand how they work. 
 			This understanding will make the next few sections make sense, rather than being learned by rote.
 
+			\index{WiFi Beacons}
 			WiFi Beacons are a transmission sent out by an access point (AP) at a rate of 10 per second. 
 			These contain information about the network such as:
 			\begin{itemize}
@@ -27,14 +29,17 @@
 				\item the supported data rates. 
 				\item the channel the network is broadcasting on. 
 			\end{itemize}
+			\index{Airodump-ng}
 			This information can be seen using commands such as ``iwlist'' or ``airodump-ng''.
 			Furthermore, in the output of these two programs, you will see a MAC address for the AP. 
 			This address will be how we will refer to the AP in future commands. 
 			Furthermore, in the following sections, you will see the device ``wlan0'', this is used as a generic WiFi device. 
 			Change it to the one reported by ``iwconfig'' on your system. 
+			\index{iwconfig}
 		\subsection{Sniffing a Network}
 			The first step to a wireless attack is to gather data about the potential target. 
 			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks. 
+			\index{airmon-ng} \index{airodump-ng}
 			To set the hardware properly, we must shift the WiFi card into monitor mode:
 			\begin{lstlisting}[style=CLI]
 				$ airmon-ng start wlan0
@@ -51,6 +56,7 @@
 			Furthermore, you will see information about the clients which are connected to nearby APs in the lower block of the output. 
 			%TODO: Program output would be nice. 
 			When selecting a target network, you should ensure that it has a number of clients connected and has a high signal strength. 
+			\index{WEP}
 			For your first attack, it is best to attempt on a WEP encrypted network. 
 			Though rare, these networks are still seen, and are exceptionally easy to attack, making them a good first step. 
 
@@ -67,6 +73,7 @@
 			\begin{lstlisting}[style=CLI]
 				$ aircrack-ng -b <AP MAC> dump-01.cap
 			\end{lstlisting}
+			\index{WEP IV}
 			This will run an offline attack against the IVs collected in the .cap file.
 			This may take a long time, depending on the number and strength of the IVs that were collected.
 			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command. 
@@ -75,6 +82,7 @@
 			Thus, we use our own hardware to inject frames which alter the network to allow us to gather more information. 
 			Such attacks still use the same end method of collecting IVs and cracking them with aircrack-ng, but in this case, the process will be far faster due to our manipulation. 
 
+			\index{Packet Injection}
 			Packet injection does not work on most WiFi cards\footnote{\url{http://aircrack-ng.org/doku.php?id=compatibility\_drivers}}
 			however, when it does work, it allows for a far more powerful attacks. 
 			To ensure that injection is supported by your device, check whether authentication is successful with the following command:
@@ -89,12 +97,14 @@
 			\begin{lstlisting}[style=CLI]
 				$ aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
 			\end{lstlisting}
+			\index{aireplay-ng}
 			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
 			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs. 
 			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
 			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again. 
 
 			The more aggressive way to run this attack is to force the client off the network, making it re-authenticate and refresh its ARP cache. 
+			\index{WiFi Deauth}
 			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
 			To run this attack, run the following command while running an ARP replay and collecting IVs:
 			\begin{lstlisting}[style=CLI]
@@ -106,6 +116,7 @@
 			I recommend reading the Wireless section of Jon Erickson's ``Hacking, the Art of Exploitation''\cite{HackingAOE} for more information.
 			
 		\subsection{WPA and WPA2}
+		\index{WPA}
 			The above sections have discussed the old technology used for attempting to secure wireless networks. 
 			Modern networks will usually use WPA2, which when coupled with a strong pre-shared key is far more difficult to attack. 
 			This is due to the fact that data such as IVs cannot be used to make the attack faster, with the only transmission of useful data being the initial handshake between client and AP. 
@@ -122,6 +133,7 @@
 				$ aircrack-ng -w <password list> -b <AP MAC> <capture file>
 			\end{lstlisting}
 			If a valid handshake is found, you will be informed that aircrack-ng is attempting to crack it. 
+			\index{aircrack-ng}
 
 			The dictionary is the most important part of this attack. 
 			Without it, the attack would take a prohibitive amount of time. 
@@ -137,6 +149,7 @@
 			This works because of the fact that most devices store past networks and actively attempt to connect to the strongest signal. 
 			Due to this, a device will often connect to an open network with no notice to the user, allowing you to intercept all traffic. 
 
+			\index{WiFi Pineapple}
 			The main example of this currently is the WiFi Pineapple. 
 			This device waits for incoming requests for networks and responds with the requested name. 
 			Each time a device beacons out attempting to connect, it will broadcast the names of all the networks it knows. 
@@ -159,6 +172,7 @@
 			Thus, any AP can purport to be any other, and the user and their device will be none the wiser. 
 	\section{Bluetooth}
 	\section{Near Field Communications}
+	\index{NFC}
 		NFC cards and tags are an exceptionally useful input device for many solutions. 
 		The can be used to input data which is often assumed to be valid due to the fact that it is stored on a card which the user is not supposed to be able to read or write. 
 		This is the factor that we use to exploit, these cards will often contain references to locations or monetary values which we can alter to change the usage of the card. 
@@ -168,6 +182,7 @@
 		\subsection{Card dumps}
 			The first step in any attack on Mifare classic cards is to get a full dump of the cards data and keys. 
 			This will allow us to edit the data as shown below, but it will also allow us to clone the card. 
+			\index{mfoc}
 			In order to do this, the tool ``mfoc'' is used. 
 			\begin{lstlisting}[style=CLI]
 				$ mfoc -O out.mfd

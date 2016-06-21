@@ -1,5 +1,5 @@
 \chapter{The Cyber Range}
-	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune\cite{pentestingLabs}
+	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune\cite{pentestingLabs}.
 	A ``Cyber Range'' is an area---completely disconnected from all target networks---in which you can work on your skills safely.  
 	It allows you to try attacks that you would not otherwise be able to do and create scenarios that could not be done on a single computer. 
 	
@@ -35,10 +35,13 @@
 			
 		\subsection{Virtualization}
 			To enable you to run multiple operating systems and networks on one computer, you will need a well setup virtualization environment. 
+			\index{VMware Workstation}
 			There are two competing products in this field, VMware's Workstation (or Fusion on OS X) and Oracle's VirtualBox. 
 			While generally, these products will both do the same thing, there are some differences that make VMware's solution better. 
+			\index{vSphere}
 			Specifically, it's environment and integration with vSphere, VMware's hypervisor allows one to create far more powerful networks and systems. 
 			
+			\index{VirtualBox}
 			However, if your goal is to set up a range on a budget, using VirtualBox will serve you best. 
 			It has an open source version, which can be accessed for free, but has limitations on USB pass-through and other features. 
 			Furthermore, the closed source version is also available free for non-commercial use. 
@@ -54,11 +57,14 @@
 		\subsection{Recommended VMs}
 			This section will discuss the VMs that are commonly used for the creation of a virtual network for practising these skills. 
 			\begin{description}
+					\index{Kali Linux}
 				\item[Kali Linux] Kali\footnote{\url{http://www.kali.org/}} is the main OS for Penetration testing. 
 					It is a Linux distribution that was designed to have most of the common tools used in network penetration built in. 
 					Due to this, this OS the VM that most of your attacks come from. 
+					\index{DVWA}
 				\item[DVWA] The Damn Vulnerable Web App\footnote{\url{http://dvwa.co.uk/}} is one of the better web penetration learning platforms available. 
 					It will allow the user to set the level of difficulty in a range of attacks that are similar, if not the same as those commonly found in the real world. 
+					\index{Metasploitable}
 				\item[Metasploitable] Metasploitable\footnote{\url{https://information.rapid7.com/metasploitable-download.html}} is a server setup to be exceptionally vulnerable. 
 					It can be used to learn to attack through both web and network, making it a foundational system for creating a range. 
 			\end{description}

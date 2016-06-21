@@ -14,6 +14,7 @@
 	Using these skills and tools, you will be well placed to learn any language well and to use the skills you have gained in the pursuit of breaking into vulnerabilities presented to you. 
 
 	\section{Introduction to the CLI}
+	\index{Linux CLI}
 		The command line is the tool for direct interaction with your computer. 
 		It is like the baby brother to programming yourself, though with scripting it can become just as complex. 
 		The command line will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
@@ -117,6 +118,7 @@
 		While there are many other commands\footnote{\url{https://github.com/jlevy/the-art-of-command-line}} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
 
 	\section{Introduction to Powershell}
+	\index{PowerShell}
 		%ktiploit.com
 		% https://github.com/mattifestation?tab=repositories
 		% http://colesec.inventedtheinternet.com/hacking-with-powershell-powersploit-and-invoke-shellcode/
@@ -134,6 +136,7 @@
 			Together, they work in a similar way to the Unix ``-h'' option and ``man'' command. 
 			These commands have a large amount of expandability through their arguments, and should be used on each other to gather more information. 
 
+			\index{Get-Command}
 			The cmdlet ``get-command'' is used to gather information about all commands, cmdlets and scripts which are available on the current system. 
 			In it's basic form it will simply output a list of all of these items, with little further information.
 			Furthermore, when using this command with the exact name of a module which has not yet been imported, get-command will automatically import the module for you, allowing you to use it immediately. 
@@ -144,12 +147,14 @@
 			However, for the most part, it can be though of as similar to the Unix ``which'' command with a significant amount of extra functionally. 
 
 			While basic information about cmdlets and other powershell programs is useful, one will regularly desire manual access for these commands. 
+			\index{Get-Help}
 			The cmdlet ``get-help'' will facilitate this. 
 			It its most basic form, get-help will output its own help file, giving you detail on how to use it. 
 			However, there are a number of other options such as using it with a wildcard argument which will output a basic synopsis of all commands or giving it a command as an argument which will output the help (similar to a man page) for that command. 
 			Furthermore, there are flags which are useful for getting more information about the options for a command. 
 			Using the flag ``-Detailed'' will give you an explanation of every flag for the given command.
 
+			\index{Get-Member}
 			A further command which will allow you to better understand and interact with the powershell object system is the ``get-member'' command. 
 			This command is used for gathering information on the objects which will be passed from one command to another through systems such as pipes. 
 			For example, when you pipe the output of get-command on a specific cmdlet from above into get-member you will see both the object type and the methods which can be called on it. 
@@ -158,11 +163,13 @@
 			Finally, we must understand the filesystem and drive access. 
 			This can be done through the use of the command ``get-psdrive'', which will show the drives attached to the system that are available to powershell. 
 			These drives are of different types, such as Filesystems and registries which can be manipulated using the cmdlets found by running ``get-command *-Item*''. 
+			\index{Get-Command}
 
 			Using these commands, you should be able to find your way around the system, albeit slowly until you learn the commands which you will be using. 
 			These commands will be explained in the next section. 
 
 		\subsection{Differences and similarities to Bash}
+		\index{Powershell vs Bash}
 			This section will discuss the differences and similarities that need to be understood when moving from Bash to PowerShell. 
 			These are in part due to basing PowerShell on earlier shell implementations, but are also largely influenced by the C\# and .NET object system which PowerShell is based on. 
 
@@ -196,6 +203,7 @@
 			Thus, it is recommended that you use the four cmdlets outlined above alongside the information in the last section to determine how best to interact with the objects you are given. 
 			This is a far more powerful and efficient way to interact with PowerShell. 
 	\section{Introduction to Scripting}
+	\index{Bash Scripting}
 	% http://mywiki.wooledge.org/BashGuide/Patterns	https://en.wikibooks.org/wiki/Bash_Shell_Scripting
 		Bash scripting is another language in its own right.\footnote{\url{http://guide.bash.academy}}
 		This language however, is one that you should now be used to. 
@@ -205,6 +213,7 @@
 		\subsection{Setting up your script}
 			Unlike the command line, you will need to do some set up before you can use your script. 
 			This is because you are now creating a file which the system needs to be told how to read and what it is allowed to do with it. 
+			\index{CrunchBang}
 			The first of these is the interpreter instruction, also known as the shebang or crunchbang. 
 			This line, designated by the symbol ``\#!'' followed by the location of your shell executable tells the prompt what to use to read the file with. 
 			Without this, the prompt will read the file as a generic text file, having been told no action to take. 
@@ -213,6 +222,7 @@
 			This will write the permissions of the file allowing the OS to run it as a program using the interpreter given at the crunchbang. 
 			Finally, you can execute the program by running ``\verb+.\<File.sh>+''. 
 		\subsection{Variables}
+		\index{Bash Variables}
 			Variables in bash scripting act the same way as those in most other programming languages, however, internally they act slightly differently. 
 			These are known as bash parameters, and they come in three different types: Positional, Special and Shell Variables. 
 			Shell variables are the most common, and act almost exactly the same as those of most other programming languages, while the others are slightly different and have their own uses. 
@@ -240,6 +250,7 @@
 
 
 		\subsection{Conditionals}
+		\index{Bash Conditionals}
 			Like any programming language, bash scripts allow the use of conditional structures. 
 			These structures allow for executing code based on the environment it finds itself in. 
 			In bash, there are a number of these conditionals which we can use. 
@@ -281,6 +292,7 @@ fi
 			\caption{Conditional Blocks in Bash}
 			\end{code}
 			While the if conditional commands can be anything, bash has a specific ``test'' command which can be used for conditionals. 
+			\index{Bash Conditional Tests}
 			This command is run either by calling ``test'' or by opening a ``['' bracket. 
 			Within this, you can run any conditional statement that you would be able to run in a normal programming language. 
 			Signs such as ``='', ``-ne'', ``-gt'' and ``-lt'', as well as combinations of them can be used to create the conditional. 
@@ -368,6 +380,7 @@ esac
 
 			The while loop will continue until its condition is met. 
 			This is much the same as while loops in normal programming languages, allowing you to repeat the code until the change you are searching for has occurred. 
+			\index{Bash While Loop}
 			The syntax for these loops is:
 			\begin{code}
 			\begin{lstlisting}[language=bash]
@@ -381,6 +394,7 @@ done
 			A variant of this type of loop is the until loop. 
 			This variant will simply reverse the conditional check on the while loop. 
 			The syntax for the until look is:
+			\index{Bash Until Loop}
 			\begin{code}
 			\begin{lstlisting}[language=bash]
 until <conditional> do
@@ -395,7 +409,7 @@ done
 			At the start, it will execute the first block of its arguments and check the conditional in its second. 
 			After this, it will execute the code within its bounds before running the third block and checking the conditional again. 
 			The syntax for the for loop is:
-
+			\index{Bash For Loop}
 			\begin{code}
 			\begin{lstlisting}[language=bash]
 for (( <Setup>; <condition>; <change> )) do
@@ -425,6 +439,7 @@ done
 			With all of these loops, the command continue will skip to the next iteration of the loop and the break command will end the loops iteration without the conditional having to be set to false. 
 
 		\subsection{Arrays}
+		\index{Bash Arrays}
 			Arrays are another part of bash. 
 			These are similar in concept, but different int syntax to the arrays of most programming languages. 
 			They should be used any time that a list of something is produced, rather than placing the list in a string and attempting to delimit each item. 
@@ -459,6 +474,7 @@ done
 			To use this method, use the same syntax used to access the array within the for loop, replacing the ``@'' with either an integer or an integer variable. 
 			In a similar manner, the \** symbol can be used as the index to concatenate every element in the array into one string. 
 
+			\index{Bash Associative Arrays}
 			More recent versions of bash also have a dictionary like array type called associative arrays. 
 			These allow you to map one string to another, and are created and accessed in the following manner. 
 			\begin{code}
@@ -476,6 +492,7 @@ declare -A <name>
 			These range from the normal, such as command line arguments and files, to the unusual, such as environmental variables and pipes. 
 			This section will enable you to understand how mast types of bash IO work and implement them in your scripts. 
 
+			\index{Arguments}
 			The most simple means of allowing input to your script is by using command line arguments. 
 			This can be done by using the positional parameters which are shown in the variables section above. 
 			Using these, each argument given will be placed into its respective parameter, starting from 0 being the command used to call the script. 
@@ -485,6 +502,7 @@ declare -A <name>
 			A final method, known as ``shift'', will push the arguments forward, popping the contents of ``\$1'' off the stack and moving ``\$2'' up into its place. 
 			This is useful within loops, as you can use ``\$1'' as a variable representing all arguments one at a time. 
 
+			\index{Environmental Variables}
 			Another means of input to your script is the environmental variables which it inherits from the invoking bash environment. 
 			These will contain useful items such as the binary paths of the system and the language that the user wants to use. 
 			An example of this, is checking whether the computer is being used with an X display manager and whether the user has set their preferred terminal.  
@@ -507,6 +525,7 @@ fi
 			Finally, environmental variables can be used as output to any programs that you invoke within your script. 
 			This can be done by using the export command, with the same syntax as assigning a variable after it. 
 			
+			\index{Read, Bash STDIN}
 			Once the script has been invoked, IO can be done by the same means as most CLI programs. 
 			Reading from STDIN is done by using the command read -p, which takes a string to display and the name of a variable to place the input into. 
 			This will work in exactly the same manner as python's raw input, writing the line to the CLI and storing every input before the new line in the variable you give it. 
@@ -534,17 +553,20 @@ fi
 			These are commands or syntax elements which allow you to alter the scope or operation of the script you are writing. 
 			Each of these work slightly differently, but when used together and properly, they allow for a properly written program using scope and functions. 
 
+			\index{Subshells}
 			Subshells similar to creating a child process, but with slightly more inherited. 
 			They are commonly created through the use of syntax such as pipes, but can be manually called using parenthesis. 
 			This allows us to create a part of the script which will not effect other parts. 
 			Commands within a subshell can fail and will only exit the current subshell. 
 			Furthermore, commands which change the current environment of the shell such as ``cd'' will not retain their changes outside the subshell. 
-
+			
+			\index{Command Grouping}
 			A similar notion with respect to redirection and flow exists in command grouping. 
 			This is done using the braces ``\{'' and ``\}'' around the commands that you wish to group, and will cause all redirection at the end of the braces to apply to everything within them. 
 			While these may seem like a subshell, the commands within this grouping are executed within the same shell as the commands around them. 
 			Thus, changes are retained when exiting the group. 
 
+			\index{Bash Functions}
 			Functions within a bash script can be thought of as mini scripts. 
 			These execute in the same shell, but can be given arguments and be called whenever needed from within the script. 
 			Parameters within the function can be called in the same means as parameters to the whole script, however, these are not the same parameters as the script originally received. 
@@ -564,6 +586,7 @@ fi
 			\end{code}
 
 		
+			\index{Aliasing}
 			Aliases are the final compound command. 
 			These allow you to create or change a name for either an altered command or a string of commands. 
 			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the alias' command. 
@@ -620,12 +643,14 @@ alias ls="ls --color=auto"
 	\section{Introducton to JavaScript}
 		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
+		\index{Javascript}
 		It was originally built in 1995 to allow for programming on a web page. 
 		% Dave flanagan's definitive guide to javascript. 
 		It is also worth noting that Javascript is a functional language\cite{JSProgrammingLanguage}.
 		It is based on creating functions which are then extended upon in functions which then call those. 
 
 		\subsection{Origins}
+		\index{Livescript} \index{Netscape}
 			Javascript started as Livescript, a language started by Netscape in order to write programs for the web. 
 			It's main goal was to be able to write cross platform programs which could be written and used on the web. 
 			This was done in order to allow non-Microsoft OS's to run programs. 
@@ -664,6 +689,7 @@ alias ls="ls --color=auto"
 			This must be taken into account when programming. 
 			For example, division between two integers can produce a non-integer number. 
 
+			\index{Not a Number}
 			There is also a special type known as NaN or Not a Number. 
 			This is a type of undefined and will continue through any arithmetic that is done on it. 
 			This means that a NaN anywhere through the expression will end in NaN. 
@@ -691,6 +717,7 @@ alias ls="ls --color=auto"
 			The string function can be used to turn a number into a string. 
 			Strings are objects and thus have a number of methods for substrings or other functions. 
 
+			\index{JavaScript Truethiness}
 			Boolean can either be true of false. 
 			There are also functions which can be used to determine whither something is near true or false. 
 			Values similar to false are:
@@ -714,6 +741,7 @@ alias ls="ls --color=auto"
 			
 			All key words are lower case and case sensitive. 
 		\subsection{Objects}
+		\index{Javascript Objects}
 			Objects in Javascript are dynamic. 
 			This is due to the fact that the ``new'' command produces an empty container of name-value pairs.
 			In this, the name can be any string and the value can be anything other than undefined. 
@@ -762,6 +790,7 @@ alias ls="ls --color=auto"
 			This is done using the delete command as ``delete theObject[key];''. 
 			This will change the keys value to undefined. 
 		\subsection{Arrays}
+		\index{JavaScript Arrays}
 			In Javascript, arrays will inherit from objects. 
 			This means that the arrays are key-value pairs. 
 			Thus, Javascript arrays are only efficient for sparse arrays, but not for most normal arrays. 
@@ -799,6 +828,7 @@ list = ['one', 'two', 'three'];
 			This can be done on an array by array basis, or by assigning them to array.prototype, 
 			which will assign them to all arrays. 
 		\subsection{Syntax}
+		\index{Javascript Syntax}
 			Javascript follows the basic syntax rules of C. 
 			This means that the basic brace rules, as well as loops and statements follow the same rules as C. 
 			However, there are a number of differences, mainly due to the functional nature of Javascript. 
@@ -939,6 +969,7 @@ list = ['one', 'two', 'three'];
 			Constructors will always return the newly created object. 
 
 		\subsection{Functions}
+		\index{Javascript Functions}
 			The function operator is used to created a new function. 
 			However, this can be used in any location within the program. 
 			This means that you can pass a function to another function as an argument. 
@@ -974,6 +1005,7 @@ list = ['one', 'two', 'three'];
 			This will contain the arguments given to the function, no matter whether they were expected or not. 
 			This provides a manner for giving a variable set of arguments. 
 
+			\index{Eval}
 			The ``eval'' function is a common cause of security flaws. 
 			This was created in order to allow the browser to execute arbitrary scripts from external sources. 
 			For this exact reason, ``eval'' should be avoided. 
@@ -994,10 +1026,12 @@ list = ['one', 'two', 'three'];
 			However, I recommend that you do not use an IDE when first learning. 
 			This will create poor habits such as relying on code completion and highlighting rather than understanding and paying attention to your writing. 
 
+			\index{GCC}
 			Furthermore, you will have to install make and GCC or the relevant compiler for your OS. 
 			I will leave these details to you, as each system has a slightly different implementation of these tools. 
 
 		\subsection{Your First C Program}
+		\index{Hello World in C}
 			Code example \ref{code:FirstProgramC} is an example of a ``Hello World'' program in C. 
 			This is the most basic form of C programming, as it only uses the main function and one standard library. 
 			\begin{code}
@@ -1019,6 +1053,7 @@ list = ['one', 'two', 'three'];
 				\item Closing brace for the main function. 
 			\end{enumerate}
 		\subsection{Compiling}
+		\index{C Compiling}
 			C requires that it is compiled before use. 
 			Thus, one must learn both the language and the complier that is used for it. 
 			Furthermore, in C, a tool known as make is used to run numerous or complex compiler functions. 
@@ -1026,6 +1061,7 @@ list = ['one', 'two', 'three'];
 			It will have to be altered for the specific program structure, but it will be a good starting point. 
 			For smaller programs, use the makefile in code example \ref{code:BasicMakefile}.
 
+			\index{Makefile}
 			\begin{code}
 				\lstinputlisting[language={[gnu]make}]{./makefile}
 				\caption{A Basic Makefile}
@@ -1050,6 +1086,7 @@ list = ['one', 'two', 'three'];
 			This allows for inserting variables into the string to be output to the user. 
 			Sadly, this can be abused, allowing the user to insert their own commands into the strings as seen in \ref{ch:BinaryExploitation}
 
+			\index{Format Strings}
 			A list of the format strings can be found in \ref{tab:StringFormatCodes}
 				\begin{table}[htb]
 					\centering
@@ -1072,6 +1109,7 @@ list = ['one', 'two', 'three'];
 				\end{table}
 			For more information on this, see \href{http://linux.die.net/man/3/printf}{man 3 printf.}
 		\subsection{Memory Testing with Valgrind}
+		\index{Valgrind}
 			Unlike Python or Java, C does not have the same memory constraints or bounds checking. 
 			Thus, a program known as Valgrind has been created in order to check programs for memory leaks and the like. 
 			It works by running the program within itself, checking for memory allocation and deallocations and ensuring that all memory is correctly handled. 
@@ -1081,6 +1119,7 @@ list = ['one', 'two', 'three'];
 			While Python has types, you as the programmer don't get to use them. 
 			C on the other hand, likes to give everything to the programmer, and thus requires you to choose the type that you would like for each variable. 
 			Thus, you will have to understand the differences between the different types and where they are best used. 
+			\index{Types}
 			Table \ref{tab:CVariableTypes} contains a list of the most common variable types. 
 			\begin{table}[htb]
 				\centering
@@ -1118,6 +1157,7 @@ list = ['one', 'two', 'three'];
 			\end{description}
 
 		\subsection{Arrays}
+		\index{C Arrays}
 			Arrays in C are barer than those of other languages. 
 			For example, unlike in Java, they do not come with a precalculated length variable.
 			Furthermore, if they are being used as a string, they need to be null terminated so that compiler knows where the array ends. 
@@ -1139,10 +1179,12 @@ list = ['one', 'two', 'three'];
 			Just like in Python, C has a number of loops built into it. 
 			These loops will work exactly the same as the basic python versions, but will have a slightly different syntax. 
 			
+			\index{C While Loop}
 			The ``while'' loop is the most basic loop within C. 
 			It is used to check a condition and continue looping while that condition is true. 
 			An example of the syntax of a while loop can be seen in code example \ref{code:CLoops}
 
+			\index{C For Loop}
 			The more complex ``for'' loop is the most common loop in programming. 
 			It is used to iterate through a known set, such as an array. 
 			This loop is far more like the basic for loop in Python, rather than the for each that has recently come into usage. 
@@ -1160,6 +1202,7 @@ list = ['one', 'two', 'three'];
 			In a similar way to loops, the if statement in C is quite similar to that of python. 
 			It has a condition, a code block and can have else if and else statements under it. 
 			However, the difference comes into the syntax. 
+			\index{C If}
 			If statements in C have their conditionals bound in parenthesis and their blocks bound in braces. 
 			An example of this can be found in code example \ref{code:Cif}.
 
@@ -1169,19 +1212,13 @@ list = ['one', 'two', 'three'];
 				\label{code:Cif}
 			\end{code}
 
+			\index{C Switch}
 			Another conditional within C is the switch statement. 
 			This statement provides a means of writing actions based on a large number of options. 
 			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
 			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
 			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
 			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}
-
-			Another conditional within C is the switch statement. 
-			This statement provides a means of writing actions based on a large number of options. 
-			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
-			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
-			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
-			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}.
 
 			\begin{code}
 				\lstinputlisting[language={[ANSI]C}]{./CSwitch.c}
@@ -1193,6 +1230,7 @@ list = ['one', 'two', 'three'];
 			They allow you do write an algorithm for doing something specific once, then use the same one everywhere. 
 			This means that with proper naming, your code will be shorter and easier to read, while also having more chance of being bug free as you haven't written multiple different ways to do the same thing. 
 
+			\index{C Function}
 			Functions in C are similar to those of most other languages. 
 			However, when compared to languages like python, there are some minor differences, as seen in code example \ref{code:CFunction}.
 			\begin{code}
@@ -1204,12 +1242,14 @@ list = ['one', 'two', 'three'];
 			It then creates three variables (lines 2-4), initializing the first two (and thus completing the first iteration) while leaving the latter without a value. 
 			We then create a for loop, which will have the function repeat the steps of the Fibonacci algorithm until it has reached the correct number of iterations. 
 			Finally, on line 9, we tell the program to return processing to the function that called it, giving the value stored at fib. 
+			\index{C Returning}
 			It is worth noting that as we declared this function as an integer, it cannot return another variable type. 
 			If we were to attempt to return a double, or an array of integers, it would not compile. 
 			However, if you compile with no warnings on, some compilers will allow you to return a char, as in C a char is simply a small int that has a specific way of printing to screen. 
 			Thus, you must be careful how you write C to ensure the behaviour is what you expected. 
 
 		\subsection{Pointers}
+		\index{Pointers}
 			Pointers are the downfall of many programmers. 
 			When used poorly, or when poorly understood, they can be the bane of your existence. 
 			However, pointers are brilliant. 
@@ -1255,6 +1295,7 @@ list = ['one', 'two', 'three'];
 			If you think you are right, give it a go, the worst think you'll loose is time. 
 
 			Found in table \ref{tab:PointerLexicon} is an explanation of the different terms of using pointers. 
+			\index{Pointer Lexicon}
 			
 			\begin{table}[htb]
 				\centering
@@ -1274,6 +1315,7 @@ list = ['one', 'two', 'three'];
 				\label{tab:PointerLexicon}
 			\end{table}
 		\subsection{Structs}
+		\index{Structs}
 			Unlike Python or other Object Oriented languages, C does not have a concept of a class or object. 
 			However, it still does have a means of grouping variables together. 
 			These are known as structs, which are memory structures created within raw memory.
@@ -1293,12 +1335,13 @@ list = ['one', 'two', 'three'];
 				\label{code:CStructs}
 			\end{code}
 		\subsection{Heap and Stack Memory}
+		\index{Stack}
 			You will remember from the \hyperref[ch:ComputerOperations]{Computer Operations Chapter} that memory is divided into the heap and stack memory. 
 			In C, these different memory types are allocated and utilized quite differently. 
 			The stack is the normal variable definitions that you have been using for most of this section. 
 			However, in the struct section, you saw the command ``malloc''. 
 			This command will allocate memory on the heap of the size given for it and return a pointer to the start of the allocated memory. 
-			
+			\index{Stack}	
 			Heap memory is slightly more complex than general stack memory. 
 			C will sort your stack memory for you, removing it as the functions are called and returned. 
 			However, memory on the heap will remain forever, even if you lose your pointer to it. 
@@ -1316,6 +1359,7 @@ list = ['one', 'two', 'three'];
 		\subsection{Pointers to Functions}
 			As with all other things in C, functions exist at a memory location which can be pointed to. 
 			This can be used to pass a function to another function, such as when you need to choose a comparator for a sorting function. 
+			\index{Function Pointers}
 			The code used to do this can be quite difficult to understand and remember. 
 			Due to this, I recommend creating a typedef which will be used to use the pointer as an argument to another function. 
 			An example of this being done can be found in code example \ref{code:CFunctionPTR}	
@@ -1326,9 +1370,11 @@ list = ['one', 'two', 'three'];
 			\end{code}
 	\section{Introduction to Code Obfuscation}
 	\section{Debugging with GDB and Peda}
+	\index{GDB}
 		The GNU Debugger is a tool that is used for stepping through programs to determine what is happening at each step. 
 		It can be used either with or without debugging symbols, 
 		however having these makes debugging and reverse engineering easier as you have the working code. 
+		\index{PEDA}
 		While the common purpose of GDB is debugging C and C++ programs, it can be used on any language, as well as for reverse engineering and exploit development. 
 		The following will be an introduction to the tool, as well as a cheat sheet on the commands that can be used for it. 
 			

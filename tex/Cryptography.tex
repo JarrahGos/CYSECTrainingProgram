@@ -107,6 +107,7 @@
 		\subsection{Types of Cryptography}
 			This section will discuss the three main types of cryptography: secret key, public key and hashing. 
 			\subsubsection{Secret Key Cryptography}
+			\index{Symmetric Key Cryptography}
 				This form, also known as symmetric key cryptography,  uses a single key that all accessing parties must have. 
 				The keys complexity---along with the strength of the algorithm---determines the strength of the encryption.
 				Due to the use of the same key at either side of the process, this is also commonly known as ``symmetric key encryption. 
@@ -148,6 +149,7 @@
 				A network of $n$ users requires $\frac{n(n-1)}{2}$ keys. 
 				For a network of only 100 users, there would be 4950 keys. 
 			\subsection{One Way Functions}
+			\index{One Way Functions}
 				One way functions are the foundation of public key cryptography, explained in the following section. 
 				The functions have not been mathematically proven, but computationally have been found to exist. 
 				The premise is that they are easy to compute it one direction, but hard to return from. 
@@ -168,7 +170,8 @@
 				However, this process only works if given an extra piece of information. 
 				These are fundamental to public key cryptography. 
 
-			\subsubsection{Public Key Cryptography}
+			\subsection{Public Key Cryptography}
+			\index{Public Key Cryptography}
 				Unlike symmetric key cryptography, public key cryptography uses two keys, one stored at each party. 
 				These two keys are completely different. 
 				They are designed in such a way that given one of them, you should not be able to determine the other. 
@@ -297,6 +300,7 @@
 			It will then discuss some simple examples of old or defunct cryptographic standards.
 
 			\subsubsection{Substitution Ciphers}
+			\index{Substitution Cipher}
 				This is an algorithm in which each acharacter in the plaintext is substituted with a corresponding one in the ciphertext. 
 				The receiver then inverts this process when attempting to decrypt to plaintext. 
 				There are a number of basic types of substitution cipher:
@@ -330,6 +334,7 @@
 				However, this cipher is still exceptionally vulnerable to known plaintext attacks due to the ease of mapping character positions. 
 				Furthermore, a ciphertext only attack can still be done using the correct algorithm in seconds on a computer. 
 			\subsubsection{Transportation Ciphers}
+			\index{Transportation Cipher}
 				In this cipher, the plain text remains the same, but the location of the characters within it are changed. 
 				An example of this is the simple columnar transportation cipher discussed below. 
 
@@ -340,6 +345,7 @@
 				This type of cipher is far less common in modern cryptography as it requires large amounts of memory
 				and sometimes requires that the messages be of a specified length, resulting in padding or split messages. 
 			\subsubsection{Caesar's Cipher}
+			\index{Caesar's Cipher}
 				This is the first algorithm that we will discuss. 
 				It has little current use, as it's keyspace is 25, however, it serves as a good learning tool. 
 
@@ -354,6 +360,7 @@
 					\label{fig:CaesarsCipher}
 				\end{figure}
 			\subsubsection{Columnar Transportation Cipher}
+			\index{Columnar Transportation Cipher}
 				This cipher simply moves the characters found within the plaintext to another location. 
 				Specifically, the columnar transportation cipher uses a number as the key, which defines the number of rows to count.
 				The plain text is then written out in rows of the length given by the key. 
@@ -378,6 +385,7 @@
 				\end{figure}
 
 			\subsubsection{XOR Cryptography}
+			\index{Cryptographical XOR}
 				In the same light as the Caesar's cipher, XOR should not be used when you are looking for security. 
 				However, it is a stronger algorithm than the substitution cipher shown above. 
 				This is due to the fact that the key which can be used for XOR can be as long as the plain text. 
@@ -424,6 +432,7 @@
 				\end{enumerate}
 
 			\subsubsection{Encodings}
+			\index{Encoding}
 				Many people confuse encoding for encryption. 
 				This confusion can lead to information being leaked, as encoding will not provide any protection. 
 				To the untrained eye, these two look similar. 
@@ -459,6 +468,7 @@
 					\label{tab:Encodings}
 				\end{table}
 	\section{RSA}
+	\index{RSA}
 		RSA is the most common and well regarded public key algorithm at the current time\footnote{\url{http://csrc.nist.gov/publications/fips/fips140-2/fips1402.pdf}}. 
 		This algorithm relies on the use of large prime numbers, and specifically the difficulty of factorising them. 
 		Both the public and private keys used are functions of a pair of large (in the order of $10^{200}$) prime numbers. 
@@ -537,6 +547,7 @@
 
 				It is also worth noting that this can be thwarted by using random padding, as done in PEM and PGP, the most common RSA implementations.  
 	\section{One Time Pad}
+	\index{One Time Pad}
 		As discussed above, this is the only perfect cryptographical implementation we have found to date. 
 		This algorithm---discovery of a fatal flaw permitting---cannot be cracked by any computer in any amount of time. 
 
@@ -581,6 +592,7 @@
 		However, it is unlikely to be used in anything but the most secure, low bandwidth communication channels. 
 		Thus, the absolute security of the one-time pad becomes a thing of dreams again. 
 	\section{Digital Signatures}
+	\index{Digital Signatures}
 		Signatures on documents have been used in some form since ancient times. 
 		They were used to ensure that the person you expect wrote or agrees with the document. 
 		Furthermore, they were expected to be unforgeable, unmovable and irrefutable. 
@@ -592,6 +604,7 @@
 		Thus, a means of cryptographically signing the document must be created if authenticity and irrefutability are to be retained. 
 
 		\subsection{Symmetric Signing with an Arbitrator}
+		\index{Arbitrated Signatures}
 			One way to authentically sign a document to give to another person or computer is to use an arbitrator. 
 			In the physical world, this is similar to using a witness. 
 			However, unlike in the real world, this arbitrator must be permanently trusted with the document. 
@@ -613,6 +626,7 @@
 			Furthermore, creating a trusted middleman in all communications creates a single point of failure, both in security and in function. 
 
 		\subsection{Public Key Signatures}
+		\index{Public Key Signatures}
 			To solve these problems, public key signatures were created. 
 			These work using an algorithm such as RSA in the reverse manner to it's creation:
 			\begin{enumerate}
@@ -641,6 +655,7 @@
 			Not only is this faster, it is also easier to store and just as accurate. 
 			
 		\subsection{Resend Attacks}
+		\index{Resend Signature Attack}
 			Some systems will both sign and encrypt a message using the same keys and algorithms (RSA for example will do both). 
 			Generally, this is useful, as it provides both security and authenticity. 
 			However, when these systems implement receipts, they can become a security flaw. 
@@ -666,6 +681,7 @@
 			Alternatively, using digital signatures based on hash functions, rather than the whole document will solve this as the signing process is only done on the hash. 
 
 	\section{Merkle-Hellman Knapsack Cryptosystem}
+	\index{Knapsack Cryptosystem}
 		The Merkle-Hellman knapsack cryptosystem is another asymmetric method of encryption. 
 		It is based on the knapsack problem, which when in it's normal form is an NP-complete problem. 
 		The problem is relatively simple, given a set of weights and a total, select which ones will be found in the knapsack. 
@@ -698,6 +714,7 @@
 		This attack allows for the computation of the super-increasing knapsack, or private key given only the public key. 
 		A similar attack has been found for most more recent versions of this cryptosystem. 
 	\section{Key Exchange}
+	\index{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
 		Getting assured access to other peoples public keys is not an easy task. 
 		If they were to send it to you in plain text, it may be intercepted and altered. 
@@ -732,6 +749,7 @@
 			This key would validate the traffic as if it were being sent by the correct user. 
 
 		\subsection{Key Exchange with Digital Signatures}
+		\index{Signed Key Exchange}
 			This is a mechanism designed to solve the above issues with MitM attacks. 
 			It works by having a trusted third party certify a given public key, identifying it's owner. 
 			This is the process used in the modern world for secure communications. 
@@ -756,6 +774,7 @@
 			These organisations have been trusted with only signing keys for the correct domain, 
 			and form the basis of secure communications. 
 	\section{Authentication}
+	\index{Authentication}
 		Generally, when a user is trying to log into a computer---be that through a terminal, or a website---they provide a username and password. 
 		The computer then checks this password against the one in it's database and allows access if they match. 
 
@@ -783,12 +802,14 @@
 		They provide a vulnerability which allows the attacker to decrypt the message without attacking the cipher directly. 
 		This use of a side channel significantly reduces the requirement of cryptanalysis, making the attack far easier. 
 		\subsection{Key Generation}
+		\index{Key Generation}
 			The security of your cryptographical algorithm---assuming you use a standard algorithm---rests solely in the key. 
 			If the process used to generate this key is weak or predictable, the whole cryptosystem is equally weak. 
 			This means that Eve need not conduct cryptanalysis, the weak key will give it away. 
 			This section will discuss a both the theory, and two poor implementations of key generation. 
 
 			\subsubsection{Theory and Poor DES Implementation}
+			\index{Keyspace limitations}
 				The Data Encryption Standard, replaced by AES in 2001, was the approved standard for encryption from 1977. 
 				While the standard itself has not been broken (but is still outdated due to it's small keyspace), 
 				many of the implementations have. 
@@ -804,6 +825,7 @@
 				Thus, with the key reduced in this way, this DES implementation is vastly easier to crack. 
 
 			\subsubsection{Debian Weak RNG}
+			\index{Debian Weak RNG and Keys}
 				In early 2008, it was discovered that the random number generator (RNG) in Debian---one of the most popular Linux distributions---was faulty\footnote{\url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-0166}}.
 				This issue is not with the cryptographical implementation itself, but rather with the RNG that came with it. 
 				This RNG was predictable in it's output, leading to a set of keys being far more common than any others\footnote{\url{https://www.exploit-db.com/exploits/5632/}}.
@@ -830,6 +852,7 @@
 				Thus, bruteforceing encryption is not the common option in the modern world. 
 				Rather, we simply attack the low-hanging fruit and use a dictionary
 			\subsubsection{DES Weak Keys}
+			\index{DES Weak Keys}
 				Because DES splits the provided key into halves, shifting these independently for each round, certain keys are weaker than others. 
 				If all bits in either half of the key are either 0 or 1, the same key is used for every cycle of the algorithm. 
 				This occurs if the key is any of the values in Table \ref{tab:DESWeakKeys}. 
@@ -870,6 +893,7 @@
 				\end{table}
 				
 	\section{Hash Cracking}
+	\index{Hash Cracking}
 		Hashes are used in many situations to store passwords. 
 		This is done because the hashing algorithm is a one way action, meaning that there is no easy way to calculate the password from the hash. 
 		Due to this, the means of authentication on most programs is done by hashing the entered password and comparing it to a stored hash. 
@@ -878,6 +902,7 @@
 		Tools such as ``John the Riper'' and ``Hashcat'' can be used to compute hundreds of thousands of hashes per second, which can then be compared with the given hash. 
 		This makes hash cracking a matter of time and dictionary crafting. 
 		\subsection{John the Riper}
+		\index{John The Ripper}
 			While there are many tutorials\footnote{\url{http://openwall.info/wiki/john/tutorials}} on the usage of John the Riper (John) which go into specific detail, this section will explain the basic usage of the tool. 
 			Before starting, check that the version of John which you have installed is correctly compiled for your system, you may want to enable options such as GPU cracking, which needs to be done at compile time. 
 			What follows is a list of common commands for use with John:
@@ -909,6 +934,7 @@
 			\end{description}
 			
 		\subsection{Hashcat}
+		\index{Hashcat}
 			Hashcat was started due to the fact that at the time, tools such as John the Riper did not make proper use of multi-threading. 
 			This has been expanded to include GPGPU processing using tools such as openCL and CUDA, and has made hashcat one of the fastest hash cracking tools currently available. 
 			Both Hashcat and the newer oclHashcat use the same input files and command syntax. 
@@ -976,6 +1002,7 @@
 				\end{lstlisting}
 				
 		\subsection{Rainbow Tables}
+		\index{Rainbow Tables}
 			In both of the previous sections, we have been calculating the hashes which we are testing against the password hash on the go. 
 			This means that we have to calculate the algorithm, sometimes multiple thousands of times, for each password we want to try. 
 			There is another option: rainbow tables. 
@@ -1007,6 +1034,7 @@
 			This method, while expensive and difficult to set up, is currently the fastest means of cracking a hash. 
 			However, if you set your cracking program up properly, it will still likely beat this setup when it is brute forcing hashes. 
 		\subsection{Salting}
+		\index{Salting}
 			Many of the methods above become significantly more difficult when salting is introduced. 
 			Normally, a hash will be produced by simply running a hash function on the password ($hash(pass)$). 
 			However, when salting is implemented, the hash may be generated by adding either a known string or a random string---or sometimes both---to the password before passing it to the hash function ($hash(pass + "salt"$ or $hash(pass + rand()$).

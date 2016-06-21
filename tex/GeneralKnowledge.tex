@@ -83,6 +83,7 @@
 			The history of Linux is an interesting one with deep roots in early computer science and operating systems. 
 			To understand why Linux was built the way it is, you must first understand UNIX and some of the computer designs that were common at the time. 
 			\subsubsection{UNIX}
+			\index{UNIX}
 				No section on Linux would be complete with out at least a small section on UNIX. 
 				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large. 
 				Furthermore, most of them had software specific to that computer, running on a processor architecture that no other type of machine used. 
@@ -115,10 +116,12 @@
 				However, progress is being made. 
 
 			\subsection{Building Linux}
+			\index{Linux}
 				While UNIX itself was proprietary code, the concepts and standards that it created were open to anyone. 
 				Thus, when in the 90s, home PCs became powerful enough to run full UNIX systems, 
 				Linux Torvalds, a computer science student, started writing the code required for it. 
 
+				\index{POSIX}
 				From the outset, the goal of this system was to crate a fully POSIX (the standard for UNIX) compliant OS for academic use. 
 				This led to a system that was free to use with the code available to edit and that was completely UNIX compliant. 
 				Thus, people came in droves. 
@@ -134,6 +137,7 @@
 
 				While back in these early times, it was necessary to know how Linux worked and some systems programming to get it to run, modern Linux systems require none of this. 
 				Originally, one had to be able to read and understand manual pages for systems that would not work when first installing Linux. 
+				\index{Distribution}
 				These systems, such as the X11 display driver could often be hard to set up, 
 				in some cases, they could physically burn the hardware you were running on. 
 				In the modern Linux world, however, distros such as Debian and Linux Mint do all of this for you. 
@@ -203,6 +207,7 @@
 			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
 
 			A summary of the most common Linux command can be found in table \ref{tab:LinuxCommandsSummary}.
+			\index{Command Reference}
 			\begin{center}
 				\begin{longtable}{| l | p{6cm} |}
 					\hline
@@ -272,6 +277,7 @@
 
 			\FloatBarrier
 		\subsection{Man Pages}
+		\index{Manual Pages}
 			The information found here is simply an introduction. 
 			It is a small subsection of the information that exists on Linux and it's systems. 
 			Most of this information can be found in its most raw technical form in the Linux man pages. 
@@ -341,6 +347,7 @@
 
 
 			\subsubsection{Mounting}
+			\index{Mounting}
 				Linux filesystems are usually broken down into partitions. 
 				These partitions are used to allocate a given amount of space to a given part of the OS. 
 				However, they also have a number of security purposes, as well as simple data loss prevention. 
@@ -432,6 +439,7 @@
 
 				
 			\subsubsection{File Permissions}
+			\index{File Permissions}
 				\begin{table}[H]
 					\centering
 				\begin{adjustbox}{max width=1\textwidth}
@@ -531,6 +539,7 @@
 					\item Ensure that VNC and other remote connections are disabled. 
 				\end{itemize}
 	\section{The CVE System}
+	\index{CVE}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
 		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
 		However, it has now become the standard for releasing a vulnerability and for determining exactly what attack was launched. 
@@ -546,6 +555,7 @@
 
 		
 	\section{Regex}
+	\index{Regex}
 		Regular Expressions, hereby shortened to regex, are a means of expressing a variable set of characters succinctly. 
 		Similar to mathematics, where there are a number of symbols with specific meanings, 
 		regex treats each character within it as having a specific meaning and reason\cite{regexTHW}. 

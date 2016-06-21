@@ -25,6 +25,7 @@
 				\item Randomly generated using a password manager. %TODO: \ref this to browser hardening PMs 
 				\item Longer than 12 characters. 
 			\end{itemize}
+			\index{Passwords}
 		\subsection{Password Hashing}
 			Linux stores hashed passwords in ``/etc/shadow''. 
 			It is worthwhile checking the settings of your Linux install to ensure that passwords are hashed properly and with a number of rounds. Thus, open ``/etc/pam.d/passwd'' and ensure that it contains the line:
@@ -32,6 +33,7 @@
 				password required pam\_unix.so $\textbf{sha512}$ shadow $\textbf{rounds=65536}$
 			\end{quote}
 		\subsection{Disk Encryption}
+		\index{Disk Encryption}
 			is the process of automatically cryptographically protecting a part or all of a storage device.
 			\footnote{\url{https://wiki.archlinux.org/index.php/Disk\_encryption}}
 			When properly utilized, disk encryption will ensure that only a trusted user will be able to unlock the computer. 
@@ -54,6 +56,7 @@
 					In this type of encryption, the contents of the whole device will look like random data rather than a filesystem filled with random files. 
 			\end{description}
 		\subsection{Mount options}
+		\index{Mount Options}
 			When setting up a secure environment, one should take care to give the least permission required to conduct a task. 
 			Thus, when mounting file systems, it is best to limit what can be done with the data on the system.
 			There are three restrictions which can be placed on a mounted filesystem:
@@ -80,6 +83,7 @@
 				\label{tab:mountOptions}
 			\end{table}
 			\subsection{File Permissions}
+			\index{File Permissions}
 				The default file permissions allow almost all files to be read by all users, while writing and executing is reserved for the owner and root. 
 				This means that if any user is compromised, most files on the system can be stolen. 
 				Furthermore, it means that the attacker can use the systems configuration files to determine likely privilege escalation or pivot points. 
@@ -87,6 +91,7 @@
 				This will ensure that only root can read and change configuration files and only root and the owner can read their own files. 
 				This is especially important in a multi-user system, where other users would otherwise be able to read all users data. 
 			\subsection{Users}
+			\index{User accounts}
 				One of the first things to do on a new Linux install is to create a new user to use rather than root. 
 				This removes a large point of failure in that if the root account is compromised, the whole system is.\\ 
 				To add to this, one should look to implement lockouts on failed login attempts through the pam\_tally\footnote{\url{http://linux.die.net/man/8/pam\_tally}} system.
@@ -111,6 +116,7 @@
 				it becomes difficult for an attacker to take data, due to the fact that they cannot see most of the filesystem.
 
 			\subsection{Restricting use of root}
+			\index{Root User}
 				\begin{itemize}
 					\item The sudo command should be used rather than su due to the following reasons:
 						\begin{itemize}
@@ -124,6 +130,7 @@
 					\item Restrict root login both locally and via SSH. 
 				\end{itemize}
 			\subsection{Mandatory Access Control}
+			\index{Mandatory Access Control}
 				MAC, as opposed to the Discretionary Access Control (DAC) used on most Linux systems is a rule set which designates which actions can be taken on which files and directories. 
 				This rule set is created by the root user and unlike DAC cannot be altered by the users of the system. 
 				While any MAC system will be far better than DAC, one must ensure that MAC is properly setup, as malicious execution during the learning phase could create vulnerabilities which will go undetected. 
@@ -133,6 +140,7 @@
 				While difficult to create a strong policy, it is one of the best methods for running application white listing on Linux, 
 				due to the fact that there is no pre-built white listing tool. 
 			\subsection{Kernel Hardening}
+			\index{Kernel Hardening}
 				The following are the common steps used to harden the Linux Kernel. 
 				\begin{description}
 					\item[Restricting access to kernel logs]
@@ -148,6 +156,7 @@
 						Furthermore, it will randomize the memory layout of the computer, making it far more difficult to determine what part of memory is being operated on and thus far harder to exploit a program successfully. 
 				\end{description}
 				\subsection{Sandboxing with firejail}
+				\index{Sandboxing}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
@@ -159,6 +168,7 @@
 					While this does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult. 
 					However, it also means that nothing can be saved from within the program, making it far harder to use. 
 				\subsection{Firewall} 
+				\index{Firewall}
 					A firewall is a system designed to prevent unauthorized access to a system by only allowing a specific set of packets to be transmitted through to the network.\footnote{\url{https://wiki.archlinux.org/index.php/Firewalls}}
 					While they can be in either hardware or software, this section will focus on the software implementation, as this is the implementation which can be setup on all Linux systems. 
 
@@ -238,7 +248,8 @@
 						Finally, this whole setup can be saved using the command ``iptables-save''. 
 
 		
-				\subsection{Physical security}
+				\subsection{Physical Security}
+				\index{Physical Security}
 					Given enough time and resources, physical access is root access. 
 					However, a high level of security for both the operating system and data can be obtained through the use of a number of layers such as boot security and encryption. 
 					It must be noted that the system can be tampered with by other means such as malicious hardware which can read and alter the memory of the computer while it runs. While there is little that can be done to avoid this outside checking for new hardware, it is unlikely that an attacker will be this knowledgeable or determined. 
@@ -259,6 +270,7 @@
 		However, if you would like to edit them manually or learn more about the structure of these files, I recommend a text editor such as ``TextWrangler'' which can convert these files to and from binary. 
 
 		\subsection{Full Disk Encryption}
+		\index{Disk Encryption}
 			The built in FileVault utility makes full disk encryption on OS X easy. 
 			This means that unless you need to access your hard drive from another computer for a good reason, FileVault should be enabled. 
 			Furthermore, with more recent systems, FileVault will encrypt in hardware, ensuring that minimal performance losses are noticed. 
@@ -276,6 +288,7 @@
 				# pmset -a hibernatemode 25
 			\end{lstlisting}
 		\subsection{Firmware password}
+		\index{Firmware Password}
 			Unlike windows and Linux systems where the UEFI or BIOS are transparent to the user, Apple Mac computers attempt to hide this utility. 
 			While it is not easy to access to the unaware, this is no means of security. 
 			Thus, it is recommended that a password be placed on this utility. 
@@ -288,6 +301,7 @@
 				\item Hold the \Alt{} key during the next boot.
 			\end{enumerate}
 		\subsection{Firewall}
+		\index{Firewall}
 			The default OS X firewall is a good start for a blocking firewall. 
 			However, it will not allow you to monitor connections, nor block outgoing connections.
 			To enable it, use the command:
@@ -314,6 +328,7 @@
 			While I recommend the latter as it is built in, I recommend that you do more reading before enabling it. 
 
 			\subsection{Services}
+			\index{OS X Services}
 				OS X comes with a number of services which most people will not use. 
 				Furthermore, many of these services phone home to apple or another organization, either for monitoring or content purposes. 
 				Use the following commands to gather information\footnote{\url{http://cirrusj.github.io/Yosemite-Stop-Launch/}} about the services currently running on your system:
@@ -340,6 +355,7 @@
 					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
 				\end{lstlisting}
 			\subsection{Spotlight}
+			\index{Spotlight}
 				Spotlight is an exceptionally useful tool. 
 				It is by far the quickest way to get information and launch programs on an OS X system. 
 				However, in order to do this, is will often send data to both Apple and Microsoft. 
@@ -347,6 +363,7 @@
 				You may also need to disable this in Safari Preferences under ``Search''. 
 				This will stop Spotlight from phoning home on every search. 
 			\subsection{Homebrew}
+			\index{Homebrew}
 				Many of the user land tools installed with OS X or the xcode package are vastly out of date BSD versions. 
 				This can be resolved through the use of the Homebrew package manager. 
 				This package manager uses TLS to pull down install scripts from it's git hub repository on Github.com, meaning that it is mostly secure so long as you trust the repository. 
@@ -354,6 +371,7 @@
 				See the \href{https://github.com/Homebrew/homebrew}{Homebrew Github repository} for more information and installation instructions. 
 				This will be used in further parts of this guide.
 			\subsection{OS X Command Line Tools}
+			\index{OS X CLI}
 				The versions of many of the tools released with OS X are exceptionally out of date. 
 				For example, at the time of writing, the version of the common version control system ``git'' was vulnerable to an arbitrary code execution vulnerability. 
 				Often, Apple does not update these in a timely manner, meaning that you are left running vulnerable software for an extended amount of time. 
@@ -370,6 +388,7 @@
 				Now you should install ``coreutils'' from Homebrew or another trusted source and link all relevant binaries in /bin to their Homebrew coreutils equivalent. 
 				This will keep you up to date with the package that you have chosen, rather than waiting for Apple to update the system for you. 
 			\subsection{DNS}
+			\index{OS X DNS}
 				DNS leaks are the most common way for a computer to leak the locations they are accessing. 
 				There are two steps to securing DNS requests, caching and encryption, both of which will be covered in this section. 
 
@@ -420,6 +439,7 @@
 				selecting a new one from \href{https://www.opendns.com/}{OpenDNS}.
 				
 			\subsection{Captive Portal}
+			\index{Captive Portal}
 				When OS X connects to a new network it probes the network and launches a Captive Portal assistant if it cannot access the Internet. 
 				This will load up an arbitrary website provided by the network, possibly serving malware with no user intervention. 
 				This feature can be disabled with the following command:
@@ -428,6 +448,7 @@
 				\end{lstlisting}
 
 			\subsection{OpenSSL}
+			\index{OpenSSL}
 				The OpenSSL version shipped with OS X is vastly out of date, not supporting many newer encryption technologies and causing significant security risks. 
 				Though it may cause issues building some software, it is recommended that you switch to the Homebrew package and deal with these issues as they arise by utilizing the OS X binary temporarily.
 				This version can be installed and linked using the following commands:
@@ -444,6 +465,7 @@
 		You would then remove all packages that are not used, reducing the surface area for attacks in the same way that you would for Linux or OS X. 
 		While these mitigations are a significant improvement from a default windows install, it is far more expensive to secure a home windows install than to secure a Mac OS X or Linux install. 
 		\subsection{Antivirus}
+		\index{Antivirus}
 			The first and easiest means of securing a Windows system is to install an antivirus software package. 
 			The most basic of these will run a signature check on every file within the filesystem, checking for known malware which has not been obfuscated. 
 			While this is a good first step, it is trivial for malicious programmers to write code which will not be picked up by these systems. 
@@ -453,24 +475,28 @@
 			Currently, the most renowned antivirus which runs heuristic scans is malwarebytes.\footnote{\url{https://www.malwarebytes.org/}}
 
 		\subsection{Antiexploit}
+		\index{Antiexploit}
 			An extension to antivirus is the antiexploit suite. 
 			This software purports to harden certain programs against attacks which are common to them. 
 			It is designed to mitigate common attack vectors such as the browser or PDF reader. 
 			This software works in much the same way as grsecurity and PAX on Linux, but targets individual programs, rather than the OS as a whole. 
 			Malwarebytes again makes a well known antiexploit software\footnote{\url{https://www.malwarebytes.org/antiexploit/}} for windows. 
 		\subsection{Data Execution Prevention}
+		\index{Data Execution Prevention}
 			As you will find in Chapter \ref{ch:BinaryExploitation}, 
 			one of the most common exploits is to alter a return address and execute code placed into the data of a program. 
 			Data Execution Prevention (DEP) was created to mitigate this, attempting to detect when memory is used abnormally and shutting down the offending program. 
 			To ensure that DEP is running, it is recommended that you open ``Performance Options'' and select ``Turn on DEP for all programs and services except those I select''. 
 			This will enable the protection for all software installed. 
 		\subsection{Application White listing}
+		\index{Application Whitelisting}
 			AppLocker is the main means of providing application white listing in the windows environment. 
 			However, it is only available on Ultimate or Enterprise editions of windows. 
 			If you have either of these, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/dd759113.aspx}} on configuring it. 
 			It is recommended that the configuration allow only those listed applications,
 			ensuring that new or maliciously installed applications are not allowed to run. 
 		\subsection{Disk Encryption}
+		\index{Disk Encryption}
 			As above, Microsoft's bitlocker is available on the Ultimate and Enterprise versions of it's windows OS.
 			In order to use this, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/cc732774.aspx}}. 
 			If you do not have the required versions of windows, software such as VeraCrypt\footnote{\url{https://veracrypt.codeplex.com/}} will allow you to run full disk encryption. 
@@ -504,6 +530,7 @@
 		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
 		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
 		\subsection{$\mu{}$Block Origin}
+		\index{$\mu{}$Block Origin}
 			$\mu$Block Origin is a tool which will block elements on every page which is loaded. 
 			This tool works by reading from a list of filters which determine the common advertisements and other objects which should be blocked. 
 			Furthermore, the tool uses these filters to determine which domains are likely to be malicious and blocks them, giving you the option to pass through to the site. 
@@ -515,17 +542,21 @@
 					Most of the filters down to regions are useful. However, many overlap. 
 			\end{itemize}
 		\subsection{Disconnect}
+		\index{Disconnect}
 			Disconnect is designed to make the Internet faster and more private by blocking tracking found on most websites. 
 			There is no setup for this plugin. Simply install it and allow it to do its thing. 
 			It will check the connections requested by every website you go to against its list and block all those known to be tracking. 
 		\subsection{Flash Control}
+		\index{Flash Control}
 			Flash Control blocks both flash and HTML 5 elements which could contain malicious code. 
 			The plugin is mainly useful for the flash blocking behavior, as flash is one of the most broken and commonly vulnerable pieces of web technology. 
 			Furthermore, it is useful on its own to stop the ``one of my 50 tabs is playing music, but I don't know which one'' syndrome. 
 			There is minimal setup for this plugin. Simply click the manage whitelist button and select all bar ``Disable Flash Control''. 
 			You may also wish to add any sites that you know are good to the whitelist. 
 			However, I prefer to simply allow Flash Control to block all flash elements. 
+			
 		\subsection{NoScript}
+		\index{NoScript}
 			NoScript is one of two script blocking plugins I recommend. 
 			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
 			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
@@ -538,11 +569,14 @@
 				\item Clear Click. 
 			\end{itemize}
 			These are features which should be turned on in the settings of NoScript. 
+
 		\subsection{Privacy Badger}
+		\index{Privacy Badger}
 			Privacy Badger is another set and forget advertisement and tracking blocker. 
 			This plugin will allow you to set allow, block cookies or block all for each connection that a website requests. 
 			While it comes with a list which is quite good, you may want to manually adjust some pages to ensure that they will work or to block items which you think are malicious or unwanted. 
 		\subsection{$\mu{}$Matrix}
+		\index{$\mu{}$Matrix}
 			$\mu$Matrix is the second script blocking tool I recommend. 
 			$\mu{}$Matrix will by default block all cookies, scripts, XHR, frames and various other elements, leaving only images and CSS. 
 			The following are the settings which I use, these will ensure that security is held at a high level:
@@ -559,6 +593,7 @@
 			Once this is setup, you will need to begin unblocking elements of websites by clicking on the $\mu{}$Matrix icon and selecting the top of the element to be unblocked. 
 			Be sparing with this unblocking. However, you will need to do it for most sites to display. 
 		\subsection{Sandboxing}
+		\index{Sandboxing}
 			Sandboxing is a feature of most modern browsers. It is usually enabled by default to avoid contamination between tabs. 
 			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
 			Follow the steps outlined in the above chapter for your operating system to properly sandbox your browser. 
@@ -589,6 +624,7 @@
 			\end{itemize}
 			%TODO: Add about:config chapter. 
 		\subsection{Search}
+		\index{Web Search}
 			Google is one of the worst violators of user's privacy on the Internet. Second only to Facebook. 
 			However, there are other options for search. \par 
 			If you would like to retain the results that Google gives, but remove the tracking, Start page is your option. 
@@ -604,6 +640,7 @@
 			This becomes far more difficult when attempting to pivot from one browser to another as the original browser will not know that the second is running. 
 			Thus when logging into sites that you deem require security, open a completely different browser and use that to log in. 
 		\subsection{Password Management}
+		\index{Password Management}
 			For a long time, this was the domain of the web browser. 
 			This allowed the user to forget all of their passwords, having the browser autofil them when the site loaded.
 			However, the password managers on modern browsers were not built for security. 

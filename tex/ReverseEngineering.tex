@@ -19,6 +19,7 @@
 		This mainly occurs due to the nature of the machine, which can still only interpret binary. 
 		Thus, both ARM and X86 must be assembled into this machine code. 
 		\subsection{ARM Assembly}
+		\index{ARM Assembly}
 			The world of IT is becoming increasingly mobile, with ARM processors dominating that area. 
 			Thus, to reverse engineer in the modern world, knowing x86 is no longer enough. 
 			Furthermore, ARM being a RISC processor, it has a smaller and easier to understand instruction set. 
@@ -26,6 +27,7 @@
 
 			\subsubsection{Registers}
 			%rewrite the names of these in a better format. This looks like shit. 
+			\index{ARM registers}
 				The registers of an ARM processor are generally referred to as ``r0'' to ``r15''. 
 				However, there are also aliases, ``a1'' to ``a4'', ``v1'' to ``v6'', ``sb'', ``sl'', ``fp'', ``sp'', ``lr'' and ``pc'' which map respectively to the normal names. 
 				With the below notable exceptions, these registers are all thought of as general purpose. 
@@ -43,6 +45,7 @@
 				Furthermore, depending on the arm implementation in use, these registers may be 16, 32 or 64-bit. 
 				
 			\subsubsection{Instructions}
+			\index{ARM Instructions}
 				Instructions are given in the following syntax:
 				\begin{quote}
 					<operation>\{condition\}\{flags\} Rd, Rn, Operand
@@ -83,6 +86,7 @@
 				\end{table}
 
 			\subsubsection{Multiplication and Division}
+			\index{ARM Multiplication and Division}
 				Multiplication and Division are implemented as a function of the \emph{barrel shifter} in ARM assembly. 
 				This works by applying a logical shift or rotate to the operand before using it in an operation. 
 				The following explains the types of shift available:
@@ -106,6 +110,7 @@
 				\end{description}
 
 			\subsubsection{Operand}
+			\index{ARM Operand}
 				The operand within ARM assembly makes it work slightly differently to x86. 
 				This value is used instead of the destination in mathematical or logical operations, with the destination acting only as a store.
 				However, it also allows for barrel shifting and usage of constants. 
@@ -118,6 +123,7 @@
 				However, the compiler will convert it into a barrel shifted operation if it is larger than this. 
 
 			\subsubsection{Branching}
+			\index{ARM Branching}
 				In assembly, we need a way to move about within the code. 
 				This is usually done by branching, a similar idea to GOTO. 
 				The following two instructions are used for this purpose, with the latter two used to come back to the calling instruction. 
@@ -132,6 +138,7 @@
 				\end{description}
 
 			\subsubsection{Conditional Execution}
+			\index{ARM Conditional Execution}
 				The ARM architecture allows conditionals on every instruction. 
 				This is done by appending either ``EQ'' or ``CC'' to the instruction mnemonic. 
 				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP. 
@@ -177,6 +184,7 @@ loop
 
 
 			\subsubsection{Loading Data from Memory}
+			\index{ARM Memory Management}
 				The two commands ``LDR'' and ``STR'' are used to access memory. 
 				The former will retrieve data from memory and place it in the given destination register. 
 				The latter will take the data in the register and place it in the memory address given. 
@@ -202,6 +210,7 @@ loop
 				Similarly, one could increase the address after the address is used by calling ``[rx], \#n''. 
 
 			\subsubsection{The Stack}
+			\index{Stack}
 				ARM assembly still has access to the stack. 
 				This is done using the ``STMFD'' command to push data onto the stack and the ``LDMFD'' command to pop it back off. 
 				The former of these will take an the stack pointer (r13) and a list of registers to push onto the stack. 
@@ -230,6 +239,7 @@ LDMFD r13!, {r4-r7}
 			RISC processors will only have a small number of instructions, but can still do the same amount. 
 
 			\subsubsection{Endianness}
+			\index{Endianness}
 				Intel processors are little endian. 
 				This means that the least significant byte is stored in memory first. 
 				Thus, 0x123456 is stored in memory as ``56, 34, 12''. 
@@ -240,6 +250,7 @@ LDMFD r13!, {r4-r7}
 				Similarly, while the bytes themselves will be ordered in this way, individual bits will not be reordered. 
 
 			\subsubsection{Registers}
+			\index{Intel Registers}
 				x86 assembly has far less registers than ARM. 
 				There are 6 completely general purpose registers, 2 specific but accessible registers and an instruction pointer. 
 				The length of these is based on the version of x86 being used. 
@@ -287,7 +298,9 @@ LDMFD r13!, {r4-r7}
 						If the result was not signed, this will be meaningless. 
 				\end{description}
 
+				
 			\subsubsection{The stack}
+			\index{Stack}
 				As with ARM assembly, x86 has a concept of a stack. 
 				This again is implemented as a LIFO structure which starts at a relatively high memory address and grows down. 
 				
@@ -309,6 +322,7 @@ LDMFD r13!, {r4-r7}
 				Furthermore, this will have the side effect of incrementing the stack pointer. 
 
 			\subsubsection{Calling Conventions}
+			\index{Calling Conventions}
 				There are numerous calling conventions. 
 				This section will cover the C declaration convention, which is commonly used in compiled C code. 
 
@@ -330,6 +344,7 @@ LDMFD r13!, {r4-r7}
 				It expects that the function will clean up memory, thus requiring that the ret instruction be told how many bytes to remove from the stack. 
 
 			\subsubsection{Basic Instructions}
+			\index{Intel Instructions}
 				The following list describes some of the more useful basic instructions\footnote{\url{http://www.cs.virginia.edu/~evans/cs216/guides/x86.html}}:
 				\begin{description}
 					\item[MOV] Allows movement from:
@@ -367,6 +382,7 @@ LDMFD r13!, {r4-r7}
 					\item[CALL/RET] Call or return from a function respectively. 
 				\end{description}
 			\subsubsection{Addressing}
+			\index{Intel Addressing}
 				Data that is known before the program starts (and should be accessible globally) can be included with the ``.data'' directive. 
 				This creates a section of memory of a given size which contains the required data. 
 				This process can be seen in code example \ref{code:x86.data}. 
@@ -384,6 +400,7 @@ LDMFD r13!, {r4-r7}
 
 
 	\section{Radare2}
+	\index{Radare2}
 		Radare2 is a set of tools for working with binary files. 
 		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
 		While the Radare2 suite has a number of stand alone programs within it, this section will cover only the main program. 
@@ -434,6 +451,7 @@ LDMFD r13!, {r4-r7}
 		However, they give an insight into how the program interacts with the system, allowing you to determine other attack paths. 
 		Furthermore, if the code was not properly obfuscated, they may allow you to see strings and other interesting parts of the code left after it was compiled. 
 		\subsection{Strings}
+		\index{Strings}
 			This program reads through the binary of any file and prints any printable character strings greater than 4 characters long\footnote{\href{http://linuxcommand.org/man\_pages/strings1.html}{man strings}}.
 			Generally, it will work well with it's default settings. 
 			However, if you have reason to believe that the encoding was changed when programming, the ``-e'' flag will allow you to set that correctly. 
@@ -441,12 +459,14 @@ LDMFD r13!, {r4-r7}
 
 			This tool is also usually piped into grep, as it will often output a significant amount of useless data. 
 		\subsection{Ltrace}
+		\index{Ltrace}
 			Ltrace runs the program given to it as an argument until it exits\footnote{\href{http://linuxcommand.org/man\_pages/ltrace1.html}{man ltrace}}.
 			It will intercept and record all dynamic library calls created by the program, giving you information on what the program is accessing and attempting to achieve. 
 		
 			While this is a good method for determining what the program is attempting to do, it has a number of limitations, such as only working with 32-bit programs on Linux. 
 			Due to this, it is generally attempted, but not relied on. 
 		\subsection{Strace}
+		\index{Strace}
 			Strace is the older and more supported brother to Ltrace. 
 			It works in the same manner, but for system calls (calls for the kernel to conduct an action) rather than library calls. 
 			By default, it will print system calls, their arguments and results to STDERR or the file specified with ``-o''. 
@@ -470,6 +490,7 @@ LDMFD r13!, {r4-r7}
 			\end{description}
 	\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
+	\index{Java}
 		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
 		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
 		Thus, Java reverse engineering is simply a matter of choosing the best program to use in decompilation. 
@@ -485,6 +506,7 @@ LDMFD r13!, {r4-r7}
 			$ ./procyon.jar *.class -o src
 		\end{lstlisting}
 
+		\index{Procyon}
 		Furthermore, Procyon will allow you to decompile a JAR file in it's entirety. 
 		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
 
@@ -497,6 +519,7 @@ LDMFD r13!, {r4-r7}
 	
 		%TODO: Revise this section
 	\section{Pwn Adventure}
+	\index{Pwn Adventure}
 		Pwn Adventure is a reverse engineering CTF created to test players ability to both reverse engineer the game and stay focused at the same time.
 		It was written in C++ using the Unity engine, making it fully compiled and relatively difficult to reverse engineer. 
 		However, no client authentication was written into the server, making it trust anything the client tells it it's doing. 

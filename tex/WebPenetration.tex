@@ -10,6 +10,7 @@
 	This chapter will discuss the main points of entry for such websites. 
 
 	\section{XSS}
+	\index{XSS}
 		XSS is one of the main attack vectors for modern viruses and attacks. 
 		It is commonly used as the first access to the system, delivering a more stable connection to the system later. 
 		XSS will allow you to gain preliminary access to the system, creating a vector for your control of it. 
@@ -21,6 +22,7 @@
 		XSS comes in two forms, reflected and stored. 
 		We will be discussing both in depth. 
 		\subsection{Reflected}
+		\index{XSS Reflected}
 			This type of attack is easier to pull off but often easier to spot. 
 			The attacker will send a link to a vulnerable website with a script within it. 
 			The website will then echo back the script, having the users browser run it. 
@@ -34,10 +36,12 @@
 			The issue with this type of attack is that it requires that you can get the victim to click on the link.
 			This is also the main reason it is recommended that you check links before clicking them.
 		\subsection{Stored}
+		\index{XSS Stored}
 			Stored XSS works by finding a website that will retain your script for you and run it every time someone accesses the page. 
 			Usually, these are found in comment or post boxes, but they can be anywhere that the user can input text which will be displayed for another user. 
 			The benefit to these pages is that the link you send to them will not look dodgy and the script will hook anyone who attempts to access the page. 
 		\subsection{BeEF}
+		\index{BeEF XSS}
 			BeEF is the tool that makes this these attacks interesting. 	
 			While previously, you could run arbitrary code on the remote computer, now you can run dynamic code. 
 			The former is more powerful if you know how to write code, but BeEF will give you mostly the same outcome with far less work. 
@@ -85,6 +89,7 @@
 			The following sectinos will show you tools which can be used to attack using XSS without using BeEF. 
 
 			\subsubsection{``AutoPWN''}
+			\index{AutoPWN}
 				The ``AutoPWN'' exploit in Metasploit allows you to automatically target a computer accessing a website. 
 				As we have seen, using XSS, we can force a user to access a site of your choosing. 
 				Through this, we can attack a browser, gain shell access to a machine and create a persistent back door automatically. 
@@ -106,6 +111,7 @@
 				\end{enumerate}
 
 				Assuming that you have followed the steps above, place the ``BrowserAutoPwn URL'' given my Metasploit into your XSS and wait for a user to connect. 
+
 
 			\subsubsection{Manual JavaScript}
 				As previously stated, XSS uses JavaScript and HTML to execute arbitrary code on a system. 
@@ -130,6 +136,7 @@
 		\subsection{Evading Anti-XSS}
 		\subsection{Content Security Policy}
 	\section{SQL Injection}
+	\index{SQL Injecion}
 		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
 		This allows you to have direct access to the database, giving you the ability to ensure it logs you in or to gather information about other accounts within it. 
 		SQLi is a pertinent issue as the majority of websites use some form of SQL backing, which can be exploited to gather user data. 
@@ -157,6 +164,7 @@
 		\subsubsection{Attack Examples}
 			
 		\subsubsection{SQLmap}
+		\index{SQLmap}
 			This tutorial assumes that you have already found a possibly vulnerable site or server which has either a database which has easy access or is receiving data through HTTP GET or POST commands. 
 			You may not know that it is vulnerable, but the URL or other information about it makes you want to test it. 
 			SQLmap will automate this process for you. 
@@ -217,6 +225,7 @@
 				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
 		\subsection{Character Encoding}
 	\section{File Uploads}
+	\index{File Uploads}
 		Allowing the user to upload a file to a webserver is one of the more dangerous features enabled on a number of systems. 
 		These files will have to be stored somewhere accessible on the filesystem, as well as being one of the more common features. 
 
@@ -239,6 +248,7 @@
 		Thus, by running traffic through a proxy such as burp suite, 
 		one can edit traffic on the way out, setting the extension back to the preferred ``.php''. 
 	\section{File Inclusion}
+	\index{File Inclusion}
 		File inclusion is common in PHP\footnote{\url{https://www.owasp.org/index.php/PHP\_File\_Inclusion}}
 		However, it should never be exposed to the user, allowing them to submit a request for an arbitrary page. 
 		It's main use is the execution of arbitrary code on the server, allowing for an easy way to gain access. 
@@ -253,6 +263,7 @@
 		
 
 	\section{HTTP Directory Traversal}
+	\index{Directory Traversal}
 		Directory traversal is a basic attack on a poorly configured web server or application\footnote{\url{https://www.owasp.org/index.php/Path\_Traversal}}. 
 		This works by asking the site for a page or file that is outside of the expected web directory. 
 		Such requests can lead to signifficant information disclosure, and could also be a means of ingress if files such as ``/etc/shadow'' or a users ssh keys can be stolen. 
@@ -282,6 +293,7 @@
 		\subsection{Directory Creation}
 	\section{HTTP Man in the Middle}
 	\section{Session Hijacking}
+	\index{Session Hijacking}
 		Session Hijacking is the act of stealing an authorised connection to a service from a legitimate user. 
 		Generally, this comes in the form of stealing a cookie and crafting it to be used by your browser. 
 		This section will discuss the act of using a retrieved cookie rather than the initial act of retrieving it, 
