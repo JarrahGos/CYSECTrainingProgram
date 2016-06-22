@@ -1041,7 +1041,6 @@
 			In either of these cases, the salt must be stored, which has led to split salting, using a random stored value or the users name/ID as well as a hard coded element. 
 			This makes knowing the salt hard, but not impossible, as we can reverse engineer the code in order to determine the salting algorithm used and a simple ``strings'' on the compiled code will give us a hard coded salt string. 
 			Nonetheless, these methods deter attackers from attempting to crack the hashes by limiting their choices and removing their ability to use rainbow tables. 
-		\subsection{SHA}
 		\subsection{Hash Collisions}
 			Hashes, by their nature must have collisions. 
 			This is due to the fact that they take a large amount of information and turn it into a string of a standard size. 

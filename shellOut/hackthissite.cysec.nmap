@@ -1,0 +1,20 @@
+scan report for hackthissite.cysec (10.1.1.128)
+Host is up (0.00031s latency).
+rDNS record for 10.1.1.128: hackThisSite.cysec
+Not shown: 987 closed ports
+PORT     STATE SERVICE
+21/tcp   open  ftp
+22/tcp   open  ssh
+23/tcp   open  telnet
+25/tcp   open  smtp
+80/tcp   open  http
+110/tcp  open  pop3
+111/tcp  open  rpcbind
+139/tcp  open  netbios-ssn
+143/tcp  open  imap
+445/tcp  open  microsoft-ds
+901/tcp  open  samba-swat
+2049/tcp open  nfs
+6667/tcp open  irc
+MAC Address: 00:0C:29:8F:C1:61 (VMware)
+Nmap done: 1 IP address (1 host up) scanned in 0.20 seconds
