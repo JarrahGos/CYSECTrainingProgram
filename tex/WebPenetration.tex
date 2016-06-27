@@ -133,8 +133,6 @@
 					\caption{Stealing a cookie with XSS}
 				\end{code}
 					
-		\subsection{Evading Anti-XSS}
-		\subsection{Content Security Policy}
 	\section{SQL Injection}
 	\index{SQL Injecion}
 		SQL Injection (SQLi) is the process of escaping a normal SQL statement and entering your own SQL code into the query. 
@@ -223,7 +221,6 @@
 						This will return a Meterpreter shell which will give you access to many high level OS functions as well as the Meterpreter framework. 
 				\end{description}
 				More information on these attacks and other flags can be found at the \href{https://github.com/sqlmapproject/sqlmap/wiki}{SQLmap Wiki}
-		\subsection{Character Encoding}
 	\section{File Uploads}
 	\index{File Uploads}
 		Allowing the user to upload a file to a webserver is one of the more dangerous features enabled on a number of systems. 
@@ -305,5 +302,3 @@
 		Depending on the means used for running this hijack, you may or may not be able to do this on encrypted sites.
 		If you have used XSS to gain access to the users session, you will not be hindered by encryption, as the user will be sending you the credentials directly. 
 		However, if you have used ARP poisoning through a switched network, you will not be able to read the encrypted data without attempting to MitM the session itself and creating a fake certificate. 
-	\section{URL Injection}
-	\section{HTTP Redirect Attacks}

@@ -275,16 +275,33 @@
 							\item Import CSV plugin vulnerable to directory traversal\footnote{\url{https://www.exploit-db.com/exploits/39576/}}.
 							\item ABtest plugin is vulnerable to local file inclusion\footnote{\url{https://www.exploit-db.com/exploits/39577/}}.
 						\end{itemize}
-						I recommend running WPscan on this site, as it will provide a more indepth output of possible vulnerabilities and links to their disclosure. 
+					I recommend running WPscan on this site, as it will provide a more indepth output of possible vulnerabilities and links to their disclosure. 
 
-					
+				\paragraph{Post Office}
+					This system is also the email server for the network. 
+					Thus, it is running SMTP, POP3 and IMAP. 
+					However, none of these systems force encryption, and they are all old versions. 
+
 			\subsubsection{Nmap}
 				The following is an nmap scan of the web server:
 				\lstinputlisting[language=nmap]{./shellOut/hackthissite.cysec.nmap}
 
 
+			\subsubsection{Challenges}
+				\paragraph{Wordpress Secure Storage}
+					We have lost the passwords to the main wordpress blog. 
+					It contains information that we require to continue working. 
+					Access the blog and give us the information.
 
-			
+				\paragraph{We want the password anyway}
+					Even though you have accessed the blog, we want our password. 
+					Break into the account and get the password. 
+
+				\paragraph{Email is secure? Right?}
+					We managed to pick up our old admin accessing the network on the www-data account. 
+					Break into the email system on the main server and show us his emails. 
+					The password that we found was ``password''. 
+
 			%--------CTF Answers----------------
 			% www-data email: flag_{He sees you when you're sleeping, he knows when you're awake, he's copied on /var/spool/mail/target, so be good for goodness' sake.}
 			% root(target) email: flag_{So you can take hints}

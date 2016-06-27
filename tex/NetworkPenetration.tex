@@ -531,11 +531,27 @@
 			However, on the targeted machines, browsing to the name of the site you have scraped should send you to weemans fake version. 
 
 			At this point, weeman should output any usernames or passwords that are sent to it, redirecting those users to the correct site. 
-			\subsubsection{Weeman with TLS}
-		\subsection{Email}
-		\index{Email Spoofing}
 		\subsection{Social Engineering Toolkit}
 		\index{Social Engineering Toolkit}
+			The Social Engineering Toolkit is an exceptionally malicious tool for generating content that will likely be read by those it is sent to. 
+			It uses a number of Metasploit functions to create it's exploits, and relies on their payloads and listeners to ensure that the shell returned is picked up and available. 
+
+			\index{Email Phishing}
+			This section will walk through sending a malicious email using SET. 
+			However, first, you will need to set up the site which will be doing the attack. 
+			This could either be a completely malicious site, or a metasploit ``autoPWN'', as discussed in chapter \ref{ch:WebPenetration}
+
+			From this point, you should open SET using the ``setoolkit'' command. 
+			You should now have the attack menu, from which you should select 1, 5 then 1. 
+			This will take you to the email generator. 
+
+			This generator is similar to the one that you use for your normal email, however it gives you the ability to set different return and sender addresses, and will connect directly to the address that you are trying to send to. 
+			Following the obvious steps will take you to the point that you can create your email, 
+			allowing you to enter the subject and the text that will be sent. 
+			It is at this point that you should enter a convincing argument and the URL that you want the victum to click. 
+
+			If done correctly, it will be difficult, though not impossible, to track the sender down, while also ginving the target the desired email and URL. 
+
 		\subsection{Malicious PDF}
 		\index{Malicious PDF}
 			This section will discuss the creation of a client side exploit, stored in a PDF, through the use of Metasploit\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/client-side-exploits/}}.
