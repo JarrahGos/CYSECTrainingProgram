@@ -5,6 +5,7 @@
 \begin{document}
 \frontmatter
 \maketitle
+\pagestyle{plain}
 \tableofcontents
 	\listoffigures
 		\addcontentsline{toc}{chapter}{List of Figures}
@@ -15,7 +16,35 @@
 	     \listof{code}{List of Code Examples}
 	 }
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
-\chapter{Introduction}
+\chapter*{Acknowledgements}
+	\addcontentsline{toc}{chapter}{Acknowledgements}
+	This book came about as a training program for a small group of people interested in cyber security. 
+	Without these people, this book would never have happened, there would be no need nor reason to write it. 
+	Thus, I would like to thank the members, past, present and future of the UNSW Canberra CYSEC VECC, as the ones who made me take the time to write this. 
+
+	Further, I would like to thank Christian Taylor. 
+	Without you dragging me into the VECC and pushing me to run it, I would have learned little of what is contained within and would never have presented it in this manner. 
+	I would like to thank you for being there to bounce ideas off and for pushing me further into virtualization and networking.
+
+	I would like to thank Ben Turnbull, as the university supervisor for the writing of this book. 
+	When you volunteered to take this on, I don't think you expected much more than 5000 words and a basic training program. 
+	That quickly morphed to over 70,000, and a few exceptionally long nights of reading. 
+	Thanks for taking the time to get through it all, for helping to edit and format it and for giving me the chance to write it. 
+
+	Thanks to Dave Roberts for putting up with my constant attempts to find out more. 
+	Between pulling me into the range to help setup classes and attacks, and staying back to run the VECC through a social engineering class, you've added a vast number of ideas to the bank of attacks I could use.
+	Many of the things I've learned working with you led to large sections or chapters within this book, often exactly as I thought I had finished a chapter. 
+
+	Thanks to Hamish Wallace and Luke Quinn for being in the office to pass ideas off to and for putting up with my incessant typing. 
+
+	Finally, thanks to Debbie Gosbell, for putting up with my questions and supporting me through this. 
+	Your notes on formatting and content from a layman's perspective have made this book far more accessible. 
+	I hope I took enough of them on that the book makes sense to those new to the field. 
+
+\chapter*{Introduction}
+\pagestyle{fancy}
+	\addcontentsline{toc}{chapter}{Introduction}
+	\markboth{Introduction}{}
 	This document was written as a one year introductory course to the field of Cyber Security. 
 	Within it, is much of the Computer Science and technical information that one requires to start learning in the field. 
 	However, this comes with a legal penalty. 
@@ -34,7 +63,9 @@
 	With this in mind, please continue through the pages of this book. 
 	I hope you get as much from reading it as I did from writing it. 
 
-	\section{Conventions}
+	\section*{Conventions}
+		\addcontentsline{toc}{section}{Conventions}
+		\markboth{Introduction}{Conventions}
 		This book uses a number of conventions to convey it's content. 
 		These allow for the code shown to be generic, or for commands to work on any computer available. 
 		Table \ref{tab:BookConventions} explains the main conventions used herein. 
@@ -45,7 +76,7 @@
 				\textbf{Convention} & \textbf{Meaning} \\ \hline
 				<variable> & Replace with your version of variable. 
 								Remove the <> from the code. \\ \hline
-				\{variable\} & Optional variable to be replaced as above. \\ \hline
+				[variable] & Optional variable to be replaced as above. \\ \hline
 				\$ command & Command that can be run as a normal user. \\ \hline
 				\# command & Command that must be run as Superuser. \\ \hline
 			\end{tabular}

@@ -488,26 +488,26 @@
 					\end{description}
 			\end{description}
 			This allows us to encrypt using the following function:
-			$$c = m^e \bmod{n}$$ 
+			\[c = m^e \bmod{n}\] 
 			Further, decryption is done using:
-			$$m = c^d \bmod{n}$$
+			\[m = c^d \bmod{n}\]
 
 			To use this, we must first choose our primes. In this instance, we will use small numbers, being $p=47$ and $q=71$.
-			$$\therefore n = pq = 3337$$
+			\[\therefore n = pq = 3337\]
 			We must now generate the encryption key, which must have no factors with:
-			$$(p-1)(q-1) = 46 \times 70 = 3220$$
+			\[(p-1)(q-1) = 46 \times 70 = 3220\]
 			E is then randomly chosen as any number that does not factor with 3220. 
-			$$let\>e = 79$$
+			\[let\>e = 79\]
 			We then calculate the private key, $d$.
-			$$d = 79^{-1}\bmod{3220} = 1019$$
+			\[d = 79^{-1}\bmod{3220} = 1019\]
 			Now we have both the public and private keys. 
 			We will publish the public key, allowing anyone to encrypt and send data to us. 
 			However, we will keep the private key secret, so as to stop anyone impersonating us or reading traffic to us. 
 
 			Using this to encrypt data can be seen below, assuming our message is a single `A':
-			$$c = 65^{79}\bmod{3337} = 541$$
+			\[c = 65^{79}\bmod{3337} = 541\]
 			Decryption is the same process, using $c$ and $d$:
-			$$m = 541^{1019}\bmod{3337} = 65$$
+			\[m = 541^{1019}\bmod{3337} = 65\]
 		\subsection{Common Flaws}
 			This section will discuss the common flaws found in RSA implementations. 
 			It will not go into detail on how to use them, rather providing an initial introduction and leaving the attack as an exercise to the reader. 
@@ -517,13 +517,13 @@
 				Conducting RSA encryption in this way allows an attacker to deduce plaintext without the private key normally required. 
 
 				To show this, let $m$ be the plaintext message, $e_1$ and $e_2$ are the two exponents (private keys). 
-				$$c_1 = m^{e_1}\bmod{n}$$
-				$$c_2 = m^{e_2}\bmod{n}$$
+				\[c_1 = m^{e_1}\bmod{n}\]
+				\[c_2 = m^{e_2}\bmod{n}\]
 				Since our attacker knows $n, e_1, e_2, c_1$ and $c_2$, they can recover $m$. 
 				This is done using the extended Euclidean algorithm, which can find values for $r$ and $s$ as follows:
-				$$re_1 + se_2 = 1$$
+				\[re_1 + se_2 = 1\]
 				Finally, the following algorithm can be used to calculate $m$:
-				$$(c^{-1}_{1})^{-r} \times c^{s}_{2} = m\bmod{n}$$
+				\[(c^{-1}_{1})^{-r} \times c^{s}_{2} = m\bmod{n}\]
 
 			\subsubsection{Attacks on Small Exponents}
 				To speed encryption and signature validation time, small values for $e$ are often used. 
@@ -535,15 +535,15 @@
 				For the general case, with the messages being linearly dependant, you require $\frac{e(e-1)}{2}$ messages. 
 				However, if the messages are identical, this process can be done with $e$ messages.
 				For example, if $e = 3$ and the messages are identical:
-				$$C_1 = m^3\bmod{n_1}$$
-				$$C_2 = m^3\bmod{n_2}$$
-				$$C_3 = m^3\bmod{n_3}$$
+				\[C_1 = m^3\bmod{n_1}\]
+				\[C_2 = m^3\bmod{n_2}\]
+				\[C_3 = m^3\bmod{n_3}\]
 				This means the following is true:
-				$$m < {N_1, N_2, N_3}$$
-				$$M^3 < N_1N_2N_3$$
+				\[m < {N_1, N_2, N_3}\]
+				\[M^3 < N_1N_2N_3\]
 				Using the Chinese Remainder Theorem:
-				$$C_1C_2C_3 = m^3\bmod{N_1N_2N_3}$$
-				$$\therefore \sqrt[3]{C_1C_2C_3} = m$$
+				\[C_1C_2C_3 = m^3\bmod{N_1N_2N_3}\]
+				\[\therefore \sqrt[3]{C_1C_2C_3} = m\]
 
 				It is also worth noting that this can be thwarted by using random padding, as done in PEM and PGP, the most common RSA implementations.  
 	\section{One Time Pad}
@@ -555,7 +555,7 @@
 		This same key must be sent to the receiver so the message can be decrypted. 
 
 		Using this, the sender will encrypt one plaintext character with one key character in the following manner:
-		$$ (P + K) \bmod{26} = C $$  
+		\[ (P + K) \bmod{26} = C \]  
 		Where:
 		\begin{description}
 			\item[P] is the plaintext character. 
@@ -686,7 +686,7 @@
 		It is based on the knapsack problem, which when in it's normal form is an NP-complete problem. 
 		The problem is relatively simple, given a set of weights and a total, select which ones will be found in the knapsack. 
 		Mathematically:
-		$$S = b_1m_1 + b_2m_2 +\ldots+ b_nm_n$$
+		\[S = b_1m_1 + b_2m_2 +\ldots+ b_nm_n\]
 		Where:
 		\begin{description}
 			\item[S] is the sum.

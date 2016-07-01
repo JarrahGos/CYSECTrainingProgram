@@ -1,4 +1,3 @@
-The corresponding response may look as follows:
 Flags: 0x8180 Standard query response, No error
 1... .... .... .... = Response: Message is a response
 .000 0... .... .... = Opcode: Standard query (0)

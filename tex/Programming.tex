@@ -841,64 +841,35 @@ list = ['one', 'two', 'three'];
 			However, this is not always adhered to within the community. 
 
 			Reserved words are as follows:
-			\begin{multicols}{3}
-				\begin{itemize}
-					\item abstract
-					\item boolean
-					\item \textbf{break}
-					\item byte
-					\item debugger
-					\item \textbf{default}
-					\item \textbf{delete}
-					\item \textbf{do}
-					\item double
-					\item \textbf{else}
-					\item enum
-					\item export
-					\item export
-					\item extends
-					\item \textbf{false}
-					\item final
-					\item \textbf{finally}
-					\item float
-					\item \textbf{for}
-					\item \textbf{function}
-					\item goto
-					\item \textbf{if}
-					\item implements
-					\item import
-					\item \textbf{in}
-					\item \textbf{instanceof}
-					\item int
-					\item interface
-					\item long
-					\item native 
-					\item \textbf{new}
-					\item \textbf{null}
-					\item package
-					\item private
-					\item protected
-					\item public
-					\item \textbf{return} 
-					\item short
-					\item static 
-					\item super
-					\item \textbf{switch}
-					\item synchronized
-					\item \textbf{this}
-					\item \textbf{throw}
-					\item throws
-					\item transient
-					\item \textbf{true}
-					\item \textbf{try}
-					\item \textbf{typeof}
-					\item \textbf{var} 
-					\item volatile
-					\item \textbf{void}
-					\item \textbf{while}
-					\item \textbf{with}
-				\end{itemize}
-			\end{multicols}
+			\begin{table}[htb]
+				\centering
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\multicolumn{3}{|c|}{\textbf{Used Key Words}} \\ \hline
+					return & switch & this \\ \hline
+					throw & true & try \\ \hline
+					typeof & var & void \\ \hline
+					while & with & break \\ \hline
+					default & delete & do \\ \hline 
+					else & false & finally \\ \hline 
+					for & function & if \\ \hline 
+					in & instanceof & new  \\ \hline
+					null & & \\ \hline
+					\multicolumn{3}{|c|}{\textbf{Unused Key Words}} \\ \hline
+					volatile & abstract & boolean \\ \hline
+					transient & byte & debugger \\ \hline
+					throws & double & enum \\ \hline
+					synchronized & export & extends \\ \hline
+					super & final & float \\ \hline
+					static & goto & implements \\ \hline
+					short & import & int \\ \hline
+					public & interface & long \\ \hline
+					protected & native & package \\ \hline
+					private & & \\ \hline
+				 \end{tabular}
+				 \caption{JavaScript Key Words}
+				 \label{tab:JSKeyWords}
+			 \end{table}
 			Reserved words that are used within the language are highlighted in bold. 
 			However, most of this list was created to avoid confusion when coming from other C-like languages. 
 
