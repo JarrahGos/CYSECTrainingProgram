@@ -245,7 +245,7 @@
 					pwd & Print the current working directory. \\ \hline 
 					quota & Show disk usage and limits. \\ \hline
 					rm <file> & Delete files or directories. 
-								Directories will only be deleted with the ``-r flag''. \\ \hline
+								Directories are deleted with the ``-r flag''. \\ \hline
 					tail [file] & Print the end of file or STDIN. \\ \hline
 					umask & show or change new file creation permission mode. \\ \hline
 					wc [file] & Counts lines, words and characters in file or STDIN. \\ \hline
@@ -269,6 +269,10 @@
 					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\ \hline
 					<command> > <file> & Send STDOUT of command to file. \\ \hline
 					<command> < <file> & Send file to command as STDIN. \\ \hline
+					<command> \(>>\) <file> & Append STDOUT to file. \\ \hline
+					<command> 2> <file> & Send STDERR to file, works with ``\(>>\)'' as well. \\ \hline
+					<command> \&> file & Send STDERR and STDOUT to file. Also works with ``\(>>\)''. \\ \hline
+					<command> >\&x & Send STDOUT to file descriptor x. Any file descriptor can be used before ``>''. \\ \hline
 				\end{tabular}
 			\end{adjustbox}
 				\label{tab:SpecialCommands}
