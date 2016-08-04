@@ -22,7 +22,7 @@
 				\item[Quad Core CPU] Having a Quad Core CPU or better allows the system to run multiple processes at the same time. 
 					This means that we can use virtualization to run a number of different systems simultaneously. 
 					More here will be better. However, a Quad core CPU with Hyperthreading can easily run 3-4 Virtual Machines at any one time. 
-				\item[8GB Memory] Having at least 8GB of memory available will mean that more than just the main OS will be able to loaded into memory at one time. 
+				\item[8GB Memory] Having at least 8GB of memory available will mean that more than just the main OS will be able to be loaded into memory at one time. 
 					However, This is an absolute minimum requirement. 
 					Having at least 16GB will make the system far more usable. 
 				\item[Large Fast Storage] Running VMs is a task that needs both large amounts of storage and quick access to it. 
@@ -83,10 +83,10 @@
 		\subsection{Attack Machine}
 			This is your primary means of attack. 
 			Due to this, it should be running Kali Linux, which is the current network penetration testing distribution. 
-			However, you will want to keep it well updated and add tools that do not come with it by standard. 
+			However, you will want to keep it well updated and add tools to those which come in the standard package. 
 
 			For example, Nessus, which will be covered in a chapter \ref{ch:NetworkPenetration}, 
-			does not come with Kali for licencing reasons. 
+			does not come with Kali for licensing reasons. 
 			However, this tool is exceptionally useful when conducting initial vulnerability scans. 
 
 			Because this may be one of your first experiences with Linux, do not customise it further than installing the tools you want at this point. 
@@ -158,7 +158,7 @@
 			If this can be found in the repositories of the distribution or system that you are using, download them from here. 
 			Otherwise, vulnerable versions of software can be found on \href{https://www.exploit-db.com/remote/?order\_by=application&order=desc&pg=1}{exploit-db.com}.
 
-			From here, the software should be configured as per it's manual or online guides. 
+			From here, the software should be configured as per its manual or online guides. 
 			However, there will be a number of places that it is evident will have an impact on security. 
 			If the software has not been chosen for an explicit vulnerability found within it, you should research theses settings and configure them to provide the level of exposure and ease of access that you desire. 
 
@@ -197,7 +197,7 @@
 				The following is an nmap scan of the name server:
 				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
 			\subsubsection{Exploitation}
-				The Bind configuration on this server is not only it's most major flaw, but also the most major flaw of the network.
+				The Bind configuration on this server is not only its most major flaw, but also the most major flaw of the network.
 				This configuration allows for any computer that can connect to the server to conduct a zone transfer on it. 
 				This is by far the biggest initial information disclosure that could occur on a network. 
 
@@ -242,7 +242,7 @@
 				Thus, ARP poisoning and waiting for a user to log into one of these would allow an attacker to simply listen for a password. 
 
 				From this point, you should have the ability to log into the system. 
-				Thus, success here is simply a matter of privelage escalation and DNS Poisoning. 
+				Thus, success here is simply a matter of privilege escalation and DNS Poisoning. 
 			\subsubsection{CTF Challenges}
 				The following are the CTF challengs which use ns.cysec.
 				\paragraph{Pass the Zone}

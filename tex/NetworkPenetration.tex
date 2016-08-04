@@ -58,7 +58,7 @@
 			Thus, nmap also comes with a set of flags which will enable you to attempt to hide the most obvious parts of the scan. 
 			These, when used well will allow you to run an scan which will not be noticed by most of the IDS which are on the market today. 
 
-			By default, nmap adjusts it's timings based on network speed and the response times of the target. 
+			By default, nmap adjusts its timings based on network speed and the response times of the target. 
 			However, you are able to adjust these timings in order to either avoid detection or have the scan complete as quickly as possible. 
 			\index{Nmap Timings}
 			These start with the ``-T0'' or paranoid scan, which will send packets at 5 minute intervals. 
@@ -127,7 +127,7 @@
 			Once the scan has completed, you will be able to see the results under the completed scans tab. 
 			This page will give you a breakdown based on the severity of the possible vulnerability of what could be targeted on the scanned machine. 
 			Selecting an individual vulnerability will give detail about both the method used to scan it, and possible methods used to exploit it. 
-			Some vulnerabilities will also come with links to the CVE that was given to it's report and a set of possible mitigations. 
+			Some vulnerabilities will also come with links to the CVE that was given to its report and a set of possible mitigations. 
 
 			It is worth noting that the existence of a vulnerability report here does not mean that the vulnerability exists on the target system. 
 			Rather it is only an indication that something that fingerprints similarly to the expected vulnerability exists. 
@@ -262,7 +262,7 @@
 				At this point, the ``hosts'' command will give an output of the hosts and their OS and network fingerprint. 
 				It can further be used with it's flags in order to pull more information out of the database. 
 				Similarly, the ``services'' command will allow you to pull available services out of the database. 
-				Finally, collected hashes and other similar information con be retrieved using the ``loot'' command. 
+				Finally, collected hashes and other similar information can be retrieved using the ``loot'' command. 
 	
 			\subsection{Meterpreter}
 			\index{Meterpreter}
@@ -377,8 +377,10 @@
 				# iptables -t nat -A POSTROUTING -s <VPN ip range> -o eth0 -j MASQUERADE
 			\end{lstlisting}
 
-		This will pass all traffic through the server, giving you access to the external Internet from it's address. 
-		This does not mean that there is no way to identify you, simply that blocking your address will not directly block you. 
+		This will pass all of your traffic through the server, giving you access to the Internet from it's address. 
+		Generally, this makes it harder for someone defending a network to identify you. 
+		However, this does not mean that there is no way to identify you. 
+		Simply that blocking your address will not directly block you. 
 
 	\section{ARP Attacks}
 	\index{ARP}
@@ -460,7 +462,7 @@
 				\end{lstlisting}
 				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book. 
 				However, this will output all relevant data about the domain that you are targeting. 
-				This is because while you are accessing the name server from outside it's internal zone, you are also transfering into it. 
+				This is because while you are accessing the name server from outside its internal zone, you are also transferring into it. 
 				Thus, you will receive all information from within this internal zone. 
 
 				On a normal business system, this could be information such as mail servers, VPN hosts or web servers. 
@@ -534,7 +536,7 @@
 		\subsection{Social Engineering Toolkit}
 		\index{Social Engineering Toolkit}
 			The Social Engineering Toolkit is an exceptionally malicious tool for generating content that will likely be read by those it is sent to. 
-			It uses a number of Metasploit functions to create it's exploits, and relies on their payloads and listeners to ensure that the shell returned is picked up and available. 
+			It uses a number of Metasploit functions to create its exploits, and relies on their payloads and listeners to ensure that the shell returned is picked up and available. 
 
 			\index{Email Phishing}
 			This section will walk through sending a malicious email using SET. 
@@ -548,14 +550,14 @@
 			This generator is similar to the one that you use for your normal email, however it gives you the ability to set different return and sender addresses, and will connect directly to the address that you are trying to send to. 
 			Following the obvious steps will take you to the point that you can create your email, 
 			allowing you to enter the subject and the text that will be sent. 
-			It is at this point that you should enter a convincing argument and the URL that you want the victum to click. 
+			It is at this point that you should enter a convincing argument and the URL that you want the victim to click. 
 
 			If done correctly, it will be difficult, though not impossible, to track the sender down, while also ginving the target the desired email and URL. 
 
 		\subsection{Malicious PDF}
 		\index{Malicious PDF}
 			This section will discuss the creation of a client side exploit, stored in a PDF, through the use of Metasploit\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/client-side-exploits/}}.
-			This is usually used for targeted social engineering attacks, where you know a significant amount about the user in order to ensure they will open the file\cite{MSFU} 
+			This is usually used for targeted social engineering attacks, where you know a significant amount about the user in order to ensure they will open the file\cite{MSFU}. 
 
 			This attack will be completed through the Metasploit Framework, and find an exploit which will work. 
 			For demonstration here, the Adobe Reader ``util.printf()'' vulnerability will be used. 

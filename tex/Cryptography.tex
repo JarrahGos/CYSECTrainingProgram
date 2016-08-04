@@ -57,11 +57,11 @@
 					That source cannot say that they did not send the message as a digital signature has stated their action. 
 					This is done in much the same manner as authentication. 
 				\item[Hash]
-					This is a ``one way'' algorithm that takes a message an converts in into another form. 
+					This is a ``one way'' algorithm that takes a message and converts it into another form. 
 					The basis of this is that there should be no way to reverse the algorithm given the output hash. 
 					Furthermore, there should be minimal collisions with other messages. 
 				\item[Algorithm] Also known as a cipher, is the mathematical function used for encryption and decryption. 
-					If the security of the algorithm is based on it's secrecy, it is known as a restricted algorithm. 
+					If the security of the algorithm is based on its secrecy, it is known as a restricted algorithm. 
 					However, most modern algorithms are open standards as knowing the algorithm does not help without the key. 
 				\item[Key] The string or data used by a non-restricted algorithm to encrypt or decrypt. 
 					This is the part of the process that must be held secure in modern cryptography. 
@@ -75,15 +75,15 @@
 					Each user is given their partners public key, which is used for encryption. 
 					The receiving partner can then decrypt using their private key. 
 					This will be further explained later in this section. 
-				\item[DES] The Data Encryption Standard was the main encryption standard from it's submission in 1977 until the AES competition in 2001.
+				\item[DES] The Data Encryption Standard was the main encryption standard from its submission in 1977 until the AES competition in 2001.
 					Cryptographically, this cipher has still not been broken. 
-					However, it's keyspace is sufficiently small that it can be bruteforced within days. 
+					However, its keyspace is sufficiently small that it can be bruteforced within days. 
 				\item[AES] The Advanced Encryption Standard, also known as Rijndael, is the successor to DES. 
 					It was first published in 1998, winning the AES competition in 2001. 
 					This has become the standard for encryption across the world, being the only publicly known algorithm to be approved for Top Secret use by the NSA. 
 				\item[RSA] The most common public key cryptosystem currently. 
-					It was named after it's authors, Ron Rivest, Adi Shamir and Lenard Adleman. 
-					This system uses the difficulty of factorising large numbers for it's security.
+					It was named after its authors, Ron Rivest, Adi Shamir and Lenard Adleman. 
+					This system uses the difficulty of factorising large numbers for its security.
 				\item[Cryptanalysis] The process of reverse engineering a cryptographical solution in an attempt to attack the ciphertext to gain the plaintext. 
 					In this, it is generally assumed that the analyst has access to the full algorithm, but not the key. 
 					There are four types of cryptanalysis: 
@@ -285,7 +285,7 @@
 		\subsection{Basic Cryptography}
 			Cryptography has been around since ancient times. 
 			However, it has only been with the introduction of the modern computer that it has become complex and of a high standard. 
-			This is because computers are good at breaking weak cryptography, that was the whole purpose of the first digital computer created by Alan Turing and his team at Bletchley Park. 
+			This is because computers are good at breaking weak cryptography, which was the whole purpose of the first digital computer created by Alan Turing and his team at Bletchley Park. 
 			This first machine was designed to break the German Enigma Code and was exceptionally successful at it. 
 
 			Basic encryption should not be used in the modern world. 
@@ -301,7 +301,7 @@
 
 			\subsubsection{Substitution Ciphers}
 			\index{Substitution Cipher}
-				This is an algorithm in which each acharacter in the plaintext is substituted with a corresponding one in the ciphertext. 
+				This is an algorithm in which each character in the plaintext is substituted with a corresponding one in the ciphertext. 
 				The receiver then inverts this process when attempting to decrypt to plaintext. 
 				There are a number of basic types of substitution cipher:
 				\begin{description}
@@ -317,7 +317,7 @@
 				Examples of these such as the Caesar's cipher are discussed below. 
 				However, these are not commonly used today, outside areas such as hiding solutions to puzzles or spoilers in UNIX chat rooms. 
 
-				The main vulnerability of this type of cipher is it's inability to hide the frequency of letters used in the plaintext. 
+				The main vulnerability of this type of cipher is its inability to hide the frequency of letters used in the plaintext. 
 				Generally, this is exploited by statistically analysing the frequencies of characters used in the text. 
 				It is likely that the most common characters will correspond to vowels, while the most common will correspond to `E'. 
 				Such an analysis done on plaintext can be seen in figure \ref{fig:LetterFreq}
@@ -347,7 +347,7 @@
 			\subsubsection{Caesar's Cipher}
 			\index{Caesar's Cipher}
 				This is the first algorithm that we will discuss. 
-				It has little current use, as it's keyspace is 25, however, it serves as a good learning tool. 
+				It has little current use, as its keyspace is 25, however, it serves as a good learning tool. 
 
 				Caesar's Cipher is a simple substitution cipher\footnote{\url{http://www.pgpi.org/doc/pgpintro/}}. 
 				This means that the key is simply a number that the alphabet used is shifted by. 
@@ -427,7 +427,7 @@
 						If the displacement is a multiple of the key length, more than 6\% of the bytes will be equal, assuming ASCII plaintext. 
 						This is called the \emph{index of coincidence}, the smallest of which is the key length. 
 					\item Shift the ciphertext by the index of coincidence and XOR it with itself. 
-						This removes the key from the ciphertext, leaving the plaintext XORed wit the plaintext shifted by the length of the key. 
+						This removes the key from the ciphertext, leaving the plaintext XORed with the plaintext shifted by the length of the key. 
 						Using general cryptanalysis after this point will retrieve the plaintext. 
 				\end{enumerate}
 
@@ -513,7 +513,7 @@
 			It will not go into detail on how to use them, rather providing an initial introduction and leaving the attack as an exercise to the reader. 
 			\subsubsection{Common Modulus Attack}
 				In this scenario, all members of a network are given different public and private keys, but have the same modulus.
-				This allows the network to be simpler, but does not work in practise. 
+				This allows the network to be simpler, but does not work in practice. 
 				Conducting RSA encryption in this way allows an attacker to deduce plaintext without the private key normally required. 
 
 				To show this, let $m$ be the plaintext message, $e_1$ and $e_2$ are the two exponents (private keys). 
@@ -683,7 +683,7 @@
 	\section{Merkle-Hellman Knapsack Cryptosystem}
 	\index{Knapsack Cryptosystem}
 		The Merkle-Hellman knapsack cryptosystem is another asymmetric method of encryption. 
-		It is based on the knapsack problem, which when in it's normal form is an NP-complete problem. 
+		It is based on the knapsack problem, which when in its normal form is an NP-complete problem. 
 		The problem is relatively simple, given a set of weights and a total, select which ones will be found in the knapsack. 
 		Mathematically:
 		\[S = b_1m_1 + b_2m_2 +\ldots+ b_nm_n\]
@@ -700,7 +700,7 @@
 		However, using the private key and the size it is quite easy. 
 		This is because the public key is a super-increasing knapsack. 
 
-		A super-increasing knapsack is on in which each value is greater than the sum of it's predecessors. 
+		A super-increasing knapsack is on in which each value is greater than the sum of its predecessors. 
 		This is important as the plaintext can be easily calculated from it. 
 		The process works by considering the last (and thus largest) weight on the list, if it is larger than the sum, remove it.
 		If it is smaller, subtract it from the sum, place a one in this position in the plaintext and remove it.
@@ -712,11 +712,11 @@
 
 		An attack exists for this system that can be computed on trivial resources\cite{BrokenKnapsack}. 
 		This attack allows for the computation of the super-increasing knapsack, or private key given only the public key. 
-		A similar attack has been found for most more recent versions of this cryptosystem. 
+		A similar attack has been found for most of the more recent versions of this cryptosystem. 
 	\section{Key Exchange}
 	\index{Key Exchange}
 		%Resource: http://security.stackexchange.com/questions/45963/diffie-hellman-key-exchange-in-plain-english
-		Getting assured access to other peoples public keys is not an easy task. 
+		Getting assured access to other people's public keys is not an easy task. 
 		If they were to send it to you in plain text, it may be intercepted and altered. 
 		Furthermore, in this scenario, signatures are pointless as anyone can impersonate another party by sending you a public key and telling you who they want to be. 
 
@@ -751,7 +751,7 @@
 		\subsection{Key Exchange with Digital Signatures}
 		\index{Signed Key Exchange}
 			This is a mechanism designed to solve the above issues with MitM attacks. 
-			It works by having a trusted third party certify a given public key, identifying it's owner. 
+			It works by having a trusted third party certify a given public key, identifying its owner. 
 			This is the process used in the modern world for secure communications. 
 			A server is given a certificate for the domain name it is assigned, the client then checks that this is the correct key for the name it sees. 
 
@@ -776,7 +776,7 @@
 	\section{Authentication}
 	\index{Authentication}
 		Generally, when a user is trying to log into a computer---be that through a terminal, or a website---they provide a username and password. 
-		The computer then checks this password against the one in it's database and allows access if they match. 
+		The computer then checks this password against the one in its database and allows access if they match. 
 
 		One-way hashing algorithms are used to ensure that these passwords cannot be accessed by a malicious actor that breaks into the system. 
 		This can be done as the hash of a password will always be the same. 
@@ -811,7 +811,7 @@
 			\subsubsection{Theory and Poor DES Implementation}
 			\index{Keyspace limitations}
 				The Data Encryption Standard, replaced by AES in 2001, was the approved standard for encryption from 1977. 
-				While the standard itself has not been broken (but is still outdated due to it's small keyspace), 
+				While the standard itself has not been broken (but is still outdated due to its small keyspace), 
 				many of the implementations have. 
 				This is due to their reduction of the available keyspace from 56 general bits to 56 partially predictable bits.
 
@@ -828,10 +828,10 @@
 			\index{Debian Weak RNG and Keys}
 				In early 2008, it was discovered that the random number generator (RNG) in Debian---one of the most popular Linux distributions---was faulty\footnote{\url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-0166}}.
 				This issue is not with the cryptographical implementation itself, but rather with the RNG that came with it. 
-				This RNG was predictable in it's output, leading to a set of keys being far more common than any others\footnote{\url{https://www.exploit-db.com/exploits/5632/}}.
+				This RNG was predictable in its output, leading to a set of keys being far more common than any others\footnote{\url{https://www.exploit-db.com/exploits/5632/}}.
 
 				Using these keys, one could download a freely available public key and test it against the provided list. 
-				If the public key appears in the list, it's corresponding private key will also be available, giving you the ability to decrypt any traffic sent to the user and sign any document as the user. 
+				If the public key appears in the list, its corresponding private key will also be available, giving you the ability to decrypt any traffic sent to the user and sign any document as the user. 
 
 				As discussed above, this is the reason for the use of strong random number generators. 
 				Using a weaker implementation may not be immediately obvious, 
@@ -922,8 +922,8 @@
 					Allows the use of pre-configured modes, which can be powerful if used or modified correctly. 
 					%TODO: add more to this and rules. 
 				\item[-restore:]
-					Will start a crack part way through based on a restore file created by a previous session. 
-				\item[-sesion:]
+					Will start a crack, part way through, based on a restore file created by a previous session. 
+				\item[-session:]
 					Used to name the restore file that will be created when the session is broken. 
 				\item[-status:]
 					Shows how far into the crack a previous session was stopped. 
@@ -1018,7 +1018,7 @@
 			Thus, if your password is a 50 character essay with special characters, it will likely not show up in the table due to size constraints. 
 			Such a table would have to contain $\approx2.49\times10^{66}$ password--hash pairs, resulting in a file size of $\approx2.6\times10^{44}$Yottabytes.
 			Though this cannot be thought of as a limitation when compared to the two other methods, as for the same password, they would take $\approx5.2\times10^{52}$ years on 3 ATI HD7970 GPUs.\footnote{\url{https://litecoin.info/Mining\_Hardware\_Comparison}}
-			At this point, even assuming Moore's law continues and Processing power becomes far cheaper, the password will not be cracked within a reasonable time frame. 
+			At this point, even assuming Moore's law continues and processing power becomes far cheaper, the password will not be cracked within a reasonable time frame. 
 
 			It is for these reasons that rainbow tables are uncommonly used outside of cracking hashes from poorly implemented software with short passwords. 
 			However, if you know that the character space is small, and either the passwords are unsalted or the salt is commonly known, rainbow tables are the best method if you have the storage space. 
@@ -1049,7 +1049,7 @@
 
 			This is the basis for collisions. 
 			Consider that there are vastly more than this number of items that can be hashed, 
-			If this is true, some of these items must have the same hash value as other items.
+			if this is true, some of these items must have the same hash value as other items.
 			Furthermore, if you can find a collision with the item you are testing, you need only pass that collision, rather than the item itself. 
 
 			This is the exact reason hashing algorithms such as MD5 are being replaced with SHA512. 

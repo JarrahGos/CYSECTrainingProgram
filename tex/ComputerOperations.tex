@@ -16,8 +16,8 @@
 				This cycle allows the computer to access the instructions stored in cache or RAM and determine how they should be enacted. This lesson will discuss the approach used on a classic RISC CPU similar to that of most modern phones. 
 				Due to this, it will discount cache and threading. 
 				\paragraph{Fetch}
-					This step requires the CPU to request the next instruction from it's source. 
-					This is possible as the CPU retains the address of the next instruction to complete in it's program counter. 
+					This step requires the CPU to request the next instruction from its source. 
+					This is possible as the CPU retains the address of the next instruction to complete in its program counter. 
 					After each fetch, the CPU will increment the address in its program counter. 
 					However, this address may change due to the requirements of the instruction which was just fetched. 
 					If the instruction has to be fetched from RAM rather than cache, the CPU may stall while waiting.
@@ -27,7 +27,8 @@
 					This decoding will occur based on the instruction set of the processor, which can be thought of as a look-up-table for valid instructions. 
 					This will interpret the first chapter of the instruction, known as the opcode, and determine which signals must be sent to have the CPU execute the instruction. 
 					The later fields are then sent as arguments to supplement the instruction. 
-					This process may take place on a hardwired circuit, or through the use of a microprogram which, In either case the system output will be the same. 
+					This process may take place on a hardwired circuit, or through the use of a microprogram. 
+					In either case; the system output will be the same. 
 					However, in the latter case, the microprogram will be re-writable, allowing for decoding to be altered after production. 
 				\paragraph{Execute}
 					This step causes the CPU to enact the requirements of the instruction, causing output to be written to a given register or memory location. 
@@ -197,7 +198,7 @@
 						 \end{figure}
 
 
-	\section{Assembly And Binary}
+	\section{Assembly and Binary}
 		While we may find it easier to interact with computers using high level programming languages or even pre-written programs and graphics, an understanding of how a computer works at the low level is required to properly exploit its process. 
 		The first computer programs were written algorithmically, before being translated manually into binary or octal (base 8). 
 		The program had to be inputted manually, one instruction at a time. 
@@ -216,7 +217,7 @@
 			Generally, this binary will be viewed either in the decoded form through a program such as a text editor (for UTF-8 or ASCII). 
 			However, in cases where the format is not obvious, a hex editor would be employed. 
 			These editors allow one to see the binary code in base 16 rather than base 2, reducing its length by a factor of 8. 
-			Furthermore, these editors will display a ASCII representation of any text found, allowing one to read strings out of the file. 
+			Furthermore, these editors will display an ASCII representation of any text found, allowing one to read strings out of the file. 
 			Another program, known as strings will automate the process of finding ASCII strings in binary. 
 			Though it is exceptionally widespread, one need not understand binary in order to utilize these tools. 
 		\subsubsection{Assembly}
@@ -232,7 +233,7 @@
 
 			The most major of these is that kernel calls or function calls will overwrite most registers. 
 			This can be solved by using stack frames, pushing the registers to memory then making the call. 
-			After the call you can retrieve all registers from memory, returning the CPU to it's prior state. 
+			After the call you can retrieve all registers from memory, returning the CPU to its prior state. 
 
 			Another thing to take into account is that one instruction may alter the way that following instructions will run. 
 			This is most evident in ``cmp'' and ``jmp'' group of instructions, which check the relevant CFLAGS bits to determine whether to follow the jump. 

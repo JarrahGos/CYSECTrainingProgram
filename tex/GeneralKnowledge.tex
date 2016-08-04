@@ -1,10 +1,11 @@
-\chapter{General Knowledge}
+\chapter{Additional Useful Information}
 	\label{ch:GeneralKnowledge}
 	This is the final chapter of this book. 
-	It is where the ``stuff'' that I decided was worth while adding, but couldn't find a place that it neatly fit into was placed. 
+	It is where the additional background information that I decided was worth while adding, but couldn't find a place that it neatly fit into was placed. 
 	Due to this, each section discusses a new topic, much like the previous chapters have done. 
 	However, this does not make the content within any less important. 
-	This content, while often not fundamental---that would have been deserving of it's own chapter---is necessary to a holistic view of the field. 
+	Though none of this content on it's own is deserving of a chapter (with the possible exception of Linux), 
+	it can be powerful in determining how to attack a problem, or simply by providing context which would not have otherwise been available. 
 	Furthermore, much of the content explains how major parts of the field work. 
 	\section{Linux}
 		This section will be a general overview of the Linux world. 
@@ -14,7 +15,7 @@
 			\begin{description}
 				\item[Linux] The kernel that underpins the OS that is often referred to as Linux. 
 				\item[GNU] An organisation that maintain a tool set which runs on Linux (and will run on any Unix, soon windows)
-				\item[GPL] A licencing system that requires that changes be retransmitted back to the rest of the world. 
+				\item[GPL] A licensing system that requires that changes be retransmitted back to the rest of the world. 
 				\item[Terminal] The command line access to a Linux computer.
 				\item[Root] Either the base user or base directory. 
 					In the former case, this is the user that has absolute power over the OS. 
@@ -84,7 +85,7 @@
 			To understand why Linux was built the way it is, you must first understand UNIX and some of the computer designs that were common at the time. 
 			\subsubsection{UNIX}
 			\index{UNIX}
-				No section on Linux would be complete with out at least a small section on UNIX. 
+				No section on Linux would be complete without least a small section on UNIX. 
 				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large. 
 				Furthermore, most of them had software specific to that computer, running on a processor architecture that no other type of machine used. 
 				Thus, software written for one system would almost never work on another, 
@@ -122,7 +123,7 @@
 				Linux Torvalds, a computer science student, started writing the code required for it. 
 
 				\index{POSIX}
-				From the outset, the goal of this system was to crate a fully POSIX (the standard for UNIX) compliant OS for academic use. 
+				From the outset, the goal of this system was to create a fully POSIX (the standard for UNIX) compliant OS for academic use. 
 				This led to a system that was free to use with the code available to edit and that was completely UNIX compliant. 
 				Thus, people came in droves. 
 				They were looking for a system similar to what they had in universities, or at work and Linux provided it. 
@@ -133,7 +134,7 @@
 				Within two years, the project had grown to 12000 users. 
 				It continued to grow and stay within the POSIX standard, slowly adding the whole feature set of UNIX.
 				This had made it a huge player in the server arena of computing. 
-				However, it has still not taken over the desktop computing environment, though that was it's original goal. 
+				However, it has still not taken over the desktop computing environment, though that was its original goal. 
 
 				While back in these early times, it was necessary to know how Linux worked and some systems programming to get it to run, modern Linux systems require none of this. 
 				Originally, one had to be able to read and understand manual pages for systems that would not work when first installing Linux. 
@@ -283,7 +284,7 @@
 		\subsection{Man Pages}
 		\index{Manual Pages}
 			The information found here is simply an introduction. 
-			It is a small subsection of the information that exists on Linux and it's systems. 
+			It is a small subsection of the information that exists on Linux and its systems. 
 			Most of this information can be found in its most raw technical form in the Linux man pages. 
 
 			These documents are the basis for working with Linux programming, as well as programming on Linux. 
@@ -391,14 +392,14 @@
 				\end{quote}
 			\end{quote}
 				
-				The Linux file structure is commonly through of as a tree. 
+				The Linux file structure is commonly throught of as a tree. 
 				This makes sense when dealing with the way that users interact with it. 
 				Every directory that exists follows some branch from the ``root'' directory, with files being the ``leaves'' at the end. 
 				However, this understanding only works when one is dealing with the system at the basic user level. 
 				One should understand the concept of inodes and the other building blocks of the structure if they are to administer the system. 
 				
-				Each partition on the computer has it's own filesystem. 
-				This can be thought of in the same way as the whole Linux structure, having it's own root. 
+				Each partition on the computer has its own filesystem. 
+				This can be thought of in the same way as the whole Linux structure, having its own root. 
 				However, this only becomes important when looking at how the devices are specified. 
 				Each file system has a list of inodes that are created when the system is initialised. 
 				This is a limited list (usually 1 or 2 per 8KB) of information about files. 
@@ -415,7 +416,7 @@
 					\item Address defining the actual location of the data. 
 				\end{itemize}
 
-				As you can see, the file name and it's directory is not given in this list. 
+				As you can see, the file name and its directory is not given in this list. 
 				This is because files in Linux do not by nature have either. 
 				They are created through directories---special files in themselves---that contain lists of files and names. 
 				This is why directories will show up as files with permissions when running ``ls -l''. 
@@ -482,7 +483,7 @@
 				\end{center}
 		\subsection{Linux Challenges}
 			\subsubsection{Introductory Challenge}
-				This session is designed to familerize you with the Linux command line. 
+				This session is designed to familiarise you with the Linux command line. 
 				The goal of this is both to show you how the Linux command line works, and some of its pitfalls. 
 				By the end, you will see both a poorly configured permissions system, and a command which when used the wrong way, will destroy a system. 
 
@@ -564,7 +565,7 @@
 		Similar to mathematics, where there are a number of symbols with specific meanings, 
 		regex treats each character within it as having a specific meaning and reason\cite{regexTHW}. 
 
-		It is worth noting that while this is exceptionally useful, it does have it's constraints. 
+		It is worth noting that while this is exceptionally useful, it does have its constraints. 
 		Generally, it will be better to create multiple small expressions and programmatically join them together. 
 		The alternative often becomes unmanageable\footnote{\url{http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html}}.
 
@@ -613,7 +614,7 @@
 			Anchors are used to ensure that you are matching a string in the correct place\footnote{\url{http://www.rexegg.com/regex-anchors.html}}. 
 			For example, you could want to match only numeric strings which start with a number at the start of the line, 
 			you could use ``\^{}[d]+''.
-			The major anchors are `\^{}' for start of line and `\$' for it's end. 
+			The major anchors are `\^{}' for start of line and `\$' for its end. 
 			There are other more minor anchors, such as `\textbackslash{}A' and `\textbackslash{}Z' which match the start or end of a string respectively. 
 			These can be exceptionally useful, as they allow you to match an explicit part of the line or string. 
 		\subsection{Shortcuts}
@@ -657,7 +658,7 @@
 				\begin{lstlisting}[style=CLI]
 					$ grep -e $\$\$ tex/*
 				\end{lstlisting}
-			\subsubsection{sed}
+			\subsubsection{Sed}
 				Sed is a stream editor, it is designed to take input and apply a rule to it to change the content. 
 				This makes it exceptionally useful for editing files in bulk for similar changes. 
 				Following the examples based on the source code for this book, the following was used in it's early stages to change from using chapters, to using sections (a change that I quickly undid):
@@ -667,7 +668,7 @@
 				\end{lstlisting} %TODO: Make this use regex specifically. 
 			\subsubsection{Vim}
 				While I am specifically discussing Vim, there most other editors on Linux or BSD will allow you to use regex. 
-				For Vim, there are a number of commands which give you interactive access to functions similar to those disucessed above for sed and grep. 
+				For Vim, there are a number of commands which give you interactive access to functions similar to those discussed above for sed and grep. 
 				For example, grep-like searches of the currently open file can be initiated using ``/''
 				Furthermore, sed like find and replace is done using only slight alterations to the syntax:
 				\begin{lstlisting}[numbers=none]

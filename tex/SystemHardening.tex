@@ -159,7 +159,7 @@
 				\index{Sandboxing}
 					Sandboxing is an important part of running a secure system. 
 					It allows the user to run a program knowing that only specified changes (or none at all) will be made to disk. 
-					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through it's commandline interface. 
+					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through its commandline interface. 
 					The command ``firejail <program>'' will execute ``program'' in a sandbox. 
 					For greater security, the following command will block the program from writing to disk, effectively blocking all permanent changes
 					\begin{lstlisting}[style=CLI]
@@ -265,7 +265,7 @@
 					\end{itemize}
 	\section{OS X Hardening}
 		Hardening an OS X install\footnote{\url{https://github.com/drduh/OS-X-Security-and-Privacy-Guide}}, while similar in concept to Linux, is different due to the configuration system used by OS X. 
-		Since it was derived from NeXTSTEP, it's configuration is written into binary plist files, which must be edited. 
+		Since it was derived from NeXTSTEP, its configuration is written into binary plist files, which must be edited. 
 		This guide will use the provided ``defaults'' program to edit specific parts of these files. 
 		However, if you would like to edit them manually or learn more about the structure of these files, I recommend a text editor such as ``TextWrangler'' which can convert these files to and from binary. 
 
@@ -349,7 +349,7 @@
 				\begin{lstlisting}[style=CLI]
 					# launchctl unload -w /System/Library/LaunchDaemons/com.apple.apsd.plist
 				\end{lstlisting}
-				Noting that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
+				Note that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
 				To check which services have been disabled, run the following command:
 				\begin{lstlisting}[style=CLI]
 					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
@@ -358,7 +358,7 @@
 			\index{Spotlight}
 				Spotlight is an exceptionally useful tool. 
 				It is by far the quickest way to get information and launch programs on an OS X system. 
-				However, in order to do this, is will often send data to both Apple and Microsoft. 
+				However, in order to do this, it will often send data to both Apple and Microsoft. 
 				To disable this, open Spotlight Preferences and uncheck ``Bing Web Searches'' and ``Allow Spotlight Suggestions in Spotlight and Look up''. 
 				You may also need to disable this in Safari Preferences under ``Search''. 
 				This will stop Spotlight from phoning home on every search. 
@@ -366,7 +366,7 @@
 			\index{Homebrew}
 				Many of the user land tools installed with OS X or the xcode package are vastly out of date BSD versions. 
 				This can be resolved through the use of the Homebrew package manager. 
-				This package manager uses TLS to pull down install scripts from it's git hub repository on Github.com, meaning that it is mostly secure so long as you trust the repository. 
+				This package manager uses TLS to pull down install scripts from its github repository on Github.com, meaning that it is mostly secure so long as you trust the repository. 
 				Nonetheless, it is recommended that you read through these scripts before running them, otherwise it is no different to running any arbitrary code on your system. 
 				See the \href{https://github.com/Homebrew/homebrew}{Homebrew Github repository} for more information and installation instructions. 
 				This will be used in further parts of this guide.
@@ -459,7 +459,7 @@
 				Similar issues appear in many of the OS X command line utilities. 
 				You should search them out online. 
 	\section{Windows Hardening}
-		Can Windows even be hardened? The answer is yes, But not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
+		Can Windows even be hardened? The answer is yes, but not in the same way as Linux or Mac OS X.\footnote{\url{https://www.nsa.gov/ia/\_files/os/Win\_EMET/I43V\_EMET\_Rationale\_v3.4.pdf}}
 		Hardening in windows takes the form of installing and enabling a set of programs, written by Microsoft amongst other companies. 
 		These software packages do things such as mitigate data execution or attempt to recognize malicious code. 
 		You would then remove all packages that are not used, reducing the surface area for attacks in the same way that you would for Linux or OS X. 
@@ -497,7 +497,7 @@
 			ensuring that new or maliciously installed applications are not allowed to run. 
 		\subsection{Disk Encryption}
 		\index{Disk Encryption}
-			As above, Microsoft's bitlocker is available on the Ultimate and Enterprise versions of it's windows OS.
+			As above, Microsoft's bitlocker is available on the Ultimate and Enterprise versions of its windows OS.
 			In order to use this, it is recommended that you follow Microsoft's guide\footnote{\url{https://technet.microsoft.com/en-us/library/cc732774.aspx}}. 
 			If you do not have the required versions of windows, software such as VeraCrypt\footnote{\url{https://veracrypt.codeplex.com/}} will allow you to run full disk encryption. 
 			This software was forked from the discontinued TrueCrypt project. 
@@ -527,7 +527,7 @@
 	\section{Browser Hardening}
 		Hardening a web browser is a long process. However it is easier than hardening an OS, and it's cross platform. 
 		The first step, as with all things is to ensure that you trust the browser you are using and have it updated. 
-		When deciding trust, ensure that the browser is coming form a source you trust, and preferably open source and well known. 
+		When deciding trust, ensure that the browser is coming from a source you trust, and preferably open source and well known. 
 		Once this is complete, we begin looking into plugins and browser settings which will ensure that the browser has minimal surface area to attack. 
 		\subsection{$\mu{}$Block Origin}
 		\index{$\mu{}$Block Origin}
@@ -561,7 +561,7 @@
 			This plugin will block all javascript elements on all web pages unless they are manually allowed. 
 			This means that the majority of malicious scripting attacks (such as XSS) will be blocked from the outset. 
 			However, it also means that the majority of websites will be broken until they are allowed to run scripts. 
-			I recommend running NoScript due to it's other features, such as:
+			I recommend running NoScript due to its other features, such as:
 			\begin{itemize}
 				\item embedded element blocking (Java, Flash, Silverlight) 
 				\item XSS blocking
@@ -598,7 +598,7 @@
 			However, this is not the full extent of browser sandboxing, which must be enabled manually. 
 			Follow the steps outlined in the above chapter for your operating system to properly sandbox your browser. 
 		\subsection{Browser Settings}
-			The following chapter will be focused on Firefox and it's derivatives. 
+			The following chapter will be focused on Firefox and its derivatives. 
 			However, most of the settings will work for other browsers. 
 			\begin{itemize}
 				\item Settings under privacy:
@@ -630,12 +630,12 @@
 			If you would like to retain the results that Google gives, but remove the tracking, Start page is your option. 
 			Start page will act as a proxy between yourself and Google, allowing you to use the search features of Google as you normally would, but without the tracking. 
 			This is a significant improvement to the current tracking which follows you across the Internet. \par 
-			Another option is DuckDuckGo which was built from the ground up to ensure that the privacy of it's users is maintained. 
+			Another option is DuckDuckGo which was built from the ground up to ensure that the privacy of its users is maintained. 
 			This search engine has no contact with Google, but it also comes with a set of new features which can become useful once learned. 
 			The issue with this search engine is that on occasion, the results will not be to the same standard. 
 			Occasionally, someone will tell you to Google something, stating that the result is on the first page, but it will not be a result on DuckDuckGo. 
 		\subsection{Multiple Browsers}
-			When setting up browsers for web access, one must decide what needs a secure connection and what can be let connect with the other pages used. 
+			When setting up browsers for web access, one must decide what needs a secure connection and what can be allowed to connect with the other pages used. 
 			This is due to the fact that no matter how good internal sandboxing gets, an attacker could find a way to pivot from one tab to another. 
 			This becomes far more difficult when attempting to pivot from one browser to another as the original browser will not know that the second is running. 
 			Thus when logging into sites that you deem require security, open a completely different browser and use that to log in. 

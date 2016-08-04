@@ -20,8 +20,8 @@
 		The command line will enable you to tell the computer what you want it to do, rather than stepping through a long list of clicks in order to have a program do what it thinks you mean. 
 		This gives you fast and powerful interaction with your computer, but it is not without a steep learning curve. 
 		This section will focus on the \**nix bash shell, which is the most common powerful shell used today. 
-		Others such as powershell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\cite{CLICrashCourse}
-		What follows is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
+		Others such as PowerShell on windows and Zsh on \**nix are not to be discounted, but bash will get you the furthest with minimal training.\cite{CLICrashCourse}
+		The following is a basic introduction to the most common commands, an easy way to remember what they do and their usage:
 		\begin{description}
 			\item[pwd]
 				Where am I?
@@ -55,7 +55,8 @@
 				Furthermore, some systems have added the flag ``--no-preserve-root'', which will stop you deleting your entire system. However, the existence of this flag should not be trusted. 
 				For example, it does not exist on Mac OS X. 
 			\item[touch]
-				Create a file here, I don't care about type or content. 
+				This will create a file with the name of the argument given. 
+				It will have no type, nor any data stored within it. 
 			\item[cp]
 				Copy and paste. Used as ``cp src dest''.
 			\item[mv]
@@ -111,22 +112,22 @@
 			\item[vim]
 				The editor war will likely never end, and each side will tell you to use their preferred. 
 				Vim is a powerful editor which I am using to write this. 
-				However, it can have a steep learning curve, and thus must have time dedicated to it's usage. 
+				However, it can have a steep learning curve, and thus must have time dedicated to its usage. 
 				Following the tutorial provided by the command ``vimtutor'' will give you the basics that you need to begin using vim properly. 
 				However, if you do not wish to learn a fully featured editor, the likes of ``nano'' and ``ed'' will serve you well. 
 		\end{description}
 		While there are many other commands\footnote{\url{https://github.com/jlevy/the-art-of-command-line}} commonly installed with a \**nix system, these are the most common and some of the most useful. If you would like to learn more, the footnotes throughout this section have detailed information on many more commands. 
 
-	\section{Introduction to Powershell}
+	\section{Introduction to PowerShell}
 	\index{PowerShell}
 		%ktiploit.com
 		% https://github.com/mattifestation?tab=repositories
-		% http://colesec.inventedtheinternet.com/hacking-with-powershell-powersploit-and-invoke-shellcode/
-		Powershell is the scripting and command line environment of Windows.\cite{EffectivePS} 
+		% http://colesec.inventedtheinternet.com/hacking-with-PowerShell-powersploit-and-invoke-shellcode/
+		PowerShell is the scripting and command line environment of Windows.\cite{EffectivePS} 
 		It allows a similar level of access to that of Bash on Unix and Linux. 
-		However, the conceptual level of powershell of significantly different. 
-		Powershell is based on the .Net object system, which gives it a completely different manner of interacting with IO of the programs. 
-		Rather than output being given as a string, which can be directed around to different programs, the output is a powershell object which can be interpreted by the command that it is given to. 
+		However, the conceptual level of PowerShell of significantly different. 
+		PowerShell is based on the .Net object system, which gives it a completely different manner of interacting with IO of the programs. 
+		Rather than output being given as a string, which can be directed around to different programs, the output is a PowerShell object which can be interpreted by the command that it is given to. 
 		This gives a number of new ways to interact with the IO of the programs that you are using. 
 		The issues which you will find in the Bash scripting section below are far less problematic due to this change. 
 		It is recommended that prior to starting this guide you run the command ``update-help''. 
@@ -138,30 +139,30 @@
 
 			\index{Get-Command}
 			The cmdlet ``get-command'' is used to gather information about all commands, cmdlets and scripts which are available on the current system. 
-			In it's basic form it will simply output a list of all of these items, with little further information.
+			In its basic form it will simply output a list of all of these items, with little further information.
 			Furthermore, when using this command with the exact name of a module which has not yet been imported, get-command will automatically import the module for you, allowing you to use it immediately. 
 			It is also worth noting that all information available to get-command is found within the source code of the command you are searching for. 
 			No external resources are used.
 			When using this to search for commands, you can also use the ``-CommandType'' parameter to specify the type of command that you wish to find. 
 			Further information can be found by using the commands explained in the below paragraph. 
-			However, for the most part, it can be though of as similar to the Unix ``which'' command with a significant amount of extra functionally. 
+			However, for the most part, it can be thought of as similar to the Unix ``which'' command with a significant amount of extra functionally. 
 
-			While basic information about cmdlets and other powershell programs is useful, one will regularly desire manual access for these commands. 
+			While basic information about cmdlets and other PowerShell programs is useful, one will regularly desire manual access for these commands. 
 			\index{Get-Help}
 			The cmdlet ``get-help'' will facilitate this. 
-			It its most basic form, get-help will output its own help file, giving you detail on how to use it. 
+			In its most basic form, get-help will output its own help file, giving you detail on how to use it. 
 			However, there are a number of other options such as using it with a wildcard argument which will output a basic synopsis of all commands or giving it a command as an argument which will output the help (similar to a man page) for that command. 
 			Furthermore, there are flags which are useful for getting more information about the options for a command. 
 			Using the flag ``-Detailed'' will give you an explanation of every flag for the given command.
 
 			\index{Get-Member}
-			A further command which will allow you to better understand and interact with the powershell object system is the ``get-member'' command. 
+			A further command which will allow you to better understand and interact with the PowerShell object system is the ``get-member'' command. 
 			This command is used for gathering information on the objects which will be passed from one command to another through systems such as pipes. 
 			For example, when you pipe the output of get-command on a specific cmdlet from above into get-member you will see both the object type and the methods which can be called on it. 
 			This should be used to determine what further information and actions can be done using both that objects methods, and the classes static methods. 
 
 			Finally, we must understand the filesystem and drive access. 
-			This can be done through the use of the command ``get-psdrive'', which will show the drives attached to the system that are available to powershell. 
+			This can be done through the use of the command ``get-psdrive'', which will show the drives attached to the system that are available to PowerShell. 
 			These drives are of different types, such as Filesystems and registries which can be manipulated using the cmdlets found by running ``get-command *-Item*''. 
 			\index{Get-Command}
 
@@ -169,7 +170,7 @@
 			These commands will be explained in the next section. 
 
 		\subsection{Differences and similarities to Bash}
-		\index{Powershell vs Bash}
+		\index{PowerShell vs Bash}
 			This section will discuss the differences and similarities that need to be understood when moving from Bash to PowerShell. 
 			These are in part due to basing PowerShell on earlier shell implementations, but are also largely influenced by the C\# and .NET object system which PowerShell is based on. 
 
@@ -179,7 +180,7 @@
 			This is due to the underlying .NET object system which PowerShell is based on. 
 			This can be seen by capturing the output of a cmdlet in a variable (``\$<var> = <cmdlet>) and calling ``.GetType().Fullname'' on this variable.
 			For bash, or any other text based shell, this would not work as you are working on a text variable. 
-			However, in powershell, this will be an object of a specific type, possibly even a string object. 
+			However, in PowerShell, this will be an object of a specific type, possibly even a string object. 
 			If you would like to capture the text, piping the result into the cmdlet ``out-string'' will render it as it would be on screen and store a ``System.String'' object. 
 
 			It is also worth noting that functions within PowerShell have a number of quirks which must be accounted for for those coming from a programming background. 
@@ -190,16 +191,16 @@
 			Note also that the return keyword is just used to end the function at a given point. 
 			It is not necessary to have the output returned. 
 
-			Null will also cause some issues when using powershell. 
-			This is due to the interaction between powershell cmdlets and .NET functions. 
+			Null will also cause some issues when using PowerShell. 
+			This is due to the interaction between PowerShell cmdlets and .NET functions. 
 			The former, being built for CLI scripting will gracefully ignore null. 
 			The latter, however, will often crash on null references, causing the script as a whole to grind to a halt. 
-			Thus, when using powershell, you must be wary of both what may be null, and what may be called on a null. 
+			Thus, when using PowerShell, you must be wary of both what may be null, and what may be called on a null. 
 			
 		\subsection{Conclusion}
-			While powershell may look similar to many other shells, it works on a very different paradigm. 
-			When working with powershell, one needs to understand the underlying .NET object system and it's impact. 
-			While it may be possible to treat Powershell as a normal text based shell, doing so will create a far less efficient and far harder to understand script. 
+			While PowerShell may look similar to many other shells, it works on a very different paradigm. 
+			When working with PowerShell, one needs to understand the underlying .NET object system and its impact. 
+			While it may be possible to treat PowerShell as a normal text based shell, doing so will create a far less efficient and far harder to understand script. 
 			Thus, it is recommended that you use the four cmdlets outlined above alongside the information in the last section to determine how best to interact with the objects you are given. 
 			This is a far more powerful and efficient way to interact with PowerShell. 
 	\section{Introduction to Scripting}
@@ -348,7 +349,7 @@ fi
 				\item[-lt]
 					True if first is less than the second. 
 				\item[-gt]
-					True if first is grater than the second. 
+					True if first is greater than the second. 
 				\item[-le]
 					True if first is less than or equal to the second. 
 				\item[-ge]
@@ -493,7 +494,7 @@ declare -A <name>
 			This section will enable you to understand how mast types of bash IO work and implement them in your scripts. 
 
 			\index{Arguments}
-			The most simple means of allowing input to your script is by using command line arguments. 
+			The simplest means of allowing input to your script is by using command line arguments. 
 			This can be done by using the positional parameters which are shown in the variables section above. 
 			Using these, each argument given will be placed into its respective parameter, starting from 0 being the command used to call the script. 
 			These can be called like any variable within your script: ``\$n''.
@@ -602,7 +603,7 @@ alias ls="ls --color=auto"
 		Python is the first, easiest and most useful language that will be introduced in this book.\cite{PythonBoringStuff} 
 		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
 		However, this couldn't be further from the truth. 
-		Due to it's integration with the Open Source community, python has grown beyond the basic language that it would initially seem. 
+		Due to its integration with the Open Source community, python has grown beyond the basic language that it would initially seem. 
 		This has occurred through the introduction of modules and tools such as pypi, which allow you to find new modules based on their description. 
 		\subsection{Setup}
 			To use this section, you will have to have installed python 3 on your system. 
@@ -652,7 +653,7 @@ alias ls="ls --color=auto"
 		\subsection{Origins}
 		\index{Livescript} \index{Netscape}
 			Javascript started as Livescript, a language started by Netscape in order to write programs for the web. 
-			It's main goal was to be able to write cross platform programs which could be written and used on the web. 
+			Its main goal was to be able to write cross platform programs which could be written and used on the web. 
 			This was done in order to allow non-Microsoft OS's to run programs. 
 
 			Netscape then joined with Sun Microsystems to make Javascript. 
@@ -719,7 +720,7 @@ alias ls="ls --color=auto"
 
 			\index{JavaScript Truethiness}
 			Boolean can either be true of false. 
-			There are also functions which can be used to determine whither something is near true or false. 
+			There are also functions which can be used to determine whether something is near true or false. 
 			Values similar to false are:
 			\begin{itemize}
 				\item False
@@ -737,7 +738,7 @@ alias ls="ls --color=auto"
 			This is also the value given when you try to extract a member that doesn't exist from an object. 
 			
 			It is also worth noting that any variable can receive any type of value. 
-			This includes parameters an return values. 
+			This includes parameters and return values. 
 			
 			All key words are lower case and case sensitive. 
 		\subsection{Objects}
@@ -772,7 +773,7 @@ alias ls="ls --color=auto"
 				\label{code:JSObjectLiteral}
 			\end{code}
 			It is also worth noting that this is the same format used in JSON. 
-			These can be used anywhere that a on object could be used. 
+			These can be used anywhere that an object could be used. 
 			These can be used for creating named parameters in functions. 
 
 			Objects can also be augmented at any time. 
@@ -832,7 +833,7 @@ list = ['one', 'two', 'three'];
 			Javascript follows the basic syntax rules of C. 
 			This means that the basic brace rules, as well as loops and statements follow the same rules as C. 
 			However, there are a number of differences, mainly due to the functional nature of Javascript. 
-			This is most evident in it's allowance of functions to be values. 
+			This is most evident in its allowance of functions to be values. 
 
 			Everything except for constructors should start with a lower case letter by convention. 
 			The initial underscore should be reserved for implementations. 
@@ -942,7 +943,7 @@ list = ['one', 'two', 'three'];
 
 		\subsection{Functions}
 		\index{Javascript Functions}
-			The function operator is used to created a new function. 
+			The function operator is used to create a new function. 
 			However, this can be used in any location within the program. 
 			This means that you can pass a function to another function as an argument. 
 			Furthermore, this means that you can store a function in a variable.
@@ -987,7 +988,7 @@ list = ['one', 'two', 'three'];
 		Thus, understanding and correctly using C is about knowing how the computer itself works and ensuring that you work within that. 
 		C will allow you to go past memory bounds. 
 		C will allow you to write code that will crash on every call. 
-		It C, it is your job to ensure that this doesn't happen. 
+		In C, it is your job to ensure that this doesn't happen. 
 		This is all because C is little more than one step above assembly. 
 		It refuses to hide what is actually going on with the computer. 
 
@@ -1187,7 +1188,7 @@ list = ['one', 'two', 'three'];
 			\index{C Switch}
 			Another conditional within C is the switch statement. 
 			This statement provides a means of writing actions based on a large number of options. 
-			Thus, if you have a variable that could take a large but defined set of options and each needs to have it's own action, a switch would be more useful than an if statement. 
+			Thus, if you have a variable that could take a large but defined set of options and each needs to have its own action, a switch would be more useful than an if statement. 
 			Furthermore, it must be noted that within a switch the individual cases will drop down to the next below them unless the command ``break'' is given. 
 			This can be useful if used intentionally, but is the most common cause of bugs when using switch statements. 
 			An example of the syntax of a switch statement is given in code example \ref{code:CSwitch}
@@ -1199,7 +1200,7 @@ list = ['one', 'two', 'three'];
 			\end{code}
 		\subsection{Functions}
 			Functions are a way of repeating the same block of code---possibly with different variables---throughout your code. 
-			They allow you do write an algorithm for doing something specific once, then use the same one everywhere. 
+			They allow you to write an algorithm for doing something specific once, then use the same one everywhere. 
 			This means that with proper naming, your code will be shorter and easier to read, while also having more chance of being bug free as you haven't written multiple different ways to do the same thing. 
 
 			\index{C Function}
@@ -1225,12 +1226,12 @@ list = ['one', 'two', 'three'];
 			Pointers are the downfall of many programmers. 
 			When used poorly, or when poorly understood, they can be the bane of your existence. 
 			However, pointers are brilliant. 
-			They allow you do do many things that cannot be done as easily in other languages. 
+			They allow you to do many things that cannot be done as easily in other languages. 
 			They give you direct access to memory in a way that object types and other implementations do not. 
 			Once you have started using pointers properly, you will be begging to have them back if you switch to a language like Java, which doesn't have them. 
 
 			To understand pointers, it is best to understand how C thinks about memory. 
-			To C, the computers memory is simply a huge array of bytes. 
+			To C, the computer's memory is simply a huge array of bytes. 
 			However, rather than requiring the programmer to remember the locations of their bytes, C allows you to use variables and types. 
 			This means that each variable you write has a location that is used to retrieve it, and that location can be used to do different things. 
 			For example, if you create an array ``arr'', you could then index it as ``arr[n]'', which will give you then nth value of arr. 
@@ -1264,7 +1265,7 @@ list = ['one', 'two', 'three'];
 			This is a layover from older compilers. 
 			In the modern world, this is not true, they are largely the same. 
 			However, you may find another reason to use a pointer over an array. 
-			If you think you are right, give it a go, the worst think you'll loose is time. 
+			If you think you are right, give it a go, the worst thing that can happen is that you will lose time. 
 
 			Found in table \ref{tab:PointerLexicon} is an explanation of the different terms of using pointers. 
 			\index{Pointer Lexicon}
@@ -1326,7 +1327,7 @@ list = ['one', 'two', 'three'];
 			Placing too much, lie a large array or struct will cause the stack to overflow. 
 			Furthermore, if you have a pointer to a variable on the stack and return the pointer at the end of the function that created the variable, 
 			you will have a segmentation fault due tot he fact that the memory location the pointer is pointing at will not be allocated to the programs stack. 
-			It will have been ``poped'' off and destroyed. 
+			It will have been ``popped'' off and destroyed. 
 
 		\subsection{Pointers to Functions}
 			As with all other things in C, functions exist at a memory location which can be pointed to. 
@@ -1368,6 +1369,7 @@ list = ['one', 'two', 'three'];
 		However, subsequent runs of ``list'' will output the next 10 lines. 
 
 		\paragraph{Break}
+		%TODO: Add rationalle here for this.
 		Now that you can see the code, you will likely want to setup breakpoints within it. 
 		This can be done using the ``break'' command along with a line number or function name. 
 		This will insert a breakpoint at which the program will stop executing and allow you to investigate. 
@@ -1421,7 +1423,7 @@ list = ['one', 'two', 'three'];
 		Similarly, the ``next'' command will work the same, but will not enter functions. 
 		Furthermore, the ``until'' command will continue to step until it reaches a given line number. 
 
-		\paragraph{delete}
+		\paragraph{Delete}
 		This will delete all breakpoints in the current program. 
 		Rather than delete all, 
 		you can use the clear command with the same argument you used to set the breakpoint to remove that specific point. 

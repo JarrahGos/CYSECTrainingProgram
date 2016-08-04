@@ -86,7 +86,7 @@
 			While BeEF is a useful tool, it can often get in the way of a simple attack, or cause more trouble than it is worth. 
 			Thus, one should remember that when they are working with XSS, they have a whole programming language to use, as seen is chapter \ref{ch:Programming}.
 			This means that you should be able to write a short script that will enact the same result that you would have elicited using BeEF. 
-			The following sectinos will show you tools which can be used to attack using XSS without using BeEF. 
+			The following sections will show you tools which can be used to attack using XSS without using BeEF. 
 
 			\subsubsection{``AutoPWN''}
 			\index{AutoPWN}
@@ -156,7 +156,7 @@
 					This is a limitless approach. 
 					You may want to end the new statement with ``;--'' which ends your statement and comments out any remaining code. 
 				\item[UNION] This allows you to give a whole new select command to the database to be returned with your own. 
-					Thus, you could use this to get a print out of the whole database within a filed that would only give you user names. 
+					Thus, you could use this to get a print out of the whole database using a field that would normally only give you usernames. 
 
 			\end{description}
 		\subsubsection{SQLmap}
@@ -168,7 +168,7 @@
 			SQLmap will allow you to use the following techniques:
 			\begin{description}
 				\item[Boolean-Based Blind] This is where there is a difference between the page when the SQL is found to be true or false. 
-					SQLmap will search the headers automatically, or the page for a regex string which will tell it it was successful. 
+					SQLmap will search the headers automatically, or the page for a regex string which will tell it was successful. 
 					With this, eventually SQLmap should be able to determine the output of the command. 
 				\item[Time-Based Blind] SQLmap run a query which would put the database on hold for a given number of seconds. 
 					By counting the time between running and returning, SQLmap can determine whether the command was run. 
@@ -246,7 +246,7 @@
 	\index{File Inclusion}
 		File inclusion is common in PHP\footnote{\url{https://www.owasp.org/index.php/PHP\_File\_Inclusion}}
 		However, it should never be exposed to the user, allowing them to submit a request for an arbitrary page. 
-		It's main use is the execution of arbitrary code on the server, allowing for an easy way to gain access. 
+		Its main use is the execution of arbitrary code on the server, allowing for an easy way to gain access. 
 
 		These vulnerabilities may allow for local or remote inclusion, giving the attacker the ability to either send a file over the network or use a file already placed on the system (though a previous file upload vulnerability). 
 		These files can then be run using file inclusion, executing any code supplied by the attacker. 

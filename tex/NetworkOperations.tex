@@ -46,7 +46,7 @@
 				Usually this is implemented in a socket by the OS. 
 				\index{Presentation Layer}
 			\item[Presentation Layer]
-				Presents the data to the application which is is being communicated to in a format which is understandable to the application. 
+				Presents the data to the application which is being communicated to in a format which is understandable to the application. 
 				This is the layer which allows for encryption and data compression. 
 				This means that the application itself need not be sending encrypted messages to have secure communications. 
 				Instead, it could be wrapping its communication socket in a TLS session which would be securing the communications for it. 
@@ -58,7 +58,7 @@
 		\end{description}
 		When data is transmitted through these layers, it is encapsulated in quanta known as packets. 
 		Each of these packets contains the meta-data required for each of the layers of the network model. 
-		Starting from the application layer, each layer that the packet passes through will add a new header for it's data, which will not be read until the packet passes through that layer on the other end of it's journey. 
+		Starting from the application layer, each layer that the packet passes through will add a new header for its data, which will not be read until the packet passes through that layer on the other end of its journey. 
 		%TODO: Think about using a figure here to show this encapsulation. 
 		This layered nature allows us to connect using sockets, handling only the application and presentation layers and allowing the OS to sort the rest for us.
 
@@ -92,7 +92,7 @@
 			\begin{tabular}{| l | l |}
 				\hline
 				\textbf{TCP/IP layers} & \textbf{Focus of Layer}\\ \hline
-				Application & Application data to be sent or recieved\\ \hline
+				Application & Application data to be sent or received\\ \hline
 				Transport & Transmission assurance and error recovery\\ \hline
 				Network & Data delivery along whole path\\ \hline
 				Data Link & Individual link delivery\\ \hline
@@ -109,7 +109,7 @@
 			\item[Same Layer Interaction:] Interaction between machines on the same layer of the TCP/IP Model. 
 				This is used to transmit data between machines. 
 				Only the layer that sent a particular piece of data will read that data. 
-			\item[Adjacent Layer Interaciton:] Interaction between layers on the same machine. 
+			\item[Adjacent Layer Interaction:] Interaction between layers on the same machine. 
 				This is used to encapsulate data from a higher layer or deliver data from a lower layer. 
 				This is used as each layer needs the services of the layer below it in order to send the packet and have it received at the destination. 
 		\end{description}
@@ -124,7 +124,7 @@
 	
 	\section{Connecting to Networked Software}
 		There are a number of pieces of networked software available. 
-		These are often designed to be accessed in a specific manner, however, these can also often be accessed though other tools. 
+		These are often designed to be accessed in a specific manner, however, these can also often be accessed through other tools. 
 		Often, you will have one end of a program, usually the server running on another machine. 
 		This means that you will have to connect to the in a manner which they were not designed for, 
 		reverse engineering the protocol until you have something that works. 

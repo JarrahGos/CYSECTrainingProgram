@@ -17,7 +17,7 @@
 		These are currently the two most common versions of the code, each being used on PCs and mobile devices respectively. 
 		It is worth noting that there are a number of similarities between these. 
 		This mainly occurs due to the nature of the machine, which can still only interpret binary. 
-		Thus, both ARM and X86 must be assembled into this machine code. 
+		Thus, both ARM and x86 must be assembled into this machine code. 
 		\subsection{ARM Assembly}
 		\index{ARM Assembly}
 			The world of IT is becoming increasingly mobile, with ARM processors dominating that area. 
@@ -234,7 +234,7 @@ LDMFD r13!, {r4-r7}
 		\subsection{x86 Assembly}
 			While ARM is becoming more common, x86, or Intel assembly is not becoming any less common. 
 			There are two syntaxes for x86, Intel and AT\&T. 
-			While these will assemble into the same binary, but show slightly differently as code\footnote{\url{http://opensecuritytraining.info/IntroX86.html}}. 
+			While these will assemble into the same binary, but show slightly differently as code\footnote{\url{http://opensecuritytraining.info/Introx86.html}}. 
 
 			Furthermore, x86, unlike ARM is a Complex Instruction Set Computer. 
 			This means that the number of instructions can be huge, with some doing exceptionally specific things. 
@@ -320,7 +320,7 @@ LDMFD r13!, {r4-r7}
 				It also has the side effect of moving the stack pointer to now point at the new top of the stack. 
 
 				The opposite operation to this is pop. 
-				This will remove the current top of the stack, placing it's value into the specified register. 
+				This will remove the current top of the stack, placing its value into the specified register. 
 				Furthermore, this will have the side effect of incrementing the stack pointer. 
 
 			\subsubsection{Calling Conventions}
@@ -455,7 +455,7 @@ LDMFD r13!, {r4-r7}
 		\subsection{Strings}
 		\index{Strings}
 			This program reads through the binary of any file and prints any printable character strings greater than 4 characters long\footnote{\href{http://linuxcommand.org/man\_pages/strings1.html}{man strings}}.
-			Generally, it will work well with it's default settings. 
+			Generally, it will work well with its default settings. 
 			However, if you have reason to believe that the encoding was changed when programming, the ``-e'' flag will allow you to set that correctly. 
 			Similarly, the ``-f'' flag will be useful if you are searching through multiple files. 
 
@@ -509,7 +509,7 @@ LDMFD r13!, {r4-r7}
 		\end{lstlisting}
 
 		\index{Procyon}
-		Furthermore, Procyon will allow you to decompile a JAR file in it's entirety. 
+		Furthermore, Procyon will allow you to decompile a JAR file in its entirety. 
 		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
 
 		The reason that Java Reverse engineering is seen as easy is the fact that you now have the full source code of the program. 
@@ -522,9 +522,9 @@ LDMFD r13!, {r4-r7}
 		%TODO: Revise this section
 	\section{Pwn Adventure}
 	\index{Pwn Adventure}
-		Pwn Adventure is a reverse engineering CTF created to test players ability to both reverse engineer the game and stay focused at the same time.
+		Pwn Adventure is a reverse engineering CTF created to test player's ability to both reverse engineer the game and stay focused at the same time.
 		It was written in C++ using the Unity engine, making it fully compiled and relatively difficult to reverse engineer. 
-		However, no client authentication was written into the server, making it trust anything the client tells it it's doing. 
+		However, no client authentication was written into the server, making it trust anything the client tells it they are doing.
 
 		This means that the player can reverse engineer and modify the client, changing their weapons, character and environment to their will. 
 		More importantly, however, is the fact that the only way to win is to do this.

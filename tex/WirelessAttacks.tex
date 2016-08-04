@@ -18,7 +18,7 @@
 		Each tool is used for a different goal, but many of them will need to be used for a complete attack. 
 		\subsection{WiFi Basics}
 			Before attacking a WiFi network, you will need to understand how they work. 
-			This understanding will make the next few sections make sense, rather than being learned by rote.
+			This understanding will make the next few sections make sense, rather than learning by rote.
 
 			\index{WiFi Beacons}
 			WiFi Beacons are a transmission sent out by an access point (AP) at a rate of 10 per second. 
@@ -111,7 +111,7 @@
 				$ aireplay-ng --deauth 5 -a <AP MAC> -c <Client MAC> wlan0
 			\end{lstlisting}
 			This makes ARP replay and IV collection far faster.
-			However, your attack also becomes far more obvious on the network, making it more likely that a attentive user or IDS will notice your attack. 
+			However, your attack also becomes far more obvious on the network, making it more likely that an attentive user or IDS will notice your attack. 
 			The method used in cracking WEP using IVs contains interesting mathematical and logical concepts. 
 			I recommend reading the Wireless section of Jon Erickson's ``Hacking, the Art of Exploitation''\cite{HackingAOE} for more information.
 			
@@ -128,7 +128,7 @@
 			At this point you are waiting for a new client to connect to the AP, however, rather than waiting, you can use the deauth aireplay command above to have this happen quicker. 
 
 			When you have successfully collected a handshake, you will be able to start a dictionary attack on it. 
-			The most simple method of this is to use the following command:
+			The simplest method of this is to use the following command:
 			\begin{lstlisting}[style=CLI]
 				$ aircrack-ng -w <password list> -b <AP MAC> <capture file>
 			\end{lstlisting}
@@ -202,7 +202,7 @@
 			\begin{lstlisting}[style=CLI]
 				$ nfc-mfclasic w B <dump.mfc> <dump.mfc> 
 			\end{lstlisting}
-			If you have a to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID. 
+			If you have a card to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID. 
 			At this point, you should have written the whole dump to the card, allowing you to use it in place of the original. 
 			However, if you would like to test this, create another dump of the new card and run both dumps through a tool such as ``vbindiff'' which will check for differences between the hex of the two dumps. 
 			If you see a difference on the 0 line, it is likely due to the card not having a write enabled 0 block. 
