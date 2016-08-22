@@ -228,7 +228,7 @@
 			These are known as bash parameters, and they come in three different types: Positional, Special and Shell Variables. 
 			Shell variables are the most common, and act almost exactly the same as those of most other programming languages, while the others are slightly different and have their own uses. 
 
-			Shell variables are much like the variables of python. 
+			Shell variables are much like the variables of Python. 
 			They do not have a specific type and can be named and assigned at any time using the ``='' operator with no spaces.
 			However, when referencing them, the \$ prefix should be used to tell bash that you are referring to the variable rather than the name of a program.
 			This \$ symbol is the designator for expansion. 
@@ -420,7 +420,7 @@ done
 			\label{code:ForLoopBash}
 			\caption{For Loops in Bash}
 			\end{code}
-			The for each loop works in a similar manner to that of python. 
+			The for each loop works in a similar manner to that of Python. 
 			This loop creates a variable which can be used within its bounds and is filled with the output from its second block. 
 			The syntax for this loop can be seen below. 
 			\begin{code}
@@ -529,7 +529,7 @@ fi
 			\index{Read, Bash STDIN}
 			Once the script has been invoked, IO can be done by the same means as most CLI programs. 
 			Reading from STDIN is done by using the command read -p, which takes a string to display and the name of a variable to place the input into. 
-			This will work in exactly the same manner as python's raw input, writing the line to the CLI and storing every input before the new line in the variable you give it. 
+			This will work in exactly the same manner as Python's raw input, writing the line to the CLI and storing every input before the new line in the variable you give it. 
 			Output can be done using a number of commands. 
 			However, the two most common are echo for simple output and printf for formatted strings. 
 			Both of these commands are simple, with echo simply outputting a string to STDOUT and printf working exactly the same as in C. 
@@ -603,27 +603,57 @@ alias ls="ls --color=auto"
 		Python is the first, easiest and most useful language that will be introduced in this book.\cite{PythonBoringStuff} 
 		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
 		However, this couldn't be further from the truth. 
-		Due to its integration with the Open Source community, python has grown beyond the basic language that it would initially seem. 
+		Due to its integration with the Open Source community, Python has grown beyond the basic language that it would initially seem. 
 		This has occurred through the introduction of modules and tools such as pypi, which allow you to find new modules based on their description. 
-		\subsection{Setup}
-			To use this section, you will have to have installed python 3 on your system. 
-			On a Linux system, this can usually be done by running your package manager. 
-			On any other system, it is recommended that you find the package on \url{python.org}.
+		\subsection{Philosophy of Python}
+			Python, unlike many of the languages before it has a distinct philosophy which guides it's development. 
+			This code guides both those programmers who write the Python language, and those who use it. 
+			It is designed to create a language which is easy to learn, while also being powerful and versatile. 
+			However, the main goal is to provide a set of design guidelines that keep the language sane and maintainable. 
 
-			Once this is installed, the python interpreter can be run by calling ``python'' from the command line. 
+			This philosophy is expressed by Tim Peters in ``The Zen of Python''\cite{ZenOfPython}:
+			\begin{quote}
+				\begin{enumerate}
+					\item \emph{Beautiful} is better than ugly.
+					\item \emph{Explicit} is better than implicit.
+					\item \emph{Simple} is better than complex.
+					\item \emph{Complex} is better than complicated.
+					\item \emph{Flat} is better than nested.
+					\item \emph{Sparse} is better than dense.
+					\item \emph{Readability} counts.
+					\item Special cases aren't special enough to break the rules.
+					\item Although \emph{practicality} beats purity.
+					\item Errors should never pass silently.
+					\item Unless \emph{explicitly} silenced.
+					\item In the face of ambiguity, refuse the temptation to guess.
+					\item There should be \emph{one}---and preferably only one---obvious way to do it.
+					\item Although that way may not be obvious at first unless you're Dutch.
+					\item \emph{Now} is better than never.
+					\item Although never is often better than \emph{right} now.
+					\item If the implementation is hard to explain, it's a \emph{bad} idea.
+					\item If the implementation is easy to explain, it \emph{may} be a good idea.
+					\item \emph{Namespaces} are one honking great idea---let's do more of those!
+				\end{enumerate}
+			\end{quote}
+		\subsection{Setup}
+			To use this section, you will have to have installed Python 3 on your system. 
+			On a Linux system, this can usually be done by running your package manager. 
+			On any other system, it is recommended that you find the package on \url{Python.org}.
+
+			Once this is installed, the Python interpreter can be run by calling ``Python'' from the command line. 
 			You can call this interpreter with a file name as an argument to have it interpret and run that file. 
 
 		\subsection{Your First Program}
 			The below program is an example of a ``Hello World'' program in C. 
 			These are generally the basic program that is used as the first that a new programmer will write in a language. 
-			Because python is a high level language that focuses on being accurate and concise, this program can be expressed in the following line. 
+			Because Python is a high level language that focuses on being accurate and concise, this program can be expressed in the following line. 
 			\begin{quote}
 				print("Hello World");
 			\end{quote}
 
 		\subsection{Mathematics}
 			While programming does not require high level mathematics, it is heavily based on basic arithmetic. 
-			Table \ref{tab:PythonMaths} contains a list of the mathematical operators that can be used in python, their symbolic equivalent and their end state. 
+			Table \ref{tab:PythonMaths} contains a list of the mathematical operators that can be used in Python, their symbolic equivalent and their end state. 
 			\begin{table}[htb]
 				\centering
 				\begin{adjustbox}{max width=1\textwidth}
@@ -634,13 +664,138 @@ alias ls="ls --color=auto"
 					- & $-$ & 5 - 1 & 4 \\ \hline
 					* & $\times$ & 4*3 & 12 \\ \hline
 					/ & $\div$ & 4/2 & 2 \\ \hline
-					%\% & $\mod$ & 5 \% 4 & 1 \\ \hline 
-					= & $=$ & x = 7 & x holds the value 7 \\ \hline 
+					\% & $\mod$ & 5 \% 4 & 1 \\ \hline 
+					= &  & x = 7 & x holds the value 7 \\ \hline 
+					x**y & $x^y$ & 2**2 & 4 \\ \hline
 				\end{tabular}
 				\end{adjustbox}
 				\caption{Python Arithmetic operators}
 				\label{tab:PythonMaths}
 			\end{table}
+		\subsection{Python Interpreter}
+			While Python can be used by creating a script which is run in full on execution like any other programming language,
+			it also has the ability to run as an interactive interpreter. 
+			This is useful when learning the language as one can ``try something out'' before committing it to a file and running all of the code that goes along with that. 
+			Furthermore, this interpreter can read a file of variables and functions, which can then be called interactively. 
+			This makes it a useful testing tool, as well as a powerful shell if used properly. 
+
+			The Python interpreter can be invoked using the ``Python'' command from any command line as seen in code example \ref{code:PythonInterpreter}
+			\begin{code}
+				\begin{lstlisting}[language=Python,gobble=20]
+					Python 3.5.2 (default, Jul 28 2016, 21:28:00)
+					[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin
+					Type "help", "copyright", "credits" or "license" for more information.
+					>>> 
+				\end{lstlisting}
+				\caption{The Python Interpreter Starting}
+				\label{code:PythonInterpreter}
+			\end{code}
+
+			At this point, anything which is entered into the interpreter will be run as Python code. 
+			This is an additive process, with any new content being added as if on a new line in a file. 
+			Thus, multi-line code blocks can be entered and functions can be written to be used later. 
+
+			For this tutorial, feel free to use either means. 
+			However, the interpreter is a better tool for testing out new ideas, while writing and running a script is useful for more complex operations. 
+		\subsection{Syntax}
+			Also unlike many modern languages, Python uses a whitespace based syntax\footnote{\href{https://www.xkcd.com/353/}{xkcd 353}}
+			This means that rather than delimiting functions and other code blocks with braces, Python simply uses indentation. 
+			Thus, any code block can be opened on a line ending with a colin (`:') and closed simply by moving back a level of indentation. 
+
+			There are minor exceptions to this, such as functions using parenthesis to delimit the start and end of the arguments within their call. 
+			Another example of this is in mathematics where parenthesis are used to group and determine order of operations. 
+			However, in the general case, where most languages would use braces or a semicolon, Python will have nothing. 
+
+			For a new programmer, this is useful, as it enforces good coding style, while allowing extraneous punctuation to be forgotten. 
+			This means that in Python, errors in syntax are generally more obvious and easier to fix, as there will never be a need to troll through hundreds of lines of code looking for the missing semicolon, a common issue for new programmers. 
+		\subsection{Conditional Statements}
+			Going along with Python's goal of having one---and preferably only one---way to do something, python only has one simple conditional statement. 
+			This is the ``if'' statement, which is used to make a decision about executing a block of code. 
+
+			The syntax of this statement is quite simple, requiring only a conditional and a code block to execute. 
+			An example of this can be seen in code example \ref{code:PythonIf}
+			\begin{code}
+				\lstinputlisting[language=python]{./PythonIf.py}
+				\caption{Simple If Statement in Python}
+				\label{code:PythonIf}
+			\end{code}
+
+			Python can also be told to take alternative actions if the first condition is not met. 
+			This is done using the ``elif'' and ``else'' key words. 
+			The former of these will allow you to give another condition to check, while the latter will act as a default, running only if none of the other tests were true. 
+			This can be seen in code example \ref{code:PythonElif}
+			\begin{code}
+				\lstinputlisting[language=python]{./PythonElif.py}
+				\caption{Simple Else If in Python}
+				\label{code:PythonElif}
+			\end{code}
+		\subsection{Loops}
+			Slightly contrary to it's philosophy, python actually has 3 types of loop. 
+			These are all used to repeat a section of code a number of times, however, they are each optimized to conduct a different action. 
+
+			\subsubsection{While Loop}
+				The while loop is used to repeatedly execute a block of code until a statement is no longer true. 
+				Generally, this will be used when the programmer does not know how many times they wish to execute the block, 
+				but does know a way of determining when to stop. 
+				Thus, if you have to run something exactly 5 times, you would use the for loop explained in the next section. 
+				However, if you wish to repeat a block until something changes, a while loop is the right tool for the job. 
+
+				The syntax of the while loop can be seen in code example \ref{code:PythonWhile}. 
+				It is generally similar to the if statement, however, it will cause the code at that point to be repeated a number of times. 
+				\begin{code}
+					\lstinputlisting[language=python]{./PythonWhile.py}
+					\caption{Example of a While Loop in Python}
+					\label{code:PythonWhile}
+				\end{code}
+
+			\subsubsection{For Loop}
+				The first type of for loop is used to iterate over a range of numbers. 
+				Generally, this is used for any operation which requires counting, as each number within the given range will be iterated through. 
+				This is done using the ``range'' function, which takes two arguments and an optional step. 
+				These will form the starting point, finishing point and step of the numbers which will be iterated through. 
+				Furthermore, if the step is omitted, the counter will step forward by one each iteration. 
+
+				An example of this can be seen in code example \ref{code:PythonFor}.
+				\begin{code}
+					\lstinputlisting[language=python]{./PythonFor.py}
+					\caption{A For Loop in Python}
+					\label{code:PythonFor}
+				\end{code}
+
+			\subsection{For Each Loop}
+				In many languages, this is a completely different function, which is used to iterate along a list or array of items. 
+				However, in python, this is done by using a for loop with said list (or other iterable item) instead of the ``range'' function. 
+				This will set the given variable to the relevant value from the list and run the loop's code block using it. 
+				This is quite useful for running an action on a list of items, which while possible by using both ``range'' and ``len'' together, is far less neat. 
+
+				An example of the for each loop can be seen in code example \ref{code:PythonForEach}.
+				\begin{code}
+					\lstinputlisting[language=python]{./PythonForEach.py}
+					\caption{A For Each Loop in Python}
+					\label{code:PythonForEach}
+				\end{code}
+		\subsection{Functions}
+			Functions are a way of writing general code that can be called from any part within your program. 
+			This code is generally given data (called arguments) when it is called and can optionally return data on it's exit. 
+
+			Initially, when writing simple programs, it may be tempting to write code without using functions, as all of the code will flow better and be easier to read. 
+			However, this quickly becomes the opposite case as the code grows. 
+			Using a well named, logically built function will become something which is known and run in a standard way across the entire code base, making it far easier to understand what is happening within a large block of code. 
+			Furthermore, when integrating multiple classes (which are explained later) into a program, functions are the only way to have interaction between them. 
+
+			A function in Python is created using the ``def'' keyword, which tells python to expect a code block with a title and arguments. 
+			An example of a function which will return the highest Fibonacci number less than `n' can be found in code example \ref{code:PythonFibFunction}.
+			This example shows how to define a function on line 1, how to return from a function on line 6 and also how to call a function with an argument on line 7.
+			
+			\begin{code}
+				\lstinputlisting[language=python]{./PythonFibFunction.py}
+				\caption{A Simple Function to Return the Highest Fibonacci Number Under n}
+				\label{code:PythonFibFunction}
+			\end{code}
+		\subsection{Arrays and Tuples}
+		\subsection{Objects}
+
+
 	\section{Introducton to JavaScript}
 		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
@@ -1150,7 +1305,7 @@ list = ['one', 'two', 'three'];
 			C comes with a function known as ``sizeof'' which will do this for you when called on an array. 
 		\subsection{Loops}
 			Just like in Python, C has a number of loops built into it. 
-			These loops will work exactly the same as the basic python versions, but will have a slightly different syntax. 
+			These loops will work exactly the same as the basic Python versions, but will have a slightly different syntax. 
 			
 			\index{C While Loop}
 			The ``while'' loop is the most basic loop within C. 
@@ -1172,7 +1327,7 @@ list = ['one', 'two', 'three'];
 				\label{code:CLoops}
 			\end{code}
 		\subsection{Conditional Statements}
-			In a similar way to loops, the if statement in C is quite similar to that of python. 
+			In a similar way to loops, the if statement in C is quite similar to that of Python. 
 			It has a condition, a code block and can have else if and else statements under it. 
 			However, the difference comes into the syntax. 
 			\index{C If}
@@ -1205,7 +1360,7 @@ list = ['one', 'two', 'three'];
 
 			\index{C Function}
 			Functions in C are similar to those of most other languages. 
-			However, when compared to languages like python, there are some minor differences, as seen in code example \ref{code:CFunction}.
+			However, when compared to languages like Python, there are some minor differences, as seen in code example \ref{code:CFunction}.
 			\begin{code}
 				\lstinputlisting[language={[ANSI]C}]{./CFunction.c}
 				\caption{Example of a C Function}
