@@ -351,8 +351,8 @@
 				\end{lstlisting}
 				Note that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
 				To check which services have been disabled, run the following command:
-				\begin{lstlisting}[style=CLI]
-					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \textbackslash; 2>/dev/null
+				\begin{lstlisting}[style=CLI,gobble=5]
+					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \; 2>/dev/null
 				\end{lstlisting}
 			\subsection{Spotlight}
 			\index{Spotlight}

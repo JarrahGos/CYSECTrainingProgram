@@ -603,7 +603,7 @@ alias ls="ls --color=auto"
 		Python is the first, easiest and most useful language that will be introduced in this book.\cite{PythonBoringStuff} 
 		At a basic level, it looks like a language that was not built for complex programming, but rather one that should be used to learn. 
 		However, this couldn't be further from the truth. 
-		Due to its integration with the Open Source community, Python has grown beyond the basic language that it would initially seem. 
+		Due to its integration with the Open Source community, Python has grown beyond the basic language that it would initially seem\footnote{\url{https://docs.python.org/3/tutorial/}}. 
 		This has occurred through the introduction of modules and tools such as pypi, which allow you to find new modules based on their description. 
 		\subsection{Philosophy of Python}
 			Python, unlike many of the languages before it has a distinct philosophy which guides it's development. 
@@ -644,7 +644,7 @@ alias ls="ls --color=auto"
 			You can call this interpreter with a file name as an argument to have it interpret and run that file. 
 
 		\subsection{Your First Program}
-			The below program is an example of a ``Hello World'' program in C. 
+			The below program is an example of a ``Hello World'' program in Python. 
 			These are generally the basic program that is used as the first that a new programmer will write in a language. 
 			Because Python is a high level language that focuses on being accurate and concise, this program can be expressed in the following line. 
 			\begin{quote}
@@ -792,10 +792,54 @@ alias ls="ls --color=auto"
 				\caption{A Simple Function to Return the Highest Fibonacci Number Under n}
 				\label{code:PythonFibFunction}
 			\end{code}
-		\subsection{Arrays and Tuples}
+		\subsection{Lists and Tuples}
+			Thus far, we have been able to store one item at a time in the variables that we have created. 
+			However, this is not always the best way to work with data. 
+			Due to this, the concept of lists and tuples will be introduced in this section. 
+			\subsubsection{Lists}
+				These allow the programmer to store multiple items of the same type in a sequence. 
+				For example, the following list stores strings which can be accessed by their number:
+				\begin{enumerate}\setcounter{enumi}{-1} % This starts the counter at Zero
+					\item "This is the first string"
+					\item "This is the second"
+					\item "Note that the numbers start from zero"
+				\end{enumerate}
+				As you can see in the above list, the counter for accessing the strings starts at zero. 
+				This is known as zero based indexing and is used as it is a more efficient way to access the data within the list.
+
+				The list shown above would be created in python using the following code:
+				\begin{code}
+					\centering
+					\lstinputlisting[language=python]{./PythonList.py}
+					\caption{Creating a List in python}
+					\label{code:PythonListCreation}
+				\end{code}
+
+				Similarly, to access a list the same ``[]'' brackets can be used. 
+				The code in example \ref{code:PythonListUse} shows this using the list already created. 
+				It will print the statement "This is the first string". 
+				\begin{code}
+					\centering
+					\lstinputlisting[language=python]{./PythonListUse.py}
+					\caption{Using a List in Python}
+					\label{code:PythonListUse}
+				\end{code}
+
+				Finally, it is worth noting that lists in python have a number of useful functions. 
+				Those listed below have been useful during numerous challenges or projects:
+				\begin{description}
+					\item[append] Adds an item to the end of the list. 
+					\item[len] Returns the number of items within the list, counting from 1. 
+					\item[min/max] Returns the smallest or largest number respectively. 
+					\item[slice] This uses the format ``[start: end[: step]]'' in which the step is optional. 
+						This will take every item in the list from the start point to the end and return a new list of only these. 
+						Furthermore, the list can be reversed by using ``[::-1]''. 
+					\item[sorted] Will return the array sorted. 
+						There are default methods of sorting that work well, however, a comparison function can be included. 
+					\item[sum] Returns the sum of the items within the string if able to. 
+					\item[zip] Takes two or more lists and returns a list of tuples with the items of each list matched one to one. 
+				\end{description}
 		\subsection{Objects}
-
-
 	\section{Introducton to JavaScript}
 		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
