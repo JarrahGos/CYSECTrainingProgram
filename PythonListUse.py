@@ -1,0 +1,1 @@
+print(listOfStrings[0])

@@ -839,7 +839,26 @@ alias ls="ls --color=auto"
 					\item[sum] Returns the sum of the items within the string if able to. 
 					\item[zip] Takes two or more lists and returns a list of tuples with the items of each list matched one to one. 
 				\end{description}
+			\subsubsection{Tuples}
+				Tuples are another means of storing multiple pieces of data in the same variable. 
+				However, unlike lists, tuples do not require that the data type of each item being store is the same. 
+				They are used to store logically linked data (such as coordinates and their name) as a contiguous block.
+				Much like lists, tuples can contain lists or other tuples, however, if the tuple is contained in a list, 
+				it must be of the same type as every other tuple stored there. 
+
+				The type of a tuple is defined by what it stores. 
+				Thus, a tuple storing two integers is different from one storing a string and a float, which is again different from one storing three strings. 
+				This may sound simple, but it is one of the common flaws in code that works with tuples; the programmer has to remember the type. 
+
+				Code example \ref{code:pythonTuples} creates two different tuples before printing the first item in the first one and all of the second. 
+				\begin{code}
+					\centering
+					\lstinputlisting[language=python]{./PythonTuples.py}
+					\caption{Working with Tuples in Python}
+					\label{code:pythonTuples}
+				\end{code}
 		\subsection{Objects}
+			Objects in python 
 	\section{Introducton to JavaScript}
 		%TODO: Clean up this section. 
 		Javascript is the programming language of the Internet. 
