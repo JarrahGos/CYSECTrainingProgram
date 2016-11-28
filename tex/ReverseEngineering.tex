@@ -148,12 +148,12 @@
 
 				The code in example \ref{code:ARMConditionalLoop} will loop 5 times before exiting:
 				\begin{code}
-					\begin{lstlisting}[language={[ARM]assembler}]
+					\begin{minted}{nasm}
 	MOV r2, #5
 loop
 	SUBS r2, r2, #1
 	BNE loop
-					\end{lstlisting}
+					\end{minted}
 					\caption{Conditional loop in ARM Assembly}
 					\label{code:ARMConditionalLoop}
 				\end{code}
@@ -227,10 +227,10 @@ loop
 				Code example \ref{code:ARMStack} shows this process.
 
 				\begin{code}
-					\begin{lstlisting}[language={[ARM]Assembler}]
+					\begin{minted}{nasm}
 STMFD r13!, {r4-r7}
 LDMFD r13!, {r4-r7}
-					\end{lstlisting}
+					\end{minted}
 					\caption{Using the Stack in ARM Assembly.}
 					\label{code:ARMStack}
 				\end{code}
@@ -508,9 +508,9 @@ LDMFD r13!, {r4-r7}
 		All that is required is having Java installed on the system that you are working on and running the provided JAR package.
 		You will give it both the class files that you wish to decompile, as well as an output directory.
 		An example of this can be found below:
-		\begin{lstlisting}[style=CLI]
+		\begin{minted}[autogobble,breaklines]{console}
 			$ ./procyon.jar *.class -o src
-		\end{lstlisting}
+		\end{minted}
 
 		\index{Procyon}
 		Furthermore, Procyon will allow you to decompile a JAR file in its entirety.

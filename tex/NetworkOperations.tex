@@ -238,9 +238,9 @@
 
 			When accessing a remote cache, the DNS query may look somewhat like that seen below:
 			%TODO: Why is the following not indenting as shown in the source
-				\lstinputlisting[numbers=none]{./shellOut/DNSQuery.out}
+				\concode{./shellOut/DNSQuery.out}
 			The corresponding response may look as follows:
-				\lstinputlisting[numbers=none]{./shellOut/DNSResponce.out}
+				\concode{./shellOut/DNSResponce.out}
 
 			This caching process has been implemented into the DNS structure though the use of Time To Live (TTL) values.
 			This allows the server administrator to set the duration for which a cache can store the address to domain mapping of their server.
@@ -354,10 +354,10 @@
 
 
 				You will then want to bring these interfaces up using the following commands:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ netctl enable extern0-profile
 					$ netctl enable intern0-profile
-				\end{lstlisting}
+				\end{minted}
 
 			\subsection{Set up DNS and DHCP}
 				You will then want to set up the DNS and DHCP services.
@@ -369,7 +369,7 @@
 				Network Address Translation is the key utility that allows you to communicate through the router.
 				This will allow you to send and receive data through it, and with some configuration, receive incoming connections.
 				In order to set this up, run the following commands in order:
-				\lstinputlisting[style=CLI]{./shellOut/iptablesNat.in}
+				\concode{./shellOut/iptablesNat.in}
 				I recommend putting these commands into a script file and running that.
 				That way, if you have to make any changes to them or add any new rules, you can put them in the correct place and run the file.
 				Use the command ``iptables -F'' to clear the table before running the script.
@@ -377,10 +377,10 @@
 			\subsection{Bring up the services}
 				The services that are required will now have to be brought up and enabled for boot.
 				This can be done using the following commands:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ systemctl start dnsmasq
 					$ systemctl enable dnsmasq
-				\end{lstlisting}
+				\end{minted}
 				Furthermore, for information on how the service is running, run the command ``systemctl status dnsmasq''.
 
 			\subsection{Conclusion}

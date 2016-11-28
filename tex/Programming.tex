@@ -277,13 +277,13 @@
 			The if statement in bash works in much the same way as the ``\&\&'' conditional in that it will run it's block if the command that was given to it succeeds.\footnote{\url{http://mywiki.wooledge.org/BashGuide/Patterns}}
 			The syntax for the if command is as follows:
 			\begin{code}
-			\begin{lstlisting}[language={bash}]
+			\begin{minted}{bash}
 if <Conditional commands>; then
 	<if block commands>
 else
 	<else block commands>
 fi
-			\end{lstlisting}
+			\end{minted}
 			\label{code:BashConditionalBlocks}
 			\caption{Conditional Blocks in Bash}
 			\end{code}
@@ -358,13 +358,13 @@ fi
 			It can be used with wildcards, allowing you to check for similar items.
 			The syntax of this command can be found below:
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 case <variable> in
 	<option 1>) <command> ;;
 	<option 2) <command> ;;
 	*) <else command> ;;
 esac
-			\end{lstlisting}
+			\end{minted}
 			\label{code:SwitchConditionalBlock}
 			\caption{Switch Conditional Blocks in Bash}
 			\end{code}
@@ -379,11 +379,11 @@ esac
 			\index{Bash While Loop}
 			The syntax for these loops is:
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 while <conditional> do
 	<Commands to be looped>
 done
-			\end{lstlisting}
+			\end{minted}
 			\label{code:WhileBashLoops}
 			\caption{While Loops in Bash}
 			\end{code}
@@ -392,11 +392,11 @@ done
 			The syntax for the until look is:
 			\index{Bash Until Loop}
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 until <conditional> do
 	<commands to be looped>
 done
-			\end{lstlisting}
+			\end{minted}
 			\label{code:BashLoopsUntil}
 			\caption{Until Loop in Bash}
 			\end{code}
@@ -407,11 +407,11 @@ done
 			The syntax for the for loop is:
 			\index{Bash For Loop}
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 for (( <Setup>; <condition>; <change> )) do
 	<Commands to be looped>
 done
-			\end{lstlisting}
+			\end{minted}
 			\label{code:ForLoopBash}
 			\caption{For Loops in Bash}
 			\end{code}
@@ -419,11 +419,11 @@ done
 			This loop creates a variable which can be used within its bounds and is filled with the output from its second block.
 			The syntax for this loop can be seen below.
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 for <variable> in <command> do
 	<commands to be looped>
 done
-			\end{lstlisting}
+			\end{minted}
 			\label{code:ForEachBash}
 			\caption{For Each Loops in Bash}
 			\end{code}
@@ -441,11 +441,11 @@ done
 			They should be used any time that a list of something is produced, rather than placing the list in a string and attempting to delimit each item.
 			The syntax for creating an array is as follows, each line designating another method of creation.
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 <name>=(<first> <second>) #create an array containing <first> and <second>
 <name>=([0]=<first> [23]=<second> [n]=<nth>) #create an array, placing items in specific positions.
 <name>=(*.png) # create an array containing the filenames of every .png file in the current directory.
-			\end{lstlisting}
+			\end{minted}
 			\label{code:ArrayCreationBash}
 			\caption{Array Creation in bash}
 			\end{code}
@@ -453,11 +453,11 @@ done
 			Arrays are used in much the same manner, with a few instances of syntactic sugar to make them easier.
 			To iterate through an array, the following for loop will extract each element and run a command using it.
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 for <var> in "${<array>[@]}"; do
 	<command using <var>>
 done
-			\end{lstlisting}
+			\end{minted}
 			\label{code:ForEachArrayAccess}
 			\caption{Accessing Arrays using For Each in Bash}
 			\end{code}
@@ -474,11 +474,11 @@ done
 			More recent versions of bash also have a dictionary like array type called associative arrays.
 			These allow you to map one string to another, and are created and accessed in the following manner.
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 declare -A <name>
 	<name>=( [<map>]=<value> )
 <command> ${<name>[<map>]}
-			\end{lstlisting}
+			\end{minted}
 			\label{code:DeclareAssociativeArrayBash}
 			\caption{Declaring Associative Arrays in Bash}
 			\end{code}
@@ -504,7 +504,7 @@ declare -A <name>
 			An example of this, is checking whether the computer is being used with an X display manager and whether the user has set their preferred terminal.
 			This can be done with the following code:
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 if [[ $DISPLAY ]]; then
 	if [[ $TERM_PROGRAM ]]
 		<Command to run in preferred terminal>
@@ -514,7 +514,7 @@ if [[ $DISPLAY ]]; then
 else
 	<Command to run in CLI>
 fi
-			\end{lstlisting}
+			\end{minted}
 			\label{code:checkingEnvironmentalVariables}
 			\caption{Acting based on environmental variables}
 			\end{code}
@@ -573,12 +573,12 @@ fi
 			Variables created within them will not be accessible outside the function.
 			Functions are defined and called in the following manner:
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 <Function Name>() {
 	<commands>
 }
 <Function Name> <Parameters>
-			\end{lstlisting}
+			\end{minted}
 			\label{code:bashFunctions}
 			\caption{Functions in Bash}
 			\end{code}
@@ -590,9 +590,9 @@ fi
 			They work in a similar manner to a find and replace search in that any time you type the name you give the alias it will be replaced with exactly what you enter as the alias' command.
 			An example of creating an alias for ls to ensure it outputs in colour is shown below.
 			\begin{code}
-			\begin{lstlisting}[language=bash]
+			\begin{minted}[autogobble,breaklines]{bash}
 alias ls="ls --color=auto"
-			\end{lstlisting}
+			\end{minted}
 			\label{code:bashAlias}
 			\caption{Aliasing in Bash}
 			\end{code}
@@ -680,12 +680,12 @@ alias ls="ls --color=auto"
 
 			The Python interpreter can be invoked using the ``Python'' command from any command line as seen in code example \ref{code:PythonInterpreter}
 			\begin{code}
-				\begin{lstlisting}[language=Python,gobble=20]
+				\begin{minted}{pycon}
 					Python 3.5.2 (default, Jul 28 2016, 21:28:00)
 					[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin
 					Type "help", "copyright", "credits" or "license" for more information.
 					>>>
-				\end{lstlisting}
+				\end{minted}
 				\caption{The Python Interpreter Starting}
 				\label{code:PythonInterpreter}
 			\end{code}
@@ -1586,9 +1586,9 @@ list = ['one', 'two', 'three'];
 
 		Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB.
 		The first step is to run GDB on the program like so:
-		\begin{lstlisting}[style=CLI]
+		\begin{minted}{console}
 			$ gdb <program>
-		\end{lstlisting}
+		\end{minted}
 		This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program.
 
 		\paragraph{List}

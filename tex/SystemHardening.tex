@@ -164,9 +164,9 @@
 					Firejail\footnote{\url{https://firejail.wordpress.com/documentation-2/}} gives an easy way to do this through its commandline interface.
 					The command ``firejail <program>'' will execute ``program'' in a sandbox.
 					For greater security, the following command will block the program from writing to disk, effectively blocking all permanent changes
-					\begin{lstlisting}[style=CLI]
+					\begin{minted}[autogobble,breaklines]{console}
 						$ firejail --seccomp --private <program>
-					\end{lstlisting}
+					\end{minted}
 					While this does not mean that the program cannot be used as a means to attack the machine, it does make it far more difficult.
 					However, it also means that nothing can be saved from within the program, making it far harder to use.
 				\subsection{Firewall}
@@ -190,63 +190,63 @@
 						Please either conduct these steps locally or have another means of getting into the system.
 						Also before starting, please ensure that there are no iptables rules on your system.
 						These can be removed by running the command:
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables-restore < /etc/iptables/empty.rules
-						\end{lstlisting}
+						\end{minted}
 
 						The first step in this is to set up the necessary chains with the commands:
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -N TCP
 							# iptables -N UDP
-						\end{lstlisting}
+						\end{minted}
 						Then we should set the FORWARD chain which is usually used in routers and NAT to DROP with:
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -P FORWARD DROP
-						\end{lstlisting}
+						\end{minted}
 						For the next part, we will be telling the firewall to allow all outgoing connections.
 						This is generally a bad idea, but setting up the correct firewall settings is beyond the scope of this.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -P OUTPUT ACCEPT
-						\end{lstlisting}
+						\end{minted}
 						We will now start setting up the incoming rules.
 						The default rules for this is do drop the packets, meaning that they will not be accepted and no response will be sent.
 						However, we will then add other rules on top of this to ensure that communication is not lost.
 						The following rule will allow ICMP messages which have are related to an existing connection to be passed through the firewall.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-						\end{lstlisting}
+						\end{minted}
 						The second rule will allow all connections on the loopback address, which is designed to allow software on one machine to communicate.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -i lo -j ACCEPT
-						\end{lstlisting}
+						\end{minted}
 						This next rule will drop all packets which are not valid.
 						This means that something about the packets does not make sense, such as a corrupted header or an incorrect checksum.
 						These packets will be dropped with no response as they are often used in network scanning.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
-						\end{lstlisting}
+						\end{minted}
 
 						To allow packets coming through this chain to be attached to our new TCP and UDP chains, use the following commands:
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP
 							# iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP
-						\end{lstlisting}
+						\end{minted}
 						These next commands will drop all failed UDP and TCP connections.
 						This is done for security, as a common network mapping technique uses the fact that by protocol, failed TCP packets should reply with an RST packet and failed UDP should reply with an ICMP port unreachable.
 						The following commands will stop both of these behaviors.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -p udp -j DROP
 							# iptables -A INPUT -p tcp -j DROP
-						\end{lstlisting}
+						\end{minted}
 						Finally, we will drop all other protocols in case anything else was attempted.
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A INPUT -j DROP
-						\end{lstlisting}
+						\end{minted}
 						You may also want to open up a number of application specific ports such as port 22 for SSH.
 						This can be done using the following command:
-						\begin{lstlisting}[style=CLI]
+						\begin{minted}[autogobble,breaklines]{console}
 							# iptables -A <Protocol> -p <Protocol> --dport <port> -j ACCEPT
-						\end{lstlisting}
+						\end{minted}
 						Finally, this whole setup can be saved using the command ``iptables-save''.
 
 
@@ -285,10 +285,10 @@
 			At this point, you should alter some of the default key storage behaviors of OS X such as erasing the key from memory on sleep an enforcing hibernation.
 			This will mean that you do not have to manually turn off the computer for the encryption to be secure---the system need only be hibernating.
 			To do this, use the following commands:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# pmset -a destroyfvkeyonstandby 1
 				# pmset -a hibernatemode 25
-			\end{lstlisting}
+			\end{minted}
 		\subsection{Firmware password}
 		\index{Firmware Password}
 			Unlike windows and Linux systems where the UEFI or BIOS are transparent to the user, Apple Mac computers attempt to hide this utility.
@@ -307,23 +307,23 @@
 			The default OS X firewall is a good start for a blocking firewall.
 			However, it will not allow you to monitor connections, nor block outgoing connections.
 			To enable it, use the command:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# defaults write /Library/Preferences/com.apple.alf globalstate -bool true
-			\end{lstlisting}
+			\end{minted}
 			To enable logging of blocked connections:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
-			\end{lstlisting}
+			\end{minted}
 			To drop ICMP ping requests and TCP/UDP traffic on closed ports:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# defaults write /Library/Preferences/com.apple.alf stealthenabled -bool true
-			\end{lstlisting}
+			\end{minted}
 			See chapter \ref{ch:NetworkPenetration} for why this would be a good idea.
 
 			Finally, to prompt you for every application which attempts to receive an incoming connection, rather than allowing signed applications to receive this by default, run:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool false
-			\end{lstlisting}
+			\end{minted}
 
 			At this point, you may wish to overcome the inability of the standard firewall for monitoring and out bound connections.
 			This can be done through either third party firewalls or the kernel firewall, ``pfctl''.
@@ -348,14 +348,14 @@
 				After using these tools, use tools such as the Unix manual and a web search to determine what the services do.
 				When reading a ``.plist'' file, look for ``Program'' or ``ProgramArguments'' to determine what the file runs, then search for the program.
 				To disable a service, use the following command:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					# launchctl unload -w /System/Library/LaunchDaemons/com.apple.apsd.plist
-				\end{lstlisting}
+				\end{minted}
 				Note that removing the wrong service will leave you unable to boot, requiring that you enable it again in single user mode.
 				To check which services have been disabled, run the following command:
-				\begin{lstlisting}[style=CLI,gobble=5]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ find /var/db/com.apple.xpc.launchd/ -type f -print -exec defaults read {} \; 2>/dev/null
-				\end{lstlisting}
+				\end{minted}
 			\subsection{Spotlight}
 			\index{Spotlight}
 				Spotlight is an exceptionally useful tool.
@@ -382,9 +382,9 @@
 				However, this can be overcome.
 				The first step is to disable System Integrity Protection. This should not be left permanently however, as it is a good security feature in itself.
 				In order to do this, reboot while holding \keys{\cmd + \shift + R} and open a terminal. The following command will disable SIP:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ csrutil disable
-				\end{lstlisting}
+				\end{minted}
 				The reverse operation will re-enable SIP when you are done.
 
 				Now you should install ``coreutils'' from Homebrew or another trusted source and link all relevant binaries in /bin to their Homebrew coreutils equivalent.
@@ -397,28 +397,29 @@
 				Caching can be done with the dnsmasq program, which will store the results of requests rather than forcing you to request the address on every boot.
 				Furthermore, this program hooks into dnscrypt to encrypt your DNS traffic.
 				To install and configure both of these programs, run the following Homebrew script and commands:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ brew install dnsmasq --with-dnssec
 					$ mkdir -p /usr/local/etc
 					$ cp /usr/local/opt/dnsmasq/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf
-				\end{lstlisting} %TODO: This gets hyphenated.
+				\end{minted}
+				%TODO: This gets hyphenated.
 				At this point, you should configure both dnsmasq and dnssec to your preferences.\footnote{\url{https://wiki.gentoo.org/wiki/Dnsmasq}}
 				The configuration file is well commented, read through this as it should tell you what you need to enable.
 
 				Once configured, the following commands will properly install and launch the program.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					# cp -fv /usr/local/opt/dnsmasq/*.plist /Library/LaunchDaemons
 					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
-				\end{lstlisting}
+				\end{minted}
 				Then enable the local DNS server in the preferences for your network and any VPN that you are using.
 
 				In order to encrypt this traffic, you will now need to install dnscrypt.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ brew install dnscrypt-proxy
 					# cp -fv /usr/local/opt/dnscrypt-proxy/*.plist /Library/LaunchDaemons
 					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
-				\end{lstlisting}
+				\end{minted}
 				Then add the following line to ``/Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist'':
 				\begin{quote}
 					<string>\verb+--+local-address=127.0.0.1:5355</string>
@@ -432,9 +433,9 @@
 					<string>\verb+--+resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
 				\end{quote}
 				Finally, the program can be started with:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
-				\end{lstlisting}
+				\end{minted}
 
 				This should leave you with a working, cached, validated and encrypted DNS setup.
 				Ensure that the DNS servers that you are using support this by checking with the website of the provider that you use or
@@ -445,19 +446,19 @@
 				When OS X connects to a new network it probes the network and launches a Captive Portal assistant if it cannot access the Internet.
 				This will load up an arbitrary website provided by the network, possibly serving malware with no user intervention.
 				This feature can be disabled with the following command:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					# defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
-				\end{lstlisting}
+				\end{minted}
 
 			\subsection{OpenSSL}
 			\index{OpenSSL}
 				The OpenSSL version shipped with OS X is vastly out of date, not supporting many newer encryption technologies and causing significant security risks.
 				Though it may cause issues building some software, it is recommended that you switch to the Homebrew package and deal with these issues as they arise by utilizing the OS X binary temporarily.
 				This version can be installed and linked using the following commands:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ brew install openssl
 					$ brew link openssl --force
-				\end{lstlisting}
+				\end{minted}
 				Similar issues appear in many of the OS X command line utilities.
 				You should search them out online.
 	\section{Windows Hardening}

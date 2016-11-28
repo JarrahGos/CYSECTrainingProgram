@@ -997,20 +997,20 @@
 				However, if the dictionaries that you are using have already been enumerated in such a way, it will likely not produce useful results.
 				Furthermore, this attack will not run the words from each dictionary separately.
 				To use this attack, run the top command for GPU or the bottom command for CPU.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ oclHashcat64 -m 0 -a 1 <hash file> <dict1> <dict2>
 
 					$ hashcat-cli64 -m 0 -a 1 <hash file> <dict 1 and 2>
-				\end{lstlisting}
+				\end{minted}
 			\subsubsection{Hybrid Attack}
 				This attack uses the concepts of both the combinator and mask attacks.
 				This means that you can specify a dictionary and have hashcat add the mask that you give to either the start or end of the word.
 				Using this means, you can easily run through passwords such as name and birth year combinations.
 				To conduct this attack, use the command:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ oclhashcat -a 7 <mask> <dict>
 					$ oclhashcat -a 7 <dict> <mask>
-				\end{lstlisting}
+				\end{minted}
 
 		\subsection{Rainbow Tables}
 		\index{Rainbow Tables}
@@ -1088,11 +1088,11 @@
 		\subsection{Hash Challenges}
 			This first challenge is based on the \href{https://xkcd.com/936/}{xkcd comic ``Password Strength''.}
 			The word-list for this challenge can be found by using the following command on kali linux:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ head -n 20	/usr/share/wordlists/rockyou.txt
-			\end{lstlisting}
+			\end{minted}
 			The password, hashed in MD5 and SHA256 can be found below.
-			\lstinputlisting[numbers=none,firstline=1,lastline=4]{./shellOut/hashChallenges.data}
+			\mintinline[firstline=1,lastline=4]{console}{./shellOut/hashChallenges.data}
 			While you can complete this in any way you like, I recommend either using John's rules, or creating a custom word list and using Hashcat's hybird mode.
 			%Solution: "N1c0l3;7"
 
@@ -1100,11 +1100,11 @@
 			Through an image captured when the hash was pulled, it was determined that the only keys pressed were ``2, 4, 9 and 0''.
 			The password was also determined to be exactly 16 characters long.
 			Create a custom mask for Hashcat and solve this sha256 hash.
-			\lstinputlisting[numbers=none,firstline=6,lastline=6]{./shellOut/hashChallenges.data}
+			\mintinline[firstline=6,lastline=6]{console}{./shellOut/hashChallenges.data}
 			%solution: "2490092442902942"
 
 			The third challenge is based on using multiple dictionary words.
 			This is a common method used to create passwords.
 			I recommending using Hashcat in combinator mode to solve this SHA256 hash.
 			All the words necessary to solve this can be found in the rockyou word-list.
-			\lstinputlisting[numbers=none,firstline=8,lastline=8]{./shellOut/hashChallenges.data}
+			\mintinline[firstline=8,lastline=8]{console}{./shellOut/hashChallenges.data}

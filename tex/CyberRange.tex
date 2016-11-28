@@ -1,185 +1,185 @@
 \chapter{The Cyber Range}
 	Before starting to apply the skills given in the following chapters, it would be best to set up an area where you can practice without fear of accidental misfortune\cite{pentestingLabs}.
-	A ``Cyber Range'' is an area---completely disconnected from all target networks---in which you can work on your skills safely.  
-	It allows you to try attacks that you would not otherwise be able to do and create scenarios that could not be done on a single computer. 
-	
-	These ranges can become a full time occupation in themselves, servicing a whole university. 
-	However, the range outlined in this chapter will be confined to one or two computers, avoiding most of the complexity of these larger ranges, 
-	while still giving you the benefits of multiple machines. 
+	A ``Cyber Range'' is an area---completely disconnected from all target networks---in which you can work on your skills safely.
+	It allows you to try attacks that you would not otherwise be able to do and create scenarios that could not be done on a single computer.
+
+	These ranges can become a full time occupation in themselves, servicing a whole university.
+	However, the range outlined in this chapter will be confined to one or two computers, avoiding most of the complexity of these larger ranges,
+	while still giving you the benefits of multiple machines.
 	\section{Your Workstation}
-		The setup for your computer in itself can be anything that you can run. 
-		For example, my two main systems are an OS X laptop and an Arch Linux desktop. 
-		These systems, while both UNIX in nature, are significantly different in their running. 
-		However, they both have the basic requirements for creating a Cyber Range workstation: virtualization and high end hardware. 
+		The setup for your computer in itself can be anything that you can run.
+		For example, my two main systems are an OS X laptop and an Arch Linux desktop.
+		These systems, while both UNIX in nature, are significantly different in their running.
+		However, they both have the basic requirements for creating a Cyber Range workstation: virtualization and high end hardware.
 
 		\subsection{Hardware}
-			You will need to build a system that can run multiple operating systems at the same time. 
-			This is because many of the attacks outlined in this book cannot be done against one's own computer, 
-			but for security should not be done against another machine. 
+			You will need to build a system that can run multiple operating systems at the same time.
+			This is because many of the attacks outlined in this book cannot be done against one's own computer,
+			but for security should not be done against another machine.
 
 			Generally, the basic hardware requirements are as follows:
 			\begin{description}
-				\item[Quad Core CPU] Having a Quad Core CPU or better allows the system to run multiple processes at the same time. 
-					This means that we can use virtualization to run a number of different systems simultaneously. 
-					More here will be better. However, a Quad core CPU with Hyperthreading can easily run 3-4 Virtual Machines at any one time. 
-				\item[8GB Memory] Having at least 8GB of memory available will mean that more than just the main OS will be able to be loaded into memory at one time. 
-					However, This is an absolute minimum requirement. 
-					Having at least 16GB will make the system far more usable. 
-				\item[Large Fast Storage] Running VMs is a task that needs both large amounts of storage and quick access to it. 
-					Due to this, it is recommended that you install an SSD which can store the main OS and main VMs. 
-					However, if you are dealing with a large set of target VMs, it would also be worthwhile adding a large rotational storage device for their storage. 
+				\item[Quad Core CPU] Having a Quad Core CPU or better allows the system to run multiple processes at the same time.
+					This means that we can use virtualization to run a number of different systems simultaneously.
+					More here will be better. However, a Quad core CPU with Hyperthreading can easily run 3-4 Virtual Machines at any one time.
+				\item[8GB Memory] Having at least 8GB of memory available will mean that more than just the main OS will be able to be loaded into memory at one time.
+					However, This is an absolute minimum requirement.
+					Having at least 16GB will make the system far more usable.
+				\item[Large Fast Storage] Running VMs is a task that needs both large amounts of storage and quick access to it.
+					Due to this, it is recommended that you install an SSD which can store the main OS and main VMs.
+					However, if you are dealing with a large set of target VMs, it would also be worthwhile adding a large rotational storage device for their storage.
 			\end{description}
 
-			This level of hardware is easily available on both modern laptops and desktops. 
-			Thus, you should be able to create a physical workstation that is more than capable of keeping up with your work. 
-			
+			This level of hardware is easily available on both modern laptops and desktops.
+			Thus, you should be able to create a physical workstation that is more than capable of keeping up with your work.
+
 		\subsection{Virtualization}
-			To enable you to run multiple operating systems and networks on one computer, you will need a well setup virtualization environment. 
+			To enable you to run multiple operating systems and networks on one computer, you will need a well setup virtualization environment.
 			\index{VMware Workstation}
-			There are two competing products in this field, VMware's Workstation (or Fusion on OS X) and Oracle's VirtualBox. 
-			While generally, these products will both do the same thing, there are some differences that make VMware's solution better. 
+			There are two competing products in this field, VMware's Workstation (or Fusion on OS X) and Oracle's VirtualBox.
+			While generally, these products will both do the same thing, there are some differences that make VMware's solution better.
 			\index{vSphere}
-			Specifically, it's environment and integration with vSphere, VMware's hypervisor allows one to create far more powerful networks and systems. 
-			
+			Specifically, it's environment and integration with vSphere, VMware's hypervisor allows one to create far more powerful networks and systems.
+
 			\index{VirtualBox}
-			However, if your goal is to set up a range on a budget, using VirtualBox will serve you best. 
-			It has an open source version, which can be accessed for free, but has limitations on USB pass-through and other features. 
-			Furthermore, the closed source version is also available free for non-commercial use. 
+			However, if your goal is to set up a range on a budget, using VirtualBox will serve you best.
+			It has an open source version, which can be accessed for free, but has limitations on USB pass-through and other features.
+			Furthermore, the closed source version is also available free for non-commercial use.
 
-			The VMware alternative to this is VMware player. 
-			However, you are far better off using either VirtualBox or VMware Workstation, rather than taking the middle ground and using player. 
-			It is missing a significant number of features, making it a poor choice for creating a Cyber Range. 
+			The VMware alternative to this is VMware player.
+			However, you are far better off using either VirtualBox or VMware Workstation, rather than taking the middle ground and using player.
+			It is missing a significant number of features, making it a poor choice for creating a Cyber Range.
 
-			This document will use VMware Workstation/Fusion and VMware ESXi as the virtualization environment. 
-			This is to standardize with the environment it was written in more than any other reason. 
-			If the above leads to you choosing VirtualBox, most of the content discussed in this chapter will still work. 
-		
+			This document will use VMware Workstation/Fusion and VMware ESXi as the virtualization environment.
+			This is to standardize with the environment it was written in more than any other reason.
+			If the above leads to you choosing VirtualBox, most of the content discussed in this chapter will still work.
+
 		\subsection{Recommended VMs}
-			This section will discuss the VMs that are commonly used for the creation of a virtual network for practising these skills. 
+			This section will discuss the VMs that are commonly used for the creation of a virtual network for practising these skills.
 			\begin{description}
 					\index{Kali Linux}
-				\item[Kali Linux] Kali\footnote{\url{http://www.kali.org/}} is the main OS for Penetration testing. 
-					It is a Linux distribution that was designed to have most of the common tools used in network penetration built in. 
-					Due to this, this OS the VM that most of your attacks come from. 
+				\item[Kali Linux] Kali\footnote{\url{http://www.kali.org/}} is the main OS for Penetration testing.
+					It is a Linux distribution that was designed to have most of the common tools used in network penetration built in.
+					Due to this, this OS the VM that most of your attacks come from.
 					\index{DVWA}
-				\item[DVWA] The Damn Vulnerable Web App\footnote{\url{http://dvwa.co.uk/}} is one of the better web penetration learning platforms available. 
-					It will allow the user to set the level of difficulty in a range of attacks that are similar, if not the same as those commonly found in the real world. 
+				\item[DVWA] The Damn Vulnerable Web App\footnote{\url{http://dvwa.co.uk/}} is one of the better web penetration learning platforms available.
+					It will allow the user to set the level of difficulty in a range of attacks that are similar, if not the same as those commonly found in the real world.
 					\index{Metasploitable}
-				\item[Metasploitable] Metasploitable\footnote{\url{https://information.rapid7.com/metasploitable-download.html}} is a server setup to be exceptionally vulnerable. 
-					It can be used to learn to attack through both web and network, making it a foundational system for creating a range. 
+				\item[Metasploitable] Metasploitable\footnote{\url{https://information.rapid7.com/metasploitable-download.html}} is a server setup to be exceptionally vulnerable.
+					It can be used to learn to attack through both web and network, making it a foundational system for creating a range.
 			\end{description}
 
-			Further to these, the website \href{vulnhub.com}{volunhub} lists a number of community created VMs that can be stood up on your own machine as a target. 
-			Many of these are built as a CTF, meaning that they have a number of vulnerabilities and challenges within them. 
+			Further to these, the website \href{vulnhub.com}{volunhub} lists a number of community created VMs that can be stood up on your own machine as a target.
+			Many of these are built as a CTF, meaning that they have a number of vulnerabilities and challenges within them.
 
 	\section{Attack Environment}
-		Everyone will have a slightly different attack environment. 
-		This is because they will have different backgrounds, experiences and preferences for how they work. 
-		The environment discussed here is an attempt to find a middle ground within these. 
-		It should give anyone a place to start, but is far from the environment that you will have designed in just a year. 
-		It is also worth noting that these machines will likely be virtualized on your main machine, rather than being run as separate computers\cite{playbook}.  
-		Due to this, the host itself doesn't matter as much as the software that is running on it. 
+		Everyone will have a slightly different attack environment.
+		This is because they will have different backgrounds, experiences and preferences for how they work.
+		The environment discussed here is an attempt to find a middle ground within these.
+		It should give anyone a place to start, but is far from the environment that you will have designed in just a year.
+		It is also worth noting that these machines will likely be virtualized on your main machine, rather than being run as separate computers\cite{playbook}.
+		Due to this, the host itself doesn't matter as much as the software that is running on it.
 
 		\subsection{Attack Machine}
-			This is your primary means of attack. 
-			Due to this, it should be running Kali Linux, which is the current network penetration testing distribution. 
-			However, you will want to keep it well updated and add tools to those which come in the standard package. 
+			This is your primary means of attack.
+			Due to this, it should be running Kali Linux, which is the current network penetration testing distribution.
+			However, you will want to keep it well updated and add tools to those which come in the standard package.
 
-			For example, Nessus, which will be covered in a chapter \ref{ch:NetworkPenetration}, 
-			does not come with Kali for licensing reasons. 
-			However, this tool is exceptionally useful when conducting initial vulnerability scans. 
+			For example, Nessus, which will be covered in a chapter \ref{ch:NetworkPenetration},
+			does not come with Kali for licensing reasons.
+			However, this tool is exceptionally useful when conducting initial vulnerability scans.
 
-			Because this may be one of your first experiences with Linux, do not customise it further than installing the tools you want at this point. 
-			Rather, when you come across something you wish to try, take a snapshot of the machine and customize it. 
+			Because this may be one of your first experiences with Linux, do not customise it further than installing the tools you want at this point.
+			Rather, when you come across something you wish to try, take a snapshot of the machine and customize it.
 
 		\subsection{Keep a Windows Machine Handy}
-			Much to my displeasure, windows is exceptionally common in the enterprise world. 
-			This means that attacks you conduct will often involve breaking into a windows machine at one point or another. 
-			Thus, keeping a Windows machine handy will solve numerous problems for you. 
-			
-			This operating system has been built to work with Windows servers, unlike Linux which has a number of tools which allow it to do so. 
-			Using Windows as your base for specific tools such as Cain and Abel or specific attacks like PowerShell remoting gives you the advantage of using the server the way a normal user would. 
-			I also recommend that this machine have access to both Metasploit and PowerSploit. 
-			Both of these tools will be useful for attacking Windows based networks. 
+			Much to my displeasure, windows is exceptionally common in the enterprise world.
+			This means that attacks you conduct will often involve breaking into a windows machine at one point or another.
+			Thus, keeping a Windows machine handy will solve numerous problems for you.
+
+			This operating system has been built to work with Windows servers, unlike Linux which has a number of tools which allow it to do so.
+			Using Windows as your base for specific tools such as Cain and Abel or specific attacks like PowerShell remoting gives you the advantage of using the server the way a normal user would.
+			I also recommend that this machine have access to both Metasploit and PowerSploit.
+			Both of these tools will be useful for attacking Windows based networks.
 
 		\subsection{Remote Hash Cracking}
-			So that you do not need to carry around a beefy desktop to every attack, you should setup a system which can be remotely accessed to run hash cracking attacks. 
-			This system should have access to at least one high power graphics card to which you can remotely pass hashes. 
+			So that you do not need to carry around a beefy desktop to every attack, you should setup a system which can be remotely accessed to run hash cracking attacks.
+			This system should have access to at least one high power graphics card to which you can remotely pass hashes.
 
-			My recommendation is that this machine sit on a gaming computer or workstation connected to your home network. 
-			This way, you can forward port 22 (ssh) through your router, giving access to the computer from any location. 
-			Once this is setup, either leave the machine running while running an attack, or enable wake on LAN and ensure that your router will pass the packets on. 
+			My recommendation is that this machine sit on a gaming computer or workstation connected to your home network.
+			This way, you can forward port 22 (ssh) through your router, giving access to the computer from any location.
+			Once this is setup, either leave the machine running while running an attack, or enable wake on LAN and ensure that your router will pass the packets on.
 
-			Having a setup like this will save you significant time during a test. 
-			Rather than slowing down your local workstation with the hash cracking process (and generating lots of heat) you can pass the processing off to another machine. 
+			Having a setup like this will save you significant time during a test.
+			Rather than slowing down your local workstation with the hash cracking process (and generating lots of heat) you can pass the processing off to another machine.
 
 
 	\section{Building Targets}
-		While the basic targets found on the Internet are a good starting point, one must move beyond this if they are to learn properly how to gain access to real systems. 
-		Thus, this section will explain how to build your own targets. 
-		These targets may be easier or harder based on your goals, but they will be based on real, production software. 
+		While the basic targets found on the Internet are a good starting point, one must move beyond this if they are to learn properly how to gain access to real systems.
+		Thus, this section will explain how to build your own targets.
+		These targets may be easier or harder based on your goals, but they will be based on real, production software.
 
 		\subsection{Operating Systems}
-			The first step in creating a vulnerable target is finding an OS to base it on. 
+			The first step in creating a vulnerable target is finding an OS to base it on.
 			This requires significant thought, requiring answers to the following questions:
 			\begin{itemize}
 				\item What type of attack do I want to practise?
-					Practising domain attacks on most Linux systems will not be useful. 
-					Similarly, Bind, a common DNS server, will not run on windows. 
+					Practising domain attacks on most Linux systems will not be useful.
+					Similarly, Bind, a common DNS server, will not run on windows.
 				\item Does the attack require old software?
-					If you need old versions of software, you may have to find their sources online. 
-					However, some Linux distributions leave repositories for old software available online. 
+					If you need old versions of software, you may have to find their sources online.
+					However, some Linux distributions leave repositories for old software available online.
 					For example, debian 5's repository is still running on \url{archive.debian.org}.
 				\item Is the attack configuration based?
-					If this is the case, you can use any supporting OS, as you can mis-configure the software on any system. 
+					If this is the case, you can use any supporting OS, as you can mis-configure the software on any system.
 				\item Does the system I want to use have the required supporting libraries?
-					DVWA for example, requires PHP 5.5, mysql and Apache. 
-					If the system you are basing off doesn't have access to these packages, it will be far harder to set up the target. 
+					DVWA for example, requires PHP 5.5, mysql and Apache.
+					If the system you are basing off doesn't have access to these packages, it will be far harder to set up the target.
 			\end{itemize}
 		\subsection{Setup}
-			Setting up a target system should be little different from setting up a production system. 
+			Setting up a target system should be little different from setting up a production system.
 			However, there are two types of targets: specifically vulnerable and generally vulnerable:
 			\begin{description}
 				\item[Specifically Vulernable]
-					These systems have been created to show a specific vulnerability, rather than generally be vulnerable. 
+					These systems have been created to show a specific vulnerability, rather than generally be vulnerable.
 					Creating a system like this means that the attacker will have to undertake a specific set of research
-					and attack through the medium that you designed. 
-					The main purpose of these systems is to teach a specific type of attack or demonstrate a given vulnerability. 
+					and attack through the medium that you designed.
+					The main purpose of these systems is to teach a specific type of attack or demonstrate a given vulnerability.
 				\item[Generally Vulnerable]
-					These systems are the more common type of target system. 
-					They can be useful for teaching a number of different types of vulnerability, meaning that they can be reused for many different lessons. 
-					Targets such as Metasploitable fall into this category, as they have a number of vulnerabilities that the attacker could choose to exploit. 
+					These systems are the more common type of target system.
+					They can be useful for teaching a number of different types of vulnerability, meaning that they can be reused for many different lessons.
+					Targets such as Metasploitable fall into this category, as they have a number of vulnerabilities that the attacker could choose to exploit.
 			\end{description}
 
-			The setup for these types of target however, is quite similar. 
-			The only differing requirements are that specific targets need more planning, and general targets need the same process to be completed for multiple services. 
+			The setup for these types of target however, is quite similar.
+			The only differing requirements are that specific targets need more planning, and general targets need the same process to be completed for multiple services.
 
-			The first step to creating a target, given that the OS has been installed and configured is to install the relevant packages for the vulnerability that you require. 
-			If this can be found in the repositories of the distribution or system that you are using, download them from here. 
+			The first step to creating a target, given that the OS has been installed and configured is to install the relevant packages for the vulnerability that you require.
+			If this can be found in the repositories of the distribution or system that you are using, download them from here.
 			Otherwise, vulnerable versions of software can be found on \href{https://www.exploit-db.com/remote/?order\_by=application&order=desc&pg=1}{exploit-db.com}.
 
-			From here, the software should be configured as per its manual or online guides. 
-			However, there will be a number of places that it is evident will have an impact on security. 
-			If the software has not been chosen for an explicit vulnerability found within it, you should research theses settings and configure them to provide the level of exposure and ease of access that you desire. 
+			From here, the software should be configured as per its manual or online guides.
+			However, there will be a number of places that it is evident will have an impact on security.
+			If the software has not been chosen for an explicit vulnerability found within it, you should research theses settings and configure them to provide the level of exposure and ease of access that you desire.
 
-			After configuring the software and starting the relevant services, you should scan the VM as if you were about to attack it. 
-			This will tell you if there was anything that you missed from your initial design or any components that could be improved. 
+			After configuring the software and starting the relevant services, you should scan the VM as if you were about to attack it.
+			This will tell you if there was anything that you missed from your initial design or any components that could be improved.
 
 	\section{Target Environment}
-		This section serves as an overview of an example target environment. 
+		This section serves as an overview of an example target environment.
 		This environment was designed to cover as wide a range of scenarios as possible, but is still far from extensive\cite{CTFBlueprints}.
 
-		The information provided here is a setup guide for these VMs, explaining how the example target network was created. 
-		Due to this, the section will contain spoilers for accessing the system and the flags found on it. 
+		The information provided here is a setup guide for these VMs, explaining how the example target network was created.
+		Due to this, the section will contain spoilers for accessing the system and the flags found on it.
 		\subsection{Debian Name Server}
-			This VM is one of the core systems on the network. 
+			This VM is one of the core systems on the network.
 			It provides name services for the whole network, under the ``.cysec'' top level domain (TLD).
 
-			Thus, the main configuration item on this system is bind. 
+			Thus, the main configuration item on this system is bind.
 			\subsubsection{bind}
-				Running the DNS services on this server is bind9. 
-				While this is the current major release of bind, it is a version from 2012. 
-				Furthermore, this version has a number of configuration errors within it, making it vulnerable to zone transfers amongst a multitude of other issues. 
+				Running the DNS services on this server is bind9.
+				While this is the current major release of bind, it is a version from 2012.
+				Furthermore, this version has a number of configuration errors within it, making it vulnerable to zone transfers amongst a multitude of other issues.
 
 				The bind configuration is as follows:
 				\lstinputlisting[language=bind]{./shellOut/named.conf}
@@ -190,64 +190,64 @@
 				The reverse cache:
 				\lstinputlisting[language=bind]{./shellOut/10.1.1.rev}
 
-				Look through these files. 
-				They have opened the system to a number of vulnerabilities, enabling an attacker to both retrieve and poison DNS for the whole network. 
+				Look through these files.
+				They have opened the system to a number of vulnerabilities, enabling an attacker to both retrieve and poison DNS for the whole network.
 
 			\subsubsection{Nmap}
 				The following is an nmap scan of the name server:
-				\lstinputlisting[language=nmap]{./shellOut/ns.cysec.nmap}
+				\concode{./shellOut/ns.cysec.nmap}
 			\subsubsection{Exploitation}
 				The Bind configuration on this server is not only its most major flaw, but also the most major flaw of the network.
-				This configuration allows for any computer that can connect to the server to conduct a zone transfer on it. 
-				This is by far the biggest initial information disclosure that could occur on a network. 
+				This configuration allows for any computer that can connect to the server to conduct a zone transfer on it.
+				This is by far the biggest initial information disclosure that could occur on a network.
 
-				This particular exposure will outline every server connected to the network. 
-				The IP address of the server, along with some services information, such as email will be passed off to the attacker. 
-				Furthermore, due to common naming conventions, the attacker may also be able to determine core routers, domain controllers, email and web servers. 
+				This particular exposure will outline every server connected to the network.
+				The IP address of the server, along with some services information, such as email will be passed off to the attacker.
+				Furthermore, due to common naming conventions, the attacker may also be able to determine core routers, domain controllers, email and web servers.
 
 				The vulnerabilities within the bind configuration file found above are listed below by line:
 				\begin{enumerate}
-					\item[3.] Allows any server to zone transfer the domain. 
-						This should be a list of servers that need to zone transfer for their own DNS. 
-					\item[9-12.] While not a vulnerability, this will result in near zero logging.  
-						This will mean that if the system is brute forced or transferred, 
-						it is likely to be missed and will not show up in the DNS logs. 
+					\item[3.] Allows any server to zone transfer the domain.
+						This should be a list of servers that need to zone transfer for their own DNS.
+					\item[9-12.] While not a vulnerability, this will result in near zero logging.
+						This will mean that if the system is brute forced or transferred,
+						it is likely to be missed and will not show up in the DNS logs.
 					\item[25.] As before, the main zone is also allowing any computer to zone transfer.
 				\end{enumerate}
 
-				While there are no specific vulnerabilities in the zone files, I will list the information that can be gathered from a zone transfer of this name server, with no other scanning done. 
+				While there are no specific vulnerabilities in the zone files, I will list the information that can be gathered from a zone transfer of this name server, with no other scanning done.
 				\lstinputlisting[language=bind]{./shellOut/ZoneTransfer.cysec}
 				\begin{enumerate}
-					\item[2.] Zone transfers are such bad practice that even the scanner is surprised. Sadly, they still happen. 
+					\item[2.] Zone transfers are such bad practice that even the scanner is surprised. Sadly, they still happen.
 					\item[3-8.] Name of main server and basic settings.
-					\item[13.] hackThisSite.cysec is a website. 
-					\item[14.] hackThisSite.cysec is also a mail server. 
-					\item[18.] winTargets.cysec is a domain controller. 
-					\item[19.] That domain controller is running a mail server, probably exchange. 
-					\item[20-21.] There are two workstations on the network. Both likely running windows. 
+					\item[13.] hackThisSite.cysec is a website.
+					\item[14.] hackThisSite.cysec is also a mail server.
+					\item[18.] winTargets.cysec is a domain controller.
+					\item[19.] That domain controller is running a mail server, probably exchange.
+					\item[20-21.] There are two workstations on the network. Both likely running windows.
 				\end{enumerate}
 				As you can see, unless the administrator is attempting to confuse attackers (at the loss of meaningful names)
-				This gives a significant amount of information about the network. 
-				We now know all machines on it, as well as some information about the services running on them. 
-				As stated in the last two lines of output, there isn't much point continuing to enumerate, we have everything we need. 
+				This gives a significant amount of information about the network.
+				We now know all machines on it, as well as some information about the services running on them.
+				As stated in the last two lines of output, there isn't much point continuing to enumerate, we have everything we need.
 
-				Finally, there are a number of services running that are waiting for brute forcing, password sniffing or both. 
-				SSH, POP3, SMB (port 445) and samba-SWAT are all open to brute forcing. 
+				Finally, there are a number of services running that are waiting for brute forcing, password sniffing or both.
+				SSH, POP3, SMB (port 445) and samba-SWAT are all open to brute forcing.
 				Using hydra, I have been able to get both SSH and samba-SWAT to successfully crack using the following command:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ hydra -L <User file> -P <Password File> http://ns.cysec:901
-				\end{lstlisting}
-					
-				However, POP, IMAP and samba-SWAT are also listening for passwords in plain text. 
-				Thus, ARP poisoning and waiting for a user to log into one of these would allow an attacker to simply listen for a password. 
+				\end{minted}
 
-				From this point, you should have the ability to log into the system. 
-				Thus, success here is simply a matter of privilege escalation and DNS Poisoning. 
+				However, POP, IMAP and samba-SWAT are also listening for passwords in plain text.
+				Thus, ARP poisoning and waiting for a user to log into one of these would allow an attacker to simply listen for a password.
+
+				From this point, you should have the ability to log into the system.
+				Thus, success here is simply a matter of privilege escalation and DNS Poisoning.
 			\subsubsection{CTF Challenges}
 				The following are the CTF challengs which use ns.cysec.
 				\paragraph{Pass the Zone}
-					As discussed in the previous section, DNS is a good way to enumerate hosts on a network. 
-					Enter the name of a specific host, you'll know it when you see it. 
+					As discussed in the previous section, DNS is a good way to enumerate hosts on a network.
+					Enter the name of a specific host, you'll know it when you see it.
 
 				\paragraph{It works backwards?}
 					Still working on host enumeration, what's the name of the default gateway?
@@ -257,13 +257,13 @@
 					% Reverse Gateway: flag-checkTheGateway-flag.cysec.
 					%------------End CTF Answers-------------
 		\subsection{Debian Wordpress Blog}
-			This VM is the main web server on the network. 
-			It provides a blog, with a number of vulnerabilities, as well as a poorly secured services such as mail and telnet. 
+			This VM is the main web server on the network.
+			It provides a blog, with a number of vulnerabilities, as well as a poorly secured services such as mail and telnet.
 
 
 			\subsubsection{Vulnerabilities}
-				This section will go over the vulnerabilities on the system based on their type and location. 
-				While not every vulnerability has a flag directly attached to it, they can all be used to gain better access to the system, leading the attacker to have more chance of finding flags. 
+				This section will go over the vulnerabilities on the system based on their type and location.
+				While not every vulnerability has a flag directly attached to it, they can all be used to gain better access to the system, leading the attacker to have more chance of finding flags.
 				\paragraph{Wordpress}
 					The Wordpress blog on this site has a number of vulnerabilities:
 						\begin{itemize}
@@ -275,32 +275,32 @@
 							\item Import CSV plugin vulnerable to directory traversal\footnote{\url{https://www.exploit-db.com/exploits/39576/}}.
 							\item ABtest plugin is vulnerable to local file inclusion\footnote{\url{https://www.exploit-db.com/exploits/39577/}}.
 						\end{itemize}
-					I recommend running WPscan on this site, as it will provide a more indepth output of possible vulnerabilities and links to their disclosure. 
+					I recommend running WPscan on this site, as it will provide a more indepth output of possible vulnerabilities and links to their disclosure.
 
 				\paragraph{Post Office}
-					This system is also the email server for the network. 
-					Thus, it is running SMTP, POP3 and IMAP. 
-					However, none of these systems force encryption, and they are all old versions. 
+					This system is also the email server for the network.
+					Thus, it is running SMTP, POP3 and IMAP.
+					However, none of these systems force encryption, and they are all old versions.
 
 			\subsubsection{Nmap}
 				The following is an nmap scan of the web server:
-				\lstinputlisting[language=nmap]{./shellOut/hackthissite.cysec.nmap}
+				\concode{./shellOut/hackthissite.cysec.nmap}
 
 
 			\subsubsection{Challenges}
 				\paragraph{Wordpress Secure Storage}
-					We have lost the passwords to the main wordpress blog. 
-					It contains information that we require to continue working. 
+					We have lost the passwords to the main wordpress blog.
+					It contains information that we require to continue working.
 					Access the blog and give us the information.
 
 				\paragraph{We want the password anyway}
-					Even though you have accessed the blog, we want our password. 
-					Break into the account and get the password. 
+					Even though you have accessed the blog, we want our password.
+					Break into the account and get the password.
 
 				\paragraph{Email is secure? Right?}
-					We managed to pick up our old admin accessing the network on the www-data account. 
-					Break into the email system on the main server and show us his emails. 
-					The password that we found was ``password''. 
+					We managed to pick up our old admin accessing the network on the www-data account.
+					Break into the email system on the main server and show us his emails.
+					The password that we found was ``password''.
 
 			%--------CTF Answers----------------
 			% www-data email: flag_{He sees you when you're sleeping, he knows when you're awake, he's copied on /var/spool/mail/target, so be good for goodness' sake.}

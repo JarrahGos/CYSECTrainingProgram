@@ -120,9 +120,9 @@
 
 				The first of these uses code written manually into the XSS vulnerable program.
 				However, first you should setup a listener on your system on a given port so you can read the incomming connection.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ nc -l -p <port number>
-				\end{lstlisting}
+				\end{minted}
 
 				At this point, you are ready to begin the XSS attack.
 				The code in example \ref{code:XSSCookieStealing} will read the cookie for the user on the current site and transmit it to the specified IP address and port.
@@ -189,17 +189,17 @@
 				SQLmap will accept a connection string in either of the following forms:
 				\lstinputlisting[numbers=none]{./shellOut/SQLmapDBConnection.in}
 				For example, the following command will output the DBMS banner, all databases and all DBMS users as well as fingerprinting the database.
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ sqlmap -d "mysql://admin:admin@192.168.21.17:3306/testdb" -f --banner --dbs --users
-				\end{lstlisting}
+				\end{minted}
 
 			\paragraph{Web Based Attack}
 				This is the more common attack, as it will work through a vulnerable form or request on a website.
 				For this case, you have to specify the URL as well as what you want from it.
 				An example of a command for this attack is as follows:
-				\begin{lstlisting}[style=CLI]
+				\begin{minted}[autogobble,breaklines]{console}
 					$ sqlmap.py -u "http://www.target.com/vuln.php?id=1" -f --banner --dbs --users
-				\end{lstlisting}
+				\end{minted}
 
 				The syntax for this attack is much simpler, requiring only that you provide the URL and what you would like.
 				However, it can be extended upon by using the ``-l'' flag along with a burp suite log to attempt injection on all requests proxied through burp.

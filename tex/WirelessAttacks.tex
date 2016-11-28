@@ -1,210 +1,210 @@
 \chapter{Wireless Attacks}
 	\label{ch:WirelessAttacks}
-	Wireless networks are great. 
-	They allow us to connect to networks without having to carry around huge Ethernet cables everywhere we go. 
-	They allow mobile phones, smart watches and laptops with only one port. 
-	However, all of these wireless protocols have one thing in common, they all broadcast data over a spectrum readable by anyone. 
-	This means that unlike wired networks---where a cable or device must be altered to read the transmission---wireless networks can be intercepted by anyone within range. 
-	
-	This has been mitigated by the use of encryption and specially designed protocols which attempt to ensure data integrity, but it is far from perfect. 
+	Wireless networks are great.
+	They allow us to connect to networks without having to carry around huge Ethernet cables everywhere we go.
+	They allow mobile phones, smart watches and laptops with only one port.
+	However, all of these wireless protocols have one thing in common, they all broadcast data over a spectrum readable by anyone.
+	This means that unlike wired networks---where a cable or device must be altered to read the transmission---wireless networks can be intercepted by anyone within range.
+
+	This has been mitigated by the use of encryption and specially designed protocols which attempt to ensure data integrity, but it is far from perfect.
 	Sometimes, like with WiFi, the high level of security provided by WPA2 will be compromised in the name of convenience by vendors through means such as WPS.
-	Other times, such as with bluetooth, the standard will have to support low powered devices, which cannot handle the requirements of the normal encrypted stream. 
-	And in the case of many of these technologies, it is usually cheaper to release old hardware, such as Mifare classic NFC cards, which have a known vulnerable random number generator backing their encryption. 
-	In these cases and many more, we can exploit these failures, allowing us to connect to and read from these networks and devices, using them for our purposes. 
+	Other times, such as with bluetooth, the standard will have to support low powered devices, which cannot handle the requirements of the normal encrypted stream.
+	And in the case of many of these technologies, it is usually cheaper to release old hardware, such as Mifare classic NFC cards, which have a known vulnerable random number generator backing their encryption.
+	In these cases and many more, we can exploit these failures, allowing us to connect to and read from these networks and devices, using them for our purposes.
 	\section{Aircrack-ng}
 	\index{Aircrack-ng}
-		Aircrack-ng\footnote{\url{http://aircrack-ng.org/doku.php?id=newbie\_guide}} is a suite of tools which can be used to attack WiFi networks. 
-		These tools allow you to place hardware in monitor modes and intercept the required packets in order to collect hashes and crack access codes. 
-		Each tool is used for a different goal, but many of them will need to be used for a complete attack. 
+		Aircrack-ng\footnote{\url{http://aircrack-ng.org/doku.php?id=newbie\_guide}} is a suite of tools which can be used to attack WiFi networks.
+		These tools allow you to place hardware in monitor modes and intercept the required packets in order to collect hashes and crack access codes.
+		Each tool is used for a different goal, but many of them will need to be used for a complete attack.
 		\subsection{WiFi Basics}
-			Before attacking a WiFi network, you will need to understand how they work. 
+			Before attacking a WiFi network, you will need to understand how they work.
 			This understanding will make the next few sections make sense, rather than learning by rote.
 
 			\index{WiFi Beacons}
-			WiFi Beacons are a transmission sent out by an access point (AP) at a rate of 10 per second. 
+			WiFi Beacons are a transmission sent out by an access point (AP) at a rate of 10 per second.
 			These contain information about the network such as:
 			\begin{itemize}
 				\item The name of the network (ESSID)
-				\item If and what encryption is used, though this may not always be accurate. 
-				\item the supported data rates. 
-				\item the channel the network is broadcasting on. 
+				\item If and what encryption is used, though this may not always be accurate.
+				\item the supported data rates.
+				\item the channel the network is broadcasting on.
 			\end{itemize}
 			\index{Airodump-ng}
 			This information can be seen using commands such as ``iwlist'' or ``airodump-ng''.
-			Furthermore, in the output of these two programs, you will see a MAC address for the AP. 
-			This address will be how we will refer to the AP in future commands. 
-			Furthermore, in the following sections, you will see the device ``wlan0'', this is used as a generic WiFi device. 
-			Change it to the one reported by ``iwconfig'' on your system. 
+			Furthermore, in the output of these two programs, you will see a MAC address for the AP.
+			This address will be how we will refer to the AP in future commands.
+			Furthermore, in the following sections, you will see the device ``wlan0'', this is used as a generic WiFi device.
+			Change it to the one reported by ``iwconfig'' on your system.
 			\index{iwconfig}
 		\subsection{Sniffing a Network}
-			The first step to a wireless attack is to gather data about the potential target. 
-			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks. 
+			The first step to a wireless attack is to gather data about the potential target.
+			This phase uses the tools ``airmon-ng'' and ``airodump-ng'' as a means of setting up the hardware and gathering information about nearby networks.
 			\index{airmon-ng} \index{airodump-ng}
 			To set the hardware properly, we must shift the WiFi card into monitor mode:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ airmon-ng start wlan0
-			\end{lstlisting}
-			At this point, you will want to run ``iwconfig'' to check how your device driver handles monitor mode, you may find a new device called ``wlan0mon'' which you should use in the next few commands. 
-			Within this output, you should also see that your device has been put into monitor mode. 
-			For the purposes of this section, I will continue to refer to the WiFi device as ``wlan0'' even in monitor mode. 
+			\end{minted}
+			At this point, you will want to run ``iwconfig'' to check how your device driver handles monitor mode, you may find a new device called ``wlan0mon'' which you should use in the next few commands.
+			Within this output, you should also see that your device has been put into monitor mode.
+			For the purposes of this section, I will continue to refer to the WiFi device as ``wlan0'' even in monitor mode.
 
-			We can now start searching for and gathering information about nearby networks. 
-			\begin{lstlisting}[style=CLI]
+			We can now start searching for and gathering information about nearby networks.
+			\begin{minted}[autogobble,breaklines]{console}
 				$ airodump-ng wlan0
-			\end{lstlisting}
-			This will show you an output of all details listed in the above section for each AP within range, with further information about its power and the number of intercepted beacons. 
-			Furthermore, you will see information about the clients which are connected to nearby APs in the lower block of the output. 
-			%TODO: Program output would be nice. 
-			When selecting a target network, you should ensure that it has a number of clients connected and has a high signal strength. 
+			\end{minted}
+			This will show you an output of all details listed in the above section for each AP within range, with further information about its power and the number of intercepted beacons.
+			Furthermore, you will see information about the clients which are connected to nearby APs in the lower block of the output.
+			%TODO: Program output would be nice.
+			When selecting a target network, you should ensure that it has a number of clients connected and has a high signal strength.
 			\index{WEP}
-			For your first attack, it is best to attempt on a WEP encrypted network. 
-			Though rare, these networks are still seen, and are exceptionally easy to attack, making them a good first step. 
+			For your first attack, it is best to attempt on a WEP encrypted network.
+			Though rare, these networks are still seen, and are exceptionally easy to attack, making them a good first step.
 
-			At this point, we move to targeting just the network that we are attempting to access. 
-			To do this, the ``airodump-ng'' command is used in a more refined manner to create a dump of initialization vectors (IV) which are transmitted between the network and its clients. 
-			\begin{lstlisting}[style=CLI]
+			At this point, we move to targeting just the network that we are attempting to access.
+			To do this, the ``airodump-ng'' command is used in a more refined manner to create a dump of initialization vectors (IV) which are transmitted between the network and its clients.
+			\begin{minted}[autogobble,breaklines]{console}
 				$ airodump-ng -c <channel> --bssid <AP MAC> -w dump wlan0
-			\end{lstlisting}
-			Substituting the ``<channel>'' and ``<AP MAC>'' for the relevant information. 
-			This will give you a dump of the IVs which were sent across the network, which can be used to crack the password of a WEP network. 
-			You will need to wait until between 40000 and 85000 IVs have been collected, which may take some time depending on the network traffic at the time. 
-			
+			\end{minted}
+			Substituting the ``<channel>'' and ``<AP MAC>'' for the relevant information.
+			This will give you a dump of the IVs which were sent across the network, which can be used to crack the password of a WEP network.
+			You will need to wait until between 40000 and 85000 IVs have been collected, which may take some time depending on the network traffic at the time.
+
 			Once this has been collected, the key can be cracked using ``aircrack-ng''.
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ aircrack-ng -b <AP MAC> dump-01.cap
-			\end{lstlisting}
+			\end{minted}
 			\index{WEP IV}
 			This will run an offline attack against the IVs collected in the .cap file.
 			This may take a long time, depending on the number and strength of the IVs that were collected.
-			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command. 
+			If you have followed this correctly to this point, you should have the network password at the end of the processing of the above command.
 		\subsection{Active Attacks}
-			Often and especially when attacking networks secured with WPA and WPA2, just collecting IVs and running an offline attack will be ineffective. 
-			Thus, we use our own hardware to inject frames which alter the network to allow us to gather more information. 
-			Such attacks still use the same end method of collecting IVs and cracking them with aircrack-ng, but in this case, the process will be far faster due to our manipulation. 
+			Often and especially when attacking networks secured with WPA and WPA2, just collecting IVs and running an offline attack will be ineffective.
+			Thus, we use our own hardware to inject frames which alter the network to allow us to gather more information.
+			Such attacks still use the same end method of collecting IVs and cracking them with aircrack-ng, but in this case, the process will be far faster due to our manipulation.
 
 			\index{Packet Injection}
 			Packet injection does not work on most WiFi cards\footnote{\url{http://aircrack-ng.org/doku.php?id=compatibility\_drivers}}
-			however, when it does work, it allows for a far more powerful attacks. 
+			however, when it does work, it allows for a far more powerful attacks.
 			To ensure that injection is supported by your device, check whether authentication is successful with the following command:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ aireplay-ng --fakeauth 0 -e <Network Name> -a <AP MAC> wlan0
-			\end{lstlisting}
+			\end{minted}
 
-			At this point we can begin to speed up IV collection using ARP-request reinjection. 
-			This works by capturing ARP request packets (used to translate from an IP address to a MAC address) and resending them. 
+			At this point we can begin to speed up IV collection using ARP-request reinjection.
+			This works by capturing ARP request packets (used to translate from an IP address to a MAC address) and resending them.
 			However, this has been blocked as of WPA, making it useful only for WEP networks.
 			The simple method for this uses the following command:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ aireplay-ng --arpreplay -b <AP MAC> -h <Client MAC> wlan0
-			\end{lstlisting}
+			\end{minted}
 			\index{aireplay-ng}
-			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal. 
-			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs. 
-			However, aireplay-ng can send too many ARP packets, causing IV collection to stall. 
-			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again. 
+			At this point you will have to wait until an ARP packet is received, collecting IVs in another terminal.
+			When the ARP packet is received, aireplay-ng will repeat it back at the AP continuously, causing the traffic on the network to increase, thus collecting more IVs.
+			However, aireplay-ng can send too many ARP packets, causing IV collection to stall.
+			If this occurs, use the ``-x'' option starting at 50 and working down until IVs collect in a steady stream again.
 
-			The more aggressive way to run this attack is to force the client off the network, making it re-authenticate and refresh its ARP cache. 
+			The more aggressive way to run this attack is to force the client off the network, making it re-authenticate and refresh its ARP cache.
 			\index{WiFi Deauth}
-			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks. 
+			This also means that you can sniff the ESSID and possibly a keystream when the computer reconnects with the AP, allowing for a wider range of attacks.
 			To run this attack, run the following command while running an ARP replay and collecting IVs:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ aireplay-ng --deauth 5 -a <AP MAC> -c <Client MAC> wlan0
-			\end{lstlisting}
+			\end{minted}
 			This makes ARP replay and IV collection far faster.
-			However, your attack also becomes far more obvious on the network, making it more likely that an attentive user or IDS will notice your attack. 
-			The method used in cracking WEP using IVs contains interesting mathematical and logical concepts. 
+			However, your attack also becomes far more obvious on the network, making it more likely that an attentive user or IDS will notice your attack.
+			The method used in cracking WEP using IVs contains interesting mathematical and logical concepts.
 			I recommend reading the Wireless section of Jon Erickson's ``Hacking, the Art of Exploitation''\cite{HackingAOE} for more information.
-			
+
 		\subsection{WPA and WPA2}
 		\index{WPA}
-			The above sections have discussed the old technology used for attempting to secure wireless networks. 
-			Modern networks will usually use WPA2, which when coupled with a strong pre-shared key is far more difficult to attack. 
-			This is due to the fact that data such as IVs cannot be used to make the attack faster, with the only transmission of useful data being the initial handshake between client and AP. 
-			Due to this, a brute force or dictionary attack are the most common attacks on WPA2 networks. 
+			The above sections have discussed the old technology used for attempting to secure wireless networks.
+			Modern networks will usually use WPA2, which when coupled with a strong pre-shared key is far more difficult to attack.
+			This is due to the fact that data such as IVs cannot be used to make the attack faster, with the only transmission of useful data being the initial handshake between client and AP.
+			Due to this, a brute force or dictionary attack are the most common attacks on WPA2 networks.
 
-			The first step of this attack is to capture the connection handshake between a client and AP. 
-			This can be done first by setting your card into monitor mode, then by setting airodump-ng to collect traffic. 
-			Both of these commands are the same as the WEP attack above. 
-			At this point you are waiting for a new client to connect to the AP, however, rather than waiting, you can use the deauth aireplay command above to have this happen quicker. 
+			The first step of this attack is to capture the connection handshake between a client and AP.
+			This can be done first by setting your card into monitor mode, then by setting airodump-ng to collect traffic.
+			Both of these commands are the same as the WEP attack above.
+			At this point you are waiting for a new client to connect to the AP, however, rather than waiting, you can use the deauth aireplay command above to have this happen quicker.
 
-			When you have successfully collected a handshake, you will be able to start a dictionary attack on it. 
+			When you have successfully collected a handshake, you will be able to start a dictionary attack on it.
 			The simplest method of this is to use the following command:
-			\begin{lstlisting}[style=CLI]
+			\begin{minted}[autogobble,breaklines]{console}
 				$ aircrack-ng -w <password list> -b <AP MAC> <capture file>
-			\end{lstlisting}
-			If a valid handshake is found, you will be informed that aircrack-ng is attempting to crack it. 
+			\end{minted}
+			If a valid handshake is found, you will be informed that aircrack-ng is attempting to crack it.
 			\index{aircrack-ng}
 
-			The dictionary is the most important part of this attack. 
-			Without it, the attack would take a prohibitive amount of time. 
-			However, programs such as ``John the Riper'' can be used to generate a far better dictionary than the one given by aircrack-ng and even the ``rockyou'' word-list given by kali. 
-			Furthermore, if you are willing to store large amounts of data and use a custom program, rainbow tables could speed this process significantly for common passwords. 
-			If neither of the above work, the final option is to use a program such as ``hashcat'', which will allow you to undertake GPU accelerated cracking on multiple machines in order to find the password. 
-			See the Hash Cracking section of chapter \ref{ch:Cryptography} for more detailed information about this. 
+			The dictionary is the most important part of this attack.
+			Without it, the attack would take a prohibitive amount of time.
+			However, programs such as ``John the Riper'' can be used to generate a far better dictionary than the one given by aircrack-ng and even the ``rockyou'' word-list given by kali.
+			Furthermore, if you are willing to store large amounts of data and use a custom program, rainbow tables could speed this process significantly for common passwords.
+			If neither of the above work, the final option is to use a program such as ``hashcat'', which will allow you to undertake GPU accelerated cracking on multiple machines in order to find the password.
+			See the Hash Cracking section of chapter \ref{ch:Cryptography} for more detailed information about this.
 	\section{Other WiFi Attacks}
-		Outside of attempting to crack passwords, there are a number of other means for gaining access to a system through WiFi. 
-		This can be done in a number of ways, such as spoofing a network or breaking a RADIUS server. 
+		Outside of attempting to crack passwords, there are a number of other means for gaining access to a system through WiFi.
+		This can be done in a number of ways, such as spoofing a network or breaking a RADIUS server.
 		\subsection{Spoofing a WiFi Network}
-			This is the act of creating a network with the same name as the one you are targeting and waiting for people to join it. 
-			This works because of the fact that most devices store past networks and actively attempt to connect to the strongest signal. 
-			Due to this, a device will often connect to an open network with no notice to the user, allowing you to intercept all traffic. 
+			This is the act of creating a network with the same name as the one you are targeting and waiting for people to join it.
+			This works because of the fact that most devices store past networks and actively attempt to connect to the strongest signal.
+			Due to this, a device will often connect to an open network with no notice to the user, allowing you to intercept all traffic.
 
 			\index{WiFi Pineapple}
-			The main example of this currently is the WiFi Pineapple. 
-			This device waits for incoming requests for networks and responds with the requested name. 
-			Each time a device beacons out attempting to connect, it will broadcast the names of all the networks it knows. 
-			The WiFi Pineapple will then respond saying that it is one of the known networks, having the device connect to it. 
-			Once connected, the WiFi Pineapple will connect the target through to the Internet, making the connection seem seamless. 
-			However, the owner of the Pineapple will be able to read all traffic which is being sent through the device. 
+			The main example of this currently is the WiFi Pineapple.
+			This device waits for incoming requests for networks and responds with the requested name.
+			Each time a device beacons out attempting to connect, it will broadcast the names of all the networks it knows.
+			The WiFi Pineapple will then respond saying that it is one of the known networks, having the device connect to it.
+			Once connected, the WiFi Pineapple will connect the target through to the Internet, making the connection seem seamless.
+			However, the owner of the Pineapple will be able to read all traffic which is being sent through the device.
 
-			While this is not a common attack, it is difficult to protect against. 
-			There are a number of open access points purporting to offer ``Free WiFi'', however, none can be trusted. 
-			This is because they are all on hardware which is not known and could be intercepting traffic. 
-			Furthermore, if you do connect to these, someone with a WiFi Pineapple or similar device could intercept your connection and intentionally steal your data. 
+			While this is not a common attack, it is difficult to protect against.
+			There are a number of open access points purporting to offer ``Free WiFi'', however, none can be trusted.
+			This is because they are all on hardware which is not known and could be intercepting traffic.
+			Furthermore, if you do connect to these, someone with a WiFi Pineapple or similar device could intercept your connection and intentionally steal your data.
 
 			Due to these issues, there are only two ways to combat this attack:
 			\begin{itemize}
 				\item Do not connect to open WiFi Access Points
-				\item Turn WiFi off when not in use. 
+				\item Turn WiFi off when not in use.
 			\end{itemize}
 
-			This attack only works due to the WiFi authentication protocol not requiring that the AP authenticate with the user. 
-			Thus, any AP can purport to be any other, and the user and their device will be none the wiser. 
+			This attack only works due to the WiFi authentication protocol not requiring that the AP authenticate with the user.
+			Thus, any AP can purport to be any other, and the user and their device will be none the wiser.
 	\section{Bluetooth}
 	\section{Near Field Communications}
 	\index{NFC}
-		NFC cards and tags are an exceptionally useful input device for many solutions. 
-		The can be used to input data which is often assumed to be valid due to the fact that it is stored on a card which the user is not supposed to be able to read or write. 
-		This is the factor that we use to exploit, these cards will often contain references to locations or monetary values which we can alter to change the usage of the card. 
-		Furthermore, if we can get access to one of these cards, we can clone it, possibly giving us access to all areas that the original card owner had. 
-		In this section, we will focus on the Mifare classic card. 
-		This card has a well known vulnerability with multiple tools written for it, but is still commonly used for minor payments such as in public transport. 
+		NFC cards and tags are an exceptionally useful input device for many solutions.
+		The can be used to input data which is often assumed to be valid due to the fact that it is stored on a card which the user is not supposed to be able to read or write.
+		This is the factor that we use to exploit, these cards will often contain references to locations or monetary values which we can alter to change the usage of the card.
+		Furthermore, if we can get access to one of these cards, we can clone it, possibly giving us access to all areas that the original card owner had.
+		In this section, we will focus on the Mifare classic card.
+		This card has a well known vulnerability with multiple tools written for it, but is still commonly used for minor payments such as in public transport.
 		\subsection{Card dumps}
-			The first step in any attack on Mifare classic cards is to get a full dump of the cards data and keys. 
-			This will allow us to edit the data as shown below, but it will also allow us to clone the card. 
+			The first step in any attack on Mifare classic cards is to get a full dump of the cards data and keys.
+			This will allow us to edit the data as shown below, but it will also allow us to clone the card.
 			\index{mfoc}
-			In order to do this, the tool ``mfoc'' is used. 
-			\begin{lstlisting}[style=CLI]
+			In order to do this, the tool ``mfoc'' is used.
+			\begin{minted}[autogobble,breaklines]{console}
 				$ mfoc -O out.mfd
-			\end{lstlisting}
-			This should output a dump of the card, which we will edit in the next section. 
-			However, this doesn't always go as planned. 
-			If you get an error, it is likely that the VM or card reading hardware that you are using is not up to the task of creating card dumps. 
-			If this is the case, look into using an installed version of Kali and getting a NFC reader based on the ACR112U chipset. 
+			\end{minted}
+			This should output a dump of the card, which we will edit in the next section.
+			However, this doesn't always go as planned.
+			If you get an error, it is likely that the VM or card reading hardware that you are using is not up to the task of creating card dumps.
+			If this is the case, look into using an installed version of Kali and getting a NFC reader based on the ACR112U chipset.
 		\subsection{Editing Dumps}
 		\subsection{Writing cards}
-			Once you have edited the card dump, or in order to clone a card, you will want to write the dump to a card. 
-			This process is easy given the correct card or the original. 
-			However, without this, the UID of the card cannot be altered, making it easy to detect the fact that the card is a forgery. 
-			When looking for blank cards, check that block 0 is unlocked, as this is the UID block that is required to create a true copy. 
+			Once you have edited the card dump, or in order to clone a card, you will want to write the dump to a card.
+			This process is easy given the correct card or the original.
+			However, without this, the UID of the card cannot be altered, making it easy to detect the fact that the card is a forgery.
+			When looking for blank cards, check that block 0 is unlocked, as this is the UID block that is required to create a true copy.
 
 			To write a card, use the following command:
-			\begin{lstlisting}[style=CLI]
-				$ nfc-mfclasic w B <dump.mfc> <dump.mfc> 
-			\end{lstlisting}
-			If you have a card to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID. 
-			At this point, you should have written the whole dump to the card, allowing you to use it in place of the original. 
-			However, if you would like to test this, create another dump of the new card and run both dumps through a tool such as ``vbindiff'' which will check for differences between the hex of the two dumps. 
-			If you see a difference on the 0 line, it is likely due to the card not having a write enabled 0 block. 
-			Any other differences mean that the write was unsuccessful, and should be attempted again. 
+			\begin{minted}[autogobble,breaklines]{console}
+				$ nfc-mfclasic w B <dump.mfc> <dump.mfc>
+			\end{minted}
+			If you have a card to which the UID can be overwritten, change the ``w'' to ``W'' and the program will attempt to overwrite the UID.
+			At this point, you should have written the whole dump to the card, allowing you to use it in place of the original.
+			However, if you would like to test this, create another dump of the new card and run both dumps through a tool such as ``vbindiff'' which will check for differences between the hex of the two dumps.
+			If you see a difference on the 0 line, it is likely due to the card not having a write enabled 0 block.
+			Any other differences mean that the write was unsuccessful, and should be attempted again.
 	\section{Challenges}
