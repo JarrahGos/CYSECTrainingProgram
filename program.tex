@@ -1,4 +1,4 @@
-\documentclass[twoside,a6paper,11pt]{report}
+\documentclass[twoside,b5paper,11pt]{report}
 \author{Jarrah Gosbell}
 \title{CYSEC Training Program}
 \usepackage{./tex/program}
@@ -18,68 +18,70 @@
 		 \addcontentsline{toc}{chapter}{List of Code Examples}
 \chapter*{Acknowledgements}
 	\addcontentsline{toc}{chapter}{Acknowledgements}
-	This book came about as a training program for a small group of people interested in cyber security. 
-	Without these people, this book would never have happened; there would be no need nor reason to write it. 
-	Thus, I would like to thank the members, past, present and future of the UNSW Canberra CYSEC VECC, as the ones who made me take the time to write this. 
+	This book came about as a training program for a small group of people interested in cyber security.
+	Without these people, this book would never have happened; there would be no need nor reason to write it.
+	Thus, I would like to thank the members, past, present and future of the UNSW Canberra CYSEC VECC, as the ones who made me take the time to write this.
 
-	Further, I would like to thank Christian Taylor. 
-	Without you dragging me into the VECC and pushing me to run it, I would have learned little of what is contained within and would never have presented it in this manner. 
+	Further, I would like to thank Christian Taylor.
+	Without you dragging me into the VECC and pushing me to run it, I would have learned little of what is contained within and would never have presented it in this manner.
 	I would like to thank you for being there to bounce ideas off and for pushing me further into virtualization and networking.
 
-	I would like to thank Ben Turnbull, as the university supervisor for the writing of this book. 
-	When you volunteered to take this on, I don't think you expected much more than 5,000 words and a basic training program. 
-	That quickly morphed to over 70,000, and a few exceptionally long nights of reading. 
-	Thanks for taking the time to get through it all, for helping to edit and format it and for giving me the chance to write it. 
+	I would like to thank Ben Turnbull, as the university supervisor for the writing of this book.
+	When you volunteered to take this on, I don't think you expected much more than 5,000 words and a basic training program.
+	That quickly morphed to over 70,000, and a few exceptionally long nights of reading.
+	Thanks for taking the time to get through it all, for helping to edit and format it and for giving me the chance to write it.
 
-	Thanks to Dave Roberts for putting up with my constant attempts to find out more. 
+	Thanks to Dave Roberts for putting up with my constant attempts to find out more.
 	Between pulling me into the range to help setup classes and attacks, and staying back to run the VECC through a social engineering class, you've added a vast number of ideas to the bank of attacks I could use.
-	Many of the things I've learned working with you led to large sections or chapters within this book, often exactly as I thought I had finished a chapter. 
+	Many of the things I've learned working with you led to large sections or chapters within this book, often exactly as I thought I had finished a chapter.
 
-	Thanks to Hamish Wallace and Luke Quinn for being in the office to pass ideas off to and for putting up with my incessant typing. 
+	Thanks to Hamish Wallace and Luke Quinn for being in the office to pass ideas off to and for putting up with my incessant typing.
 
-	Finally, thanks to Debbie Gosbell, for putting up with my questions and supporting me through this. 
-	Your notes on formatting and content from a layman's perspective have made this book far more accessible. 
-	I hope I took enough of them on that the book makes sense to those new to the field. 
+	Finally, thanks to Debbie Gosbell, for putting up with my questions and supporting me through this.
+	Your notes on formatting and content from a layman's perspective have made this book far more accessible.
+	I hope I took enough of them on that the book makes sense to those new to the field.
 
 \chapter*{Introduction}
 \pagestyle{fancy}
 	\addcontentsline{toc}{chapter}{Introduction}
 	\markboth{Introduction}{}
-	This document was written as a one year introductory course to the field of Cyber Security. 
-	Within it, is much of the Computer Science and technical information that one requires at an introductory level in the field. 
-	However, this comes with a legal penalty. 
-	Much of what you see in this book is illegal to conduct on systems which you do not own or have not received explicit permission to attack. 
-	Thus, I request that you read through your local laws before attempting any of the exercises within the book. 
-	Furthermore, I recommend setting up a virtual machine which can be used to run these exercises in a controlled environment without an Internet connection. 
-	This simply reduces the risk of inputting the wrong command and accidentally attacking a target that you do not control. 
+	This document was written as a one year introductory course to the field of Cyber Security.
+	Within it, is much of the Computer Science and technical information that one requires at an introductory level in the field.
+	However, this comes with a legal penalty.
+	Much of what you see in this book is illegal to conduct on systems which you do not own or have not received explicit permission to attack.
+	Thus, I request that you read through your local laws before attempting any of the exercises within the book.
+	Furthermore, I recommend setting up a virtual machine which can be used to run these exercises in a controlled environment without an Internet connection.
+	This simply reduces the risk of inputting the wrong command and accidentally attacking a target that you do not control.
 
-	This document will discuss both the utilization and creation of tools used to attack other systems. 
-	As much as possible, it will attempt to develop an understanding of how these tools work and what they do. 
-	However, it must be noted that this cannot be guaranteed. 
-	Some of the tools which this document will discuss have been crafted into a single click hack, much like a gun. 
-	One should remember that without understanding what these tools do, they are not in control. 
-	In the same way as a gun in the hands of the untrained, these tools can be dangerous, and should be used with caution. 
+	This document will discuss both the utilization and creation of tools used to attack other systems.
+	As much as possible, it will attempt to develop an understanding of how these tools work and what they do.
+	However, it must be noted that this cannot be guaranteed.
+	Some of the tools which this document will discuss have been crafted into a single click hack, much like a gun.
+	One should remember that without understanding what these tools do, they are not in control.
+	In the same way as a gun in the hands of the untrained, these tools can be dangerous, and should be used with caution.
 
-	With this in mind, please continue through the pages of this book. 
-	I hope you get as much from reading it as I did from writing it. 
+	With this in mind, please continue through the pages of this book.
+	I hope you get as much from reading it as I did from writing it.
 
 	\section*{Conventions}
 		\addcontentsline{toc}{section}{Conventions}
 		\markboth{Introduction}{Conventions}
-		This book uses a number of conventions to convey it's content. 
-		These allow for the code shown to be generic, or for commands to work on any computer available. 
-		Table \ref{tab:BookConventions} explains the main conventions used herein. 
+		This book uses a number of conventions to convey it's content.
+		These allow for the code shown to be generic, or for commands to work on any computer available.
+		Table \ref{tab:BookConventions} explains the main conventions used herein.
 		\begin{table}[htb]
 			\centering
-			\begin{tabular}{|l|p{7cm}|}
-				\hline
-				\textbf{Convention} & \textbf{Meaning} \\ \hline
-				<variable> & Replace with your version of variable. 
-								Remove the <> from the code. 
-								Note that in sections on HTML or JavaScript, this may not apply. \\ \hline
-				[variable] & Optional variable to be replaced as above. \\ \hline
-				\$ command & Command that can be run as a normal user. \\ \hline
-				\# command & Command that must be run as Superuser. \\ \hline
+			\begin{tabular}{l p{7cm}}
+				\toprule
+				\textbf{Convention} & \textbf{Meaning} \\
+				\toprule
+				<variable> & Replace with your version of variable.
+								Remove the <> from the code.
+								Note that in sections on HTML or JavaScript, this may not apply. \\ \vspace{0cm}
+				[variable] & Optional variable to be replaced as above. \\
+				\$ command & Command that can be run as a normal user. \\
+				\# command & Command that must be run as Superuser. \\
+				\bottomrule
 			\end{tabular}
 			\caption{List of Conventions Used Herein}
 			\label{tab:BookConventions}

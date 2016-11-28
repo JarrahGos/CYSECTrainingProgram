@@ -1,49 +1,49 @@
 \chapter{Reverse Engineering}
 	\label{ch:ReverseEngineering}
-	Reverse engineering is the process of taking a fully compiled (and often obfuscated) binary and working out how it works. 
-	This process usually requires understanding programming, algorithms and assembly, but can occasionally be made easier by language constructs such as Java's bytecode, which allows full decompilation. 
-	This chapter will discuss first the language used for the majority of reverse engineering, Assembly. 
-	Next, it will discuss the main tools used in the process. 
-	Finally, corner cases such as Java reverse engineering will be discussed, along with an example project. 
+	Reverse engineering is the process of taking a fully compiled (and often obfuscated) binary and working out how it works.
+	This process usually requires understanding programming, algorithms and assembly, but can occasionally be made easier by language constructs such as Java's bytecode, which allows full decompilation.
+	This chapter will discuss first the language used for the majority of reverse engineering, Assembly.
+	Next, it will discuss the main tools used in the process.
+	Finally, corner cases such as Java reverse engineering will be discussed, along with an example project.
 
 	\section{Assembly}
-		Assembly is the base language of the given computer. 
-		It can be used to write any program, but often is far to inefficient for the programmer to use. 
-		Originally, this was the only way to program a computer. 
-		However, those working in computer science quickly created higher level languages. 
-		Thus, it has been the domain of ``Hackers'' and reverse engineers since the mid-1950's. 
+		Assembly is the base language of the given computer.
+		It can be used to write any program, but often is far to inefficient for the programmer to use.
+		Originally, this was the only way to program a computer.
+		However, those working in computer science quickly created higher level languages.
+		Thus, it has been the domain of ``Hackers'' and reverse engineers since the mid-1950's.
 
-		This section will discuss the basics of both x86 (Intel) and ARM assembly. 
-		These are currently the two most common versions of the code, each being used on PCs and mobile devices respectively. 
-		It is worth noting that there are a number of similarities between these. 
-		This mainly occurs due to the nature of the machine, which can still only interpret binary. 
-		Thus, both ARM and x86 must be assembled into this machine code. 
+		This section will discuss the basics of both x86 (Intel) and ARM assembly.
+		These are currently the two most common versions of the code, each being used on PCs and mobile devices respectively.
+		It is worth noting that there are a number of similarities between these.
+		This mainly occurs due to the nature of the machine, which can still only interpret binary.
+		Thus, both ARM and x86 must be assembled into this machine code.
 		\subsection{ARM Assembly}
 		\index{ARM Assembly}
-			The world of IT is becoming increasingly mobile, with ARM processors dominating that area. 
-			Thus, to reverse engineer in the modern world, knowing x86 is no longer enough. 
-			Furthermore, ARM being a RISC processor, it has a smaller and easier to understand instruction set. 
-			This makes learning Assembly with an arm processor easier than doing the same with x86\footnote{\url{http://www.davespace.co.uk/arm/introduction-to-arm/barrel-shifter.html}}. 
+			The world of IT is becoming increasingly mobile, with ARM processors dominating that area.
+			Thus, to reverse engineer in the modern world, knowing x86 is no longer enough.
+			Furthermore, ARM being a RISC processor, it has a smaller and easier to understand instruction set.
+			This makes learning Assembly with an arm processor easier than doing the same with x86\footnote{\url{http://www.davespace.co.uk/arm/introduction-to-arm/barrel-shifter.html}}.
 
 			\subsubsection{Registers}
-			%rewrite the names of these in a better format. This looks like shit. 
+			%rewrite the names of these in a better format. This looks like shit.
 			\index{ARM registers}
-				The registers of an ARM processor are generally referred to as ``r0'' to ``r15''. 
-				However, there are also aliases, ``a1'' to ``a4'', ``v1'' to ``v6'', ``sb'', ``sl'', ``fp'', ``sp'', ``lr'' and ``pc'' which map respectively to the normal names. 
-				With the below notable exceptions, these registers are all thought of as general purpose. 
+				The registers of an ARM processor are generally referred to as ``r0'' to ``r15''.
+				However, there are also aliases, ``a1'' to ``a4'', ``v1'' to ``v6'', ``sb'', ``sl'', ``fp'', ``sp'', ``lr'' and ``pc'' which map respectively to the normal names.
+				With the below notable exceptions, these registers are all thought of as general purpose.
 				\begin{description}
 					\item[r13/sp] Stack pointer.
-					\item[r14/lr] Link register which holds the callers return address. 
-					\item[r15/pc] Program counter. 
+					\item[r14/lr] Link register which holds the callers return address.
+					\item[r15/pc] Program counter.
 				\end{description}
-				For this reason, I will refer to the general registers by their number (eg ``r0'') and the specific registers by their alias. 
-				There is also a flags register, CSPR, which stands for current program status register and holds the results of arithmetic and logical operations. 
-				
-				Arm also does not allow operations to work on data in memory. 
-				Thus, the data must be loaded into a register, operated on, then returned to memory. 
+				For this reason, I will refer to the general registers by their number (eg ``r0'') and the specific registers by their alias.
+				There is also a flags register, CSPR, which stands for current program status register and holds the results of arithmetic and logical operations.
 
-				Furthermore, depending on the arm implementation in use, these registers may be 16, 32 or 64-bit. 
-				
+				Arm also does not allow operations to work on data in memory.
+				Thus, the data must be loaded into a register, operated on, then returned to memory.
+
+				Furthermore, depending on the arm implementation in use, these registers may be 16, 32 or 64-bit.
+
 			\subsubsection{Instructions}
 			\index{ARM Instructions}
 				Instructions are given in the following syntax:
@@ -52,34 +52,36 @@
 				\end{quote}
 				Where:
 				\begin{description}
-					\item[operation] is the three letter mnemonic for the desired instruction, such as MOV or ADD. 
-					\item[condition] is an optional two letter condition code such as EQ or CS. 
+					\item[operation] is the three letter mnemonic for the desired instruction, such as MOV or ADD.
+					\item[condition] is an optional two letter condition code such as EQ or CS.
 					\item[flags] is an optional additional flag such as S.
 					\item[Rd] is the destination Register.
-					\item[Rn] is the source register. 
+					\item[Rn] is the source register.
 					\item[Operand] is a flexible second operand.
 				\end{description}
 
-				These instructions generally compute in a single cycle, allowing simple prediction of timing. 
+				These instructions generally compute in a single cycle, allowing simple prediction of timing.
 
-				Table \ref{tab:ARMInstructions} lists common instructions, their description and an example of their use. 
+				Table \ref{tab:ARMInstructions} lists common instructions, their description and an example of their use.
 				\begin{table}[htb]
-					\centering 
-					\begin{tabular}{|l|p{6cm}|p{3cm}|}
-						\hline
-						\textbf{Instruction} & \textbf{Description} & \textbf{Example} \\ \hline
-						MOV & Move from source register to destination. & MOV r0, \#42\, MOV r3, R5 \\ \hline
-						ADD & Add source register to operand and place in source & ADD r0, r1, r2 \\ \hline
-						SUB & Subtract source register from operand and place in source & SUB r0, r1, \#5 \\ \hline
-						AND & Logical and Rn and Operand placed in Rd & AND r8, r7, r2 \\ \hline 
-						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\ \hline
-						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\ \hline 
-						CMP AND & Logical AND Rn and Operand placed in Rd & AND r8, r7, r2 \\ \hline 
-						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\ \hline
-						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\ \hline 
-						CMP & Flag set to result of Rn - Operand & CMP r0, \#42 \\ \hline
-						TST & Flag set to result of Rn AND Operand & TST R11 \#1 \\ \hline
-						TEQ & Flag set to result of Rn XOR Operand & TEQ r8, r9 \\ \hline
+					\centering
+					\begin{tabular}{lp{6cm}p{3cm}}
+						\toprule
+						\textbf{Instruction} & \textbf{Description} & \textbf{Example} \\
+						\toprule
+						MOV & Move from source register to destination. & MOV r0, \#42\, MOV r3, R5 \\
+						ADD & Add source register to operand and place in source & ADD r0, r1, r2 \\
+						SUB & Subtract source register from operand and place in source & SUB r0, r1, \#5 \\
+						AND & Logical and Rn and Operand placed in Rd & AND r8, r7, r2 \\
+						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\
+						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\
+						CMP AND & Logical AND Rn and Operand placed in Rd & AND r8, r7, r2 \\
+						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\
+						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\
+						CMP & Flag set to result of Rn - Operand & CMP r0, \#42 \\
+						TST & Flag set to result of Rn AND Operand & TST R11 \#1 \\
+						TEQ & Flag set to result of Rn XOR Operand & TEQ r8, r9 \\
+						\bottomrule
 					\end{tabular}
 					\caption{Common Arm Instructions}
 					\label{tab:ARMInstructions}
@@ -87,63 +89,63 @@
 
 			\subsubsection{Multiplication and Division}
 			\index{ARM Multiplication and Division}
-				Multiplication and Division are implemented as a function of the \emph{barrel shifter} in ARM assembly. 
-				This works by applying a logical shift or rotate to the operand before using it in an operation. 
+				Multiplication and Division are implemented as a function of the \emph{barrel shifter} in ARM assembly.
+				This works by applying a logical shift or rotate to the operand before using it in an operation.
 				The following explains the types of shift available:
 				\begin{description}
 					\item[LSL] The Logical Shift Left will shift left by the given number, padding with 0.
 						It is equivalent to the ``<<'' operator in C.
-					\item[LSR] The Logical Shift Right will shift right by a given number, padding with 0. 
-						It is equivalent to the ``>>'' operator in C. 
+					\item[LSR] The Logical Shift Right will shift right by a given number, padding with 0.
+						It is equivalent to the ``>>'' operator in C.
 						This is the implementation for unsigned Division by a power of 2.
-					\item[ASR] The Arithmetic Shift Right will again shift right by a given number. 
-						It is equivalent to ``>>'' in C and is used for signed division by a power of 2.  
+					\item[ASR] The Arithmetic Shift Right will again shift right by a given number.
+						It is equivalent to ``>>'' in C and is used for signed division by a power of 2.
 					\item[ROR] Bit Rotate by the given number with wrap around.
 				\end{description}
 				While there are many options for the usage of this, the following are basic examples:
 				\begin{description}
-					\item[Multiplication] MOV r0, r0, LSL \#1: Multiply r0 by two. 
-					\item[Division] MOV r2, r2, ASR \#2: Signed division of r2 by four. 
-					\item[MUL] The standard multiplication instruction. 
-						Place the product of Rn and the Operand in the destination register. 
-						Using the same register for Rn and Rd has unpredictable results. 
+					\item[Multiplication] MOV r0, r0, LSL \#1: Multiply r0 by two.
+					\item[Division] MOV r2, r2, ASR \#2: Signed division of r2 by four.
+					\item[MUL] The standard multiplication instruction.
+						Place the product of Rn and the Operand in the destination register.
+						Using the same register for Rn and Rd has unpredictable results.
 				\end{description}
 
 			\subsubsection{Operand}
 			\index{ARM Operand}
-				The operand within ARM assembly makes it work slightly differently to x86. 
+				The operand within ARM assembly makes it work slightly differently to x86.
 				This value is used instead of the destination in mathematical or logical operations, with the destination acting only as a store.
-				However, it also allows for barrel shifting and usage of constants. 
+				However, it also allows for barrel shifting and usage of constants.
 				\begin{description}
-					\item[Constant] ORR r1, r1, \#0xFF00 
-					\item[Barrel Shifter] MOV r2, r2, LSR \#1					
+					\item[Constant] ORR r1, r1, \#0xFF00
+					\item[Barrel Shifter] MOV r2, r2, LSR \#1
 					\item[Registers Shifted] CMP r9, r8 ROR r0
 				\end{description}
-				It is also worth noting that this position can only hold 8-bits. 
-				However, the compiler will convert it into a barrel shifted operation if it is larger than this. 
+				It is also worth noting that this position can only hold 8-bits.
+				However, the compiler will convert it into a barrel shifted operation if it is larger than this.
 
 			\subsubsection{Branching}
 			\index{ARM Branching}
-				In assembly, we need a way to move about within the code. 
-				This is usually done by branching, a similar idea to GOTO. 
-				The following two instructions are used for this purpose, with the latter two used to come back to the calling instruction. 
+				In assembly, we need a way to move about within the code.
+				This is usually done by branching, a similar idea to GOTO.
+				The following two instructions are used for this purpose, with the latter two used to come back to the calling instruction.
 				\begin{description}
-					\item[B <address>] Start executing code at the given address or label. 
-						This does not save the old location. 
-					\item[BL <address>] Start executing code at the given address or label. 
-						This also saves the old address in r14. 
-					\item[MOV PC, r14] Begin executing code at the location after BL was called. 
-					\item[BX r14] Begin executing code at the location after BL was called. 
-						This only works on newer architectures. 
+					\item[B <address>] Start executing code at the given address or label.
+						This does not save the old location.
+					\item[BL <address>] Start executing code at the given address or label.
+						This also saves the old address in r14.
+					\item[MOV PC, r14] Begin executing code at the location after BL was called.
+					\item[BX r14] Begin executing code at the location after BL was called.
+						This only works on newer architectures.
 				\end{description}
 
 			\subsubsection{Conditional Execution}
 			\index{ARM Conditional Execution}
-				The ARM architecture allows conditionals on every instruction. 
-				This is done by appending either ``EQ'' or ``CC'' to the instruction mnemonic. 
-				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP. 
-				It is also worth noting that normal instructions do not effect these flags, but can be made to by appending `s' to them. 
-				
+				The ARM architecture allows conditionals on every instruction.
+				This is done by appending either ``EQ'' or ``CC'' to the instruction mnemonic.
+				The test is checked against the current CSPR, resulting in either the instruction being executed, or a NOP.
+				It is also worth noting that normal instructions do not effect these flags, but can be made to by appending `s' to them.
+
 				The code in example \ref{code:ARMConditionalLoop} will loop 5 times before exiting:
 				\begin{code}
 					\begin{lstlisting}[language={[ARM]assembler}]
@@ -156,28 +158,30 @@ loop
 					\label{code:ARMConditionalLoop}
 				\end{code}
 
-				Table \ref{tab:CSPRConditionCodes} contains a list and explanation of CSPR conditional codes. 
+				Table \ref{tab:CSPRConditionCodes} contains a list and explanation of CSPR conditional codes.
 				\begin{table}[htb]
 					\centering
 					\begin{adjustbox}{max width=1\textwidth}
-					\begin{tabular}{|l|c|l|c|}
-						\hline
-						\textbf{Code} & \textbf{Suffix} & \textbf{Description} & \textbf{Flag} \\ \hline
-						\texttt{0000} & EQ & Equal or Equals Zero & Z \\ \hline
-						\texttt{0001} & NE & Not Equal & !Z \\ \hline
-						\texttt{0010} & CS / HS & Carry Set / Unsigned Higher or Same & C \\ \hline
-						\texttt{0011} & CC / LO & Carry Clear / Unsigned Lower & !C \\ \hline
-						\texttt{0100} & MI & Minus / Negative & N \\ \hline
-						\texttt{0101} & PL & Plus / Positive or Zero & !N \\ \hline
-						\texttt{0110} & VS & Overflow & V \\ \hline
-						\texttt{0111} & VC & No Overflow & !V \\ \hline
-						\texttt{1000} & HI & Unsigned Higher & C and !Z  \\ \hline
-						\texttt{1001} & LS & Unsigned Lower or Same & !C or Z \\ \hline
-						\texttt{1010} & GE & Signed Greater Than or Equal & N == V \\ \hline 
-						\texttt{1011} & LT & Signed Less Than & N != V \\ \hline
-						\texttt{1100} & GT & Signed Greater Than & !Z and (N == V) \\ \hline
-						\texttt{1101} & LE & Signed Less Than or Equal & Z or (N != V) \\ \hline
-						\texttt{1110} & AL & Always (Default) & any \\ \hline
+					\begin{tabular}{lclc}
+						\toprule
+						\textbf{Code} & \textbf{Suffix} & \textbf{Description} & \textbf{Flag} \\
+						\toprule
+						\texttt{0000} & EQ & Equal or Equals Zero & Z \\
+						\texttt{0001} & NE & Not Equal & !Z \\
+						\texttt{0010} & CS / HS & Carry Set / Unsigned Higher or Same & C \\
+						\texttt{0011} & CC / LO & Carry Clear / Unsigned Lower & !C \\
+						\texttt{0100} & MI & Minus / Negative & N \\
+						\texttt{0101} & PL & Plus / Positive or Zero & !N \\
+						\texttt{0110} & VS & Overflow & V \\
+						\texttt{0111} & VC & No Overflow & !V \\
+						\texttt{1000} & HI & Unsigned Higher & C and !Z  \\
+						\texttt{1001} & LS & Unsigned Lower or Same & !C or Z \\
+						\texttt{1010} & GE & Signed Greater Than or Equal & N == V \\
+						\texttt{1011} & LT & Signed Less Than & N != V \\
+						\texttt{1100} & GT & Signed Greater Than & !Z and (N == V) \\
+						\texttt{1101} & LE & Signed Less Than or Equal & Z or (N != V) \\
+						\texttt{1110} & AL & Always (Default) & any \\
+						\bottomrule
 					\end{tabular}
 					\end{adjustbox}
 					\caption{CSPR Conditional Codes}
@@ -187,17 +191,17 @@ loop
 
 			\subsubsection{Loading Data from Memory}
 			\index{ARM Memory Management}
-				The two commands ``LDR'' and ``STR'' are used to access memory. 
-				The former will retrieve data from memory and place it in the given destination register. 
-				The latter will take the data in the register and place it in the memory address given. 
+				The two commands ``LDR'' and ``STR'' are used to access memory.
+				The former will retrieve data from memory and place it in the given destination register.
+				The latter will take the data in the register and place it in the memory address given.
 
 				These also work with size values, which are outlined below:
 				\begin{description}
-					\item[B] Unsigned Byte. 
-					\item[SB] Signed Byte. 
+					\item[B] Unsigned Byte.
+					\item[SB] Signed Byte.
 					\item[H] Unsigned Half Word.
 					\item[SH] Signed Half Word.
-					\item[default] Word. 
+					\item[default] Word.
 				\end{description}
 				Using these, we can load data stored in the address pointed to by r1 using the following instruction:
 				\begin{quote}
@@ -208,19 +212,19 @@ loop
 					STRB r0, [r1]
 				\end{quote}
 
-				Further to this, to load data from an indexed address, the ``[rx, \#n]'' syntax is used. 
-				Similarly, one could increase the address after the address is used by calling ``[rx], \#n''. 
+				Further to this, to load data from an indexed address, the ``[rx, \#n]'' syntax is used.
+				Similarly, one could increase the address after the address is used by calling ``[rx], \#n''.
 
 			\subsubsection{The Stack}
 			\index{Stack}
-				ARM assembly still has access to the stack. 
-				This is done using the ``STMFD'' command to push data onto the stack and the ``LDMFD'' command to pop it back off. 
-				The former of these will take an the stack pointer (r13) and a list of registers to push onto the stack. 
-				It will then push them on in reverse order, such that the first register is at the top of the stack and the first to be poped off. 
+				ARM assembly still has access to the stack.
+				This is done using the ``STMFD'' command to push data onto the stack and the ``LDMFD'' command to pop it back off.
+				The former of these will take an the stack pointer (r13) and a list of registers to push onto the stack.
+				It will then push them on in reverse order, such that the first register is at the top of the stack and the first to be poped off.
 
-				Similarly to this, ``LDMFD'' takes the stack pointer and a list of registers. 
-				However, this instruction will pop the first item into the first register. 
-				Code example \ref{code:ARMStack} shows this process. 
+				Similarly to this, ``LDMFD'' takes the stack pointer and a list of registers.
+				However, this instruction will pop the first item into the first register.
+				Code example \ref{code:ARMStack} shows this process.
 
 				\begin{code}
 					\begin{lstlisting}[language={[ARM]Assembler}]
@@ -232,51 +236,51 @@ LDMFD r13!, {r4-r7}
 				\end{code}
 
 		\subsection{x86 Assembly}
-			While ARM is becoming more common, x86, or Intel assembly is not becoming any less common. 
-			There are two syntaxes for x86, Intel and AT\&T. 
-			While these will assemble into the same binary, but show slightly differently as code\footnote{\url{http://opensecuritytraining.info/Introx86.html}}. 
+			While ARM is becoming more common, x86, or Intel assembly is not becoming any less common.
+			There are two syntaxes for x86, Intel and AT\&T.
+			While these will assemble into the same binary, but show slightly differently as code\footnote{\url{http://opensecuritytraining.info/Introx86.html}}.
 
-			Furthermore, x86, unlike ARM is a Complex Instruction Set Computer. 
-			This means that the number of instructions can be huge, with some doing exceptionally specific things. 
-			RISC processors will only have a small number of instructions, but can still do the same amount. 
+			Furthermore, x86, unlike ARM is a Complex Instruction Set Computer.
+			This means that the number of instructions can be huge, with some doing exceptionally specific things\footnote{\url{https://godbold.org}}.
+			RISC processors will only have a small number of instructions, but can still do the same amount.
 
 			\subsubsection{Endianness}
 			\index{Endianness}
-				Intel processors are little endian. 
-				This means that the least significant byte is stored in memory first. 
-				Thus, 0x123456 is stored in memory as ``56, 34, 12''. 
-				However, when stored in the register, it is big endian. 
+				Intel processors are little endian.
+				This means that the least significant byte is stored in memory first.
+				Thus, 0x123456 is stored in memory as ``56, 34, 12''.
+				However, when stored in the register, it is big endian.
 
-				In practice, this makes no difference. 
-				However, if you have a dump of RAM or need access it byte by byte, you must take this into account. 
-				Similarly, while the bytes themselves will be ordered in this way, individual bits will not be reordered. 
+				In practice, this makes no difference.
+				However, if you have a dump of RAM or need access it byte by byte, you must take this into account.
+				Similarly, while the bytes themselves will be ordered in this way, individual bits will not be reordered.
 
 			\subsubsection{Registers}
 			\index{Intel Registers}
-				x86 assembly has far less registers than ARM. 
-				There are 6 completely general purpose registers, 2 specific but accessible registers and an instruction pointer. 
-				The length of these is based on the version of x86 being used. 
-				Thus, x86-64 has 64-bit registers (labeled with R) while x86 has 32-bit registers (labeled with E). 
+				x86 assembly has far less registers than ARM.
+				There are 6 completely general purpose registers, 2 specific but accessible registers and an instruction pointer.
+				The length of these is based on the version of x86 being used.
+				Thus, x86-64 has 64-bit registers (labeled with R) while x86 has 32-bit registers (labeled with E).
 
 				The following is a list of the conventions for x86 registers:
 				\begin{description}
-					\item[RAX] Stores function return values, used as an accumulator. Usually used as a general scratch register. 
-					\item[RBX] Stores the base pointer for the data section. Generally just used as a scratch register. 
-					\item[RCX] Counter for string and loop operations. Again, generally used as a scratch register. 
-					\item[RDX] IO Pointer. Commonly used for a scratch register. 
-					\item[RSI] Source pointer for string/array operations. 
-					\item[RDI] Destination pointer for string/array operations. 
-					\item[RSP] Stack pointer. 
-					\item[RBP] Stack frame base pointer. 
-					\item[RIP] Pointer to the next instruction to execute. 
-						Direct control of this instruction is not available, however jump instructions do exist. 
+					\item[RAX] Stores function return values, used as an accumulator. Usually used as a general scratch register.
+					\item[RBX] Stores the base pointer for the data section. Generally just used as a scratch register.
+					\item[RCX] Counter for string and loop operations. Again, generally used as a scratch register.
+					\item[RDX] IO Pointer. Commonly used for a scratch register.
+					\item[RSI] Source pointer for string/array operations.
+					\item[RDI] Destination pointer for string/array operations.
+					\item[RSP] Stack pointer.
+					\item[RBP] Stack frame base pointer.
+					\item[RIP] Pointer to the next instruction to execute.
+						Direct control of this instruction is not available, however jump instructions do exist.
 				\end{description}
 
-				When calling functions in x86 assembly, it must be assumed that RAX, RDX and RCX will be overwritten. 
-				However, the called function must either not use or save the state of RBP, RBX, RSI and RDI. 
+				When calling functions in x86 assembly, it must be assumed that RAX, RDX and RCX will be overwritten.
+				However, the called function must either not use or save the state of RBP, RBX, RSI and RDI.
 
-				Furthermore, these registers are backwards compatible with older code by having smaller forms of registers. 
-				Table \ref{table:x86SubRegisters} shows how these registers are broken down. 
+				Furthermore, these registers are backwards compatible with older code by having smaller forms of registers.
+				Table \ref{table:x86SubRegisters} shows how these registers are broken down.
 				\begin{table}
 					\centering
 					\begin{tabular}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|>{\centering\arraybackslash}p{1cm}|>{\centering\arraybackslash}p{1cm}|}
@@ -289,61 +293,61 @@ LDMFD r13!, {r4-r7}
 					\caption{x86-64 Sub Registers for RAX}
 					\label{table:x86SubRegisters}
 				\end{table}
-				%TODO: Fix this table and finish it. 
+				%TODO: Fix this table and finish it.
 
-				Similarly to the ARM CSPR, x86 has an EFLAGS register, which contains the result of comparisons and arithmetic. 
+				Similarly to the ARM CSPR, x86 has an EFLAGS register, which contains the result of comparisons and arithmetic.
 				The key flags here are:
 				\begin{description}
-					\item[Zero] If the last instruction resulted in 0, this flag will be set. 
-					\item[Sign] Set equal to the most significant bit of the result. 
-						If the result was a signed integer, this will be it's sign. 
-						If the result was not signed, this will be meaningless. 
+					\item[Zero] If the last instruction resulted in 0, this flag will be set.
+					\item[Sign] Set equal to the most significant bit of the result.
+						If the result was a signed integer, this will be it's sign.
+						If the result was not signed, this will be meaningless.
 				\end{description}
 
-				
+
 			\subsubsection{The stack}
 			\index{Stack}
-				As with ARM assembly, x86 has a concept of a stack. 
-				This again is implemented as a LIFO structure which starts at a relatively high memory address and grows down. 
-				
-				ESP is the pointer to the currently accessible part of the stack. 
-				This is the most recent value that was pushed onto the stack. 
-				Anything at lower memory addresses than this should be random data. 
-				
-				The stack is used to keep track not only of data, but also of function calls and their data. 
-				A stack frame is created with every function call, allowing groups of data to be added or removed. 
-				This also allows for returning to a specific location, stored as the return address on the stack. 
+				As with ARM assembly, x86 has a concept of a stack.
+				This again is implemented as a LIFO structure which starts at a relatively high memory address and grows down.
 
-				Accessing this structure is done using two instructions. 
-				The first of these is push, which will push a register, part thereof or an immediate value onto the next free location the stack. 
-				This instruction will work for any register except the instruction pointer and EFLAGS. 
-				It also has the side effect of moving the stack pointer to now point at the new top of the stack. 
+				ESP is the pointer to the currently accessible part of the stack.
+				This is the most recent value that was pushed onto the stack.
+				Anything at lower memory addresses than this should be random data.
 
-				The opposite operation to this is pop. 
-				This will remove the current top of the stack, placing its value into the specified register. 
-				Furthermore, this will have the side effect of incrementing the stack pointer. 
+				The stack is used to keep track not only of data, but also of function calls and their data.
+				A stack frame is created with every function call, allowing groups of data to be added or removed.
+				This also allows for returning to a specific location, stored as the return address on the stack.
+
+				Accessing this structure is done using two instructions.
+				The first of these is push, which will push a register, part thereof or an immediate value onto the next free location the stack.
+				This instruction will work for any register except the instruction pointer and EFLAGS.
+				It also has the side effect of moving the stack pointer to now point at the new top of the stack.
+
+				The opposite operation to this is pop.
+				This will remove the current top of the stack, placing its value into the specified register.
+				Furthermore, this will have the side effect of incrementing the stack pointer.
 
 			\subsubsection{Calling Conventions}
 			\index{Calling Conventions}
-				There are numerous calling conventions. 
-				This section will cover the C declaration convention, which is commonly used in compiled C code. 
+				There are numerous calling conventions.
+				This section will cover the C declaration convention, which is commonly used in compiled C code.
 
-				When a function is called, the parameters are pushed onto the stack right to left. 
-				This means that the first item on the stack will be the first parameter. 
-				It will also save the old stack frame pointer, making it available to be restored before the function exits. 
-				Finally, the most significant half of the returned value is placed in RDX, with the remainder placed in RAX. 
-				If the value does not need to be split, it will be placed in RDX. 
+				When a function is called, the parameters are pushed onto the stack right to left.
+				This means that the first item on the stack will be the first parameter.
+				It will also save the old stack frame pointer, making it available to be restored before the function exits.
+				Finally, the most significant half of the returned value is placed in RDX, with the remainder placed in RAX.
+				If the value does not need to be split, it will be placed in RDX.
 
-				The ``call'' instruction is used to move to another function. 
+				The ``call'' instruction is used to move to another function.
 				This is used when you expect to return to the code you are currently executing.
-				It is expected that you have followed the above convention, but it will automatically set up the return address on the stack so the function can return execution to the code that called it. 
+				It is expected that you have followed the above convention, but it will automatically set up the return address on the stack so the function can return execution to the code that called it.
 
-				The inverse of this is the ``ret'' instruction. 
-				This does nothing more than popping the return value from the stack into RIP. 
-				Execution will now proceed from the address after the call was made. 
+				The inverse of this is the ``ret'' instruction.
+				This does nothing more than popping the return value from the stack into RIP.
+				Execution will now proceed from the address after the call was made.
 
-				It is finally worth noting that Windows does not work this way. 
-				It expects that the function will clean up memory, thus requiring that the ret instruction be told how many bytes to remove from the stack. 
+				It is finally worth noting that Windows does not work this way.
+				It expects that the function will clean up memory, thus requiring that the ret instruction be told how many bytes to remove from the stack.
 
 			\subsubsection{Basic Instructions}
 			\index{Intel Instructions}
@@ -356,180 +360,180 @@ LDMFD r13!, {r4-r7}
 							\item Immediate to Register
 							\item Immediate to Memory
 						\end{itemize}
-						This is used to move either data or addresses around. 
-					\item[PUSH] Push a register, immediate or memory address to the stack. 
-					\item[POP] Reverse operation of push. 
-					\item[LEA] Load the address specified by the second operand into the first. 
-					\item[ADD] Add the two operands and place the result into the first. 
-					\item[INC/DEC] Increment or decrement the value in the operand. 
-					\item[IMUL] Multiply the two integer operands, placing the result in the first. 
-					\item[IDIV] Divide the two integer operands, placing the result in the first. 
-					\item[AND] Logical AND of the two operands, placing the result in the first. 
-					\item[OR] Logical OR of the two operands, placing the result in the first. 
-					\item[XOR] Logical exclusive OR of the two operands, placing the result in the first. 
-					\item[NOT] Logical negation of an operand. 
-					\item[NEG] Not, but assuming two's compliment notation. 
-					\item[SHL/SHR] Performs a bit shift on the first operand by the number in the second. 
+						This is used to move either data or addresses around.
+					\item[PUSH] Push a register, immediate or memory address to the stack.
+					\item[POP] Reverse operation of push.
+					\item[LEA] Load the address specified by the second operand into the first.
+					\item[ADD] Add the two operands and place the result into the first.
+					\item[INC/DEC] Increment or decrement the value in the operand.
+					\item[IMUL] Multiply the two integer operands, placing the result in the first.
+					\item[IDIV] Divide the two integer operands, placing the result in the first.
+					\item[AND] Logical AND of the two operands, placing the result in the first.
+					\item[OR] Logical OR of the two operands, placing the result in the first.
+					\item[XOR] Logical exclusive OR of the two operands, placing the result in the first.
+					\item[NOT] Logical negation of an operand.
+					\item[NEG] Not, but assuming two's compliment notation.
+					\item[SHL/SHR] Performs a bit shift on the first operand by the number in the second.
 					\item[J] Used with the following conditions (based on EFLAGS) to jump to a given label or address:
 						\begin{description}
-							\item[JMP] No condition, always jumps. 
-							\item[JE] Jump if equal. 
-							\item[JNE] Jump if not equal. 
-							\item[JZ] Jump if zero. 
+							\item[JMP] No condition, always jumps.
+							\item[JE] Jump if equal.
+							\item[JNE] Jump if not equal.
+							\item[JZ] Jump if zero.
 							\item[JG] Jump if greater than.
-							\item[JGE] Jump if greater or equal. 
-							\item[JL] Jump if less than. 
-							\item[JLE] Jump if less than or equal. 
+							\item[JGE] Jump if greater or equal.
+							\item[JL] Jump if less than.
+							\item[JLE] Jump if less than or equal.
 						\end{description}
-					\item[CALL/RET] Call or return from a function respectively. 
+					\item[CALL/RET] Call or return from a function respectively.
 				\end{description}
 			\subsubsection{Addressing}
 			\index{Intel Addressing}
-				Data that is known before the program starts (and should be accessible globally) can be included with the ``.data'' directive. 
-				This creates a section of memory of a given size which contains the required data. 
-				This process can be seen in code example \ref{code:x86.data}. 
+				Data that is known before the program starts (and should be accessible globally) can be included with the ``.data'' directive.
+				This creates a section of memory of a given size which contains the required data.
+				This process can be seen in code example \ref{code:x86.data}.
 				\begin{code}
-					\lstinputlisting[language={[x86masm]Assembler}]{./x86.data}
+					\asmcode{./x86.data}
 					\caption{Using the .data Section of x86 Assembly}
 					\label{code:x86.data}
 				\end{code}
 
-				Manual addressing in x86 is done using the ``[]'' square brackets. 
-				This means to retrieve the value stored at the address given inside. 
-				However, you need not have the exact address, just a way to compute it. 
-				Within these brackets, you can add, multiply or subtract from registers or immediate values to get the address. 
-				For example, the ``[RSI+4*RBX]'' would give you data stored at that location after the calculation has completed. 
+				Manual addressing in x86 is done using the ``[]'' square brackets.
+				This means to retrieve the value stored at the address given inside.
+				However, you need not have the exact address, just a way to compute it.
+				Within these brackets, you can add, multiply or subtract from registers or immediate values to get the address.
+				For example, the ``[RSI+4*RBX]'' would give you data stored at that location after the calculation has completed.
 
 
 	\section{Radare2}
 	\index{Radare2}
-		Radare2 is a set of tools for working with binary files. 
-		This makes it useful as a means of reading and altering compiled programs and their data files from the command line. 
-		While the Radare2 suite has a number of stand alone programs within it, this section will cover only the main program. 
+		Radare2 is a set of tools for working with binary files.
+		This makes it useful as a means of reading and altering compiled programs and their data files from the command line.
+		While the Radare2 suite has a number of stand alone programs within it, this section will cover only the main program.
 		This program allows for the searching, altering and disassembly of binary programs in multiple modes, making it a great tool for challenges such as Pwn Adventure in the next section.
 		For a more detailed guide, read through the Radare2 book.\cite{Radare2}
 
 		\subsection{Getting Started}
-			The learning curve at the start of using Radare2 is quite steep. 
-			However, if you have any experience with other command line tools such as Vim and GDB, many of the commands and shortcuts should come easily. 
-			Before going any further, it is worthwhile to note that you can get the help information for any command by appending a ``?'' to it. 
+			The learning curve at the start of using Radare2 is quite steep.
+			However, if you have any experience with other command line tools such as Vim and GDB, many of the commands and shortcuts should come easily.
+			Before going any further, it is worthwhile to note that you can get the help information for any command by appending a ``?'' to it.
 
 			Navigation within Radare2 is done through the following commands:
 			\begin{description}
 				\item[Seek]
-					or ``s'' will move you to the address that you specify after the command. 
-					The address can either be an explicit memory location, or a mathematical statement based on the current location or a label within the binary. 
+					or ``s'' will move you to the address that you specify after the command.
+					The address can either be an explicit memory location, or a mathematical statement based on the current location or a label within the binary.
 					An example of this is ``s 0x00001c80''.
 				\item[is]
-					or information symbols will get you a list of the different symbols which are still in the binary. 
-					These can be functions, objects, strings or any other symbol that survives the compilation process. 
-					This is useful to find the functions which the program uses, and will become the main way of navigating in the Pwn Adventure Challenge. 
+					or information symbols will get you a list of the different symbols which are still in the binary.
+					These can be functions, objects, strings or any other symbol that survives the compilation process.
+					This is useful to find the functions which the program uses, and will become the main way of navigating in the Pwn Adventure Challenge.
 				\item[Visual mode]
-					Like Vim, Radare2 has a visual mode which allows for direct reading and writing of assembly or hex. 
-					In this mode, you can move using the same key bindings as Vim, with ``i'' being used as replace and ``p'' being used to change visual mode. 
+					Like Vim, Radare2 has a visual mode which allows for direct reading and writing of assembly or hex.
+					In this mode, you can move using the same key bindings as Vim, with ``i'' being used as replace and ``p'' being used to change visual mode.
 					Furthermore, to get a cursor which can be used for these insert functions, use ``c''.
-					This mode allows for the editing of the disassembled binary without having to reassemble it. 
+					This mode allows for the editing of the disassembled binary without having to reassemble it.
 				\item[Hex View]
-					In visual hex view, hold shift while moving to highlight a byte range. 
-					Tab will switch from the Hex pane to the ASCII pane. 
+					In visual hex view, hold shift while moving to highlight a byte range.
+					Tab will switch from the Hex pane to the ASCII pane.
 				\item[\~{}]
-					This is the internal grep function. 
-					When it is placed after a command, anything after it will be used to filter the results. 
+					This is the internal grep function.
+					When it is placed after a command, anything after it will be used to filter the results.
 					Furthermore, output can be filtered by column using the syntax ``[x]'' or by row using ``:x'' after the grep search.
 			\end{description}
-			Beyond this, you will want to start the program with the ``-w'' flag in order to write to the file. 
-			Finally, any CLI program---or syntax such as pipes and redirection---installed on your computer can be accessed through the Radare2 prompt. 
-			This is useful for actions such as greping through the output of ``is''. 
+			Beyond this, you will want to start the program with the ``-w'' flag in order to write to the file.
+			Finally, any CLI program---or syntax such as pipes and redirection---installed on your computer can be accessed through the Radare2 prompt.
+			This is useful for actions such as greping through the output of ``is''.
 
-			At this point you should have enough of an understanding of Radare2 to be able to use it. 
-			The next section contains spoilers to the challenges presented by Pwn Adventure 3. 
-			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win. 
-			I recommend starting with the sprint speed. 
+			At this point you should have enough of an understanding of Radare2 to be able to use it.
+			The next section contains spoilers to the challenges presented by Pwn Adventure 3.
+			Before reading on, recommend downloading and installing the game and attempting to reverse engineer it so that you can win.
+			I recommend starting with the sprint speed.
 			%TODO: Should there be more than this section here?
 %	\section{IDA 64}
-%  TODO: While this section should be in here, I will not be able to get a copy to use. 
+%  TODO: While this section should be in here, I will not be able to get a copy to use.
 	\section{Other Tools}
-		These tools are less specific to reverse engineering, being a part of the GNU development tools or having other purposes. 
-		However, they give an insight into how the program interacts with the system, allowing you to determine other attack paths. 
-		Furthermore, if the code was not properly obfuscated, they may allow you to see strings and other interesting parts of the code left after it was compiled. 
+		These tools are less specific to reverse engineering, being a part of the GNU development tools or having other purposes.
+		However, they give an insight into how the program interacts with the system, allowing you to determine other attack paths.
+		Furthermore, if the code was not properly obfuscated, they may allow you to see strings and other interesting parts of the code left after it was compiled.
 		\subsection{Strings}
 		\index{Strings}
 			This program reads through the binary of any file and prints any printable character strings greater than 4 characters long\footnote{\href{http://linuxcommand.org/man\_pages/strings1.html}{man strings}}.
-			Generally, it will work well with its default settings. 
-			However, if you have reason to believe that the encoding was changed when programming, the ``-e'' flag will allow you to set that correctly. 
-			Similarly, the ``-f'' flag will be useful if you are searching through multiple files. 
+			Generally, it will work well with its default settings.
+			However, if you have reason to believe that the encoding was changed when programming, the ``-e'' flag will allow you to set that correctly.
+			Similarly, the ``-f'' flag will be useful if you are searching through multiple files.
 
-			This tool is also usually piped into grep, as it will often output a significant amount of useless data. 
+			This tool is also usually piped into grep, as it will often output a significant amount of useless data.
 		\subsection{Ltrace}
 		\index{Ltrace}
 			Ltrace runs the program given to it as an argument until it exits\footnote{\href{http://linuxcommand.org/man\_pages/ltrace1.html}{man ltrace}}.
-			It will intercept and record all dynamic library calls created by the program, giving you information on what the program is accessing and attempting to achieve. 
-		
-			While this is a good method for determining what the program is attempting to do, it has a number of limitations, such as only working with 32-bit programs on Linux. 
-			Due to this, it is generally attempted, but not relied on. 
+			It will intercept and record all dynamic library calls created by the program, giving you information on what the program is accessing and attempting to achieve.
+
+			While this is a good method for determining what the program is attempting to do, it has a number of limitations, such as only working with 32-bit programs on Linux.
+			Due to this, it is generally attempted, but not relied on.
 		\subsection{Strace}
 		\index{Strace}
-			Strace is the older and more supported brother to Ltrace. 
-			It works in the same manner, but for system calls (calls for the kernel to conduct an action) rather than library calls. 
-			By default, it will print system calls, their arguments and results to STDERR or the file specified with ``-o''. 
+			Strace is the older and more supported brother to Ltrace.
+			It works in the same manner, but for system calls (calls for the kernel to conduct an action) rather than library calls.
+			By default, it will print system calls, their arguments and results to STDERR or the file specified with ``-o''.
 			An example of this output, gathered from tracing system calls from ``cat /dev/null'' is:
 			\begin{quote}
 				open("/dev/null", O\_RDONLY) = 3
 			\end{quote}
-			It is worth noting that pointers to strings (such as for calls to the write syscall) will print the string, rather than the memory address that was passed to the call. 
+			It is worth noting that pointers to strings (such as for calls to the write syscall) will print the string, rather than the memory address that was passed to the call.
 
-			Strace also traces signals to the program. 
-			Thus, it can be used to determine how it will act when a given signal is passed to it, or why a program is closing with no error or user interaction. 
-			
+			Strace also traces signals to the program.
+			Thus, it can be used to determine how it will act when a given signal is passed to it, or why a program is closing with no error or user interaction.
+
 			The following is a list of arguments which may be useful when reverse engineering:
 			\begin{description}
-				\item[-f] Follow forking of the traced program and report on their calls. 
-				\item[-i] Print the instruction pointer at the time of each system call. 
-				\item[-x] Print non-ASCII strings as Hex. 
+				\item[-f] Follow forking of the traced program and report on their calls.
+				\item[-i] Print the instruction pointer at the time of each system call.
+				\item[-x] Print non-ASCII strings as Hex.
 				\item[-e] Restrict the syscalls that are traced.
-				\item[-p] Attached to a given pid and begin tracing the already running process. 
+				\item[-p] Attached to a given pid and begin tracing the already running process.
 				\item[-E] Add (using <var>=<val>) or remove (using <var>) a variable from the process' environmental variables.
 			\end{description}
 	\section{Side Channel Attacks}
 	\section{Java Reverse Engineering}
 	\index{Java}
-		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble. 
-		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place. 
-		Thus, Java reverse engineering is simply a matter of choosing the best program to use in decompilation. 
+		Unlike most fully complied languages, Java is quite easy to fully decompile, rather than just disassemble.
+		This means that you will be able to get source code, though not necessarily the same source code as the programmer wrote in the first place.
+		Thus, Java reverse engineering is simply a matter of choosing the best program to use in decompilation.
 
 		The current recommendation for Java Decompilers is Procyon\footnote{\url{https://bitbucket.org/mstrobel/procyon}}
-		This is due to the fact that it is the most up to date and well maintained decompiler available.\footnote{You may hear of others such as jad. This is old and unmaintained.} 
-		
-		Procyon is quite easy to use. 
-		All that is required is having Java installed on the system that you are working on and running the provided JAR package. 
-		You will give it both the class files that you wish to decompile, as well as an output directory. 
+		This is due to the fact that it is the most up to date and well maintained decompiler available.\footnote{You may hear of others such as jad. This is old and unmaintained.}
+
+		Procyon is quite easy to use.
+		All that is required is having Java installed on the system that you are working on and running the provided JAR package.
+		You will give it both the class files that you wish to decompile, as well as an output directory.
 		An example of this can be found below:
 		\begin{lstlisting}[style=CLI]
 			$ ./procyon.jar *.class -o src
 		\end{lstlisting}
 
 		\index{Procyon}
-		Furthermore, Procyon will allow you to decompile a JAR file in its entirety. 
-		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes. 
+		Furthermore, Procyon will allow you to decompile a JAR file in its entirety.
+		All that need be done for this is running the same command as above on the JAR file rather than the individual unpacked classes.
 
-		The reason that Java Reverse engineering is seen as easy is the fact that you now have the full source code of the program. 
-		At worse, the programmer may have obfuscated the code, making it harder to determine what the methods and variables mean. 
+		The reason that Java Reverse engineering is seen as easy is the fact that you now have the full source code of the program.
+		At worse, the programmer may have obfuscated the code, making it harder to determine what the methods and variables mean.
 		This would mean that you will have to manually determine this from the usage of the variables and the content of the methods.
 
-		Once this decompilation has been completed, you can use tools such as yFiles to get an overview of the classes or data structures. 
-		Other than this, it is simply a matter of finding the logic within the program that is used to calculate the value that you are reverse engineering for. 
-	
+		Once this decompilation has been completed, you can use tools such as yFiles to get an overview of the classes or data structures.
+		Other than this, it is simply a matter of finding the logic within the program that is used to calculate the value that you are reverse engineering for.
+
 		%TODO: Revise this section
 	\section{Pwn Adventure}
 	\index{Pwn Adventure}
 		Pwn Adventure is a reverse engineering CTF created to test player's ability to both reverse engineer the game and stay focused at the same time.
-		It was written in C++ using the Unity engine, making it fully compiled and relatively difficult to reverse engineer. 
+		It was written in C++ using the Unity engine, making it fully compiled and relatively difficult to reverse engineer.
 		However, no client authentication was written into the server, making it trust anything the client tells it they are doing.
 
-		This means that the player can reverse engineer and modify the client, changing their weapons, character and environment to their will. 
+		This means that the player can reverse engineer and modify the client, changing their weapons, character and environment to their will.
 		More importantly, however, is the fact that the only way to win is to do this.
-		Thus, making this CTF the gamification of reverse engineering. 
+		Thus, making this CTF the gamification of reverse engineering.
 
-		What follows, is a basic introduction to the tools needed to start breaking into the game, and a few hints for where to look first. 
-		It will contain minimal spoilers, so as to allow the game to challenge the reader. 
-		Before you start, I recommend getting a few friends together, setting up the server, and setting aside a week. 
+		What follows, is a basic introduction to the tools needed to start breaking into the game, and a few hints for where to look first.
+		It will contain minimal spoilers, so as to allow the game to challenge the reader.
+		Before you start, I recommend getting a few friends together, setting up the server, and setting aside a week.

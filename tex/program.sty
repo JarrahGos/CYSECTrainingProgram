@@ -26,6 +26,7 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{longtable}
+\usepackage{booktabs}
 \usepackage{setspace}
 \usepackage{multicol}
 \usepackage{microtype}
@@ -37,7 +38,7 @@
 \usepackage{makeidx}
 \makeindex
 \usepackage{fancyvrb} %Allow bold in verbatim text.
-\usepackage[section]{placeins} %Deal with floats being in the wrong place. 
+\usepackage[section]{placeins} %Deal with floats being in the wrong place.
 
 \newcommand\frontmatter{%
     \cleardoublepage
@@ -54,6 +55,9 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 \usepackage{xcolor}
+\usepackage{minted}
+\usemintedstyle{autumn}
+\usepackage{tex/mints}
 \usepackage{listings}
 \AtBeginDocument{\renewcommand{\thelstlisting}{\thesubsubsection.\arabic{lstlisting}}}
 \def\l@lstlisting#1#2{\@dottedtocline{1}{3em}{3.5em}{#1}{#2}}
@@ -73,7 +77,7 @@
 	basicstyle=\small\sffamily,				%
 	columns=fullflexible,					%
 	breaklines=true,		            	%
-	literate={%								
+	literate={%
     	*{0}{{{\color{brown}0}}}1					%
     	{1}{{{\color{brown}1}}}1					%
     	{2}{{{\color{brown}2}}}1					%
@@ -82,7 +86,7 @@
     	{5}{{{\color{brown}5}}}1					%
    		{6}{{{\color{brown}6}}}1					%
 	    {7}{{{\color{brown}7}}}1					%
-   		{8}{{{\color{brown}8}}}1					%	
+   		{8}{{{\color{brown}8}}}1					%
 	    {9}{{{\color{brown}9}}}1},				%
 	stringstyle=\color{mymauve}}
 \lstloadlanguages{C}
@@ -107,7 +111,7 @@
   morestring=[b]"
 }
 \lstdefinelanguage{nmap}{
-  keywords={ssh, domain, pop3, netbios, imap, samba, nfs, telnet, http, https, rpcbind, exec, login, shell, ingreslock, mysql, postgresql, vnc, X11, irc, microsoft, ftp}, 
+  keywords={ssh, domain, pop3, netbios, imap, samba, nfs, telnet, http, https, rpcbind, exec, login, shell, ingreslock, mysql, postgresql, vnc, X11, irc, microsoft, ftp},
   keywordstyle=\color{blue}\bfseries,
   ndkeywords={tcp, udp, open, closed, VMware},
   ndkeywordstyle=\color{darkgray}\bfseries,
@@ -133,9 +137,9 @@
   commentstyle=\color{purple}\ttfamily,
   stringstyle=\color{red}\ttfamily,
 }
-\usepackage{./tex/lstlangarm} % give language definition for ARM ASM. 
+\usepackage{./tex/lstlangarm} % give language definition for ARM ASM.
 \lstdefinestyle{CLI} {%
-	language=bash, 
+	language=bash,
 	numbers=none,
 	showspaces=false, 						%
 	showtabs=false, 						%
@@ -149,7 +153,7 @@
 	columns=fullflexible,					%
 	breaklines=true,		            	%
 	stringstyle=\color{mymauve}}
-%Sorting code floats. 
+%Sorting code floats.
 \usepackage{float}
 \floatstyle{ruled}
 \newfloat{code}{htb}{loc}[chapter]
