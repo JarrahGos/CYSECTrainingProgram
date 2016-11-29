@@ -680,7 +680,7 @@ alias ls="ls --color=auto"
 
 			The Python interpreter can be invoked using the ``Python'' command from any command line as seen in code example \ref{code:PythonInterpreter}
 			\begin{code}
-				\begin{minted}{pycon}
+				\begin{minted}[autogobble]{pycon}
 					Python 3.5.2 (default, Jul 28 2016, 21:28:00)
 					[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin
 					Type "help", "copyright", "credits" or "license" for more information.
@@ -787,6 +787,10 @@ alias ls="ls --color=auto"
 			An example of a function which will return the highest Fibonacci number less than `n' can be found in code example \ref{code:PythonFibFunction}.
 			This example shows how to define a function on line 1, how to return from a function on line 6 and also how to call a function with an argument on line 7.
 
+			It is worth noting that variables are passed to functions by reference.
+			This means that a variable which is passed a function and edited there will be set to the altered version in the code after the function call.
+			The solution to this when a copy of the variable needs to be passed is to use python's ``copy()'' function.
+
 			\begin{code}
 				\pcode{./PythonFibFunction.py}
 				\caption{Highest Fibonacci Number Function}
@@ -857,7 +861,55 @@ alias ls="ls --color=auto"
 					\caption{Working with Tuples in Python}
 					\label{code:pythonTuples}
 				\end{code}
-		\subsection{Objects}
+		\subsection{Objects and Classes}
+			Pythonic objects and classes use a far simpler syntax than most other languages\footnote{\url{https://docs.python.org/3/tutorial/classes.html}}.
+			This allows for the creation of numerous classes within a single file, creating a complex and feature full program quickly.
+
+			However, it is the optional nature of classes that makes python a good scripting language with useful scaling.
+			It is common for a script to be written without classes, which is then integrated into a class when the program is extended.
+
+			\subsubsection{Syntax}
+				Classes in python can be created at any time, with the syntax found in code example~\ref{code:PythonClass}.
+				This syntax begins with the label ``class'' and expects an indented block after the colon.
+				The class will end when the indentation returns to the level before the declaration.
+
+				A common error here is to attempt to use a class before it is defined.
+				Unlike some other languages, python requires that code be executed (read by the interpreter) before it can be used.
+				When this is happening, python will execute every line of code which is flush with the left margin and anything called by these lines.
+				Thus, if you start your main function at the end of the file and create classes flush with the margin, this issue should not be noticed.
+
+				\begin{code}
+					\centering
+					\pcode{./shellOut/Class.py}
+					\caption{Creating a Python Class}\label{code:PythonClass}
+				\end{code}
+
+				Classes can be instantiated using another specific syntax which gives a variable which can be used to work with a specific instance of the class.
+				This instance is named as any other variable is and retains all information and state given to it.
+				However, it does not effect any other instance of the object.
+				The syntax for this can be found in code example~\ref{code:ObjectInstantiation}.
+
+				\begin{code}
+					\centering
+					\pcode{./shellOut/ObjectInstance.py}
+					\caption{Creating an Instance of ``myClass''}\label{code:ObjectInstantiation}
+				\end{code}
+
+				Data stored within classes has two means of access.
+				The first is from within the class itself, in which case, it is called using the special ``self'' keyword.
+				When outside the class, an instance or (for static classes) the class name itself is used as the reference.
+				This allows for exactly the same syntax to be used within and outside the class.
+				Code example~\ref{code:ClassData.py}
+
+				\begin{code}
+					\centering
+					\pcode{./shellOut/ClassData.py}
+					\caption{Accessing Class Data from Outside a Class}\label{code:ClassData}
+				\end{code}
+
+				This same syntax is used for calling a function of a class.
+				The only alteration for this is that parenthesis added to the end of the call and variables can be included in these.
+
 
 	\section{Introducton to JavaScript}\index{Javascript}
 		%TODO: Clean up this section.
@@ -1603,6 +1655,9 @@ list = ['one', 'two', 'three'];
 		Now that you can see the code, you will likely want to setup breakpoints within it.
 		This can be done using the ``break'' command along with a line number or function name.
 		This will insert a breakpoint at which the program will stop executing and allow you to investigate.
+
+		These break points are used to determine the state of variables within the code during execution.
+		This allows the programmer to enter inputs with an expected output which will show implementation issues with the code.
 
 		\paragraph{Run}
 		Now that you have set your breakpoints, you will likely want to run the program up to the first break point.
