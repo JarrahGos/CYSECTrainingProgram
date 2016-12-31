@@ -1,24 +1,24 @@
 Trying zone transfer first...
 Whoah, it worked - misconfigured DNS server found:
-cysec.	172800	IN	SOA	( ns.cysec. admin.cysec.
-				3		;serial
-				43200		;refresh
-				900		;retry
-				1814400		;expire
-				10800		;minimum
-	)
-cysec.	172800	IN	NS	ns.cysec.
-hackThisSite.cysec.	172800	IN	A	10.1.1.128
-ns.hackThisSite.cysec.	172800	IN	CNAME	hackThisSite.cysec.
-www.hackThisSite.cysec.	172800	IN	CNAME	hackThisSite.cysec.
-mail.cysec.	172800	IN	MX	25 hackThisSite.cysec.
-mail.cysec.	172800	IN	A	10.1.1.128
-ns.cysec.	172800	IN	A	10.1.1.129
-winTargets.cysec.	172800	IN	A	10.1.1.132
-DC.winTargets.cysec.	172800	IN	CNAME	winTargets.cysec.
-mail.winTargets.cysec.	172800	IN	CNAME	winTargets.cysec.
-win10Target.winTargets.cysec.	172800	IN	A	10.1.1.131
-win7Target.winTargets.cysec.	172800	IN	A	10.1.1.133
+cysec.  172800  IN  SOA ( ns.cysec. admin.cysec.
+                3       ;serial
+                43200   ;refresh
+                900     ;retry
+                1814400 ;expire
+                10800   ;minimum
+    )
+cysec.  						172800  IN  NS  ns.cysec.
+hackThisSite.cysec. 			172800  IN  A   10.1.1.128
+ns.hackThisSite.cysec.  		172800  IN  CNAME   hackThisSite.cysec.
+www.hackThisSite.cysec. 		172800  IN  CNAME   hackThisSite.cysec.
+mail.cysec. 					172800  IN  MX  25 hackThisSite.cysec.
+mail.cysec. 					172800  IN  A   10.1.1.128
+ns.cysec.   					172800  IN  A   10.1.1.129
+winTargets.cysec.   			172800  IN  A   10.1.1.132
+DC.winTargets.cysec.    		172800  IN  CNAME   winTargets.cysec.
+mail.winTargets.cysec.  		172800  IN  CNAME   winTargets.cysec.
+win10Target.winTargets.cysec.   172800  IN  A   10.1.1.131
+win7Target.winTargets.cysec.    172800  IN  A   10.1.1.133
 
 There isn't much point continuing, you have everything.
 Have a nice day.

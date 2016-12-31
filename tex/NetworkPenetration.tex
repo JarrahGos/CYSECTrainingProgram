@@ -371,9 +371,10 @@
 
 		The client and server should now be set up.
 		The server config, found in ``/etc/openvpn/server.conf'' should be as follows:
-		\lstinputlisting[numbers=none]{./shellOut/vpnServer.conf}
+		% \lstinputlisting[numbers=none]{./shellOut/vpnServer.conf}
+		\lincode{./shellOut/vpnServer.conf}
 		Client config:
-		\lstinputlisting[numbers=none]{./shellOut/vpnClient.conf}
+		\lincode{./shellOut/vpnClient.conf}
 		Finally, set up nat at the entrance to the VPN using the following command.
 			\begin{minted}[autogobble,breaklines]{console}
 				# iptables -t nat -A POSTROUTING -s <VPN ip range> -o eth0 -j MASQUERADE
@@ -491,7 +492,7 @@
 				As explained in the above section on ARP Poisoning, ettercap should be setup to redirect traffic from the target machine bound for the name servers to itself.
 				You will then need to alter the file found at ``/usr/share/ettercap/etter.dns'' with the data of the names and IP addresses that you would like to poison.
 				An example of this configuration can be seen below:
-				\lstinputlisting[numbers=none]{./shellOut/etter.dns}
+				\lincode{./shellOut/etter.dns}
 				You must then enable the ``dns\_spoof'' plugin.
 
 				Once this has been setup, all DNS queries sent from the target machine will be intercepted and poisoned.
@@ -506,7 +507,7 @@
 				This line designates where the servers DNS cache is stored.
 				Navigate to the cache directory and edit the files within to set them to your specifications.
 				An example configuration can be seen below:
-				\lstinputlisting[numbers=none]{./shellOut/bind.conf}
+				\lincode{./shellOut/bind.conf}
 	\section{Social Engineering}
 		Accessing a computer network need not always be done through targeted attacks on vulnerable software.
 		Often, targeting the wetware through the far too common PEBKAC error is more fruitful.
@@ -596,9 +597,9 @@
 			\end{minted}
 			This will give us a list of the services which are running on the server, as well as their names and ports.
 			We will be looking at the FTP server, as it is currently allowing plain text authentication:
-			\begin{quote}
+			\begin{minted}[autogobble]{console}
 				21/tcp    open  ftp         vsftpd 2.3.4
-			\end{quote}
+			\end{minted}
 			Unlike SFTP, the modern protocol, FTP often allows for plain text authentication, meaning that a person intercepting traffic would be able to read the user name and password.
 			This is how we will begin to gain access to the system.
 
@@ -620,13 +621,13 @@
 			\end{minted}
 
 			Using FTP with the user name and password that you found, run the following commands:
-			\begin{verse}
-				get .bashrc
-			\end{verse}
+			\begin{minted}[autogobble]{console}
+				ftp> get .bashrc
+			\end{minted}
 			Exit FTP at this point and edit the required line into the .bashrc then run the following FTP command:
-			\begin{quote}
-				put .bashrc
-			\end{quote}
+			\begin{minted}[autogobble]{console}
+				ftp> put .bashrc
+			\end{minted}
 			This will mean that as soon as the msfadmin user logs into their account, a shell will be opened on port 5005.
 
 			At this point, we can get shell access to the computer using the following command:

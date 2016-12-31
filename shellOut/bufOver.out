@@ -9,19 +9,19 @@ bufferingALongStringaaaaaaaaaaaa
 containing 1633771873 or 0x0861616161
 
 Dump of assembler code for function main: 0x0000000100000ed0 <+0>: push rbp
-0x0000000100000ed1 <+1>: mov rbp,rsp 
-0x0000000100000ed4 <+4>: sub rsp,0x20 
-0x0000000100000ed8 <+8>: mov DWORD PTR [rbp-0x4],0x0 
-0x0000000100000edf <+15>: mov DWORD PTR [rbp-0x8],edi 
-0x0000000100000ee2 <+18>: mov QWORD PTR [rbp-0x10],rsi 
-0x0000000100000ee6 <+22>: mov rsi,QWORD PTR [rbp-0x10] 
-0x0000000100000eea <+26>: mov rdi,QWORD PTR [rsi+0x8] 
-0x0000000100000eee <+30>: call 0x100000e40 <checkAuth> 
+0x0000000100000ed1 <+1>: mov rbp,rsp
+0x0000000100000ed4 <+4>: sub rsp,0x20
+0x0000000100000ed8 <+8>: mov DWORD PTR [rbp-0x4],0x0
+0x0000000100000edf <+15>: mov DWORD PTR [rbp-0x8],edi
+0x0000000100000ee2 <+18>: mov QWORD PTR [rbp-0x10],rsi
+0x0000000100000ee6 <+22>: mov rsi,QWORD PTR [rbp-0x10]
+0x0000000100000eea <+26>: mov rdi,QWORD PTR [rsi+0x8]
+0x0000000100000eee <+30>: call 0x100000e40 <checkAuth>
 0x0000000100000ef3 <+35>: cmp eax,0x0
-0x0000000100000ef8 <+40>: je 0x100000f14 <main+68> 
-0x0000000100000efe <+46>: lea rdi,[rip+0x6f] 
-0x0000000100000f05 <+53>: mov al,0x0 
-0x0000000100000f07 <+55>: call 0x100000f3a 
-0x0000000100000f0c <+60>: mov DWORD PTR [rbp-0x14],eax 
-0x0000000100000f0f <+63>: jmp 0x100000f25 <main+85> 
+0x0000000100000ef8 <+40>: je 0x100000f14 <main+68>
+0x0000000100000efe <+46>: lea rdi,[rip+0x6f]
+0x0000000100000f05 <+53>: mov al,0x0
+0x0000000100000f07 <+55>: call 0x100000f3a
+0x0000000100000f0c <+60>: mov DWORD PTR [rbp-0x14],eax
+0x0000000100000f0f <+63>: jmp 0x100000f25 <main+85>
 0x0000000100000f14 <+68>: lea rdi,[rip+0x68]

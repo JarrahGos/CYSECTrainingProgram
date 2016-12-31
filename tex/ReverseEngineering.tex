@@ -69,18 +69,18 @@
 						\toprule
 						\textbf{Instruction} & \textbf{Description} & \textbf{Example} \\
 						\toprule
-						MOV & Move from source register to destination. & MOV r0, \#42\, MOV r3, R5 \\
-						ADD & Add source register to operand and place in source & ADD r0, r1, r2 \\
-						SUB & Subtract source register from operand and place in source & SUB r0, r1, \#5 \\
-						AND & Logical and Rn and Operand placed in Rd & AND r8, r7, r2 \\
-						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\
-						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\
-						CMP AND & Logical AND Rn and Operand placed in Rd & AND r8, r7, r2 \\
-						EOR & Logical XOR of Rn and Operand placed in Rd & EOR r11, r11, \#1 \\
-						ORR & Logical OR of Rn and Operand placed in Rd & ORR r1, r11, \#1 \\
-						CMP & Flag set to result of Rn - Operand & CMP r0, \#42 \\
-						TST & Flag set to result of Rn AND Operand & TST R11 \#1 \\
-						TEQ & Flag set to result of Rn XOR Operand & TEQ r8, r9 \\
+						\mintinline{nasm}|MOV| & Move from source register to destination. & \mintinline{nasm}|MOV r0, #42|\, \mintinline{nasm}|MOV r3, R5| \\
+						\mintinline{nasm}|ADD| & Add source register to operand and place in source & \mintinline{nasm}|ADD r0, r1, r2| \\
+						\mintinline{nasm}|SUB| & Subtract source register from operand and place in source & \mintinline{nasm}|SUB r0, r1, #5| \\
+						\mintinline{nasm}|AND| & Logical and Rn and Operand placed in Rd & \mintinline{nasm}|AND r8, r7, r2| \\
+						\mintinline{nasm}|EOR| & Logical XOR of Rn and Operand placed in Rd & \mintinline{nasm}|EOR r11, r11, #1| \\
+						\mintinline{nasm}|ORR| & Logical OR of Rn and Operand placed in Rd & \mintinline{nasm}|ORR r1, r11, #1| \\
+						\mintinline{nasm}|CMP AND| & Logical AND Rn and Operand placed in Rd & \mintinline{nasm}|AND r8, r7, r2| \\
+						\mintinline{nasm}|EOR| & Logical XOR of Rn and Operand placed in Rd & \mintinline{nasm}|EOR r11, r11, #1| \\
+						\mintinline{nasm}|ORR| & Logical OR of Rn and Operand placed in Rd & \mintinline{nasm}|ORR r1, r11, #1| \\
+						\mintinline{nasm}|CMP| & Flag set to result of Rn - Operand & \mintinline{nasm}|CMP r0, #42| \\
+						\mintinline{nasm}|TST| & Flag set to result of Rn AND Operand & \mintinline{nasm}|TST R11 #1| \\
+						\mintinline{nasm}|TEQ| & Flag set to result of Rn XOR Operand & \mintinline{nasm}|TEQ r8, r9| \\
 						\bottomrule
 					\end{tabular}
 					\caption{Common Arm Instructions}

@@ -63,6 +63,21 @@
 				\node[state]	(IntR)	[left of=AP,text width=4cm,align=center]		{Internal Reconnaissance};
 				\node[state]	(PI)	[left of=IntR,text width=4cm,align=center]		{Pivoting to Internal Systems};
 				\node[state]	(EX)	[above left of=PI,text width=4cm,align=center]	{Exfiltration};
+
+				\draw[->] (IR)		-> (E);
+				\draw[->] (E)		-> (MA);
+				\draw[->] (MA)		-> (AP);
+				\draw[->] (AP)		-> (IntR);
+				\draw[->] (IntR)	-> (PI);
+				\draw[->] (PI)		-> (EX);
+				\draw[->] (EX)		-> (IR);
+				% \path[->] (IR) 	edge (E)
+				% 				edge (MA)
+				% 				edge (AP)
+				% 				edge (IntR)
+				% 				edge (PI)
+				% 				edge (EX)
+				% 				edge (IR);
 			\end{tikzpicture}
 			\end{adjustbox}
 			% \includegraphics[scale=0.8]{./AttackLifeCycle.png}

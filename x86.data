@@ -1,6 +1,6 @@
 .data
-var		DB 64			; A byte with the label var and value of 64. 
-var2 	DW ?			; Two Bytes with no initialized value. 
-var3	DD 0xFFFFFFFF	; A four byte value labeled var3 with all bits set to 1. 
-arr		DB 1, 3, 5		; An array of bytes containing 1, 3 and 5. 
-arr2	DD 12 DUP(?) 	; An array of 12 4-byte values
+var     DB 64           ; A byte with the label var and value of 64.
+var2    DW ?            ; Two Bytes with no initialized value.
+var3    DD 0xFFFFFFFF   ; A four byte value labeled var3 with all bits set to 1.
+arr     DB 1, 3, 5      ; An array of bytes containing 1, 3 and 5.
+arr2    DD 12 DUP(?)    ; An array of 12 4-byte values

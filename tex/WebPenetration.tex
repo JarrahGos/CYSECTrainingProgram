@@ -54,7 +54,7 @@
 				Before you can do anything with BeEF, you will have to hook a browser.
 				To do this, you will first have to find a vulnerable page such as the guest book on DVWA.
 				At this point, you will want to embed the BeEF hook script into the page with a command such as the following:
-				\lstinputlisting[numbers=none]{./shellOut/BeefHook.in}
+				\htmlcode[linenos=false]{./shellOut/BeefHook.in}
 				If you set this up correctly, the victim will have to do nothing more than access the page to be hooked.
 				No clicking or other intervention is required.
 			\subsubsection{Attacking}
@@ -128,7 +128,7 @@
 				The code in example \ref{code:XSSCookieStealing} will read the cookie for the user on the current site and transmit it to the specified IP address and port.
 				\begin{code}
 					\centering
-					\jcode{./XSSCookieSteal.js}
+					\htmlcode{./XSSCookieSteal.js}
 					\label{code:XSSCookieStealing}
 					\caption{Stealing a cookie with XSS}
 				\end{code}

@@ -103,12 +103,10 @@
 				This will limit the effect of a user account being used to run a denial of service (DoS) attack on the system.
 				Furthermore, it will disallow actions such as fork bombs from bringing the whole system down.
 				This can usually be achieved by adding the following lines to ``/etc/security/limits.conf''
-				\begin{quote}
-					\begin{flushleft}
-						\** soft nproc 100 \\
-						\** hard nproc 200 \\
-					\end{flushleft}
-				\end{quote}
+				\begin{minted}[autogobble]{linux-config}
+						* soft nproc 100
+						* hard nproc 200
+				\end{minted}
 
 				In addition to this, services which are particularly vulnerable
 				---such as any Internet facing services---
@@ -421,17 +419,17 @@
 					# chown root /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist
 				\end{minted}
 				Then add the following line to ``/Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist'':
-				\begin{quote}
-					<string>\verb+--+local-address=127.0.0.1:5355</string>
-				\end{quote}
+				\begin{minted}[autogobble,breaklines]{xml}
+					<string>--local-address=127.0.0.1:5355</string>
+				\end{minted}
 				Below the line:
-				\begin{quote}
+				\begin{minted}[autogobble, breaklines]{xml}
 					<string>/usr/local/opt/dnscrypt-proxy/sbin/dnscrypt-proxy</string>
-				\end{quote}
+				\end{minted}
 				Then change the resolvers list string in the same file so that it doesn't break on update:
-				\begin{quote}
-					<string>\verb+--+resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
-				\end{quote}
+				\begin{minted}[autogobble,breaklines,breakafter=-]{xml}
+					<string>--resolvers-list=/usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+				\end{minted}
 				Finally, the program can be started with:
 				\begin{minted}[autogobble,breaklines]{console}
 					# launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist

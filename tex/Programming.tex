@@ -277,7 +277,7 @@
 			The if statement in bash works in much the same way as the ``\&\&'' conditional in that it will run it's block if the command that was given to it succeeds.\footnote{\url{http://mywiki.wooledge.org/BashGuide/Patterns}}
 			The syntax for the if command is as follows:
 			\begin{code}
-			\begin{minted}{bash}
+			\begin{minted}[autogobble,breaklines]{bash}
 if <Conditional commands>; then
 	<if block commands>
 else
@@ -533,13 +533,13 @@ fi
 			\begin{table}[htb]
 				\centering
 				\begin{adjustbox}{max width=1\textwidth}
-				\begin{tabular}{lll}
+				\begin{tabular}{ll p{9cm}}
 					\toprule
 					\textbf{Number} & \textbf{Name} & \textbf{Description} \\
 					\toprule
-					0 & STDIN & Standard input for a program. Usually text entry at the commandline. \\
-					1 & STDOUT & Standard output for a program. Usually text output at the commandline. \\
-					2 & STDERR & Standard error output for a program. Usually also the commandline. \\
+					0 & STDIN & Standard input for a program. Commandline Input \\
+					1 & STDOUT & Standard output for a program. Commandline output \\
+					2 & STDERR & Standard error for a program. Error output to Commandline \\
 					\bottomrule
 				\end{tabular}
 				\end{adjustbox}
@@ -899,7 +899,7 @@ alias ls="ls --color=auto"
 				The first is from within the class itself, in which case, it is called using the special ``self'' keyword.
 				When outside the class, an instance or (for static classes) the class name itself is used as the reference.
 				This allows for exactly the same syntax to be used within and outside the class.
-				Code example~\ref{code:ClassData.py}
+				Code example~\ref{code:ClassData}
 
 				\begin{code}
 					\centering
@@ -1557,14 +1557,14 @@ list = ['one', 'two', 'three'];
 				\begin{adjustbox}{max width=1\textwidth}
 				\begin{tabular}{ l  p{8cm} }
 					\toprule
-					\textbf{Code term} & \textbf{Explanation} \\
+					\textbf{Code Term} & \textbf{Explanation} \\
 					\toprule
-					type *ptr & Create a pointer of name ptr. \\
-					*ptr & The value of whatever ptr is pointing at. \\
-					*(ptr + i) & The value of whatever ptr is pointed at plus i. \\
-					\&thing & The address of thing. \\
-					type *ptr = \&thing & Create a pointer of type named ptr pointing at the address of thing. \\
-					ptr++ & Increment where ptr points. \\
+					\mintinline{c}|type *ptr| & Create a pointer of name ptr. \\
+					\mintinline{c}|*ptr| & The value of whatever ptr is pointing at. \\
+					\mintinline{c}|*(ptr + i)| & The value of whatever ptr is pointed at plus i. \\
+					\mintinline{c}|&thing| & The address of thing. \\
+					\mintinline{c}|type *ptr = &thing| & Create a pointer of type named ptr pointing at the address of thing. \\
+					\mintinline{c}|ptr++| & Increment where ptr points. \\
 					\bottomrule
 				\end{tabular}
 				\end{adjustbox}
@@ -1638,7 +1638,7 @@ list = ['one', 'two', 'three'];
 
 		Now that we have a program that is compiling with debugging symbols and running, we can start to use GDB.
 		The first step is to run GDB on the program like so:
-		\begin{minted}{console}
+		\begin{minted}[autogobble,breaklines]{console}
 			$ gdb <program>
 		\end{minted}
 		This will set GDB up to run and take ownership of the process, allowing it to control the execution of the program.

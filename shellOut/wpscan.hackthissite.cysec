@@ -1,5 +1,5 @@
 [!] The WordPress 'http://hackthissite.cysec/readme.html' file exists exposing a version number
-[!] Full Path Disclosure (FPD) in 'http://hackthissite.cysec/wp-includes/rss-functions.php': 
+[!] Full Path Disclosure (FPD) in 'http://hackthissite.cysec/wp-includes/rss-functions.php':
 [!] Upload directory has directory listing enabled: http://hackthissite.cysec/wp-content/uploads/
 [!] Includes directory has directory listing enabled: http://hackthissite.cysec/wp-includes/
 
